@@ -15,9 +15,9 @@ const postController = async (req, res) => {
     let hidden
     let isMatch
 
-    req.body.image? image = req.body.image : image = null;
-    req.body.hidden? hidden = req.body.hidden : hidden = false;
-    req.body.isMatch? isMatch = req.body.isMatch : isMatch = false;
+    req.body.image ? image = req.body.image : image = null;
+    req.body.hidden ? hidden = req.body.hidden : hidden = false;
+    req.body.isMatch ? isMatch = req.body.isMatch : isMatch = false;
 
     const post = PostSchema({
         userId,
@@ -48,7 +48,8 @@ const postCommentController = async (req, res) => {
         description,
     } = req.body;
 
-    const post = await PostSchema.findOne({ _id: postId
+    const post = await PostSchema.findOne({
+        _id: postId
     })
 
 
@@ -70,9 +71,20 @@ const postCommentController = async (req, res) => {
     }
 }
 
-        
+const getAllUPost = async (req, res) => {
+
+    /*
+        Controlador de la Ruta para obtener todos las publicaciones
+    */
+
+    PostSchema
+        .find()
+        .then((data) => res.json(data))
+        .catch((error) => res.json({ message: error }));
+}
 
 module.exports = {
     postController,
-    postCommentController
+    postCommentController,
+    getAllUPost
 }
