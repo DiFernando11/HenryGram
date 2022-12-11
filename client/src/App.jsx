@@ -7,7 +7,7 @@ import Logout from "./components/Logout";
 import NavBar from "./components/NavBar";
 import Profile from "./components/Profile";
 import Chats from "./components/PageChats/Chats";
-import Landing from "./components/Landing/Landing";
+import Landing from "./components/Landing";
 
 function App() {
   return (
