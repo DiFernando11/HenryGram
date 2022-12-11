@@ -7,17 +7,20 @@ import Logout from "./components/Logout";
 import NavBar from "./components/NavBar";
 import Profile from "./components/Profile";
 import Chats from "./components/PageChats/Chats";
+import Landing from "./components/Landing/Landing";
 
 function App() {
   return (
     <AuthProvider>
-      <NavBar />
+      
       <Routes>
+        <Route path="/" element={<Landing />} />
         <Route
           path="/home"
           element={
             <AuthRoute>
               <Home />
+              <NavBar />
             </AuthRoute>
           }
         />
@@ -26,6 +29,7 @@ function App() {
           element={
             <AuthRoute>
               <Profile />
+              <NavBar />
             </AuthRoute>
           }
         />
@@ -34,15 +38,8 @@ function App() {
           element={
             <AuthRoute>
               <Chats />
+              <NavBar />
             </AuthRoute>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <NotAuthRoute>
-              <Login />
-            </NotAuthRoute>
           }
         />
 
