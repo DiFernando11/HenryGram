@@ -1,0 +1,26 @@
+###
+POST http://localhost:3000/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john@gmail.com",
+    "password": "12345678",
+    "gender": "male"
+}
+
+###
+GET http://localhost:3000/api/users HTTP/1.1
+Content-Type: application/json
+
+###
+GET http://localhost:3000/api/users/id/ecbfded4-fdd2-4fbf-a9eb-39576777df2f HTTP/1.1
+Content-Type: application/json
+
+###
+GET http://localhost:3000/api/users/name/John HTTP/1.1
+Content-Type: application/json
+
+
+
