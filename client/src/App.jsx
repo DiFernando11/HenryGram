@@ -5,6 +5,8 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
 import NavBar from "./components/NavBar";
+import Profile from "./components/Profile";
+import Chats from "./components/PageChats/Chats";
 
 function App() {
   return (
@@ -16,6 +18,22 @@ function App() {
           element={
             <AuthRoute>
               <Home />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <AuthRoute>
+              <Profile />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/message"
+          element={
+            <AuthRoute>
+              <Chats />
             </AuthRoute>
           }
         />
