@@ -1,12 +1,13 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth";
+import styles from "./index.module.css";
 
 function NavBar() {
   const auth = useAuth();
   const navigate = useNavigate();
   return (
-    <nav>
+    <nav className={styles.siderBar}>
       <li onClick={() => navigate(-1)}>Atras</li>
       <ul>
         {routes.map((route) => {
@@ -30,7 +31,7 @@ function NavBar() {
 const routes = [];
 routes.push(
   { to: "/home", page: "HOME", private: true },
-  { to: "/blog", page: "BLOG", private: true },
+  { to: "/message", page: "CHATS", private: true },
   { to: "/profile", page: "PROFILE", private: true },
   { to: "/login", page: "LOGIN", private: false, isLogin: true },
   { to: "/logout", page: "LOGOUT", private: true }
