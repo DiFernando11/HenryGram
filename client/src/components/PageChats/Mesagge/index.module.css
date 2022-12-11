@@ -1,0 +1,39 @@
+.section_Messages {
+  width: 65%;
+}
+.header_message {
+  padding: 0 32px;
+  height: 70px;
+  background-color: #242424;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.userInformationChat {
+  display: flex;
+  margin: auto 0;
+  gap: 10px;
+}
+.userInformationChat img {
+  width: 40px;
+  height: 40px;
+}
+.userInformationChat span {
+  line-height: 40px;
+}
+.actionsChat {
+  display: flex;
+  gap: 30px;
+}
+.actionsChat i {
+  color: white;
+  font-size: 18px;
+}
+.inputSentMessage {
+  display: flex;
+  width: 50%;
+  position: absolute;
+  left: 48%;
+  bottom: 0;
+  margin-bottom: 12px;
+}
