@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { validateForm } from '../helpers/validateForm';
+import { validateDisabled, validateForm } from '../helpers/validateForm';
 function Register() {
 	const [form, setForm] = useState({
 		name: '',
@@ -17,12 +17,14 @@ function Register() {
 		confirm: false,
 		gender: true,
 	});
+	const [disabled, setDisabled] = useState(true);
 	const handleChange = (e) => {
 		setForm({
 			...form,
 			[e.target.name]: e.target.value,
 		});
 		validateForm({ [e.target.name]: e.target.value }, form, setError);
+		validateDisabled(form, setDisabled, {value: e.target.value});
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -150,7 +152,8 @@ function Register() {
 						error.email ||
 						error.password ||
 						error.confirm ||
-						error.gender
+						error.gender ||
+						disabled
 							? true
 							: false
 					}
