@@ -1,8 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import AvatarStack from "../avatarStack";
+import CardMessage from "../CardMessage";
+import SendMessage from "../SendMessage";
 import styles from "./index.module.css";
 
 function Messages() {
+  const messages = useSelector((state) => state.messages);
   return (
     <section className={styles.section_Messages}>
       <div className={styles.header_message}>
@@ -18,36 +22,25 @@ function Messages() {
           <i className={`bi bi-camera-video`}></i>
           <i className="bi bi-telephone"></i>
           <i className="bi bi-three-dots-vertical"></i>
-          {/* <i class="bi bi-mic"></i> */}
         </div>
       </div>
-      <form>
-        <label
-          for="search"
-          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-        >
-          Search
-        </label>
-        <div className={styles.messagesSent}></div>
-        <div className={`relative ${styles.inputSentMessage}`}>
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <i className="bi bi-emoji-sunglasses text-yellow-300"></i>
-          </div>
-          <input
-            type="search"
-            id="search"
-            className="block w-full p-3 pl-10 text-sm text-white border rounded-lg  bg-zinc-900 border-amber-200"
-            placeholder="Hello..."
-            autoComplete="off"
-            required
-          />
-          <i className="bi bi-mic text-yellow-300 absolute right-2.5 bottom-2.5 text-sm px-16 py-1"></i>
-          <i className="bi bi-send-fill text-yellow-300 absolute right-2.5 bottom-2.5 text-sm px-4 py-1"></i>
-        </div>
-      </form>
+      <div className={styles.messagesSent}>
+        {messages.length &&
+          messages.map((message) => (
+            <CardMessage
+              key={message.messageid}
+              id={message.id}
+              message={message.message}
+              image={message.image}
+              name={message.name}
+            />
+          ))}
+      </div>
+      <SendMessage />
     </section>
   );
 }
+
 const avatars = [
   "https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",

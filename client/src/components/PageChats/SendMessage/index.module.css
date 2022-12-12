@@ -1,0 +1,8 @@
+.inputSentMessage {
+  display: flex;
+  width: 50%;
+  position: absolute;
+  left: 48%;
+  bottom: 0;
+  margin-bottom: 12px;
+}
