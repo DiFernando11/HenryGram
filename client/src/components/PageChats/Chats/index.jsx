@@ -1,5 +1,5 @@
 import React from "react";
-import Messages from "../Mesagge";
+import { Outlet } from "react-router-dom";
 import PreviewMesagge from "../PreviewMesagge";
 import styles from "./index.module.css";
 
@@ -10,7 +10,7 @@ function Chats() {
         <PreviewMesagge title={"Messages"} messages={messagess} />
         <PreviewMesagge title={"Matchs"} messages={messagessGroup} />
       </div>
-      <Messages />
+      <Outlet />
     </main>
   );
 }
@@ -18,18 +18,10 @@ const messagess = [
   {
     id: 1,
     image: [
-      "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s64-c-mo",
-    ],
-    message: "poquito",
-    name: "Diego Apolo",
-  },
-  {
-    id: 2,
-    image: [
       "https://gamer-commerce.vercel.app/static/media/FacundoMartinez.d850a2c1.jpeg",
     ],
     message: "poquito",
-    name: "Diego",
+    name: "Facundo Martinez",
   },
   {
     id: 3,
@@ -37,7 +29,7 @@ const messagess = [
       "https://gamer-commerce.vercel.app/static/media/AndresOlarte.0b566e29.jpeg",
     ],
     message: "poquito",
-    name: "Diego",
+    name: "Andres Aldao",
   },
   {
     id: 4,
@@ -45,31 +37,23 @@ const messagess = [
       "https://gamer-commerce.vercel.app/static/media/LuisLazarte.1a5c228c.jpeg",
     ],
     message: "poquito",
-    name: "Diego",
+    name: "Luiz Lazarte",
   },
   {
     id: 5,
     image: [
-      "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s64-c-mo",
+      "https://gamer-commerce.vercel.app/static/media/RogerPf.d7086f5b.jpeg",
     ],
     message: "poquito",
-    name: "Diego",
+    name: "Roger Perez",
   },
   {
     id: 6,
     image: [
-      "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s64-c-mo",
+      "https://gamer-commerce.vercel.app/static/media/EmmanuelRomo.b21b242f.jpeg",
     ],
     message: "poquito",
-    name: "Diego",
-  },
-  {
-    id: 7,
-    image: [
-      "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s64-c-mo",
-    ],
-    message: "poquito",
-    name: "Diego",
+    name: "Nacho",
   },
 ];
 
