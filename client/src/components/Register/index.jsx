@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { validateDisabled, validateForm } from '../helpers/validateForm';
-import {useDispatch} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
 import { createUser } from '../../redux/actions';
 function Register() {
-    const dispatch = useDispatch()
+	const user = useSelector((state) => state.createUser);
+	const dispatch = useDispatch();
 	const [form, setForm] = useState({
 		firstName: '',
 		lastName: '',
@@ -27,7 +28,7 @@ function Register() {
 			[e.target.name]: e.target.value,
 		});
 		validateForm({ [e.target.name]: e.target.value }, form, setError);
-		validateDisabled(form, setDisabled, {value: e.target.value});
+		validateDisabled(form, setDisabled, { value: e.target.value });
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -43,7 +44,7 @@ function Register() {
 		e.target.reset();
 	};
 	return (
-		<div className="h-screen w-screen bg-background bg-cover bg-black bg-no-repeat text-black flex items-center justify-center">
+        <div className="h-screen w-screen bg-background bg-cover bg-black bg-no-repeat text-black flex items-center justify-center">
 			<form
 				onSubmit={handleSubmit}
 				className="w-1/3 h-[90%] flex flex-col bg-white p-5 justify-evenly rounded"
@@ -61,7 +62,9 @@ function Register() {
 					autoComplete="off"
 				/>
 				<span
-					className={`${error.firstName ? 'text-danger' : 'text-white'} text-sm`}
+					className={`${
+						error.firstName ? 'text-danger' : 'text-white'
+					} text-sm`}
 				>
 					No de contener numeros ni caracteres especiales
 				</span>

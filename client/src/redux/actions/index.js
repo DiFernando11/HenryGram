@@ -11,7 +11,7 @@ export const sendMessagesAction = (id, payload) => {
 };
 export const createUser = (user) => {
 	return async (dispatch) => {
-		const result = await axios.post('http://localhost:3000/api/users', user);
+		const result = await axios.post('https://localhost:3000/api/users', user);
 		dispatch({ type: CREATE_USER, payload: result });
 	};
 };
