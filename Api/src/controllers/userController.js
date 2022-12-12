@@ -114,21 +114,23 @@ const LogIn = async (req, res) => {
         const { email, password } = req.body;
     
         const user = await UserSchema.findOne({
-            email
+            email: email
         })
         try {
             if (user) {
                 bycrypt.compare(password, user.password, (err, result) => {
-                    if (err) throw err;
                     if (result) {
                         res.status(200).json(user);
+                        console.log('user logged in')
                     } else {
-                        res.status(404).json({ message: 'User not found' });
+                        res.status(404).json({ message: 'wrong Password or invalid email' });
+                        console.log('wrong Password or invalid email')
                     }
                 });
             }
         } catch (error) {
             res.status(500).json(error);
+            console.log('error')
         }
 }
 
@@ -136,5 +138,6 @@ module.exports = {
     postUser,
     getUser,
     getAllUsers,
-    getUsersByName
+    getUsersByName,
+    LogIn
 }
