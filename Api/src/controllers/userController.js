@@ -39,6 +39,36 @@ const postUser = async (req, res) => {
     });
 }
 
+const validateUser = async (req, res) => {
+
+    /*
+        Controlador de la ruta que valida los email de los usuarios
+
+    */
+
+    const { id } = req.params
+
+    const user = undefined
+    
+    try {
+        user = await UserSchema.findOne({ _id: id })
+    } catch (err) {
+        res.status(500).json(err);
+    }
+
+    if (user) {
+        user.active = true;
+        try {
+            await user.save()
+            res.status(200).json(user);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    } else {
+        res.status(404).json({ message: 'User not found' });
+    }
+}
+
 const getUser = async (req, res) => {
 
     /*
