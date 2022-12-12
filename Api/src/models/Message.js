@@ -8,15 +8,9 @@ const MessageSchema = mongoose.Schema({
     },
     message: {
         text: { type: String, required: true }
-        // you can add any other properties to the message here.
-        // for example, the message can be an image ! so you need to tweak this a little
     },
-    // if you want to make a group chat, you can have more than 2 users in this array
-    users: [{
-        userId: { type: String, required: true }
-    }],
-    sender: { type: String, required: true },
-    read: { type: Date }
+    users: Array,
+    sender: { type: String, ref:'User', required: true }
 },
     {
         timestamps: true
