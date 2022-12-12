@@ -60,9 +60,11 @@ const getAllUsers = async (req, res) => {
     /*
         Controlador de la Ruta para obtener todos los usuarios
     */
+    let users = [];
 
     try {
-        const users = await UserSchema.find();
+        users = await UserSchema.find();
+        
     } catch (err) {
         res.status(500).json(err);
     }
@@ -85,10 +87,11 @@ const getUsersByName = async (req, res) => {
 
     
     //Se usa una regex para que no sea case sensitive
-    
+    let usersFirstName = [];
+    let usersLastName = [];
     try {
-        const usersFirstName = await UserSchema.find({ firstName: { $regex : new RegExp('^'+ name + '$', "i") } });
-        const usersLastName = await UserSchema.find({ lastName: { $regex : new RegExp('^'+ name + '$', "i") } });
+        usersFirstName = await UserSchema.find({ firstName: { $regex : new RegExp('^'+ name + '$', "i") } });
+        usersLastName = await UserSchema.find({ lastName: { $regex : new RegExp('^'+ name + '$', "i") } });
     } catch (err) {
         res.status(500).json(err);
     }
@@ -100,6 +103,33 @@ const getUsersByName = async (req, res) => {
     } else {
         res.status(404).json({ message: 'Users not found' });
     }
+}
+
+const LogIn = async (req, res) => {
+    
+        /*
+            Controlador de la Ruta para loguear un usuario
+        */
+    
+        const { email, password } = req.body;
+    
+        const user = await UserSchema.findOne({
+            email
+        })
+        try {
+            if (user) {
+                bycrypt.compare(password, user.password, (err, result) => {
+                    if (err) throw err;
+                    if (result) {
+                        res.status(200).json(user);
+                    } else {
+                        res.status(404).json({ message: 'User not found' });
+                    }
+                });
+            }
+        } catch (error) {
+            res.status(500).json(error);
+        }
 }
 
 module.exports = {
