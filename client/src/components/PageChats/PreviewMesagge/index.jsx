@@ -27,7 +27,8 @@ function PreviewMesagge({ title, messages }) {
         {messages.length &&
           messages.map((message) => (
             <CardPreviewMessage
-              key={message.id}
+              key={message.messageid}
+              id={message.id}
               image={message.image}
               message={message.message}
               name={message.name}

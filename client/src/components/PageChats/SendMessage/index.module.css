@@ -1,8 +1,11 @@
 .inputSentMessage {
   display: flex;
-  width: 50%;
   position: absolute;
-  left: 48%;
   bottom: 0;
+  margin: 0 16px;
   margin-bottom: 12px;
+}
+.inputSentMessage i{
+  color: yellow;
+  cursor: pointer;
 }
