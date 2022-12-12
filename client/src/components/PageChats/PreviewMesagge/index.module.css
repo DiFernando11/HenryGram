@@ -9,7 +9,9 @@
 }
 .textMessagePreview {
   display: block;
-  margin: 12px 0;
+  margin: 12px 0 12px 12px;
+  font-weight: bold;
+  font-size: 14px;
 }
 .containerAllMessage {
   overflow-y: scroll;

@@ -1,7 +1,9 @@
-export const INCREMENT = "INCREMENT";
+export const SEND_MESSAGE = "SEND_MESSAGE";
 
-export const incrementValue = () => {
+////CHATS
+export const sendMessagesAction = (payload) => {
   return {
-    type: INCREMENT,
+    type: SEND_MESSAGE,
+    payload,
   };
 };

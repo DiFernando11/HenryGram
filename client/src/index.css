@@ -40,6 +40,25 @@ span {
   color: white;
 }
 
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #242424 rgba(255, 255, 0, 0.123);
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #242424;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #242424;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 0, 0.123);
+}
+
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -48,8 +67,5 @@ span {
   }
   a:hover {
     color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
   }
 }

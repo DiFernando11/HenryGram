@@ -29,11 +29,9 @@
   color: white;
   font-size: 18px;
 }
-.inputSentMessage {
-  display: flex;
-  width: 50%;
-  position: absolute;
-  left: 48%;
-  bottom: 0;
-  margin-bottom: 12px;
+
+.messagesSent {
+  height: calc(100vh - 132px);
+  padding: 12px;
+  overflow-y: scroll;
 }

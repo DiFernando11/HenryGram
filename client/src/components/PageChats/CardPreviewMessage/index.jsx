@@ -4,7 +4,20 @@ import styles from "./index.module.css";
 function CardPreviewMessage({ image, message, name }) {
   return (
     <div className={styles.containerMessage}>
-      <img className={styles.imageCard} src={image} alt={"user message"} />
+      <div className={styles.avatar}>
+        {image.length &&
+          image
+            .map((img, index) => (
+              <img
+                className={`${
+                  image.length > 1 ? styles.imageCardGroup : styles.imageCard
+                } ${image.length > 1 && styles[`imageGroup${index + 1}`]}`}
+                src={img}
+                alt={"user message"}
+              />
+            ))
+            .slice(0, 3)}
+      </div>
       <div className={styles.textContainerMessage}>
         <span>{name}</span>
         <span className={styles.textMessage}>{message}</span>
