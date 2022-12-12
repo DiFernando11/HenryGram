@@ -1,13 +1,13 @@
 export const validateForm = (form, original, setError) => {
-	if (/[^A-Za-z ]/g.test(form.name)) {
+	if (/[^A-Za-z ]/g.test(form.firstName)) {
 		setError((prev) => ({
 			...prev,
-			name: true,
+			firstName: true,
 		}));
-	} else if (/[^A-Za-z ]/g.test(form.lastname)) {
+	} else if (/[^A-Za-z ]/g.test(form.lastName)) {
 		setError((prev) => ({
 			...prev,
-			lastname: true,
+			lastName: true,
 		}));
 	} else if (form.email?.length > 0) {
 		if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.email)) {
@@ -69,8 +69,8 @@ export const validateForm = (form, original, setError) => {
 		}
 	} else {
 		setError({
-			name: false,
-			lastname: false,
+			firstName: false,
+			lastName: false,
 			email: false,
 			password: false,
 			confirm: false,
@@ -80,13 +80,13 @@ export const validateForm = (form, original, setError) => {
 };
 
 export const validateDisabled = (
-	{ name, lastname, email, password, confirm, gender },
+	{ firstName, lastName, email, password, confirm, gender },
 	setDisabled,
 	obj
 ) => {
 	if (
-		name.length !== 0 &&
-		lastname.length !== 0 &&
+		firstName.length !== 0 &&
+		lastName.length !== 0 &&
 		email.length !== 0 &&
 		password.length !== 0 &&
 		confirm.length !== 0 &&
