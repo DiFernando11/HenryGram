@@ -20,7 +20,7 @@ const postUser = async (req, res) => {
     } = req.body;
 
     bycrypt.genSalt(10, (err, salt) => {
-        bycrypt.hash(password, salt, (err, hash) => {
+        bycrypt.hash(password, salt, async (err, hash) => {
             if (err) throw err;
             const user = UserSchema({
                 firstName,
@@ -28,13 +28,13 @@ const postUser = async (req, res) => {
                 email,
                 password: hash
             });
-            user.save()
-                .then(user => {
-                    res.status(200).json(user);
-                })
-                .catch(err => {
-                    res.status(500).json(err);
-                });
+            
+            try {
+                await user.save()
+                res.status(200).json(user);
+            } catch (err) {
+                res.status(500).json(err);
+            }
         });
     });
 }
@@ -60,8 +60,15 @@ const getAllUsers = async (req, res) => {
     /*
         Controlador de la Ruta para obtener todos los usuarios
     */
+    let users = [];
 
-    const users = await UserSchema.find();
+    try {
+        users = await UserSchema.find();
+        
+    } catch (err) {
+        res.status(500).json(err);
+    }
+
 
     if (users) {
         res.status(200).json(users);
@@ -78,10 +85,16 @@ const getUsersByName = async (req, res) => {
 
     const { name } = req.params
 
-    const usersFirstName = await UserSchema.find({ firstName: { $regex : new RegExp('^'+ name + '$', "i") } });
-    const usersLastName = await UserSchema.find({ lastName: { $regex : new RegExp('^'+ name + '$', "i") } });
     
     //Se usa una regex para que no sea case sensitive
+    let usersFirstName = [];
+    let usersLastName = [];
+    try {
+        usersFirstName = await UserSchema.find({ firstName: { $regex : new RegExp('^'+ name + '$', "i") } });
+        usersLastName = await UserSchema.find({ lastName: { $regex : new RegExp('^'+ name + '$', "i") } });
+    } catch (err) {
+        res.status(500).json(err);
+    }
 
     const users = usersFirstName.concat(usersLastName)
 
@@ -90,6 +103,33 @@ const getUsersByName = async (req, res) => {
     } else {
         res.status(404).json({ message: 'Users not found' });
     }
+}
+
+const LogIn = async (req, res) => {
+    
+        /*
+            Controlador de la Ruta para loguear un usuario
+        */
+    
+        const { email, password } = req.body;
+    
+        const user = await UserSchema.findOne({
+            email
+        })
+        try {
+            if (user) {
+                bycrypt.compare(password, user.password, (err, result) => {
+                    if (err) throw err;
+                    if (result) {
+                        res.status(200).json(user);
+                    } else {
+                        res.status(404).json({ message: 'User not found' });
+                    }
+                });
+            }
+        } catch (error) {
+            res.status(500).json(error);
+        }
 }
 
 module.exports = {
