@@ -9,6 +9,7 @@ function Logout() {
     auth.logout();
     navigate("/login");
   };
+  
   return (
     <div>
       <h1>Logout</h1>

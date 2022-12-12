@@ -10,7 +10,6 @@ const postUser = async (req, res) => {
         -validación con envío email
         -Validar que no exista un usuario con el mismo email (Aunque debería validarlo el front tambien)
         -Validar que no exista un usuario con el mismo nombre (Aunque debería validarlo el front tambien)
-
     */
 
     const {
@@ -39,7 +38,6 @@ const postUser = async (req, res) => {
         });
     });
 }
-
 
 const getUser = async (req, res) => {
 
@@ -93,11 +91,6 @@ const getUsersByName = async (req, res) => {
         res.status(404).json({ message: 'Users not found' });
     }
 }
-
-
-
-
-
 
 module.exports = {
     postUser,
