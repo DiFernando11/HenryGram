@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import { validateDisabled, validateForm } from '../helpers/validateForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { createUser } from '../../redux/actions';
 function Register() {
+	const user = useSelector((state) => state.createUser);
+	const dispatch = useDispatch();
 	const [form, setForm] = useState({
-		name: '',
-		lastname: '',
+		firstName: '',
+		lastName: '',
 		email: '',
 		password: '',
 		confirm: '',
 		gender: '',
 	});
 	const [error, setError] = useState({
-		name: false,
-		lastname: false,
+		firstName: false,
+		lastName: false,
 		email: false,
 		password: false,
 		confirm: false,
@@ -24,14 +28,14 @@ function Register() {
 			[e.target.name]: e.target.value,
 		});
 		validateForm({ [e.target.name]: e.target.value }, form, setError);
-		validateDisabled(form, setDisabled, {value: e.target.value});
+		validateDisabled(form, setDisabled, { value: e.target.value });
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(form);
+		dispatch(createUser(form));
 		setForm({
-			name: '',
-			lastname: '',
+			firstName: '',
+			lastName: '',
 			email: '',
 			password: '',
 			confirm: '',
@@ -40,41 +44,43 @@ function Register() {
 		e.target.reset();
 	};
 	return (
-		<div className="h-screen w-screen bg-background bg-cover bg-black bg-no-repeat text-black flex items-center justify-center">
+        <div className="h-screen w-screen bg-background bg-cover bg-black bg-no-repeat text-black flex items-center justify-center">
 			<form
 				onSubmit={handleSubmit}
 				className="w-1/3 h-[90%] flex flex-col bg-white p-5 justify-evenly rounded"
 			>
 				<h1 className="font-bold text-3xl font-sans mx-auto ">Register</h1>
-				<label className="font-bold text-lg" htmlFor="name">
+				<label className="font-bold text-lg" htmlFor="firstName">
 					Nombre
 				</label>
 				<input
 					className="border border-black rounded p-1"
 					type="text"
-					name="name"
+					name="firstName"
 					onChange={handleChange}
 					value={form.name}
 					autoComplete="off"
 				/>
 				<span
-					className={`${error.name ? 'text-danger' : 'text-white'} text-sm`}
+					className={`${
+						error.firstName ? 'text-danger' : 'text-white'
+					} text-sm`}
 				>
 					No de contener numeros ni caracteres especiales
 				</span>
-				<label className="font-bold text-lg" htmlFor="lastname">
+				<label className="font-bold text-lg" htmlFor="lastName">
 					Apellido
 				</label>
 				<input
 					className="border border-black rounded p-1"
 					type="text"
-					name="lastname"
+					name="lastName"
 					onChange={handleChange}
-					value={form.lastname}
+					value={form.lastName}
 					autoComplete="off"
 				/>
 				<span
-					className={`${error.lastname ? 'text-danger' : 'text-white'} text-sm`}
+					className={`${error.lastName ? 'text-danger' : 'text-white'} text-sm`}
 				>
 					No de contener numeros ni caracteres especiales
 				</span>
@@ -147,8 +153,8 @@ function Register() {
 					type="submit"
 					value="Enviar"
 					disabled={
-						error.name ||
-						error.lastname ||
+						error.firstName ||
+						error.lastName ||
 						error.email ||
 						error.password ||
 						error.confirm ||
