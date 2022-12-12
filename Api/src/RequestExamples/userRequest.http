@@ -22,5 +22,14 @@ Content-Type: application/json
 GET http://localhost:3000/api/users/name/John HTTP/1.1
 Content-Type: application/json
 
+###
+POST http://localhost:3000/api/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "password": "145",
+    "email": "john@gmail.com"
+}
+
 
 
