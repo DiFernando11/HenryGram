@@ -1,21 +1,22 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import AvatarStack from "../avatarStack";
 import CardMessage from "../CardMessage";
 import SendMessage from "../SendMessage";
 import styles from "./index.module.css";
 
 function Messages() {
-  const messages = useSelector((state) => state.messages);
+  const { idUser } = useParams();
+  const messageChats = useSelector((state) => state.messageChats);
+  const findChat = messageChats.find((chat) => chat.idUser == idUser);
+
   return (
     <section className={styles.section_Messages}>
       <div className={styles.header_message}>
         <div className={styles.userInformationChat}>
-          <img
-            src="https://assets.stickpng.com/thumbs/585e4bf3cb11b227491c339a.png"
-            alt="user_chat"
-          />
-          <span>Andres Aldao</span>
+          <img src={findChat.image} alt="user_chat" />
+          <span>{findChat.name}</span>
         </div>
         <div className={styles.actionsChat}>
           <AvatarStack avatars={avatars} />
@@ -25,14 +26,15 @@ function Messages() {
         </div>
       </div>
       <div className={styles.messagesSent}>
-        {messages.length &&
-          messages.map((message) => (
+        {findChat.messages.length &&
+          findChat.messages.map((message) => (
             <CardMessage
-              key={message.messageid}
-              id={message.id}
+              key={message.id}
+              id={findChat.idUser}
+              idUser={message.idUser}
               message={message.message}
-              image={message.image}
-              name={message.name}
+              image={findChat.image}
+              name={findChat.name}
             />
           ))}
       </div>

@@ -1,3 +1,4 @@
+
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { AuthProvider, AuthRoute, NotAuthRoute } from './components/auth';
@@ -9,6 +10,7 @@ import Profile from './components/Profile';
 import Chats from './components/PageChats/Chats';
 import Landing from './components/Landing';
 import Register from './components/Register';
+import Messages from "./components/PageChats/Mesagge";
 
 function App() {
 	return (
@@ -48,28 +50,32 @@ function App() {
 						</NotAuthRoute>
 					}
 				/>
-				<Route
-					path="/message"
-					element={
-						<AuthRoute>
-							<Chats />
-							<NavBar />
-						</AuthRoute>
-					}
-				/>
 
-				<Route
-					path="/logout"
-					element={
-						<AuthRoute>
-							<Logout />
-						</AuthRoute>
-					}
-				/>
-				<Route path="*" element={<p>Not found</p>} />
-			</Routes>
-		</AuthProvider>
-	);
+        <Route
+          path="/message"
+          element={
+            <AuthRoute>
+              <NavBar />
+              <Chats />
+            </AuthRoute>
+          }
+        >
+          <Route path=":idUser" element={<Messages />} />
+        </Route>
+
+        <Route
+          path="/logout"
+          element={
+            <AuthRoute>
+              <NavBar />
+              <Logout />
+            </AuthRoute>
+          }
+        />
+        <Route path="*" element={<p>Not found</p>} />
+      </Routes>
+    </AuthProvider>
+  );
 }
 
 export default App;

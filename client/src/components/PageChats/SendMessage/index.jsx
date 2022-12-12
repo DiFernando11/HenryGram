@@ -2,29 +2,17 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { sendMessagesAction } from "../../../redux/actions";
 import styles from "./index.module.css";
-const userInfo = {
-  id: 2,
-  name: "Diego Apolo",
-  messageid: 10,
-  image:
-    "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
-};
 
 function SendMessage() {
   const [sendMessage, setSendMessage] = useState("");
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setSendMessage(e.target.value);
   };
   const handleSentMessage = (e) => {
     e.preventDefault();
-    dispatch(
-      sendMessagesAction({
-        ...userInfo,
-        message: sendMessage,
-      })
-    );
+    // dispatch(sendMessagesAction());
     setSendMessage("");
   };
 
