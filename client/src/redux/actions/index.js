@@ -10,8 +10,12 @@ export const sendMessagesAction = (id, payload) => {
 	};
 };
 export const createUser = (user) => {
-	return async (dispatch) => {
-		const result = await axios.post('https://localhost:3000/api/users', user);
-		dispatch({ type: CREATE_USER, payload: result });
+	return async function (dispatch) {
+		try {
+			const result = await axios.get('http://localhost:3000/');
+			dispatch({ type: CREATE_USER, payload: result.data });
+		} catch (error) {
+			console.log(error);
+		}
 	};
 };
