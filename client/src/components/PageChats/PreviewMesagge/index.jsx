@@ -10,12 +10,13 @@ function PreviewMesagge({ title, messages }) {
       <span className={styles.textMessagePreview}>{title}</span>
       <div className={styles.containerAllMessage}>
         {messages.length &&
-          messages.map((message) => (
+          messages.map((message, index) => (
             <CardPreviewMessage
-              key={message.messageid}
+          key={index}
               id={message.id}
               image={message.image}
               message={message.message}
+              time={message.time}
               name={message.name}
             />
           ))}

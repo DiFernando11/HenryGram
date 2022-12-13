@@ -21,6 +21,7 @@ const messagess = [
       "https://gamer-commerce.vercel.app/static/media/FacundoMartinez.d850a2c1.jpeg",
     ],
     message: "poquito",
+    time: "8:25",
     name: "Facundo Martinez",
   },
   {
@@ -29,6 +30,7 @@ const messagess = [
       "https://gamer-commerce.vercel.app/static/media/AndresOlarte.0b566e29.jpeg",
     ],
     message: "poquito",
+    time: "8:25",
     name: "Andres Aldao",
   },
   {
@@ -37,6 +39,7 @@ const messagess = [
       "https://gamer-commerce.vercel.app/static/media/LuisLazarte.1a5c228c.jpeg",
     ],
     message: "poquito",
+    time: "8:30",
     name: "Luiz Lazarte",
   },
   {
@@ -44,6 +47,7 @@ const messagess = [
     image: [
       "https://gamer-commerce.vercel.app/static/media/RogerPf.d7086f5b.jpeg",
     ],
+    time: "8:30",
     message: "poquito",
     name: "Roger Perez",
   },
@@ -66,6 +70,7 @@ const messagessGroup = [
       "https://gamer-commerce.vercel.app/static/media/RogerPf.d7086f5b.jpeg",
     ],
     message: "poquito",
+    time: "8:30",
     name: "Programadores",
   },
   {
@@ -74,6 +79,7 @@ const messagessGroup = [
       "https://gamer-commerce.vercel.app/static/media/LuisLazarte.1a5c228c.jpeg",
       "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s64-c-mo",
     ],
+    time: "8:30",
     message: "Reunion de trabajo",
     name: "Grupo Office",
   },
@@ -82,6 +88,7 @@ const messagessGroup = [
     image: [
       "https://gamer-commerce.vercel.app/static/media/EmmanuelRomo.b21b242f.jpeg",
     ],
+    time: "8:30",
     message: "poquito",
     name: "Argentinos",
   },
@@ -93,6 +100,7 @@ const messagessGroup = [
       "https://gamer-commerce.vercel.app/static/media/EmmanuelRomo.b21b242f.jpeg",
     ],
     message: "poquito",
+    time: "8:30",
     name: "Viajes",
   },
   {
@@ -103,6 +111,7 @@ const messagessGroup = [
       "https://gamer-commerce.vercel.app/static/media/AndresOlarte.0b566e29.jpeg",
     ],
     message: "poquito",
+    time: "8:30",
     name: "Trabajadores",
   },
   {
@@ -114,6 +123,7 @@ const messagessGroup = [
       "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s64-c-mo",
     ],
     message: "poquito",
+    time: "8:30",
     name: "Diego",
   },
   {
@@ -122,6 +132,7 @@ const messagessGroup = [
       "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s64-c-mo",
     ],
     message: "poquito",
+    time: "8:30",
     name: "Diego",
   },
 ];
