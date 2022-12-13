@@ -61,6 +61,17 @@ span {
   height: calc(100vh - 4rem);
   overflow-y: scroll;
 }
+.calcViewHeightPageProfile {
+  height: calc(100vh - 9rem);
+  overflow-y: scroll;
+}
+body {
+  background-color: #363636;
+}
+
+i {
+  cursor: pointer;
+}
 
 @media (prefers-color-scheme: light) {
   :root {

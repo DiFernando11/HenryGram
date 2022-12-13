@@ -1,43 +1,33 @@
 import React, { useState } from "react";
-import HeaderHome from "../HeaderHome";
-import Post from "../Post";
-import RecommendedFriends from "../RecommendedFriends";
+import Post from "../../PageHome/Post";
 
-function Home() {
+function PostProfile() {
   const [isMatch, setIsMatch] = useState(false);
   const handleIsMatch = () => {
     setIsMatch(true);
     setTimeout(() => setIsMatch(false), 2000);
   };
   return (
-    <main className={"w-full flex "}>
-      {isMatch && (
-        <img
-          src="https://www.gifss.com/fuego/artificiales/images/fuegos-artificiales-15.gif"
-          className="absolute z-10 w-2/3 h-full inset-0 m-auto"
-          alt=""
-        />
-      )}
-
-      <div className="w-full">
-        <HeaderHome />
-        <div className="calcViewHeight">
-          {posts.length &&
-            posts.map((post) => (
-              <Post
-                key={post.id}
-                type={post.type}
-                seguir={post.seguir}
-                message={post.message}
-                user={post.user}
-                imagePost={post.imagePost}
-                handleIsMatch={handleIsMatch}
-              />
-            ))}
-        </div>
+    <section className="w-3/5 calcViewHeightPageProfile pt-2 ">
+      <div className="w-12 h-12 bg-amber-300 flex justify-center items-center rounded-full fixed ml-3 z-10  ">
+        <i className="bi bi-plus-lg text-2xl"></i>
       </div>
-      <RecommendedFriends />
-    </main>
+
+      <div>
+        {posts.length &&
+          posts.map((post) => (
+            <Post
+              key={post.id}
+              type={post.type}
+              seguir={post.seguir}
+              message={post.message}
+              user={post.user}
+              imagePost={post.imagePost}
+              handleIsMatch={handleIsMatch}
+            />
+          ))}
+      </div>
+    </section>
   );
 }
 const posts = [
@@ -116,4 +106,4 @@ const posts = [
   },
 ];
 
-export default Home;
+export default PostProfile;

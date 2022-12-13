@@ -1,13 +1,18 @@
 import React from "react";
 import CardPreviewMessage from "../../PageChats/CardPreviewMessage";
+import logoMatch from "../../../assets/coheteHenry.png";
 
 function RecommendedFriends() {
   return (
-    <section className="w-3/12 bg-red-500">
-      <h3 className="h-16">People you can match</h3>
+    <section className="w-2/6 bg-neutral-800">
+      <div className="flex items-center h-16 justify-center gap-2 ">
+        <h3 className="text-white">People you can match</h3>
+        <img src={logoMatch} className="w-6 h-6" alt="logo match" />
+      </div>
       <div className="calcViewHeight">
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <CardPreviewMessage
+            key={index}
             id={message.id}
             image={message.image}
             name={message.name}
