@@ -1,33 +1,46 @@
 const FriendSchema = require('../models/Friend');
 const UserSchema = require('../models/User');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const addFriend = async (req, res, next) => {
     try {
         const { UserA, UserB } = req.body;
 
-        const docA = await FriendSchema.findOneAndUpdate(
-            { requester: UserA, recipient: UserB },
-            { $set: { status: 1 } },
-            { upsert: true, new: true }
+        const request = await UserSchema.find(
+            { friends: ObjectId(UserB) }
         )
 
-        const docB = await FriendSchema.findOneAndUpdate(
-            { recipient: UserA, requester: UserB },
-            { $set: { status: 2 } },
-            { upsert: true, new: true }
-        )
+        console.log(request.length)
 
-        const updateUserA = await UserSchema.findOneAndUpdate(
-            { _id: UserA },
-            { $push: { friends: docA._id } }
-        )
+        if (request.length === 0) {
+            const docA = await FriendSchema.findOneAndUpdate(
+                { requester: UserA, recipient: UserB },
+                { $set: { status: 1 } },
+                { upsert: true, new: true }
+            )
 
-        const updateUserB = await UserSchema.findOneAndUpdate(
-            { _id: UserB },
-            { $push: { friends: docB._id } }
-        )
+            const docB = await FriendSchema.findOneAndUpdate(
+                { recipient: UserA, requester: UserB },
+                { $set: { status: 2 } },
+                { upsert: true, new: true }
+            )
 
-        res.status(200).json("Invitation sent.");
+            const updateUserA = await UserSchema.findOneAndUpdate(
+                { _id: UserA },
+                { $push: { friends: docA._id } }
+            )
+
+            const updateUserB = await UserSchema.findOneAndUpdate(
+                { _id: UserB },
+                { $push: { friends: docB._id } }
+            )
+
+            res.status(200).json("Invitation sent.");
+        } else {
+            res.status(200).json("Invitation already sent.");
+        }
+
+
     } catch (ex) {
         next(ex);
     }
