@@ -44,7 +44,7 @@ function Register() {
 		e.target.reset();
 	};
 	return (
-        <div className="h-screen w-screen bg-background bg-cover bg-black bg-no-repeat text-black flex items-center justify-center">
+		<div className="h-screen w-screen bg-background bg-cover bg-black bg-no-repeat text-black flex items-center justify-center">
 			<form
 				onSubmit={handleSubmit}
 				className="w-1/3 h-[90%] flex flex-col bg-white p-5 justify-evenly rounded"
@@ -59,7 +59,6 @@ function Register() {
 					name="firstName"
 					onChange={handleChange}
 					value={form.name}
-					autoComplete="off"
 				/>
 				<span
 					className={`${
@@ -77,7 +76,6 @@ function Register() {
 					name="lastName"
 					onChange={handleChange}
 					value={form.lastName}
-					autoComplete="off"
 				/>
 				<span
 					className={`${error.lastName ? 'text-danger' : 'text-white'} text-sm`}
@@ -93,7 +91,6 @@ function Register() {
 					name="email"
 					onChange={handleChange}
 					value={form.email}
-					autoComplete="off"
 				/>
 				<span
 					className={`${error.email ? 'text-danger' : 'text-white'} text-sm`}
@@ -109,7 +106,6 @@ function Register() {
 					name="password"
 					onChange={handleChange}
 					value={form.password}
-					autoComplete="off"
 				/>
 				<span
 					className={`${error.password ? 'text-danger' : 'text-white'} text-sm`}
@@ -125,7 +121,6 @@ function Register() {
 					name="confirm"
 					onChange={handleChange}
 					value={form.confirm}
-					autoComplete="off"
 				/>
 				<span
 					className={`${error.confirm ? 'text-danger' : 'text-white'} text-sm`}
