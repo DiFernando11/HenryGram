@@ -1,13 +1,8 @@
 const mongoose = require('mongoose');
-const { v4: uuidv4 } = require('uuid');
 
 const FriendSchema = mongoose.Schema({
-    _id: {
-        type: String,
-        default: uuidv4()
-    },
-    requester: { type: Schema.Types.ObjectId, ref: 'Users' },
-    recipient: { type: Schema.Types.ObjectId, ref: 'Users' },
+    requester: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     status: {
         type: Number,
         enums: [
@@ -22,6 +17,6 @@ const FriendSchema = mongoose.Schema({
         timestamps: true
     });
 
-const Friend = mongoose.model('Friedn', FriendSchema);
+const Friend = mongoose.model('Friend', FriendSchema);
 
 module.exports = Friend;

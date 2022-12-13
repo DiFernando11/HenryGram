@@ -1,6 +1,8 @@
 const express = require('express');
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
+const messageRoutes = require('./routes/message');
+const friendRoutes = require('./routes/friend');
 const cors = require('cors');
 
 const app = express();
@@ -13,6 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/api', userRoutes);
 app.use('/api', postRoutes);
+app.use('/api', messageRoutes);
+app.use('/api', friendRoutes);
 // app.use(
 // 	cors({ origin: '*', methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'] })
 // );

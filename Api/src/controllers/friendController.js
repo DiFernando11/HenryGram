@@ -1,7 +1,7 @@
 const FriendSchema = require('../models/Friend');
 const UserSchema = require('../models/User');
 
-const addFriend = async (req, res) => {
+const addFriend = async (req, res, next) => {
     try {
         const { UserA, UserB } = req.body;
 
@@ -27,12 +27,13 @@ const addFriend = async (req, res) => {
             { $push: { friends: docB._id } }
         )
 
+        res.status(200).json("Invitation sent.");
     } catch (ex) {
         next(ex);
     }
 }
 
-const acceptRejectFriend = async (req, res) => {
+const acceptRejectFriend = async (req, res, next) => {
     try {
         const { UserA, UserB, resp } = req.body;
 
@@ -46,6 +47,8 @@ const acceptRejectFriend = async (req, res) => {
                 { recipient: UserA, requester: UserB },
                 { $set: { status: 3 } }
             )
+
+            res.status(200).json("Accept.");
         } else {
             const docA = await FriendSchema.findOneAndRemove(
                 { requester: UserA, recipient: UserB }
@@ -61,8 +64,8 @@ const acceptRejectFriend = async (req, res) => {
                 { _id: UserB },
                 { $pull: { friends: docB._id } }
             )
+            res.status(200).json("Reject.");
         }
-
     } catch (ex) {
         next(ex);
     }
