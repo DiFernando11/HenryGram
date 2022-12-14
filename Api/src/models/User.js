@@ -39,7 +39,7 @@ const UserSchema = schema({
     active: {
         type: Boolean,
         default: false
-    }
+    },
 },
     {
         writeConcern: {

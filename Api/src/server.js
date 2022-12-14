@@ -32,16 +32,7 @@ app.use('/api', userRoutes);
 //app.use('/api', postRoutes);
 app.use('/api', messageRoutes);
 app.use('/api', friendRoutes);
-// app.use(
-// 	cors({ origin: '*', methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'] })
-// );
-// app.use(
-// 	cors({
-// 		origin: ['https://127.0.0.1:5173/', 'https://gamer-commerce.vercel.app/'],
-// 		methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
-// 	})
-// );
-// Global Variables
+
 
 // Routes
 app.get('/', (req, res) => {
