@@ -1,5 +1,5 @@
 import { sendMessage } from "../../components/PageChats/utils";
-import { SEND_MESSAGE, CREATE_USER } from "../actions";
+import { SEND_MESSAGE, CREATE_USER, LOGIN } from "../actions";
 
 const initialState = {
   messageChats: [
@@ -87,7 +87,8 @@ const initialState = {
       ],
     },
   ],
-  createUser:[]
+  createUser:[],
+  userLogin:{}
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -102,6 +103,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         createUser: action.payload
+      }
+    }
+    case LOGIN:{
+      return{
+        ...state,
+        userLogin: action.payload
       }
     }
     default:
