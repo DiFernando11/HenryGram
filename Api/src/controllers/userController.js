@@ -1,8 +1,9 @@
 const UserSchema = require('../models/User');
 const bycrypt = require('bcryptjs');
+const transporter = require('../config/nodemailer');
 
 const postUser = async (req, res) => {
-
+    
     /*
        Controlador de la Ruta de registro de usuario
 
@@ -19,8 +20,24 @@ const postUser = async (req, res) => {
         password,
     } = req.body;
 
+    const alreadyExist = await UserSchema.findOne({ email: email })
+
+    if (alreadyExist) {
+        /*
+            Si el usuario ya existe, debería devolver un error
+        */ 
+        res.status(400).json({ msg: 'User already exists' });
+    } 
+
+
+
     bycrypt.genSalt(10, (err, salt) => {
         bycrypt.hash(password, salt, async (err, hash) => {
+
+            /*
+                Se realiza la encriptación de la contraseña
+            */
+
             if (err) throw err;
             const user = UserSchema({
                 firstName,
@@ -49,7 +66,7 @@ const validateUser = async (req, res) => {
     const { id } = req.params
 
     const user = undefined
-    
+
     try {
         user = await UserSchema.findOne({ _id: id })
     } catch (err) {
@@ -166,5 +183,6 @@ module.exports = {
     postUser,
     getUser,
     getAllUsers,
-    getUsersByName
+    getUsersByName,
+    validateUser,
 }
