@@ -3,9 +3,11 @@ const MessageSchema = require('../models/Message');
 const { off } = require('../server');
 
 const getAllMessage = async (req, res, next) => {
+
     try {
         const { from, to, limit } = req.body;
         const offset = 0;
+
 
         const messages = await MessageSchema.find({
             users: {
@@ -32,10 +34,12 @@ const getAllMessage = async (req, res, next) => {
 
 const addMessage = async (req, res, next) => {
 
+    /*
+     Controlador de un mensaje nuevo en el chat
+    */
+
     try {
         const { from, to, message } = req.body;
-
-        console.log(req.body)
 
         const data = await MessageSchema.create({
             message: { text: message },

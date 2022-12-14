@@ -1,5 +1,7 @@
 const express = require('express');
-const { postUser, getUser, getAllUsers, getUsersByName, validateUser, LogIn } = require('../controllers/userController');
+
+const { postUser, getUser, getAllUsers, getUsersByName, validateUser, LogIn, getFriendship } = require('../controllers/userController');
+
 
 const router = express.Router();
 
@@ -9,5 +11,7 @@ router.get('/users/id/:id', getUser); //Ruta que trae un usuario por id (Deberia
 router.get('/users/name/:name', getUsersByName); //Ruta que trae todos los usuarios por nombre
 router.get('/users/activate/:id', validateUser); //Ruta para activar un usuario 
 router.post("/users/login", LogIn);
+router.get('/users/friends/:id', getFriendship);
+
 
 module.exports = router;
