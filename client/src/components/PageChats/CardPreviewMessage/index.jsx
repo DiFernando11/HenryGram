@@ -22,21 +22,11 @@ function CardPreviewMessage({ id, image, message, name, time }) {
       <div
         className={`flex gap-1 relative p-2.5 border-slate-200 my-0.5 ${styles.backgroundCardUser}`}
       >
-        <div className={styles.avatar}>
-          {image.length &&
-            image
-              .map((img, index) => (
-                <img
-                  key={index}
-                  className={`${
-                    image.length > 1 ? styles.imageCardGroup : styles.imageCard
-                  } ${image.length > 1 && styles[`imageGroup${index + 1}`]}`}
-                  src={img}
-                  alt={"user message"}
-                />
-              ))
-              .slice(0, 3)}
+        <div className="relative mr-2 flex items-center">
+          <img className={styles.imageCard} src={image} alt={"user message"} />
+          <span className="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
         </div>
+
         <div className="items-center self-center font-bold">
           <span className="block leading-5">{name}</span>
           <span className={styles.textMessage}>{message}</span>

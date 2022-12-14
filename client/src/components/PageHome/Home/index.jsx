@@ -15,7 +15,7 @@ function Home() {
         <img
           src="https://www.gifss.com/fuego/artificiales/images/fuegos-artificiales-15.gif"
           className="absolute z-10 w-2/3 h-full inset-0 m-auto"
-          alt=""
+          alt="logo match"
         />
       )}
 
