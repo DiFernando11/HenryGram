@@ -158,9 +158,9 @@ const LogIn = async (req, res) => {
         /*
             Controlador de la Ruta para loguear un usuario
         */
-    
+
         const { email, password } = req.body;
-    
+        console.log(email, password)
         const user = await UserSchema.findOne({
             email: email
         })
