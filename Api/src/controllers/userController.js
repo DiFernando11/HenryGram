@@ -186,11 +186,7 @@ const LogIn = async (req, res) => {
             res.status(500).json(error);
             console.log('error')
         }
-    } catch (error) {
-        res.status(500).json(error);
-        console.log('error')
-    }
-}
+    } 
 
 const getFriendship = async (req, res) => {
 
@@ -209,16 +205,14 @@ const getFriendship = async (req, res) => {
         console.log(friend)
         friendship.push(friend)
         console.log(friendship)
-    }).then(
-        
-    )
-
-
-    if (friendship.length) {
-        res.status(200).json(friendship);
-    } else {
-        res.status(404).json({ message: 'Friendship not found' });
+    }).then(() => {
+        if (friendship.length) {
+            res.status(200).json(friendship);
+        } else {
+            res.status(404).json({ message: 'Friendship not found' });
+        }
     }
+    )
 }
 
 module.exports = {
@@ -227,6 +221,6 @@ module.exports = {
     getAllUsers,
     getUsersByName,
     LogIn,
-    getFriendship
+    getFriendship,
     validateUser,
 }
