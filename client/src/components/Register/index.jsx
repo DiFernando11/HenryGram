@@ -47,7 +47,7 @@ function Register() {
 		<div className="h-screen w-screen bg-background bg-cover bg-black bg-no-repeat text-black flex items-center justify-center">
 			<form
 				onSubmit={handleSubmit}
-				className="w-1/3 h-[90%] flex flex-col bg-white p-5 justify-evenly rounded"
+				className="w-10/12 h-[90%] flex flex-col bg-white p-5 justify-evenly rounded lg:w-1/3"
 			>
 				<h1 className="font-bold text-3xl font-sans mx-auto ">Register</h1>
 				<label className="font-bold text-lg" htmlFor="firstName">
