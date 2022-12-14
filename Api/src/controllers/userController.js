@@ -1,6 +1,6 @@
 const UserSchema = require('../models/User');
 const bycrypt = require('bcryptjs');
-const transporter = require('../config/nodemailer');
+// const transporter = require('../config/nodemailer');
 
 const postUser = async (req, res) => {
     
