@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
+const messageRoutes = require('./routes/message');
+const friendRoutes = require('./routes/friend');
 var morgan = require('morgan');
 const cors = require('cors');
 
@@ -18,8 +20,8 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 app.use('/api', userRoutes);
 //app.use('/api', postRoutes);
-//app.use('/api', messageRoutes);
-// app.use('/api', friendRoutes);
+app.use('/api', messageRoutes);
+app.use('/api', friendRoutes);
 // app.use(
 // 	cors({ origin: '*', methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'] })
 // );

@@ -34,12 +34,11 @@ const addMessage = async (req, res, next) => {
 
         console.log(req.body)
 
-        const data = ''
-        // const data = await MessageSchema.create({
-        //     message: { text: message },
-        //     users: [from, to],
-        //     sender: from,
-        // });
+        const data = await MessageSchema.create({
+            message: { text: message },
+            users: [from, to],
+            sender: from,
+        });
 
         if (data) return res.status(200).json({ msg: "Message added successfully." });
         else return res.status(200).json({ msg: "Failed to add message to the database" });
