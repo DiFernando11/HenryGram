@@ -1,4 +1,5 @@
 const PostSchema = require('../models/Post');
+const shuffle = require('../utils/shuffle');
 
 const postController = async (req, res) => {
 
@@ -14,17 +15,20 @@ const postController = async (req, res) => {
     let image
     let hidden
     let isMatch
+    let hashtags
 
     req.body.image ? image = req.body.image : image = null;
     req.body.hidden ? hidden = req.body.hidden : hidden = false;
     req.body.isMatch ? isMatch = req.body.isMatch : isMatch = false;
+    req.body.hashtags ? hashtags = req.body.hashtags : hashtags = null;
 
     const post = PostSchema({
         userId,
         description,
         image,
         hidden,
-        isMatch
+        isMatch,
+        hashtags
     });
     
     try {
@@ -82,8 +86,66 @@ const getAllUPost = async (req, res) => {
    }
 }
 
+const getPosts = async (req, res) => {
+
+    /*
+        Controlador de la Ruta para obtener publicaciones recomendadas
+    */
+
+    const { userId } = req.params;
+
+    const user = await UserSchema.findOne({ _id: userId });
+
+    const posts = []
+
+    if (user.friends.length > 0) {
+        
+        user.friends.map(async (friend) => {
+            posts.push(await PostSchema.find({ userId: friend._id }));
+        })
+    }
+
+    posts = posts.shuffle();
+
+    const RequiereAmountOfPosts = 60
+
+    if (posts.length > RequiereAmountOfPosts) {
+        res.status(200).slice(0, RequiereAmountOfPosts)
+    } else {
+        posts.push(await PostSchema.find().slice(0, RequiereAmountOfPosts - posts.length));
+    }
+
+    if (posts.length > 0) {
+        res.status(200).json(posts);
+    } else {
+        res.status(404).json({ message: "Posts not found" });
+    }
+}
+
+const getPostsByHashtag = async (req, res) => {
+
+    /*
+        Controlador de la Ruta para obtener publicaciones por hashtag
+    */
+
+    const { hashtag } = req.params;
+
+    const posts = await PostSchema.find({ hashtags: hashtag });
+
+    if (posts.length > 0) {
+        res.status(200).json(posts);
+    } else {
+        res.status(404).json({ message: "Posts not found" });
+    }
+}
+
+
+
+
 module.exports = {
     postController,
     postCommentController,
-    getAllUPost
+    getAllUPost,
+    getPosts,
+    getPostsByHashtag
 }

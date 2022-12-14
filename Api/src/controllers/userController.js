@@ -1,8 +1,9 @@
 const UserSchema = require('../models/User');
 const bycrypt = require('bcryptjs');
+// const transporter = require('../config/nodemailer');
 
 const postUser = async (req, res) => {
-
+    
     /*
        Controlador de la Ruta de registro de usuario
 
@@ -19,8 +20,24 @@ const postUser = async (req, res) => {
         password,
     } = req.body;
 
+    const alreadyExist = await UserSchema.findOne({ email: email })
+
+    if (alreadyExist) {
+        /*
+            Si el usuario ya existe, debería devolver un error
+        */ 
+        res.status(400).json({ msg: 'User already exists' });
+    } 
+
+
+
     bycrypt.genSalt(10, (err, salt) => {
         bycrypt.hash(password, salt, async (err, hash) => {
+
+            /*
+                Se realiza la encriptación de la contraseña
+            */
+
             if (err) throw err;
             const user = UserSchema({
                 firstName,
@@ -38,6 +55,36 @@ const postUser = async (req, res) => {
             }
         });
     });
+}
+
+const validateUser = async (req, res) => {
+
+    /*
+        Controlador de la ruta que valida los email de los usuarios
+
+    */
+
+    const { id } = req.params
+
+    const user = undefined
+
+    try {
+        user = await UserSchema.findOne({ _id: id })
+    } catch (err) {
+        res.status(500).json(err);
+    }
+
+    if (user) {
+        user.active = true;
+        try {
+            await user.save()
+            res.status(200).json(user);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    } else {
+        res.status(404).json({ message: 'User not found' });
+    }
 }
 
 const getUser = async (req, res) => {
@@ -140,5 +187,6 @@ module.exports = {
     getUser,
     getAllUsers,
     getUsersByName,
+    validateUser,
     LogIn
 }
