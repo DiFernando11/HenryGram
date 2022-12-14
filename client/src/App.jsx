@@ -2,13 +2,14 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import { AuthProvider, AuthRoute, NotAuthRoute } from "./components/auth";
 import Logout from "./components/Logout";
-import NavBar from "./components/NavBar";
+
 import Profile from "./components/PageProfile/Profile";
 import Chats from "./components/PageChats/Chats";
 import Landing from "./components/Landing";
 import Register from "./components/Register";
 import Messages from "./components/PageChats/Mesagge";
 import Home from "./components/PageHome/Home";
+import SideBar from "./components/SideBar";
 
 function App() {
   return (
@@ -26,8 +27,8 @@ function App() {
           path="/home"
           element={
             <AuthRoute>
-              <NavBar />
-              <Home/>
+              <SideBar />
+              <Home />
             </AuthRoute>
           }
         />
@@ -35,7 +36,7 @@ function App() {
           path="/profile"
           element={
             <AuthRoute>
-              <NavBar />
+              <SideBar />
               <Profile />
             </AuthRoute>
           }
@@ -53,7 +54,7 @@ function App() {
           path="/message"
           element={
             <AuthRoute>
-              <NavBar />
+              <SideBar />
               <Chats />
             </AuthRoute>
           }
@@ -65,7 +66,7 @@ function App() {
           path="/logout"
           element={
             <AuthRoute>
-              <NavBar />
+              <SideBar />
               <Logout />
             </AuthRoute>
           }
