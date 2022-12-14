@@ -211,6 +211,7 @@ const getFriendship = async (req, res) => {
         } else {
             res.status(404).json({ message: 'Friendship not found' });
         }
+        
     }
     )
 }
