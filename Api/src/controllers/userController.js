@@ -1,5 +1,8 @@
 const UserSchema = require('../models/User');
+const FriendSchema = require('../models/Friend');
+const ObjectId = require('mongoose').Types.ObjectId;
 const bycrypt = require('bcryptjs');
+const { mapReduce } = require('../models/User');
 
 const postUser = async (req, res) => {
 
@@ -28,7 +31,7 @@ const postUser = async (req, res) => {
                 email,
                 password: hash
             });
-            
+
             try {
                 await user.save()
                 res.status(200).json(user);
@@ -65,7 +68,7 @@ const getAllUsers = async (req, res) => {
 
     try {
         users = await UserSchema.find();
-        
+
     } catch (err) {
         res.status(500).json(err);
     }
@@ -86,13 +89,13 @@ const getUsersByName = async (req, res) => {
 
     const { name } = req.params
 
-    
+
     //Se usa una regex para que no sea case sensitive
     let usersFirstName = [];
     let usersLastName = [];
     try {
-        usersFirstName = await UserSchema.find({ firstName: { $regex : new RegExp('^'+ name + '$', "i") } });
-        usersLastName = await UserSchema.find({ lastName: { $regex : new RegExp('^'+ name + '$', "i") } });
+        usersFirstName = await UserSchema.find({ firstName: { $regex: new RegExp('^' + name + '$', "i") } });
+        usersLastName = await UserSchema.find({ lastName: { $regex: new RegExp('^' + name + '$', "i") } });
     } catch (err) {
         res.status(500).json(err);
     }
@@ -107,32 +110,61 @@ const getUsersByName = async (req, res) => {
 }
 
 const LogIn = async (req, res) => {
-    
-        /*
-            Controlador de la Ruta para loguear un usuario
-        */
-    
-        const { email, password } = req.body;
-    
-        const user = await UserSchema.findOne({
-            email: email
-        })
-        try {
-            if (user) {
-                bycrypt.compare(password, user.password, (err, result) => {
-                    if (result) {
-                        res.status(200).json(user);
-                        console.log('user logged in')
-                    } else {
-                        res.status(404).json({ message: 'wrong Password or invalid email' });
-                        console.log('wrong Password or invalid email')
-                    }
-                });
-            }
-        } catch (error) {
-            res.status(500).json(error);
-            console.log('error')
+
+    /*
+        Controlador de la Ruta para loguear un usuario
+    */
+
+    const { email, password } = req.body;
+
+    const user = await UserSchema.findOne({
+        email: email
+    })
+    try {
+        if (user) {
+            bycrypt.compare(password, user.password, (err, result) => {
+                if (result) {
+                    res.status(200).json(user);
+                    console.log('user logged in')
+                } else {
+                    res.status(404).json({ message: 'wrong Password or invalid email' });
+                    console.log('wrong Password or invalid email')
+                }
+            });
         }
+    } catch (error) {
+        res.status(500).json(error);
+        console.log('error')
+    }
+}
+
+const getFriendship = async (req, res) => {
+
+    /*
+        Controlador de la Ruta para obtener las amistades (amigos, pendientes, esperando)
+    */
+
+    const { id } = req.params
+
+    const f = await UserSchema.findOne({ _id: id }, { friends: 1 })
+
+    const friendship = []
+
+    f.friends.map(async (el) => {
+        let friend = await FriendSchema.findOne({ _id: ObjectId(el.valueOf()) })
+        console.log(friend)
+        friendship.push(friend)
+        console.log(friendship)
+    }).then(
+        
+    )
+
+
+    if (friendship.length) {
+        res.status(200).json(friendship);
+    } else {
+        res.status(404).json({ message: 'Friendship not found' });
+    }
 }
 
 module.exports = {
@@ -140,5 +172,6 @@ module.exports = {
     getUser,
     getAllUsers,
     getUsersByName,
-    LogIn
+    LogIn,
+    getFriendship
 }

@@ -3,7 +3,9 @@ const UserSchema = require('../models/User');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const addFriend = async (req, res, next) => {
-    console.log("hola")
+    /*
+        Controlador que manda una solicitud de amistad
+    */
     try {
         const { UserA, UserB } = req.body;
 
@@ -46,6 +48,11 @@ const addFriend = async (req, res, next) => {
 }
 
 const acceptRejectFriend = async (req, res, next) => {
+
+    /*
+        Controlador que acepta o rechaza una solicitud de amistad
+    */
+
     try {
         const { UserA, UserB, resp } = req.body;
 
