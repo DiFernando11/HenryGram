@@ -57,7 +57,7 @@ const acceptRejectFriend = async (req, res, next) => {
             )
 
             const f2 = await FriendSchema.findOneAndUpdate(
-                { recipient: UserA, requester: UserB },
+                { recipient: ObjectId(UserA), requester: ObjectId(UserB) },
                 { $set: { status: 3 } }
             )
 
