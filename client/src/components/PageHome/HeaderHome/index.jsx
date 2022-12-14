@@ -7,7 +7,7 @@ function HeaderHome() {
       <div className="w-6/12 pl-5">
         <SearchBar />
       </div>
-      <i className="bi bi-plus-lg text-white mr-4 text-4xl cursor-pointer pr-9"></i>
+      <i className="bi bi-plus-lg text-white mr-4 text-3xl cursor-pointer pr-9"></i>
     </div>
   );
 }

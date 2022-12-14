@@ -8,14 +8,14 @@ function AvatarStack({ avatars }) {
           .map((avatar, index) => (
             <img
               key={index}
-              className="inline-block h-6 w-6 rounded-full ring-2 cursor-pointer"
+              className="inline-block h-6 w-6 rounded-full ring-2 cursor-pointer border-2 border-yellow"
               src={avatar}
               alt="user Avatar"
             />
           ))
           .slice(0, 5)}
       {avatars.length > 5 && (
-        <div className="inline-block h-6 w-6 rounded-full ring-2 bg-white text-xs font-bold leading-6 text-center ">
+        <div className="flex justify-center items-center w-6 h-6 text-xs text-white  bg-gray-700 rounded-full border-2 border-yellow hover:bg-gray-600 dark:border-gray-800 ">
           +{avatars.length - 5}
         </div>
       )}

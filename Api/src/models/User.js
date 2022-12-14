@@ -35,7 +35,11 @@ const UserSchema = schema({
     created: {
         type: Date,
         default: Date.now
-    }
+    },
+    active: {
+        type: Boolean,
+        default: false
+    },
 },
     {
         writeConcern: {

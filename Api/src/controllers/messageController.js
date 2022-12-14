@@ -1,11 +1,13 @@
+const { get } = require('mongoose');
 const MessageSchema = require('../models/Message');
+const { off } = require('../server');
 
 const getAllMessage = async (req, res, next) => {
-    /*
-        Controlador que trae el chat
-    */
+
     try {
-        const { from, to } = req.body;
+        const { from, to, limit } = req.body;
+        const offset = 0;
+
 
         const messages = await MessageSchema.find({
             users: {
@@ -13,7 +15,10 @@ const getAllMessage = async (req, res, next) => {
             },
         }).sort({ updatedAt: 1 });
 
-        const projectedMessages = messages.map((msg) => {
+        const twentyMessages = messages.slice(offset, offset + limit);
+        
+
+        const projectedMessages = twentyMessages.map((msg) => {
             return {
                 fromSelf: msg.sender.toString() === from,
                 message: msg.message.text,
@@ -50,7 +55,31 @@ const addMessage = async (req, res, next) => {
     }
 }
 
+const getMessageByUser = async (req, res, next) => {
+    try {
+        const { userId } = req.params;
+
+        const messages = await MessageSchema.find({
+            users: {
+                $all: [userId],
+            },
+        });
+
+        const projectedMessages = messages.map((msg) => {
+            return {
+                fromSelf: msg.sender.toString() === userId,
+                message: msg.message.text,
+                hour: msg.createdAt
+            };
+        });
+        res.status(200).json(projectedMessages);
+
+    } catch (ex) {
+        next(ex);
+    }
+}
 module.exports = {
     addMessage,
-    getAllMessage
+    getAllMessage,
+    getMessageByUser,
 }

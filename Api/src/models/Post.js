@@ -23,6 +23,11 @@ const PostSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    hashtags: [
+        {
+            type: String,
+        }
+    ],
     comments: [
         {
             description: String,
