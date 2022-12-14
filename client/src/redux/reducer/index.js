@@ -87,7 +87,7 @@ const initialState = {
       ],
     },
   ],
-  createUser:{}
+  createUser:[]
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
