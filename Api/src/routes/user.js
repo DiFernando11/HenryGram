@@ -1,5 +1,5 @@
 const express = require('express');
-const { postUser, getUser, getAllUsers, getUsersByName, validateUser } = require('../controllers/userController');
+const { postUser, getUser, getAllUsers, getUsersByName, validateUser, LogIn } = require('../controllers/userController');
 
 const router = express.Router();
 
@@ -8,6 +8,6 @@ router.get('/users', getAllUsers); //Ruta que trae todos los usuarios (Deberia s
 router.get('/users/id/:id', getUser); //Ruta que trae un usuario por id (Deberia ser solo para admins)
 router.get('/users/name/:name', getUsersByName); //Ruta que trae todos los usuarios por nombre
 router.get('/users/activate/:id', validateUser); //Ruta para activar un usuario 
-
+router.post("/users/login", LogIn);
 
 module.exports = router;

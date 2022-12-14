@@ -31,9 +31,7 @@ const UserSchema = schema({
         enum: ['male', 'female', 'other']
     },
     friends: [
-        {
-            id: String,
-        }
+        { type: String, ref: 'Friend' }
     ],
     rol: {
         type: String,

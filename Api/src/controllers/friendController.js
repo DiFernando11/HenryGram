@@ -1,0 +1,74 @@
+const FriendSchema = require('../models/Friend');
+const UserSchema = require('../models/User');
+
+const addFriend = async (req, res) => {
+    try {
+        const { UserA, UserB } = req.body;
+
+        const docA = await FriendSchema.findOneAndUpdate(
+            { requester: UserA, recipient: UserB },
+            { $set: { status: 1 } },
+            { upsert: true, new: true }
+        )
+
+        const docB = await FriendSchema.findOneAndUpdate(
+            { recipient: UserA, requester: UserB },
+            { $set: { status: 2 } },
+            { upsert: true, new: true }
+        )
+
+        const updateUserA = await UserSchema.findOneAndUpdate(
+            { _id: UserA },
+            { $push: { friends: docA._id } }
+        )
+
+        const updateUserB = await UserSchema.findOneAndUpdate(
+            { _id: UserB },
+            { $push: { friends: docB._id } }
+        )
+
+    } catch (ex) {
+        next(ex);
+    }
+}
+
+const acceptRejectFriend = async (req, res) => {
+    try {
+        const { UserA, UserB, resp } = req.body;
+
+        if (resp) {
+            FriendSchema.findOneAndUpdate(
+                { requester: UserA, recipient: UserB },
+                { $set: { status: 3 } }
+            )
+
+            FriendSchema.findOneAndUpdate(
+                { recipient: UserA, requester: UserB },
+                { $set: { status: 3 } }
+            )
+        } else {
+            const docA = await FriendSchema.findOneAndRemove(
+                { requester: UserA, recipient: UserB }
+            )
+            const docB = await FriendSchema.findOneAndRemove(
+                { recipient: UserA, requester: UserB }
+            )
+            const updateUserA = await UserSchema.findOneAndUpdate(
+                { _id: UserA },
+                { $pull: { friends: docA._id } }
+            )
+            const updateUserB = await UserSchema.findOneAndUpdate(
+                { _id: UserB },
+                { $pull: { friends: docB._id } }
+            )
+        }
+
+    } catch (ex) {
+        next(ex);
+    }
+}
+
+module.exports = {
+    addFriend,
+    acceptRejectFriend
+}
