@@ -1,8 +1,11 @@
 const MessageSchema = require('../models/Message');
 
-const getAllMessage = async (req, res) => {
+const getAllMessage = async (req, res, next) => {
+    console.log('hola')
     try {
-        const { from, to } = req.query;
+        const { from, to } = req.body;
+
+        console.log(from, to)
 
         const messages = await MessageSchema.find({
             users: {
@@ -17,23 +20,29 @@ const getAllMessage = async (req, res) => {
                 hour: msg.createdAt
             };
         });
-        res.json(projectedMessages);
+        res.status(200).json(projectedMessages);
+
     } catch (ex) {
         next(ex);
     }
 }
 
-const addMessage = async (req, res) => {
+const addMessage = async (req, res, next) => {
+
     try {
         const { from, to, message } = req.body;
+
+        console.log(req.body)
+
         const data = await MessageSchema.create({
             message: { text: message },
             users: [from, to],
             sender: from,
         });
 
-        if (data) return res.json({ msg: "Message added successfully." });
-        else return res.json({ msg: "Failed to add message to the database" });
+        if (data) return res.status(200).json({ msg: "Message added successfully." });
+        else return res.status(200).json({ msg: "Failed to add message to the database" });
+
     } catch (ex) {
         next(ex);
     }

@@ -1,15 +1,10 @@
 const mongoose = require('mongoose');
-const { v4: uuidv4 } = require('uuid');
-
 
 const PostSchema = mongoose.Schema({
-    _id: {
-        type: String,
-        default: uuidv4()
-    },
     userId: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
     },
     image: [
         {

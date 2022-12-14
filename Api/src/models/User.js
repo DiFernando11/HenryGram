@@ -1,14 +1,8 @@
-// const { schema, model } = require('mongoose');
 const mongoose = require('mongoose');
-const { v4: uuidv4 } = require('uuid');
 
 const schema = mongoose.Schema;
 
 const UserSchema = schema({
-    _id: {
-        type: String,
-        default: uuidv4()
-    },
     firstName: {
         type: String,
         required: true
@@ -31,7 +25,7 @@ const UserSchema = schema({
         enum: ['male', 'female', 'other']
     },
     friends: [
-        { type: String, ref: 'Friend' }
+        { type: mongoose.Schema.Types.ObjectId, ref: 'Friend' }
     ],
     rol: {
         type: String,
