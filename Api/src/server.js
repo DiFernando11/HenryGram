@@ -18,7 +18,7 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 app.use('/api', userRoutes);
 //app.use('/api', postRoutes);
-app.use('/api', messageRoutes);
+//app.use('/api', messageRoutes);
 // app.use('/api', friendRoutes);
 // app.use(
 // 	cors({ origin: '*', methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'] })
