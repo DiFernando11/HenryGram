@@ -11,8 +11,24 @@ import Messages from "./components/PageChats/Mesagge";
 import Home from "./components/PageHome/Home";
 import ValidateUser from "./components/ValidateUser/ValidateUser";
 import SideBar from "./components/SideBar";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { verifyUserAction } from "./redux/actions";
 
 function App() {
+  const [saveTokenData, setSaveTokenData] = useState(null);
+  const dispatch = useDispatch();
+
+  const getData = () => {
+    return localStorage.getItem("sessionStarted");
+  };
+  useEffect(() => {
+    setSaveTokenData(getData());
+    if (saveTokenData) {
+      dispatch(verifyUserAction(saveTokenData));
+    }
+  }, [saveTokenData]);
+
   return (
     <AuthProvider>
       <Routes>

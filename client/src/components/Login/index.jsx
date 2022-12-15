@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../auth/index";
 import Swal from "sweetalert2";
-import { loginAction } from "../../redux/actions";
+import { loginAction, logoutAction } from "../../redux/actions";
 
 function Login() {
   const dispatch = useDispatch();
@@ -44,6 +44,14 @@ function Login() {
         if (response.isConfirmed) {
           auth.login();
         }
+      });
+    } else {
+      Swal.fire(
+        "Email or password are incorrect.",
+        "Please, try again.",
+        "warning"
+      ).then(() => {
+        dispatch(logoutAction());
       });
     }
   };

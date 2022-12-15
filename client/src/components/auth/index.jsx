@@ -1,20 +1,23 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const AuthContext = React.createContext();
 import { Navigate } from "react-router-dom";
+import { logoutAction, verifyUserAction } from "../../redux/actions";
 const getData = () => {
   return localStorage.getItem("sessionStarted");
 };
 function AuthProvider({ children }) {
   const [user, setUser] = React.useState(getData());
   const userLogin = useSelector((state) => state.userLogin);
+  const dispatch = useDispatch();
   const login = () => {
-    localStorage.setItem("sessionStarted", true);
-
+    localStorage.setItem("sessionStarted", userLogin.token);
+    dispatch(verifyUserAction(userLogin.token));
     setUser(true);
   };
   const logout = () => {
     localStorage.removeItem("sessionStarted");
+    dispatch(logoutAction());
     setUser(null);
   };
   const auth = { user, login, logout };
