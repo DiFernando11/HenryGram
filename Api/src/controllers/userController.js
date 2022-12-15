@@ -113,6 +113,30 @@ const getUser = async (req, res) => {
     }
 }
 
+const getUserByToken = async (req, res) => {
+
+    /*
+        Controlador de la Ruta para obtener un usuario por token
+    */
+
+    const { token } = req.query
+
+    const { email } = getTokenData(token).data
+
+    const user = await UserSchema.findOne({ email: email })
+
+    if (user) {
+        res.status(200).json(user);
+    } else {
+        res.status(404).json({ message: 'User not found' });
+    }
+
+}
+
+
+
+
+
 const getAllUsers = async (req, res) => {
 
     /*
@@ -228,4 +252,5 @@ module.exports = {
     LogIn,
     getFriendship,
     validateUser,
+    getUserByToken
 }
