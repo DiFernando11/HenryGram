@@ -2,8 +2,10 @@ const UserSchema = require('../models/User');
 const FriendSchema = require('../models/Friend');
 const ObjectId = require('mongoose').Types.ObjectId;
 const bycrypt = require('bcryptjs');
-const transporter = require('../config/nodemailer');
+const { confirmationEmail } = require('../config/nodemailer');
 const { mapReduce } = require('../models/User');
+const { getToken, getTokenData } = require('../config/jwt');
+const encryptPassword = require('../utils/encryptPassword');
 
 // const transporter = require('../config/nodemailer');
 
@@ -19,7 +21,7 @@ const postUser = async (req, res) => {
         -Validar que no exista un usuario con el mismo nombre (Aunque debería validarlo el front tambien)
     */
 
-    const {
+    let {
         firstName,
         lastName,
         email,
@@ -36,46 +38,30 @@ const postUser = async (req, res) => {
         res.status(400).json({ msg: 'User already exists' });
     }
 
-    transporter.sendMail({
-        from: process.env.EMAIL,
-        to: email,
-        subject: 'HenryGram - Validación de usuario',
-        text: 'Hola, gracias por registrarte en HenryGram. Para validar tu usuario, por favor ingresa al siguiente link: http://localhost:3000/api/validateUser/' + email,
-        html: '<h1>Hola, gracias por registrarte en HenryGram. Para validar tu usuario, por favor ingresa al siguiente link: <a href="http://localhost:3000/api/validateUser/' + email + '">Validar usuario</a></h1>',
-    }, (err, info) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(info);
-        }
+    password = encryptPassword(password);
+    console.log(password);
+
+
+    const token = getToken({ email: email, password: password });
+    
+    confirmationEmail(firstName, email, token);
+
+    const newUser = new UserSchema({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        gender: gender
     });
 
+    try {
+        await newUser.save();
+        res.status(201).json(newUser);
+    }
+    catch (err) {
+        res.status(500).json(err);
+    }
 
-    bycrypt.genSalt(10, (err, salt) => {
-        bycrypt.hash(password, salt, async (err, hash) => {
-
-            /*
-                Se realiza la encriptación de la contraseña
-            */
-
-            if (err) throw err;
-            const user = UserSchema({
-                firstName,
-                lastName,
-                email,
-                gender,
-                password: hash
-            });
-
-            try {
-                await user.save()
-                res.status(200).json(user);
-            } catch (err) {
-                console.log(err)
-                res.status(500).json(err);
-            }
-        });
-    });
 }
 
 const validateUser = async (req, res) => {
@@ -85,26 +71,28 @@ const validateUser = async (req, res) => {
 
     */
 
-    const { email } = req.params
+    const { token } = req.params;
 
-    const user = undefined
+    const { email, password } = getTokenData(token).data
 
-    try {
-        user = await UserSchema.findOne({ email: email})
-    } catch (err) {
-        res.status(500).json(err);
+    if (!email || !password) {
+        res.status(400).json({ msg: 'Invalid token' });
     }
 
-    if (user) {
-        user.active = true;
-        try {
-            await user.save()
-            res.status(200).json(user);
-        } catch (err) {
-            res.status(500).json(err);
-        }
-    } else {
-        res.status(404).json({ message: 'User not found' });
+    const user = await UserSchema.findOne({ email: email});
+
+    if (!user) {
+        res.status(400).json({ msg: 'Invalid token' });
+    }
+
+    user.active = true;
+
+    try {
+        await user.save();
+        res.redirect('http://127.0.0.1:5173/validate')
+    }
+    catch (err) {
+        res.status(500).json(err);
     }
 }
 
