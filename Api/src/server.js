@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 	next();
 });
 app.use('/api', userRoutes);
-//app.use('/api', postRoutes);
+app.use('/api', postRoutes);
 app.use('/api', messageRoutes);
 app.use('/api', friendRoutes);
 
