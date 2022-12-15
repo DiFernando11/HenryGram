@@ -121,9 +121,17 @@ const getUserByToken = async (req, res) => {
 
     const { token } = req.query
 
-    const { email } = getTokenData(token).data
-
-    const user = await UserSchema.findOne({ email: email })
+    try {
+        const { email } = getTokenData(token).data
+    } catch (err) {
+        res.status(400).json({ msg: 'Invalid token' });
+    }
+    
+    try {
+        const user = await UserSchema.findOne({ email: email })
+    } catch (err) {
+        res.status(500).json(err);
+    }
 
     if (user) {
         res.status(200).json(user);
