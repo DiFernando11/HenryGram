@@ -47,7 +47,7 @@ function Login() {
       });
     }
   };
-
+  console.log(login);
   return (
     <div className="border border-white lg:h-1/2 h-2/3 bg-white lg:w-1/4 w-2/3 rounded flex flex-col">
       {userLogin && handleAlert(userLogin)}
