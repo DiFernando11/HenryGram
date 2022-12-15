@@ -170,9 +170,10 @@ const LogIn = async (req, res) => {
 
     const { email, password } = req.body;
     console.log(email, password)
-    const user = await UserSchema.findOne({
-        email: email
-    })
+    const user = await UserSchema.findOne(
+        { email },
+        { password: 1, firstName: 1}
+    )
     try {
         if (user) {
             bycrypt.compare(password, user.password, (err, result) => {
