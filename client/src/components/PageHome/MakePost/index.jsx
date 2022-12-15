@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, Modal } from "flowbite-react";
+import { Modal } from "flowbite-react";
 import logoMatch from "../../../assets/coheteHenry.png";
 function MakePost() {
   const [show, setShow] = useState(false);
@@ -13,7 +13,12 @@ function MakePost() {
   const handleSelectTypePost = (type) => {
     setSelectTypePost(type);
     setShowAlert(true);
+    setInfoPost({ ...infoPost, type });
   };
+  const handleChangeDescriptionPost = (e) => {
+    setInfoPost({ ...infoPost, description: e.target.value });
+  };
+  console.log(infoPost);
   return (
     <React.Fragment>
       <i
@@ -33,10 +38,8 @@ function MakePost() {
           <div className="p-5 relative bg-stone-600">
             <span className="text-xs text-white ">
               {selectTypePost === "Match"
-                ? "Match : Create group chats with people who share your tastes,sports, work, from anywhere in the world"
+                ? "Match : Create group chats with people who share your tastes,sports, work, from anywhere in the world."
                 : "Normal: Tell the world about your accomplishments and concerns."}
-              Match : Create group chats with people who share your tastes,
-              sports, work, from anywhere in the world.
             </span>
             <i
               className="bi bi-x-lg absolute bottom-0 right-0 pr-2 pb-2 text-yellow"
@@ -88,7 +91,15 @@ function MakePost() {
                         type="button"
                         className="p-2 text-gray-500 rounded cursor-pointer  dark:text-gray-400"
                       >
-                        <i className="bi bi-image text-lg text-yellow"></i>
+                        <label for="file-input">
+                          <i className="bi bi-image text-lg text-yellow"></i>
+                        </label>
+                        <input
+                          id="file-input"
+                          name="foto"
+                          type="file"
+                          className="hidden"
+                        />
                       </button>
                     </div>
                     <div className="flex flex-wrap items-center space-x-1 sm:pl-4">
@@ -98,19 +109,21 @@ function MakePost() {
                     </div>
                   </div>
                 </div>
-                <div class="px-4 py-2 bg-transparent  rounded-b-lg dark:bg-gray-800">
-                  <label for="editor" className="sr-only">
+                <div className="px-4 py-2 bg-transparent  rounded-b-lg dark:bg-gray-800">
+                  <label htmlFor="editor" className="sr-only">
                     Publish post
                   </label>
                   <textarea
                     id="editor"
                     rows="8"
-                    class="block w-full px-0 text-sm h-24 text-white bg-transparent border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                    className="block w-full px-0 text-sm h-24 text-white bg-transparent border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
                     placeholder={`${
                       selectTypePost === "Match"
                         ? "Matchea with people from all over the world..."
                         : "Tell people about your latest news..."
                     }`}
+                    value={infoPost.description}
+                    onChange={handleChangeDescriptionPost}
                     required
                   ></textarea>
                 </div>
