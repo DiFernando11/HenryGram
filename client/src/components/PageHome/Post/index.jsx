@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import logoMatch from "../../../assets/coheteHenry.png";
 import SendMessage from "../../PageChats/SendMessage";
 
 function Post({ type, seguir, message, user, imagePost, handleIsMatch }) {
+  const [show, setShow] = useState(false);
   return (
     <section className="w-11/12  h-auto mt-6 m-auto relative pt-8 p-6 border border-amber-300 containerBackrougndImagePost ">
       {type === "Match" && (
@@ -11,7 +12,6 @@ function Post({ type, seguir, message, user, imagePost, handleIsMatch }) {
           <img src={logoMatch} alt="match" className="w-4 h-4" />
         </div>
       )}
-
       <i className="bi bi-three-dots text-yellow-300 absolute top-0 right-0 mr-8 text-2xl text-yellow"></i>
       <div className="border-t border-amber-300 pt-4 flex gap-2.5 relative">
         <img
@@ -32,8 +32,6 @@ function Post({ type, seguir, message, user, imagePost, handleIsMatch }) {
           alt="post user"
         />
       )}
-     
-
       <div className="flex gap-8 mt-5 mb-5 items-center border-y border-neutral-700 py-4">
         <i className="bi bi-hand-thumbs-up text-3xl text-yellow"></i>
         <i className="bi bi-chat-square-dots text-3xl text-yellow"></i>
@@ -46,6 +44,7 @@ function Post({ type, seguir, message, user, imagePost, handleIsMatch }) {
           />
         )}
       </div>
+
       <SendMessage />
     </section>
   );

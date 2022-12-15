@@ -1,9 +1,15 @@
 const UserSchema = require('../models/User');
+const FriendSchema = require('../models/Friend');
+const ObjectId = require('mongoose').Types.ObjectId;
 const bycrypt = require('bcryptjs');
 const transporter = require('../config/nodemailer');
+const { mapReduce } = require('../models/User');
+
+// const transporter = require('../config/nodemailer');
+
 
 const postUser = async (req, res) => {
-    
+
     /*
        Controlador de la Ruta de registro de usuario
 
@@ -26,9 +32,9 @@ const postUser = async (req, res) => {
     if (alreadyExist) {
         /*
             Si el usuario ya existe, debería devolver un error
-        */ 
+        */
         res.status(400).json({ msg: 'User already exists' });
-    } 
+    }
 
     transporter.sendMail({
         from: process.env.EMAIL,
@@ -60,7 +66,7 @@ const postUser = async (req, res) => {
                 gender,
                 password: hash
             });
-            
+
             try {
                 await user.save()
                 res.status(200).json(user);
@@ -127,7 +133,7 @@ const getAllUsers = async (req, res) => {
 
     try {
         users = await UserSchema.find();
-        
+
     } catch (err) {
         res.status(500).json(err);
     }
@@ -148,13 +154,13 @@ const getUsersByName = async (req, res) => {
 
     const { name } = req.params
 
-    
+
     //Se usa una regex para que no sea case sensitive
     let usersFirstName = [];
     let usersLastName = [];
     try {
-        usersFirstName = await UserSchema.find({ firstName: { $regex : new RegExp('^'+ name + '$', "i") } });
-        usersLastName = await UserSchema.find({ lastName: { $regex : new RegExp('^'+ name + '$', "i") } });
+        usersFirstName = await UserSchema.find({ firstName: { $regex: new RegExp('^' + name + '$', "i") } });
+        usersLastName = await UserSchema.find({ lastName: { $regex: new RegExp('^' + name + '$', "i") } });
     } catch (err) {
         res.status(500).json(err);
     }
@@ -169,32 +175,59 @@ const getUsersByName = async (req, res) => {
 }
 
 const LogIn = async (req, res) => {
-    
-        /*
-            Controlador de la Ruta para loguear un usuario
-        */
-    
-        const { email, password } = req.body;
-    
-        const user = await UserSchema.findOne({
-            email: email
-        })
-        try {
-            if (user) {
-                bycrypt.compare(password, user.password, (err, result) => {
-                    if (result) {
-                        res.status(200).json(user);
-                        console.log('user logged in')
-                    } else {
-                        res.status(404).json({ message: 'wrong Password or invalid email' });
-                        console.log('wrong Password or invalid email')
-                    }
-                });
-            }
-        } catch (error) {
-            res.status(500).json(error);
-            console.log('error')
+
+    /*
+        Controlador de la Ruta para loguear un usuario
+    */
+
+    const { email, password } = req.body;
+    console.log(email, password)
+    const user = await UserSchema.findOne({
+        email: email
+    })
+    try {
+        if (user) {
+            bycrypt.compare(password, user.password, (err, result) => {
+                if (result) {
+                    res.status(200).json(user);
+                    console.log('user logged in')
+                } else {
+                    res.status(404).json({ message: 'wrong Password or invalid email' });
+                    console.log('wrong Password or invalid email')
+                }
+            });
         }
+    } catch (error) {
+        res.status(500).json(error);
+        console.log('error')
+    }
+}
+
+const getFriendship = async (req, res) => {
+
+    /*
+        Controlador de la Ruta para obtener las amistades (amigos, pendientes, esperando)
+    */
+
+    const { id } = req.params
+
+    const f = await UserSchema.findOne({ _id: id }, { friends: 1 })
+
+    Promise.resolve(f.friends)
+        .then(value => {
+            let response = Promise.all(value.map(async (el) => {
+                return await FriendSchema.findOne({ _id: ObjectId(el.valueOf()) })
+            }))
+            return response
+        }).then((result) => {
+            if (result.length) {
+                return res.status(200).json(result);
+            } else {
+                return res.status(404).json({ message: 'Friendship not found' });
+            }
+        }).catch((e) => {
+            console.log(e)
+        })
 }
 
 module.exports = {
@@ -202,6 +235,7 @@ module.exports = {
     getUser,
     getAllUsers,
     getUsersByName,
+    LogIn,
+    getFriendship,
     validateUser,
-    LogIn
 }
