@@ -7,6 +7,7 @@ const { mapReduce } = require('../models/User');
 const { getToken, getTokenData } = require('../config/jwt');
 const encryptPassword = require('../utils/encryptPassword');
 
+
 // const transporter = require('../config/nodemailer');
 
 
@@ -169,21 +170,21 @@ const LogIn = async (req, res) => {
     */
 
     const { email, password } = req.body;
-    console.log(email, password)
+   
     const user = await UserSchema.findOne(
         { email },
         { password: 1, firstName: 1}
     )
+    token = getToken({ email: email, password: password });
     try {
         if (user) {
             bycrypt.compare(password, user.password, (err, result) => {
                 if (result) {
-                    res.status(200).json(user);
-                    console.log('user logged in')
+                    res.status(200).json(token);
                 } else {
                     res.status(404).json({ message: 'wrong Password or invalid email' });
-                    console.log('wrong Password or invalid email')
                 }
+
             });
         }
     } catch (error) {
