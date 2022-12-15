@@ -1,12 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import Post from "../../PageHome/Post";
 
 function PostProfile() {
-  const [isMatch, setIsMatch] = useState(false);
-  const handleIsMatch = () => {
-    setIsMatch(true);
-    setTimeout(() => setIsMatch(false), 2000);
-  };
   return (
     <section className="w-3/5 calcViewHeightPageProfile pt-2 ">
       <div className="w-12 h-12 bg-amber-300 flex justify-center items-center rounded-full fixed ml-3 z-10  ">
@@ -23,7 +18,6 @@ function PostProfile() {
               message={post.message}
               user={post.user}
               imagePost={post.imagePost}
-              handleIsMatch={handleIsMatch}
             />
           ))}
       </div>
