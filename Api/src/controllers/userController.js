@@ -99,36 +99,20 @@ const getUser = async (req, res) => {
 };
 
 const getUserByToken = async (req, res) => {
-
-    /*
+  /*
         Controlador de la Ruta para obtener un usuario por token
     */
 
-    const { token } = req.query
-
-    try {
-        const { email } = getTokenData(token).data
-    } catch (err) {
-        res.status(400).json({ msg: 'Invalid token' });
-    }
-    
-    try {
-        const user = await UserSchema.findOne({ email: email })
-    } catch (err) {
-        res.status(500).json(err);
-    }
-
-    if (user) {
-        res.status(200).json(user);
-    } else {
-        res.status(404).json({ message: 'User not found' });
-    }
-
-}
-
-
-
-
+  const { token } = req.query;
+  let email = "";
+  try {
+    email = getTokenData(token).data.email;
+    const user = await UserSchema.findOne({ email: email });
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(404).json({ msg: "Invalid token" });
+  }
+};
 
 const getAllUsers = async (req, res) => {
   /*
@@ -190,6 +174,7 @@ const LogIn = async (req, res) => {
     { email },
     { password: 1, firstName: 1 }
   );
+
   token = getToken({ email: email, password: password });
   try {
     if (user) {
@@ -197,9 +182,11 @@ const LogIn = async (req, res) => {
         if (result) {
           res.status(200).json({ token, firstName: user.firstName });
         } else {
-          res.status(404).json({ message: "wrong Password or invalid email" });
+          res.status(404).json({ message: "wrong Password is invalid" });
         }
       });
+    } else {
+      res.status(404).json({ message: "wrong email is invalid " });
     }
   } catch (error) {
     res.status(500).json(error);
@@ -238,13 +225,12 @@ const getFriendship = async (req, res) => {
 };
 
 module.exports = {
-    postUser,
-    getUser,
-    getAllUsers,
-    getUsersByName,
-    LogIn,
-    getFriendship,
-    validateUser,
-    getUserByToken
-}
-
+  postUser,
+  getUser,
+  getAllUsers,
+  getUsersByName,
+  LogIn,
+  getFriendship,
+  validateUser,
+  getUserByToken,
+};

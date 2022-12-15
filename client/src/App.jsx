@@ -1,9 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { AuthProvider, AuthRoute, NotAuthRoute } from "./components/auth";
+import {
+  AuthProvider,
+  AuthRoute,
+  NotAuthRoute,
+} from "./components/auth";
 import Logout from "./components/Logout";
 
-import Profile from "./components/PageProfile/Profile";
+
 import Chats from "./components/PageChats/Chats";
 import Landing from "./components/Landing";
 import Register from "./components/Register";
@@ -11,14 +15,15 @@ import Messages from "./components/PageChats/Mesagge";
 import Home from "./components/PageHome/Home";
 import ValidateUser from "./components/ValidateUser/ValidateUser";
 import SideBar from "./components/SideBar";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { verifyUserAction } from "./redux/actions";
+import ProfileUser from "./components/PageProfile/ProfileUser";
+import ProfileFriends from "./components/PageProfile/ProfileFriends";
 
 function App() {
   const [saveTokenData, setSaveTokenData] = useState(null);
   const dispatch = useDispatch();
-
   const getData = () => {
     return localStorage.getItem("sessionStarted");
   };
@@ -54,7 +59,16 @@ function App() {
           element={
             <AuthRoute>
               <SideBar />
-              <Profile />
+              <ProfileUser />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/profile/:id"
+          element={
+            <AuthRoute>
+              <SideBar />
+              <ProfileFriends />
             </AuthRoute>
           }
         />

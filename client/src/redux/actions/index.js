@@ -1,10 +1,10 @@
 import axios from "axios";
-import { useAuth } from "../../components/auth";
 export const SEND_MESSAGE = "SEND_MESSAGE";
 export const CREATE_USER = "CREATE_USER";
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 export const VERIFY_USER_TOKEN = "VERIFY_USER_TOKEN";
+export const GET_PROFILE_FRIEND = "GET_PROFILE_FRIEND";
 
 ////CHATS
 export const sendMessagesAction = (id, payload) => {
@@ -34,7 +34,6 @@ export const loginAction = (data) => {
         "http://localhost:3000/api/users/login",
         data
       );
-      console.log(result.data);
       return dispatch({ type: LOGIN, payload: result.data });
     } catch (error) {
       return dispatch({
@@ -48,7 +47,7 @@ export const loginAction = (data) => {
 export const logoutAction = () => {
   return { type: LOGOUT };
 };
-// USER INFORMATION / VERIFIY USER
+// Estado global que tiene la informacion del usuario loguiado
 export const verifyUserAction = (token) => {
   return async (dispatch) => {
     try {
@@ -62,3 +61,17 @@ export const verifyUserAction = (token) => {
   };
 };
 //USERS INFORMATION
+// FRIENDS
+export const getProfileFriendAction = (idUser) => {
+  return async (dispatch) => {
+    try {
+      const result = await axios.get(
+        `http://localhost:3000/api/users/id/${idUser}`
+      );
+      return dispatch({ type: GET_PROFILE_FRIEND, payload: result.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+//FRIENDS

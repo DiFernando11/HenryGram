@@ -3,13 +3,13 @@ import AboutProfile from "../AboutProfile";
 import HeaderProfile from "../HeaderProfile";
 import PostProfile from "../PostProfile";
 
-function Profile() {
+function Profile({ userInformation }) {
   return (
     <main className="w-full">
-      <HeaderProfile />
+      <HeaderProfile userInformation={userInformation} />
       <div className=" w-full flex calcViewHeightPageProfile">
-        <AboutProfile />
-        <PostProfile />
+        <AboutProfile userInformation={userInformation} />
+        <PostProfile userInformation={userInformation} />
       </div>
     </main>
   );

@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import HeaderHome from "../HeaderHome";
 import Post from "../Post";
 import RecommendedFriends from "../RecommendedFriends";
 import { useAuth } from "../../auth/index";
-import { useDispatch, useSelector } from "react-redux";
-import { verifyUserAction } from "../../../redux/actions";
+
 
 function Home() {
-
-
-  // useEffect(() => {
-  //   if (saveTokenData) {
-  //     dispatch(verifyUserAction(saveTokenData?.token));
-  //   }
-  // }, []);
-
   const auth = useAuth();
+
   const handleClick = () => {
     auth.logout();
   };
