@@ -7,15 +7,14 @@ console.log(typeof email, typeof password)
 
 const transporter = nodemailer.createTransport({
 
-    host: 'smtp.mail.yahoo.com',
-    service: 'yahoo',
+    service: 'gmail',
     port: 465,
     secure: false,
     auth: {
         user: email,
         pass: password
     },
-    logger: true,
+    logger: false,
     tls: {
         rejectUnauthorized: false
     }

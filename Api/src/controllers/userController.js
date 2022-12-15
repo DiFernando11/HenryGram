@@ -1,6 +1,6 @@
 const UserSchema = require('../models/User');
 const bycrypt = require('bcryptjs');
-// const transporter = require('../config/nodemailer');
+const transporter = require('../config/nodemailer');
 
 const postUser = async (req, res) => {
     
@@ -18,6 +18,7 @@ const postUser = async (req, res) => {
         lastName,
         email,
         password,
+        gender,
     } = req.body;
 
     const alreadyExist = await UserSchema.findOne({ email: email })
@@ -29,6 +30,19 @@ const postUser = async (req, res) => {
         res.status(400).json({ msg: 'User already exists' });
     } 
 
+    transporter.sendMail({
+        from: process.env.EMAIL,
+        to: email,
+        subject: 'HenryGram - Validación de usuario',
+        text: 'Hola, gracias por registrarte en HenryGram. Para validar tu usuario, por favor ingresa al siguiente link: http://localhost:3000/api/validateUser/' + email,
+        html: '<h1>Hola, gracias por registrarte en HenryGram. Para validar tu usuario, por favor ingresa al siguiente link: <a href="http://localhost:3000/api/validateUser/' + email + '">Validar usuario</a></h1>',
+    }, (err, info) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(info);
+        }
+    });
 
 
     bycrypt.genSalt(10, (err, salt) => {
@@ -43,6 +57,7 @@ const postUser = async (req, res) => {
                 firstName,
                 lastName,
                 email,
+                gender,
                 password: hash
             });
             
@@ -64,12 +79,12 @@ const validateUser = async (req, res) => {
 
     */
 
-    const { id } = req.params
+    const { email } = req.params
 
     const user = undefined
 
     try {
-        user = await UserSchema.findOne({ _id: id })
+        user = await UserSchema.findOne({ email: email})
     } catch (err) {
         res.status(500).json(err);
     }
