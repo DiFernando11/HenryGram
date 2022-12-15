@@ -9,6 +9,7 @@ import Landing from "./components/Landing";
 import Register from "./components/Register";
 import Messages from "./components/PageChats/Mesagge";
 import Home from "./components/PageHome/Home";
+import ValidateUser from "./components/ValidateUser/ValidateUser";
 import SideBar from "./components/SideBar";
 
 function App() {
@@ -49,7 +50,14 @@ function App() {
             </NotAuthRoute>
           }
         />
-
+        <Route
+          path="/validate"
+          element={
+            <NotAuthRoute>
+              <ValidateUser />
+            </NotAuthRoute>
+          }
+        />
         <Route
           path="/message"
           element={

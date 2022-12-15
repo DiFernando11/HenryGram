@@ -2,8 +2,10 @@ const UserSchema = require('../models/User');
 const FriendSchema = require('../models/Friend');
 const ObjectId = require('mongoose').Types.ObjectId;
 const bycrypt = require('bcryptjs');
-
+const { confirmationEmail } = require('../config/nodemailer');
 const { mapReduce } = require('../models/User');
+const { getToken, getTokenData } = require('../config/jwt');
+const encryptPassword = require('../utils/encryptPassword');
 
 // const transporter = require('../config/nodemailer');
 
@@ -19,11 +21,12 @@ const postUser = async (req, res) => {
         -Validar que no exista un usuario con el mismo nombre (Aunque debería validarlo el front tambien)
     */
 
-    const {
+    let {
         firstName,
         lastName,
         email,
         password,
+        gender,
     } = req.body;
 
     const alreadyExist = await UserSchema.findOne({ email: email })
@@ -35,32 +38,30 @@ const postUser = async (req, res) => {
         res.status(400).json({ msg: 'User already exists' });
     }
 
+    password = encryptPassword(password);
+    console.log(password);
 
 
-    bycrypt.genSalt(10, (err, salt) => {
-        bycrypt.hash(password, salt, async (err, hash) => {
+    const token = getToken({ email: email, password: password });
+    
+    confirmationEmail(firstName, email, token);
 
-            /*
-                Se realiza la encriptación de la contraseña
-            */
-
-            if (err) throw err;
-            const user = UserSchema({
-                firstName,
-                lastName,
-                email,
-                password: hash
-            });
-
-            try {
-                await user.save()
-                res.status(200).json(user);
-            } catch (err) {
-                console.log(err)
-                res.status(500).json(err);
-            }
-        });
+    const newUser = new UserSchema({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        gender: gender
     });
+
+    try {
+        await newUser.save();
+        res.status(201).json(newUser);
+    }
+    catch (err) {
+        res.status(500).json(err);
+    }
+
 }
 
 const validateUser = async (req, res) => {
@@ -70,26 +71,28 @@ const validateUser = async (req, res) => {
 
     */
 
-    const { id } = req.params
+    const { token } = req.params;
 
-    const user = undefined
+    const { email, password } = getTokenData(token).data
 
-    try {
-        user = await UserSchema.findOne({ _id: id })
-    } catch (err) {
-        res.status(500).json(err);
+    if (!email || !password) {
+        res.status(400).json({ msg: 'Invalid token' });
     }
 
-    if (user) {
-        user.active = true;
-        try {
-            await user.save()
-            res.status(200).json(user);
-        } catch (err) {
-            res.status(500).json(err);
-        }
-    } else {
-        res.status(404).json({ message: 'User not found' });
+    const user = await UserSchema.findOne({ email: email});
+
+    if (!user) {
+        res.status(400).json({ msg: 'Invalid token' });
+    }
+
+    user.active = true;
+
+    try {
+        await user.save();
+        res.redirect('http://127.0.0.1:5173/validate')
+    }
+    catch (err) {
+        res.status(500).json(err);
     }
 }
 
