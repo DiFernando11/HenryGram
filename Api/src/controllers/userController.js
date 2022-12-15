@@ -9,7 +9,7 @@ const { mapReduce } = require('../models/User');
 
 
 const postUser = async (req, res) => {
-    
+
     /*
        Controlador de la Ruta de registro de usuario
 
@@ -31,9 +31,9 @@ const postUser = async (req, res) => {
     if (alreadyExist) {
         /*
             Si el usuario ya existe, debería devolver un error
-        */ 
+        */
         res.status(400).json({ msg: 'User already exists' });
-    } 
+    }
 
 
 
@@ -160,33 +160,33 @@ const getUsersByName = async (req, res) => {
 }
 
 const LogIn = async (req, res) => {
-    
-        /*
-            Controlador de la Ruta para loguear un usuario
-        */
 
-        const { email, password } = req.body;
-        console.log(email, password)
-        const user = await UserSchema.findOne({
-            email: email
-        })
-        try {
-            if (user) {
-                bycrypt.compare(password, user.password, (err, result) => {
-                    if (result) {
-                        res.status(200).json(user);
-                        console.log('user logged in')
-                    } else {
-                        res.status(404).json({ message: 'wrong Password or invalid email' });
-                        console.log('wrong Password or invalid email')
-                    }
-                });
-            }
-        } catch (error) {
-            res.status(500).json(error);
-            console.log('error')
+    /*
+        Controlador de la Ruta para loguear un usuario
+    */
+
+    const { email, password } = req.body;
+    console.log(email, password)
+    const user = await UserSchema.findOne({
+        email: email
+    })
+    try {
+        if (user) {
+            bycrypt.compare(password, user.password, (err, result) => {
+                if (result) {
+                    res.status(200).json(user);
+                    console.log('user logged in')
+                } else {
+                    res.status(404).json({ message: 'wrong Password or invalid email' });
+                    console.log('wrong Password or invalid email')
+                }
+            });
         }
-    } 
+    } catch (error) {
+        res.status(500).json(error);
+        console.log('error')
+    }
+}
 
 const getFriendship = async (req, res) => {
 
@@ -198,22 +198,21 @@ const getFriendship = async (req, res) => {
 
     const f = await UserSchema.findOne({ _id: id }, { friends: 1 })
 
-    const friendship = []
-
-    f.friends.map(async (el) => {
-        let friend = await FriendSchema.findOne({ _id: ObjectId(el.valueOf()) })
-        console.log(friend)
-        friendship.push(friend)
-        console.log(friendship)
-    }).then(() => {
-        if (friendship.length) {
-            res.status(200).json(friendship);
-        } else {
-            res.status(404).json({ message: 'Friendship not found' });
-        }
-        
-    }
-    )
+    Promise.resolve(f.friends)
+        .then(value => {
+            let response = Promise.all(value.map(async (el) => {
+                return await FriendSchema.findOne({ _id: ObjectId(el.valueOf()) })
+            }))
+            return response
+        }).then((result) => {
+            if (result.length) {
+                return res.status(200).json(result);
+            } else {
+                return res.status(404).json({ message: 'Friendship not found' });
+            }
+        }).catch((e) => {
+            console.log(e)
+        })
 }
 
 module.exports = {
