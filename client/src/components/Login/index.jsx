@@ -36,7 +36,7 @@ function Login() {
   };
 
   const handleAlert = (result) => {
-    if (result.firstName) {
+    if (result.token) {
       Swal.fire({
         icon: "success",
         title: `Welcome ${result?.firstName}`,
