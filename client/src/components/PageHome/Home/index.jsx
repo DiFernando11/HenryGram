@@ -8,7 +8,7 @@ import { logoutAction } from "../../../redux/actions";
 
 function Home() {
   const dispatch = useDispatch();
-
+  const auth = useAuth();
   const handleClick = () => {
     dispatch(logoutAction());
     auth.logout();
