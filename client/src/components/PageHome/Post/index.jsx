@@ -20,7 +20,7 @@ function Post({ type, seguir, message, user, imagePost }) {
         />
         <span className="leading-10">{user.name}</span>
         {!seguir && (
-          <span className="absolute top-0 right-0 mt-7 text-sm ">Seguir</span>
+          <span className="absolute top-0 right-0 mt-7 mr-11 text-sm cursor-pointer"> + Seguir</span>
         )}
       </div>
       <p className="my-5 text-white text-sm">{message}</p>

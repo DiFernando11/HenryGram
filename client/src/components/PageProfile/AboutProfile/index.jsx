@@ -19,7 +19,13 @@ function AboutProfile({ userInformation, isFriend }) {
           )}
         </div>
         {isFriend && (
-          <span className="text-yellow cursor-pointer">+ Seguir</span>
+          <div className="flex gap-6 items-center">
+            <i
+              className="bi bi-chat-dots-fill text-yellow text-2xl"
+              title="Send message"
+            ></i>
+            <span className="text-yellow cursor-pointer">+ Seguir</span>
+          </div>
         )}
       </div>
       <div className="flex justify-between mb-3">

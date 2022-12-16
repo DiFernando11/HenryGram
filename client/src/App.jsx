@@ -9,13 +9,12 @@ import Landing from "./components/Landing";
 import Register from "./components/Register";
 import Messages from "./components/PageChats/Mesagge";
 import Home from "./components/PageHome/Home";
-import SideBar from "./components/SideBar";
 import ProfileUser from "./components/PageProfile/ProfileUser/index";
 import ProfileFriends from "./components/PageProfile/ProfileFriends/index";
 import NavBar from "./components/NavBar/NavBar";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { verifyUserAction } from "./redux/actions";
+import { searchUsersAction, verifyUserAction } from "./redux/actions";
 
 function App() {
   const [saveTokenData, setSaveTokenData] = useState(null);
@@ -27,6 +26,7 @@ function App() {
   useEffect(() => {
     (async () => {
       setSaveTokenData(getData());
+      dispatch(searchUsersAction());
       if (saveTokenData) {
         await dispatch(verifyUserAction(saveTokenData));
       }
