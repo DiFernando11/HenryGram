@@ -6,7 +6,7 @@ import styles from "./index.module.css";
 function PreviewMesagge({ title, messages }) {
   return (
     <section className={styles.container_preview_message}>
-      <SearchBar />
+      {/* <SearchBar /> */}
       <span className={styles.textMessagePreview}>{title}</span>
       <div className={styles.containerAllMessage}>
         {messages.length &&
