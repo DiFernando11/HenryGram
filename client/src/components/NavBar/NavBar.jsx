@@ -13,6 +13,7 @@ routes.push(
 export default function NavBar() {
 	const [navbar, setNavbar] = useState(false);
 	const auth = useAuth();
+
 	return (
 		<nav className="w-full bg-black shadow fixed h-16 z-10">
 			<div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
@@ -79,6 +80,7 @@ export default function NavBar() {
 													? 'flex items-center p-2 border border-white font-medium rounded-lg'
 													: 'flex items-center p-2 text-white border border-black font-medium rounded-lg transition duration:200 hover:shadow-sm hover:shadow-gray'
 											}
+											onClick={route.page === "LOGOUT" ? () => auth.logout() : null}
 										>
 											<i className={`bi ${route.icon} text-2xl `}></i>
 											<span>&nbsp;&nbsp;{route.page}</span>
