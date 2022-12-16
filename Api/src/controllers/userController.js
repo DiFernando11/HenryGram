@@ -197,7 +197,7 @@ const LogIn = async (req, res) => {
 const getFriendship = async (req, res) => {
   /*
         Controlador de la Ruta para obtener las amistades (amigos, pendientes, esperando)
-    */
+  */
 
   const { id } = req.params;
 
@@ -224,6 +224,37 @@ const getFriendship = async (req, res) => {
     });
 };
 
+const getChat = async (req, res) => {
+  /*
+       Controlador de la Ruta para obtener el chat de un usuario
+  */
+
+  const { id } = req.params;
+
+  const m = await UserSchema.findOne({ _id: id }, { messages: 1 });
+
+  Promise.resolve(m.messages)
+    .then((value) => {
+      let response = Promise.all(
+        value.map(async (el) => {
+          return await UserSchema.findOne({ _id: ObjectId(el.valueOf()) }, { firstName: 1, avatar: 1 });
+        })
+      );
+      return response;
+    })
+    .then((result) => {
+      if (result.length) {
+        return res.status(200).json(result);
+      } else {
+        return res.status(404).json({ message: "Chat not found" });
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+
 module.exports = {
   postUser,
   getUser,
@@ -233,4 +264,5 @@ module.exports = {
   getFriendship,
   validateUser,
   getUserByToken,
+  getChat
 };
