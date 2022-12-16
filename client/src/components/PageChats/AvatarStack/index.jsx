@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function AvatarStack({ avatars }) {
   return (
@@ -6,12 +7,14 @@ function AvatarStack({ avatars }) {
       {avatars.length &&
         avatars
           .map((avatar, index) => (
-            <img
-              key={index}
-              className="inline-block h-6 w-6 rounded-full ring-2 cursor-pointer border-2 border-yellow"
-              src={avatar}
-              alt="user Avatar"
-            />
+            <Link to={"/profile/639b57d15871ad62a8b88c2d"}>
+              <img
+                key={index}
+                className="inline-block h-6 w-6 rounded-full ring-2 cursor-pointer border-2 border-yellow"
+                src={avatar}
+                alt="user Avatar"
+              />
+            </Link>
           ))
           .slice(0, 5)}
       {avatars.length > 5 && (

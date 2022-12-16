@@ -5,6 +5,7 @@ import {
   LOGIN,
   LOGOUT,
   VERIFY_USER_TOKEN,
+  GET_PROFILE_FRIEND,
 } from "../actions";
 
 const initialState = {
@@ -96,6 +97,7 @@ const initialState = {
   createUser: [],
   userLogin: null,
   userInformation: null,
+  userProfileFriend: {},
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -129,6 +131,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         userInformation: action.payload,
+      };
+    }
+    case GET_PROFILE_FRIEND: {
+      return {
+        ...state,
+        userProfileFriend: action.payload,
       };
     }
     //User Information

@@ -18,7 +18,7 @@ function MakePost() {
   const handleChangeDescriptionPost = (e) => {
     setInfoPost({ ...infoPost, description: e.target.value });
   };
-  console.log(infoPost);
+
   return (
     <React.Fragment>
       <i
@@ -91,7 +91,7 @@ function MakePost() {
                         type="button"
                         className="p-2 text-gray-500 rounded cursor-pointer  dark:text-gray-400"
                       >
-                        <label for="file-input">
+                        <label htmlFor="file-input">
                           <i className="bi bi-image text-lg text-yellow"></i>
                         </label>
                         <input
