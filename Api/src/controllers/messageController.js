@@ -17,12 +17,12 @@ const getAllMessage = async (req, res, next) => {
 
         const twentyMessages = messages.slice(offset, offset + limit);
 
-
         const projectedMessages = twentyMessages.map((msg) => {
             return {
                 fromSelf: msg.sender.toString() === from,
                 message: msg.message.text,
-                hour: msg.createdAt
+                hour: msg.createdAt,
+
             };
         });
         res.status(200).json(projectedMessages);

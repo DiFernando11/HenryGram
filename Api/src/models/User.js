@@ -44,6 +44,21 @@ const UserSchema = schema({
         type: Boolean,
         default: false
     },
+    avatar: {
+        type: String,
+        required: true,
+        default: "https://res.cloudinary.com/dgmv4orvc/image/upload/v1671220771/Images/jrk0nxkgvmbb3hfsqwbk.png"
+    },
+    banner: {
+        type: String,
+        required: true,
+        default: "https://res.cloudinary.com/dgmv4orvc/image/upload/v1671221017/Images/uui8u5omexmkobq5jiaf.jpg"
+    },
+    description: {
+        type: String
+    },
+    preferences: [],
+    technologies: []
 },
     {
         writeConcern: {
