@@ -1,29 +1,32 @@
 import { useState } from 'react';
 import logo from '../../assets/hglogo.png';
 import { useAuth } from '../auth';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import SearchBar from '../SearchBar';
+import profilePicture from '../../assets/profilePicture.jpg';
 const routes = [];
 routes.push(
 	{ to: '/home', page: 'HOME', icon: 'bi-house-fill', private: true },
 	{ to: '/message', page: 'INBOX', icon: 'bi-chat-dots-fill', private: true },
-	{ to: '/', page: 'LOGOUT', icon: 'bi bi-box-arrow-left', private: true }
+	{ to: '/', page: 'LOGOUT', icon: 'bi bi-box-arrow-left', private: true },
+	{ to: '/profile', page: 'PROFILE', icon: profilePicture, private: true }
 );
 
 export default function NavBar() {
 	const [navbar, setNavbar] = useState(false);
 	const auth = useAuth();
-
+	const location = useLocation();
+	console.log(location);
 	return (
 		<nav className="w-full bg-black shadow fixed h-16 z-10">
 			<div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
 				<div>
 					<div className="flex items-center justify-between py-3 md:block">
-						<div className='flex '>
-							<Link to={"/home"}>
+						<div className="flex ">
+							<Link to={'/home'}>
 								<img src={logo} alt="logo" className="w-20" />
 							</Link>
-							<SearchBar />
+							{location.pathname === '/message' ? null : <SearchBar />}
 						</div>
 						<div className="md:hidden">
 							<button
@@ -80,10 +83,21 @@ export default function NavBar() {
 													? 'flex items-center p-2 border border-white font-medium rounded-lg'
 													: 'flex items-center p-2 text-white border border-black font-medium rounded-lg transition duration:200 hover:shadow-sm hover:shadow-gray'
 											}
-											onClick={route.page === "LOGOUT" ? () => auth.logout() : null}
+											onClick={
+												route.page === 'LOGOUT' ? () => auth.logout() : null
+											}
 										>
-											<i className={`bi ${route.icon} text-2xl `}></i>
-											<span>&nbsp;&nbsp;{route.page}</span>
+											{route.page === 'PROFILE' ? (
+												<img
+													src={profilePicture}
+													className="w-16 rounded-full"
+												/>
+											) : (
+												<i className={`bi ${route.icon} text-2xl `}></i>
+											)}
+											{route.page === 'PROFILE' ? null : (
+												<span>&nbsp;&nbsp;{route.page}</span>
+											)}
 										</NavLink>
 									</li>
 								);
