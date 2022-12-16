@@ -7,8 +7,8 @@ function Chats() {
   return (
     <main className={styles.page_Chats}>
       <div className={styles.sections_Preview_Page}>
-        <PreviewMesagge title={"Messages"} messages={messagess} />
-        <PreviewMesagge title={"Matchs"} messages={messagessGroup} />
+        <PreviewMesagge title={"Messages"} messages={messagess} messagesGroup={messagessGroup} />
+        {/* <PreviewMesagge title={"Matchs"} messages={messagessGroup} /> */}
       </div>
       <Outlet />
     </main>

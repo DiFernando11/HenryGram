@@ -1,5 +1,12 @@
 import { sendMessage } from "../../components/PageChats/utils";
-import { SEND_MESSAGE, CREATE_USER, LOGIN } from "../actions";
+import {
+  SEND_MESSAGE,
+  CREATE_USER,
+  LOGIN,
+  LOGOUT,
+  VERIFY_USER_TOKEN,
+  GET_PROFILE_FRIEND,
+} from "../actions";
 
 const initialState = {
   messageChats: [
@@ -87,8 +94,10 @@ const initialState = {
       ],
     },
   ],
-  createUser:[],
-  userLogin:{}
+  createUser: [],
+  userLogin: null,
+  userInformation: null,
+  userProfileFriend: {},
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -99,18 +108,38 @@ const rootReducer = (state = initialState, action) => {
         messages: sendMessage(state.messageChats, action.id, action.payload),
       };
     }
-    case CREATE_USER:{
+    //User Information
+    case CREATE_USER: {
       return {
         ...state,
-        createUser: action.payload
-      }
+        createUser: action.payload,
+      };
     }
-    case LOGIN:{
-      return{
+    case LOGIN: {
+      return {
         ...state,
-        userLogin: action.payload
-      }
+        userLogin: action.payload,
+      };
     }
+    case LOGOUT: {
+      return {
+        ...state,
+        userLogin: null,
+      };
+    }
+    case VERIFY_USER_TOKEN: {
+      return {
+        ...state,
+        userInformation: action.payload,
+      };
+    }
+    case GET_PROFILE_FRIEND: {
+      return {
+        ...state,
+        userProfileFriend: action.payload,
+      };
+    }
+    //User Information
     default:
       return state;
   }

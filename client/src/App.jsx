@@ -3,6 +3,7 @@ import './App.css';
 import { AuthProvider, AuthRoute, NotAuthRoute } from './components/auth';
 import Logout from './components/Logout';
 
+
 import Profile from './components/PageProfile/Profile';
 import Chats from './components/PageChats/Chats';
 import Landing from './components/Landing';
@@ -65,6 +66,7 @@ function App() {
 				>
 					<Route path=":idUser" element={<Messages />} />
 				</Route>
+
 
 				<Route
 					path="/logout"

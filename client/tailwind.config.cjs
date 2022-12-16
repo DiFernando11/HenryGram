@@ -20,6 +20,12 @@ module.exports = {
       backgroundImage: {
         background: "url('./src/assets/fondo2.png')",
       },
+	    width: {
+		    validate: '40%',
+	    },
+	  	height: {
+			  validate: '40%',
+		  },
     },
   },
   plugins: [require("flowbite/plugin")],

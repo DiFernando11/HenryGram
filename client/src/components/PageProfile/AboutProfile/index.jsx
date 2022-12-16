@@ -1,12 +1,27 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import AvatarStack from "../../PageChats/AvatarStack";
 import FavoriteActivities from "../FavoriteActivities";
 import OverYou from "../OverYou";
 
-function AboutProfile() {
+function AboutProfile({ userInformation, isFriend }) {
   return (
     <section className="w-2/5 border-r  border-zinc-700 p-4 calcViewHeightPageProfile">
-      <h1 className="text-white mb-5 ml-2 text-lg">DIEGO APOLO</h1>
+      <div className="flex items-center mb-8 ml-2 justify-between ">
+        <div className="flex gap-2 items-center">
+          <h1 className="text-white text-lg">
+            {userInformation?.firstName} {userInformation?.lastName}
+          </h1>
+          {userInformation?.gender === "male" ? (
+            <i className="bi bi-gender-male text-blue-500"></i>
+          ) : (
+            <i className="bi bi-gender-female text-pink-500"></i>
+          )}
+        </div>
+        {isFriend && (
+          <span className="text-yellow cursor-pointer">+ Seguir</span>
+        )}
+      </div>
       <div className="flex justify-between mb-3">
         <span className="text-sm">Friends</span>
         <span className="text-sm">Matchs</span>
@@ -15,11 +30,14 @@ function AboutProfile() {
         <AvatarStack avatars={avatars} />
         <AvatarStack avatars={avatars} />
       </div>
-
-      <h2 className="text-white text-center  mt-5 mb-3">About Me</h2>
-      <OverYou />
-      <h4 className="text-white text-center  mt-5 mb-4">Preferences</h4>
-      <FavoriteActivities />
+      {!isFriend && (
+        <div>
+          <h2 className="text-white text-center  mt-5 mb-3">About Me</h2>
+          <OverYou />
+          <h4 className="text-white text-center  mt-5 mb-4">Preferences</h4>
+          <FavoriteActivities />
+        </div>
+      )}
     </section>
   );
 }

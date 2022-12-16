@@ -3,10 +3,10 @@ POST http://localhost:3000/api/users HTTP/1.1
 Content-Type: application/json
 
 {
-    "firstName": "John",
-    "lastName": "Doe",
-    "email": "john@gmail.com",
-    "password": "123",
+    "firstName": "Nacho",
+    "lastName": "Berridy",
+    "email": "nachoberridy1997@gmail.com",
+    "password": "062527",
     "gender": "male"
 }
 
@@ -27,8 +27,8 @@ POST http://localhost:3000/api/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "password": "145",
-    "email": "john@gmail.com"
+    "password": "062527",
+    "email": "nachoberridy1997@gmail.com"
 }
 
 

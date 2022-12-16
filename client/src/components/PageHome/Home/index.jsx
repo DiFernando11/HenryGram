@@ -1,23 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import HeaderHome from "../HeaderHome";
 import Post from "../Post";
 import RecommendedFriends from "../RecommendedFriends";
+import { useAuth } from "../../auth/index";
+
 
 function Home() {
-  const [isMatch, setIsMatch] = useState(false);
-  const handleIsMatch = () => {
-    setIsMatch(true);
-    setTimeout(() => setIsMatch(false), 2000);
+  const auth = useAuth();
+
+  const handleClick = () => {
+    auth.logout();
   };
+
   return (
     <main className={"w-full flex "}>
-      {isMatch && (
-        <img
-          src="https://www.gifss.com/fuego/artificiales/images/fuegos-artificiales-15.gif"
-          className="absolute z-10 w-2/3 h-full inset-0 m-auto"
-          alt="logo match"
-        />
-      )}
+      <button className="text-white" onClick={handleClick}>
+        Elminar
+      </button>
 
       <div className="w-full">
         {/* <HeaderHome /> */}
@@ -31,7 +30,6 @@ function Home() {
                 message={post.message}
                 user={post.user}
                 imagePost={post.imagePost}
-                handleIsMatch={handleIsMatch}
               />
             ))}
         </div>
@@ -40,6 +38,7 @@ function Home() {
     </main>
   );
 }
+
 const posts = [
   {
     id: 1,
