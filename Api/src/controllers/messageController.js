@@ -1,5 +1,6 @@
 const { get } = require('mongoose');
 const MessageSchema = require('../models/Message');
+const UserSchema = require('../models/User');
 const { off } = require('../server');
 
 const getAllMessage = async (req, res, next) => {
@@ -8,7 +9,6 @@ const getAllMessage = async (req, res, next) => {
         const { from, to, limit } = req.body;
         const offset = 0;
 
-
         const messages = await MessageSchema.find({
             users: {
                 $all: [from, to],
@@ -16,7 +16,7 @@ const getAllMessage = async (req, res, next) => {
         }).sort({ updatedAt: 1 });
 
         const twentyMessages = messages.slice(offset, offset + limit);
-        
+
 
         const projectedMessages = twentyMessages.map((msg) => {
             return {
@@ -40,6 +40,16 @@ const addMessage = async (req, res, next) => {
 
     try {
         const { from, to, message } = req.body;
+
+        const userA = await UserSchema.findOneAndUpdate(
+            { _id: from },
+            { $addToSet: { messages: to } }
+        )
+
+        const userB = await UserSchema.findOneAndUpdate(
+            { _id: to },
+            { $addToSet: { messages: from } }
+        )
 
         const data = await MessageSchema.create({
             message: { text: message },

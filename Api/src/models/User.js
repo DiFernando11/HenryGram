@@ -28,6 +28,9 @@ const UserSchema = schema({
     friends: [
         { type: mongoose.Schema.Types.ObjectId, ref: 'Friend' }
     ],
+    messages: [
+        { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    ],
     rol: {
         type: String,
         enum: ['admin', 'user'],
