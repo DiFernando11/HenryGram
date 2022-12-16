@@ -14,6 +14,22 @@ import SideBar from './components/SideBar';
 import NavBar from './components/NavBar/NavBar';
 
 function App() {
+  const [saveTokenData, setSaveTokenData] = useState(null);
+  const dispatch = useDispatch();
+  
+  const getData = () => {
+    return localStorage.getItem("sessionStarted");
+  };
+  useEffect(() => {
+    (async () => {
+      setSaveTokenData(getData());
+      if (saveTokenData) {
+        await dispatch(verifyUserAction(saveTokenData));
+      }
+    })();
+  }, [saveTokenData]);
+
+
 	return (
 		<AuthProvider>
 			<Routes>
@@ -66,7 +82,6 @@ function App() {
 				>
 					<Route path=":idUser" element={<Messages />} />
 				</Route>
-
 
 				<Route
 					path="/logout"
