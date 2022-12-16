@@ -9,7 +9,7 @@ function RecommendedFriends() {
         <h3 className="text-white">People you can match</h3>
         <img src={logoMatch} className="w-6 h-6" alt="logo match" />
       </div>
-      <div className="calcViewHeight">
+      <div className="calcViewHeightRecommendedeFriends">
         {messages.map((message, index) => (
           <CardPreviewMessage
             key={index}

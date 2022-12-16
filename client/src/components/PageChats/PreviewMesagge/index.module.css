@@ -1,10 +1,9 @@
 .container_preview_message {
-  margin-top: 50px;
   margin-left: 12px;
   margin-bottom: 12px;
   padding: 8px;
   background-color: #242424;
-  height: calc(100vh - 62px);
+  height: calc(100vh - 4rem);
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
@@ -21,5 +20,4 @@
   overflow-y: scroll;
   /* mix-blend-mode: overlay; */
 
-  height: 70%;
 }
