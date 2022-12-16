@@ -6,6 +6,7 @@ import {
   LOGOUT,
   VERIFY_USER_TOKEN,
   GET_PROFILE_FRIEND,
+  GET_USERS_INFORMATION,
 } from "../actions";
 
 const initialState = {
@@ -98,6 +99,7 @@ const initialState = {
   userLogin: null,
   userInformation: null,
   userProfileFriend: {},
+  searchUser: [],
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -133,13 +135,24 @@ const rootReducer = (state = initialState, action) => {
         userInformation: action.payload,
       };
     }
+    //User Information
+    //FRIENDS
     case GET_PROFILE_FRIEND: {
       return {
         ...state,
         userProfileFriend: action.payload,
       };
     }
-    //User Information
+    //FIRENDS
+    //SEARCH
+    case GET_USERS_INFORMATION: {
+      return {
+        ...state,
+        searchUser: action.payload,
+      };
+    }
+    //SEARCH
+
     default:
       return state;
   }

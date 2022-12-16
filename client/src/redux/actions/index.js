@@ -5,6 +5,7 @@ export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 export const VERIFY_USER_TOKEN = "VERIFY_USER_TOKEN";
 export const GET_PROFILE_FRIEND = "GET_PROFILE_FRIEND";
+export const GET_USERS_INFORMATION = "GET_USERS_INFORMATION";
 
 ////CHATS
 export const sendMessagesAction = (id, payload) => {
@@ -73,5 +74,13 @@ export const getProfileFriendAction = (idUser) => {
       console.log(error);
     }
   };
+};
+export const searchUsersAction = async () => {
+  try {
+    const result = await axios.get(`http://localhost:3000/api/users/`);
+    return dispatch({ type: GET_USERS_INFORMATION, payload: result.data });
+  } catch (error) {
+    console.log(error);
+  }
 };
 //FRIENDS

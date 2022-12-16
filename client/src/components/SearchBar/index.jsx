@@ -1,6 +1,7 @@
 import React from "react";
 
 function SearchBar() {
+  
   return (
     <form className="flex items-center">
       <label htmlFor="simple-search" className="sr-only">
