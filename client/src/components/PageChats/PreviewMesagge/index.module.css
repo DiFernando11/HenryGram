@@ -3,7 +3,6 @@
   margin-bottom: 12px;
   padding: 8px;
   background-color: #242424;
-  height: calc(100vh - 4rem);
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
@@ -19,5 +18,5 @@
   overflow-x: hidden;
   overflow-y: scroll;
   /* mix-blend-mode: overlay; */
-
+  height: calc(100vh - 16rem);
 }
