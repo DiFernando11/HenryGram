@@ -19,6 +19,7 @@ import ProfileFriends from "./components/PageProfile/ProfileFriends";
 function App() {
   const [saveTokenData, setSaveTokenData] = useState(null);
   const dispatch = useDispatch();
+  
   const getData = () => {
     return localStorage.getItem("sessionStarted");
   };
@@ -31,7 +32,7 @@ function App() {
     })();
   }, [saveTokenData]);
 
-  
+
   return (
     <AuthProvider>
       <Routes>
