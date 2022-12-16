@@ -1,12 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import {
-  AuthProvider,
-  AuthRoute,
-  NotAuthRoute,
-} from "./components/auth";
+import { AuthProvider, AuthRoute, NotAuthRoute } from "./components/auth";
 import Logout from "./components/Logout";
-
 
 import Chats from "./components/PageChats/Chats";
 import Landing from "./components/Landing";
@@ -28,10 +23,12 @@ function App() {
     return localStorage.getItem("sessionStarted");
   };
   useEffect(() => {
-    setSaveTokenData(getData());
-    if (saveTokenData) {
-      dispatch(verifyUserAction(saveTokenData));
-    }
+    (async () => {
+      setSaveTokenData(getData());
+      if (saveTokenData) {
+        await dispatch(verifyUserAction(saveTokenData));
+      }
+    })();
   }, [saveTokenData]);
 
   return (
