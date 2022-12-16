@@ -6,12 +6,12 @@ import Profile from "../Profile";
 
 function ProfileFriends() {
   const userProfileFriend = useSelector((state) => state.userProfileFriend);
-
   const { id } = useParams();
-  console.log(id, "idUser");
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getProfileFriendAction(id));
+    (async () => {
+      dispatch(getProfileFriendAction(id));
+    })();
   }, [id]);
   return <Profile userInformation={userProfileFriend} />;
 }

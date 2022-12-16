@@ -2,7 +2,7 @@ import React from "react";
 //import logoUploadImage from "../../../assets/subirImage.png";
 import logoUploadImage from "../../../assets/camera.png";
 
-function HeaderProfile() {
+function HeaderProfile({ isFriend }) {
   return (
     <header className="relative h-36">
       <img
@@ -16,13 +16,25 @@ function HeaderProfile() {
           src="https://fondosmil.com/fondo/17012.jpg"
           alt="avatar User"
         />
-        <div className="bg-amber-300 w-12 h-12 absolute -bottom-2 -right-2  rounded-full flex items-center justify-center">
-          <img className="w-10 h-10" src={logoUploadImage} alt="upload image" />
+        {!isFriend && (
+          <div className="bg-amber-300 w-12 h-12 absolute -bottom-2 -right-2  rounded-full flex items-center justify-center">
+            <img
+              className="w-10 h-10"
+              src={logoUploadImage}
+              alt="upload image"
+            />
+          </div>
+        )}
+      </div>
+      {!isFriend && (
+        <div className="bg-amber-300 w-16 h-16 absolute right-8 top-4 rounded-full flex items-center justify-center">
+          <img
+            className="w-14 h-14 "
+            src={logoUploadImage}
+            alt="upload image"
+          />
         </div>
-      </div>
-      <div className="bg-amber-300 w-16 h-16 absolute right-8 top-4 rounded-full flex items-center justify-center">
-        <img className="w-14 h-14 " src={logoUploadImage} alt="upload image" />
-      </div>
+      )}
     </header>
   );
 }

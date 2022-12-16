@@ -3,7 +3,7 @@
   margin-bottom: 12px;
   padding: 8px;
   background-color: #242424;
-  height: calc(50vh - 12px);
+  height: calc(100vh - 12px);
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
