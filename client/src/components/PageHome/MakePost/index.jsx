@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Modal } from "flowbite-react";
 import logoMatch from "../../../assets/coheteHenry.png";
+import { uploadImage } from "../../helpers/uploadImage";
+const giftUpload =
+  "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921";
 function MakePost() {
+  const [imagePost, setImagePost] = useState("");
+  const [loadingPostImage, setLoadingPostImage] = useState(false);
   const [show, setShow] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [selectTypePost, setSelectTypePost] = useState("");
@@ -19,6 +24,9 @@ function MakePost() {
     setInfoPost({ ...infoPost, description: e.target.value });
   };
 
+  const handleSavePostImage = (e) => {
+    uploadImage(e, setLoadingPostImage, setImagePost);
+  };
   return (
     <React.Fragment>
       <i
@@ -98,6 +106,7 @@ function MakePost() {
                           id="file-input"
                           name="foto"
                           type="file"
+                          onChange={handleSavePostImage}
                           className="hidden"
                         />
                       </button>
@@ -127,11 +136,13 @@ function MakePost() {
                     required
                   ></textarea>
                 </div>
-                <img
-                  className="w-full h-44 object-cover"
-                  src="https://static.eldiario.es/clip/71d118ff-5ef2-449c-be8a-6c321304fa70_16-9-aspect-ratio_default_0.jpg"
-                  alt="post image"
-                />
+                {!loadingPostImage && !imagePost ? null : (
+                  <img
+                    className="w-full h-44 object-cover"
+                    src={loadingPostImage ? giftUpload : imagePost}
+                    alt="post image"
+                  />
+                )}
               </div>
               <button
                 type="submit"
