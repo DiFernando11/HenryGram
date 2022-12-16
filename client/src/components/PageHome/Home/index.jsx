@@ -19,8 +19,8 @@ function Home() {
       </button>
 
       <div className="w-full">
-        <HeaderHome />
-        <div className="calcViewHeight">
+        {/* <HeaderHome /> */}
+        <div className="calcViewHeight mt-16">
           {posts.length &&
             posts.map((post) => (
               <Post
