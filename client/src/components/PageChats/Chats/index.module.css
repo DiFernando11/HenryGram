@@ -2,7 +2,7 @@
   display: flex;
   width: 100%;
   background-image: url("https://unageek.com/wp-content/uploads/2020/03/Fondo_pantalla_chat_WA_StarWars_UnaGeek_Oscuro.jpg"); 
-  height: 100vh;
+  height: calc(100vh - 4rem);
 }
 .sections_Preview_Page {
   width: 30%;
