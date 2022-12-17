@@ -6,6 +6,8 @@ import {
   LOGOUT,
   VERIFY_USER_TOKEN,
   GET_PROFILE_FRIEND,
+  POST_USER,
+  CLEAN_POST
 } from "../actions";
 
 const initialState = {
@@ -98,6 +100,7 @@ const initialState = {
   userLogin: null,
   userInformation: null,
   userProfileFriend: {},
+  postUser: {}
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -138,6 +141,18 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         userProfileFriend: action.payload,
       };
+    }
+    case POST_USER: {
+      return{ 
+        ...state,
+        postUser: action.payload
+      }
+    }
+    case CLEAN_POST: {
+      return{
+        ...state,
+        postUser: {}
+      }
     }
     //User Information
     default:

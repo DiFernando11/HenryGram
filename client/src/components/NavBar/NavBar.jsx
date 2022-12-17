@@ -16,7 +16,6 @@ export default function NavBar() {
 	const [navbar, setNavbar] = useState(false);
 	const auth = useAuth();
 	const location = useLocation();
-	console.log(location);
 	return (
 		<nav className="w-full bg-black shadow fixed h-16 z-10">
 			<div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
@@ -26,7 +25,7 @@ export default function NavBar() {
 							<Link to={'/home'}>
 								<img src={logo} alt="logo" className="w-20" />
 							</Link>
-							{location.pathname === '/message' ? null : <SearchBar />}
+							<SearchBar />
 						</div>
 						<div className="md:hidden">
 							<button
@@ -73,19 +72,20 @@ export default function NavBar() {
 						}`}
 					>
 						<ul className="bg-black items-center rounded justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
-							{routes.map((route) => {
+							{routes.map((route, index) => {
 								return (
-									<li className="text-white">
+									<li key={index} className="text-white">
+										
 										<NavLink
 											to={route.to}
 											className={({ isActive }) =>
-												isActive
-													? 'flex items-center p-2 border border-white font-medium rounded-lg'
-													: 'flex items-center p-2 text-white border border-black font-medium rounded-lg transition duration:200 hover:shadow-sm hover:shadow-gray'
-											}
-											onClick={
-												route.page === 'LOGOUT' ? () => auth.logout() : null
-											}
+											isActive
+											? 'flex items-center p-2 border border-white font-medium rounded-lg'
+											: 'flex items-center p-2 text-white border border-black font-medium rounded-lg transition duration:200 hover:shadow-sm hover:shadow-gray'
+										}
+										onClick={
+											route.page === 'LOGOUT' ? () => auth.logout() : null
+										}
 										>
 											{route.page === 'PROFILE' ? (
 												<img
