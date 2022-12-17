@@ -22,9 +22,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-#root {
-  display: flex;
-}
 
 /* a {
   font-weight: 500;
@@ -61,10 +58,15 @@ span {
   height: calc(100vh - 4rem);
   overflow-y: scroll;
 }
-.calcViewHeightPageProfile {
-  height: calc(100vh - 9rem);
+.calcViewHeightRecommendedeFriends {
+  height: calc(100vh - 8rem);
   overflow-y: scroll;
 }
+.calcViewHeightPageProfile {
+  height: calc(100vh - 13rem);
+  overflow-y: scroll;
+}
+
 body {
   background-color: #363636;
 }

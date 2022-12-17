@@ -1,6 +1,5 @@
-import { sendMessage } from "../../components/PageChats/utils";
+import { searchFriendHelp } from "../../components/helpers/searchFriends";
 import {
-  SEND_MESSAGE,
   CREATE_USER,
   LOGIN,
   LOGOUT,
@@ -8,109 +7,30 @@ import {
   GET_PROFILE_FRIEND,
   POST_USER,
   CLEAN_POST
+  GET_USERS_INFORMATION,
+  GET_CHATS_ACTION,
+  GET_CHAT_BY_USER,
+  SEND_MESSAGE_BACK,
+  ADD_CHAT_PREVENT_ACTION,
+  SEARCH_USER,
+
 } from "../actions";
 
 const initialState = {
-  messageChats: [
-    {
-      id: 1,
-      idUser: 1,
-      image:
-        "https://gamer-commerce.vercel.app/static/media/FacundoMartinez.d850a2c1.jpeg",
-      name: "Facundo Martinez",
-      messages: [
-        {
-          id: 1,
-          idUser: 1,
-          message: "Hi guys, have your completed your design",
-        },
-        { id: 2, idUser: 1, message: "Hello" },
-        { id: 3, idUser: 1, message: "My name is Facu" },
-        { id: 4, idUser: 2, message: "My name is Diego" },
-      ],
-    },
-    {
-      id: 2,
-      idUser: 3,
-      image:
-        "https://gamer-commerce.vercel.app/static/media/AndresOlarte.0b566e29.jpeg",
-      name: "Andres Aldao",
-      messages: [
-        {
-          id: 1,
-          idUser: 3,
-          message: "Hi guys, have your completed your design",
-        },
-        { id: 2, idUser: 3, message: "Hello" },
-        { id: 3, idUser: 2, message: "Hello" },
-        { id: 4, idUser: 3, message: "My name is Andres" },
-      ],
-    },
-    {
-      id: 3,
-      idUser: 4,
-      image:
-        "https://gamer-commerce.vercel.app/static/media/LuisLazarte.1a5c228c.jpeg",
-      name: "Luis Lazarte",
-      messages: [
-        {
-          id: 1,
-          idUser: 4,
-          message: "Hi guys, have your completed your design",
-        },
-        { id: 2, idUser: 4, message: "Hello" },
-        { id: 3, idUser: 4, message: "My name is Luis Lazarte" },
-      ],
-    },
-    {
-      id: 4,
-      idUser: 5,
-      image:
-        "https://gamer-commerce.vercel.app/static/media/RogerPf.d7086f5b.jpeg",
-      name: "Roger Perez",
-      messages: [
-        {
-          id: 1,
-          idUser: 5,
-          message: "Hi guys, have your completed your design",
-        },
-        { id: 2, idUser: 5, message: "Hello" },
-        { id: 3, idUser: 5, message: "my name is Roger Perez" },
-        { id: 4, idUser: 2, message: "Hello roger" },
-      ],
-    },
-    {
-      id: 5,
-      idUser: 6,
-      image:
-        "https://gamer-commerce.vercel.app/static/media/EmmanuelRomo.b21b242f.jpeg",
-      name: "Nacho",
-      messages: [
-        {
-          id: 1,
-          idUser: 6,
-          message: "Hi guys, have your completed your design",
-        },
-        { id: 2, idUser: 6, message: "Hello" },
-        { id: 3, idUser: 6, message: "My name is Nacho" },
-      ],
-    },
-  ],
   createUser: [],
   userLogin: null,
   userInformation: null,
   userProfileFriend: {},
   postUser: {}
+  usersInformationFriends: [],
+  // copyUsersInformationFriends: [],
+  searchUser: [],
+  chatUsers: [],
+  chatPrevent: [],
+  chatByUser: [],
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    //CHATS
-    case SEND_MESSAGE: {
-      return {
-        ...state,
-        messages: sendMessage(state.messageChats, action.id, action.payload),
-      };
-    }
     //User Information
     case CREATE_USER: {
       return {
@@ -136,6 +56,8 @@ const rootReducer = (state = initialState, action) => {
         userInformation: action.payload,
       };
     }
+    //User Information
+    //FRIENDS
     case GET_PROFILE_FRIEND: {
       return {
         ...state,
@@ -155,6 +77,46 @@ const rootReducer = (state = initialState, action) => {
       }
     }
     //User Information
+    //SEARCH
+    case GET_USERS_INFORMATION: {
+      return {
+        ...state,
+        usersInformationFriends: action.payload,
+      };
+    }
+    case SEARCH_USER: {
+      return {
+        ...state,
+        searchUser: searchFriendHelp(action.payload, state.usersInformationFriends),
+      };
+    }
+    //SEARCH
+    //FIRENDS
+    //CHAT
+    case GET_CHATS_ACTION: {
+      return {
+        ...state,
+        chatUsers: action.payload,
+      };
+    }
+    case ADD_CHAT_PREVENT_ACTION: {
+      return {
+        ...state,
+        chatPrevent: [...state.chatPrevent, action.payload],
+      };
+    }
+    case GET_CHAT_BY_USER: {
+      return {
+        ...state,
+        chatByUser: action.payload,
+      };
+    }
+    case SEND_MESSAGE_BACK: {
+      return {
+        ...state,
+      };
+    }
+    //CHAT
     default:
       return state;
   }

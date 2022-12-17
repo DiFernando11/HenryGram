@@ -33,7 +33,7 @@
 }
 
 .messagesSent {
-  height: calc(100vh - 132px);
+  height: calc(100vh - 12rem);
   padding: 12px;
   overflow-y: scroll;
   scroll-behavior: smooth;

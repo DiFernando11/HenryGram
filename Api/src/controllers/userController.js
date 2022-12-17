@@ -197,11 +197,15 @@ const LogIn = async (req, res) => {
 const getFriendship = async (req, res) => {
   /*
         Controlador de la Ruta para obtener las amistades (amigos, pendientes, esperando)
-    */
+  */
 
   const { id } = req.params;
 
+  if (id.length !== 24) return res.status(404).json({ message: "Chat not found" });
+
   const f = await UserSchema.findOne({ _id: id }, { friends: 1 });
+
+  if (!f) return res.status(404).json({ message: "Chat not found" });
 
   Promise.resolve(f.friends)
     .then((value) => {
@@ -221,8 +225,45 @@ const getFriendship = async (req, res) => {
     })
     .catch((e) => {
       console.log(e);
+      return res.status(404).json({ message: "Friendship not found" });
     });
 };
+
+const getChat = async (req, res) => {
+  /*
+       Controlador de la Ruta para obtener el chat de un usuario
+  */
+
+  const { id } = req.params;
+
+  if (id.length !== 24) return res.status(404).json({ message: "Chat not found" });
+
+  const m = await UserSchema.findOne({ _id: ObjectId(id) }, { messages: 1 });
+
+  if (!m) return res.status(404).json({ message: "Chat not found" });
+
+  Promise.resolve(m.messages)
+    .then((value) => {
+      let response = Promise.all(
+        value.map(async (el) => {
+          return await UserSchema.findOne({ _id: ObjectId(el.valueOf()) }, { firstName: 1, avatar: 1 });
+        })
+      );
+      return response;
+    })
+    .then((result) => {
+      if (result.length) {
+        return res.status(200).json(result);
+      } else {
+        return res.status(404).json({ message: "Chat not found" });
+      }
+    })
+    .catch((e) => {
+      console.log(e)
+      return res.status(404).json({ message: "Chat not found" });
+    });
+};
+
 
 module.exports = {
   postUser,
@@ -233,4 +274,5 @@ module.exports = {
   getFriendship,
   validateUser,
   getUserByToken,
+  getChat
 };

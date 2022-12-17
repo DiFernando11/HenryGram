@@ -2,20 +2,17 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import { AuthProvider, AuthRoute, NotAuthRoute } from "./components/auth";
 import Logout from "./components/Logout";
-
-import Profile from "./components/PageProfile/Profile";
 import Chats from "./components/PageChats/Chats";
 import Landing from "./components/Landing";
 import Register from "./components/Register";
 import Messages from "./components/PageChats/Mesagge";
 import Home from "./components/PageHome/Home";
-import SideBar from "./components/SideBar";
 import ProfileUser from "./components/PageProfile/ProfileUser/index";
 import ProfileFriends from "./components/PageProfile/ProfileFriends/index";
 import NavBar from "./components/NavBar/NavBar";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { verifyUserAction } from "./redux/actions";
+import { getInformationUsersAction, verifyUserAction } from "./redux/actions";
 
 function App() {
   const [saveTokenData, setSaveTokenData] = useState(null);
@@ -24,15 +21,20 @@ function App() {
   const getData = () => {
     return localStorage.getItem("sessionStarted");
   };
+
   useEffect(() => {
     (async () => {
       setSaveTokenData(getData());
+      // dispatch(searchUsersAction());
       if (saveTokenData) {
         await dispatch(verifyUserAction(saveTokenData));
       }
     })();
   }, [saveTokenData]);
 
+  useEffect(() => {
+    dispatch(getInformationUsersAction());
+  }, []);
   return (
     <AuthProvider>
       <Routes>
@@ -93,7 +95,7 @@ function App() {
             </AuthRoute>
           }
         >
-          <Route path=":idUser" element={<Messages />} />
+          <Route path="chat/:id" element={<Messages />} />
         </Route>
 
         <Route

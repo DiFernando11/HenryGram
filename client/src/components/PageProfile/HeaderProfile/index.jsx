@@ -2,12 +2,10 @@ import React, { useState } from "react";
 //import logoUploadImage from "../../../assets/subirImage.png";
 import logoUploadImage from "../../../assets/camera.png";
 import { uploadImage } from "../../helpers/uploadImage";
-const imageDefault = "https://fondosmil.com/fondo/17012.jpg";
-const bannerDefault =
-  "https://unageek.com/wp-content/uploads/2020/03/Fondo_pantalla_chat_WA_StarWars_UnaGeek_Oscuro.jpg";
 const giftUpload =
   "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921";
-function HeaderProfile({ isFriend }) {
+function HeaderProfile({ isFriend, userInformation }) {
+  console.log(userInformation);
   const [avatarUser, setAvatarUser] = useState("");
   const [loadingAvatar, setLoadingAvatar] = useState(false);
   const [bannerUser, setBannerUser] = useState("");
@@ -22,13 +20,15 @@ function HeaderProfile({ isFriend }) {
     <header className="relative h-36">
       <img
         className="w-full h-36 object-cover absolute "
-        src={loadingBanner ? giftUpload : bannerUser || bannerDefault}
+        src={loadingBanner ? giftUpload : bannerUser || userInformation?.banner}
         alt="Portada User"
       />
       <div className="absolute">
         <img
           className="w-32 h-32 object-cover rounded-full relative ml-5 top-1.5"
-          src={loadingAvatar ? giftUpload : avatarUser || imageDefault}
+          src={
+            loadingAvatar ? giftUpload : avatarUser || userInformation?.avatar
+          }
           alt="avatar User"
         />
         {!isFriend && (

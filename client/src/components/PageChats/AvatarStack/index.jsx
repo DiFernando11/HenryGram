@@ -8,6 +8,7 @@ function AvatarStack({ avatars }) {
         avatars
           .map((avatar, index) => (
             <Link key={index} to={"/profile/639b57d15871ad62a8b88c2d"}>
+
               <img
                 
                 className="inline-block h-6 w-6 rounded-full ring-2 cursor-pointer border-2 border-yellow"

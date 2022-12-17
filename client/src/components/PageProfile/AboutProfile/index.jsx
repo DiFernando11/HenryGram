@@ -1,10 +1,23 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { addChatBackAction} from "../../../redux/actions";
 import AvatarStack from "../../PageChats/AvatarStack";
 import FavoriteActivities from "../FavoriteActivities";
 import OverYou from "../OverYou";
 
 function AboutProfile({ userInformation, isFriend }) {
+  
+  const dispatch = useDispatch();
+  const handleRedirectChatUser = () => {
+    dispatch(
+      addChatBackAction({
+        avatar: userInformation?.avatar,
+        firstName: userInformation.firstName,
+        _id: userInformation?._id,
+      })
+    );
+  };
   return (
     <section className="w-2/5 border-r  border-zinc-700 p-4 calcViewHeightPageProfile">
       <div className="flex items-center mb-8 ml-2 justify-between ">
@@ -19,7 +32,17 @@ function AboutProfile({ userInformation, isFriend }) {
           )}
         </div>
         {isFriend && (
-          <span className="text-yellow cursor-pointer">+ Seguir</span>
+          <div className="flex gap-6 items-center">
+            <Link to={`/message/chat/${userInformation?._id}`}>
+              <i
+                onClick={handleRedirectChatUser}
+                className="bi bi-chat-dots-fill text-yellow text-2xl"
+                title="Send message"
+              ></i>
+            </Link>
+
+            <span className="text-yellow cursor-pointer">+ Seguir</span>
+          </div>
         )}
       </div>
       <div className="flex justify-between mb-3">

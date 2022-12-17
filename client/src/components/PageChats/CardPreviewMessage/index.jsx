@@ -3,10 +3,11 @@ import { NavLink } from "react-router-dom";
 import logoMatch from "../../../assets/coheteHenry.png";
 import styles from "./index.module.css";
 
-function CardPreviewMessage({ id, image, message, name, time }) {
+function CardPreviewMessage({ id, image, name }) {
   return (
     <NavLink
-      to={`/message/${id}`}
+      to={`/message/chat/${id}`}
+      state={{ id, image, name }}
       style={({ isActive }) =>
         isActive
           ? {
@@ -29,11 +30,11 @@ function CardPreviewMessage({ id, image, message, name, time }) {
 
         <div className="items-center self-center font-bold">
           <span className="block leading-5">{name}</span>
-          <span className={styles.textMessage}>{message}</span>
-          <span className="m-1 mr-2 mt-3.5 absolute top-0 right-0 text-xs ">
+          <span className={styles.textMessage}>message Predeterminado</span>
+          {/* <span className="m-1 mr-2 mt-3.5 absolute top-0 right-0 text-xs ">
             {time}
-          </span>
-          {time ? (
+          </span> */}
+          {/* {time ? (
             <i className="bi bi-check2-all m-1 mr-3 absolute bottom-0 right-0"></i>
           ) : (
             <img
@@ -41,7 +42,7 @@ function CardPreviewMessage({ id, image, message, name, time }) {
               className="m-1 mr-3 mb-4 absolute bottom-0 right-0 w-8 h-8"
               alt="button match"
             />
-          )}
+          )} */}
         </div>
       </div>
     </NavLink>

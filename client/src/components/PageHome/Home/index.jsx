@@ -8,7 +8,7 @@ function Home() {
 		<main className={'w-full flex '}>
 			<div className="w-full">
 				{/* <HeaderHome /> */}
-				<div className="calcViewHeight mt-16">
+				<div className="calcViewHeight ">
 					{posts.length &&
 						posts.map((post) => (
 							<Post
