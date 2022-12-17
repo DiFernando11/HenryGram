@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { searchUserAction } from "../../redux/actions";
 
 function SearchBar() {
-  
+  const [searchFriend, setSearchFriend] = useState("");
+  const dispatch = useDispatch();
+  const handleChangeInfoUsers = (e) => {
+    e.preventDefault();
+    setSearchFriend(e.target.value);
+    dispatch(searchUserAction(e.target.value));
+  };
+  const handleDeleteSearch = () => {
+    setSearchFriend("");
+    setTimeout(() => {
+      dispatch(searchUserAction(""));
+    }, 100);
+  };
   return (
     <form className="flex items-center">
       <label htmlFor="simple-search" className="sr-only">
@@ -16,7 +30,11 @@ function SearchBar() {
           id="simple-search"
           className="block w-11/12 p-2 pl-12 text-sm text-white border rounded-2xl  bg-zinc-900 border-amber-200 m-auto"
           placeholder="Search"
+          onChange={(e) => handleChangeInfoUsers(e)}
+          onBlur={handleDeleteSearch}
           required
+          autoComplete="off"
+          value={searchFriend}
         />
       </div>
     </form>

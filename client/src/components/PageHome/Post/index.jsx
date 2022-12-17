@@ -12,7 +12,7 @@ function Post({ type, seguir, message, user, imagePost }) {
         </div>
       )}
       <i className="bi bi-three-dots text-yellow-300 absolute top-0 right-0 mr-8 text-2xl text-yellow"></i>
-      <div className="border-t border-amber-300 pt-4 flex gap-2.5 relative">
+      <div className="border-t border-neutral-600 pt-4 flex gap-2.5 relative">
         <img
           className="w-10 h-10 rounded-full object-cover"
           src={user.image}
