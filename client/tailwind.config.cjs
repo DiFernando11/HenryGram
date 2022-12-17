@@ -8,12 +8,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        yellow: "rgb(255, 255, 1)",
+        yellow: "#fcd34d",
         black: "#1e1c1d",
         white: "#fafbfd",
         gray: "#cdcdcd",
         blacker: "#171717",
-        yellower: "#ebeb02",
+        yellower: "#f59e0b",
         danger: "#CA0B00",
         white: "#f4f4f4"
       },
