@@ -6,7 +6,7 @@ import {
   VERIFY_USER_TOKEN,
   GET_PROFILE_FRIEND,
   POST_USER,
-  CLEAN_POST
+  CLEAN_POST,
   GET_USERS_INFORMATION,
   GET_CHATS_ACTION,
   GET_CHAT_BY_USER,
@@ -21,7 +21,7 @@ const initialState = {
   userLogin: null,
   userInformation: null,
   userProfileFriend: {},
-  postUser: {}
+  postUser: {},
   usersInformationFriends: [],
   // copyUsersInformationFriends: [],
   searchUser: [],
