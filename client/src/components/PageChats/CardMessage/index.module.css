@@ -20,6 +20,7 @@
   align-items: center;
   align-self: center;
   font-weight: bold;
+  min-width: 130px;
 }
 .textContainerMessage span {
   display: block;
@@ -47,4 +48,18 @@
   background-color: rgb(99, 99, 22);
   border-radius: 8px;
   border-top-right-radius: 0;
+}
+.textHours {
+  font-size: 12px;
+  margin-left: 8px;
+}
+.flexHeaderMessage {
+  display: flex;
+  justify-content: space-between;
+
+}
+.containerMessageStaff .flexHeaderMessage {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
 }

@@ -4,6 +4,8 @@ import { useAuth } from "../auth";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import SearchBar from "../SearchBar";
 import profilePicture from "../../assets/profilePicture.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { searchUserAction } from "../../redux/actions";
 const routes = [];
 routes.push(
   { to: "/home", page: "HOME", icon: "bi-house-fill", private: true },
@@ -14,19 +16,42 @@ routes.push(
 
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
+  const searchUser = useSelector((state) => state.searchUser);
   const auth = useAuth();
-  const location = useLocation();
-  console.log(location);
+
   return (
     <nav className="w-full bg-black shadow  h-16 z-10">
-      <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
+      <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8 relative">
         <div>
           <div className="flex items-center justify-between py-3 md:block">
             <div className="flex ">
               <Link to={"/home"}>
                 <img src={logo} alt="logo" className="w-20" />
               </Link>
-              {location.pathname === "/message" ? null : <SearchBar />}
+              <div>
+                <SearchBar
+                // searchFriend={searchFriend}
+                // handleChangeInfoUsers={handleChangeInfoUsers}
+                />
+                <div className="absolute w-56 z-10">
+                  {searchUser.length
+                    ? searchUser.map((friend) => (
+                        <div className=" bg-black p-3 z-10 border border-slate-900 ">
+                          <Link to={`/profile/${friend._id}`} className="flex items-center gap-3">
+                            <img
+                              className="w-10 h-10 rounded-full"
+                              src={friend.avatar}
+                              alt={`Friend ${friend.firstName}`}
+                            />
+                            <span>
+                              {friend.firstName} {friend.lastName}
+                            </span>
+                          </Link>
+                        </div>
+                      ))
+                    : null}
+                </div>
+              </div>
             </div>
             <div className="md:hidden">
               <button

@@ -1,18 +1,27 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { sendMessagesAction } from "../../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { sendMessageBackAction } from "../../../redux/actions";
 import styles from "./index.module.css";
 
-function SendMessage() {
+function SendMessage({ idTo }) {
+  console.log(idTo, "idTO");
   const [sendMessage, setSendMessage] = useState("");
-  // const dispatch = useDispatch();
+  const userInformation = useSelector((state) => state.userInformation);
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setSendMessage(e.target.value);
   };
+
   const handleSentMessage = (e) => {
     e.preventDefault();
-    // dispatch(sendMessagesAction());
+    dispatch(
+      sendMessageBackAction({
+        from: userInformation._id,
+        to: idTo,
+        message: sendMessage,
+      })
+    );
     setSendMessage("");
   };
 

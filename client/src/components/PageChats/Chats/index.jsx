@@ -1,65 +1,37 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, Outlet, useParams } from "react-router-dom";
+import { getChatsBackAction } from "../../../redux/actions";
+
 import PreviewMesagge from "../PreviewMesagge";
 import styles from "./index.module.css";
 
 function Chats() {
+  const dispatch = useDispatch();
+
+  const chatUsers = useSelector((state) => state.chatUsers);
+  const userInformation = useSelector((state) => state.userInformation);
+
+  useEffect(() => {
+    if (userInformation) {
+      dispatch(getChatsBackAction(userInformation?._id));
+    }
+    window.scrollTo({ bottom: 400, behavior: "smooth" });
+  }, [userInformation]);
+
   return (
     <main className={styles.page_Chats}>
       <div className={styles.sections_Preview_Page}>
-        <PreviewMesagge title={"Messages"} messages={messagess} messagesGroup={messagessGroup} />
-        {/* <PreviewMesagge title={"Matchs"} messages={messagessGroup} /> */}
+        <PreviewMesagge
+          title={"Messages"}
+          messages={chatUsers}
+          messagesGroup={messagessGroup}
+        />
       </div>
       <Outlet />
     </main>
   );
 }
-const messagess = [
-  {
-    id: 1,
-    image: [
-      "https://gamer-commerce.vercel.app/static/media/FacundoMartinez.d850a2c1.jpeg",
-    ],
-    message: "poquito",
-    time: "8:25",
-    name: "Facundo Martinez",
-  },
-  {
-    id: 3,
-    image: [
-      "https://gamer-commerce.vercel.app/static/media/AndresOlarte.0b566e29.jpeg",
-    ],
-    message: "poquito",
-    time: "8:25",
-    name: "Andres Aldao",
-  },
-  {
-    id: 4,
-    image: [
-      "https://gamer-commerce.vercel.app/static/media/LuisLazarte.1a5c228c.jpeg",
-    ],
-    message: "poquito",
-    time: "8:30",
-    name: "Luiz Lazarte",
-  },
-  {
-    id: 5,
-    image: [
-      "https://gamer-commerce.vercel.app/static/media/RogerPf.d7086f5b.jpeg",
-    ],
-    time: "8:30",
-    message: "poquito",
-    name: "Roger Perez",
-  },
-  {
-    id: 6,
-    image: [
-      "https://gamer-commerce.vercel.app/static/media/EmmanuelRomo.b21b242f.jpeg",
-    ],
-    message: "poquito",
-    name: "Nacho",
-  },
-];
 
 const messagessGroup = [
   {

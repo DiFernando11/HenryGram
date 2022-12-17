@@ -1,22 +1,49 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useLocation, useParams } from "react-router-dom";
+import { getMessageByUserBackAction } from "../../../redux/actions";
 import AvatarStack from "../avatarStack";
 import CardMessage from "../CardMessage";
 import SendMessage from "../SendMessage";
 import styles from "./index.module.css";
 
 function Messages() {
-  const { idUser } = useParams();
-  const messageChats = useSelector((state) => state.messageChats);
-  const findChat = messageChats.find((chat) => chat.idUser == idUser);
+  const { state } = useLocation();
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const chatByUser = useSelector((state) => state.chatByUser);
+  console.log(chatByUser);
+  const chatUsers = useSelector((state) => state.chatUsers);
+  const chatPrevent = useSelector((state) => state.chatPrevent);
+  const userInformation = useSelector((state) => state.userInformation);
+  function scrollLastMessage() {
+    var objDiv = document.getElementById("divu");
+    objDiv.scrollTop = objDiv.scrollHeight;
+  }
+  useEffect(() => {
+    dispatch(
+      getMessageByUserBackAction({
+        from: userInformation?._id,
+        to: id,
+        limit: 20,
+      })
+    );
+    setTimeout(() => scrollLastMessage(), 500);
+  }, [id, chatUsers]);
+
+  if (chatUsers.length) {
+    const chatUsersID = chatUsers.map((user) => user._id).includes(id);
+    const chatUsersPreventID = chatPrevent.map((user) => user._id).includes(id);
+    if (!chatUsersID && !chatUsersPreventID)
+      return <Navigate to={"/message"} />;
+  }
 
   return (
     <section className={styles.section_Messages}>
       <div className={styles.header_message}>
         <div className={styles.userInformationChat}>
-          <img src={findChat.image} alt="user_chat" />
-          <span>{findChat.name}</span>
+          <img src={state?.image} alt="user_chat" />
+          <span>{state?.name}</span>
         </div>
         <div className={styles.actionsChat}>
           <AvatarStack avatars={avatars} />
@@ -25,20 +52,21 @@ function Messages() {
           <i className="bi bi-three-dots-vertical"></i>
         </div>
       </div>
-      <div className={styles.messagesSent}>
-        {findChat.messages.length &&
-          findChat.messages.map((message) => (
+      <div id="divu" className={styles.messagesSent}>
+        {chatByUser.length &&
+          chatByUser.map((message, index) => (
             <CardMessage
-              key={message.id}
-              id={findChat.idUser}
-              idUser={message.idUser}
+              key={index}
+              idUser={state?.id}
               message={message.message}
-              image={findChat.image}
-              name={findChat.name}
+              image={state?.image}
+              name={state?.name}
+              time={message.hour}
+              fromSelf={message.fromSelf}
             />
           ))}
       </div>
-      <SendMessage />
+      <SendMessage idTo={state?.id} />
     </section>
   );
 }
