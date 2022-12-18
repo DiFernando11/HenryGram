@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Modal } from "flowbite-react";
 import logoMatch from "../../../assets/coheteHenry.png";
 import { uploadImage } from "../../helpers/uploadImage";
+import { useSelector } from "react-redux";
 const giftUpload =
   "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921";
 function MakePost() {
   const [imagePost, setImagePost] = useState("");
   const [loadingPostImage, setLoadingPostImage] = useState(false);
-  const [show, setShow] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [selectTypePost, setSelectTypePost] = useState("");
   const [infoPost, setInfoPost] = useState({
@@ -15,6 +15,8 @@ function MakePost() {
     description: "",
     image: "",
   });
+  const userInformation = useSelector((state) => state.userInformation);
+  const [show, setShow] = useState(false);
   const handleSelectTypePost = (type) => {
     setSelectTypePost(type);
     setShowAlert(true);
@@ -29,11 +31,25 @@ function MakePost() {
   };
   return (
     <React.Fragment>
-      <i
+      {/* <i
         onClick={() => setShow(!show)}
         className="bi bi-plus-lg text-white mr-4 text-3xl cursor-pointer pr-9"
-      ></i>
-
+      ></i> */}
+      <div className="flex justify-center items-center gap-3 mt-5 w-11/12 m-auto  ">
+        <img
+          className="rounded-full w-12 h-12"
+          src={userInformation?.avatar}
+          alt="avatar user"
+        />
+        <input
+          type="search"
+          id="search"
+          className="block w-full p-3 pl-5 text-sm text-white border rounded-lg  bg-transparent border-amber-200 cursor-pointer"
+          placeholder="Create publication..."
+          autoComplete="off"
+          onClick={() => setShow(!show)}
+        />
+      </div>
       <Modal
         show={show}
         size="lg"

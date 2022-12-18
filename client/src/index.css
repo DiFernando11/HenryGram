@@ -66,7 +66,10 @@ span {
   height: calc(100vh - 13rem);
   overflow-y: scroll;
 }
-
+.calcViewModalFriends {
+  height: calc(100vh - 15rem);
+  overflow-y: scroll;
+}
 body {
   background-color: #363636;
 }

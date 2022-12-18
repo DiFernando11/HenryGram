@@ -1,13 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { addChatBackAction} from "../../../redux/actions";
+import { Link, useParams } from "react-router-dom";
+// import { Dropdown } from "flowbite";
+import { addChatBackAction } from "../../../redux/actions";
+import DropDownSelect from "../../DropDownSelect";
 import AvatarStack from "../../PageChats/AvatarStack";
 import FavoriteActivities from "../FavoriteActivities";
+import ModalFriends from "../ModalFriends";
 import OverYou from "../OverYou";
 
 function AboutProfile({ userInformation, isFriend }) {
-  
+  const [statusFriend, setStatusFriend] = useState("seguir");
+  const [show, setShow] = useState(false);
+  const friendsByUser = useSelector((state) => state.friendsByUser);
+  const friendsAccepted = friendsByUser.filter(
+    (friend) => Number(friend.status) === 3
+  );
+  const { id } = useParams();
+  const applicationStatus = friendsByUser.find(
+    (friend) => friend.recipient == id || friend.requester == id
+  );
+
+  const handle = () => {
+    if (applicationStatus) {
+      if (Number(applicationStatus.status) === 1) setStatusFriend("Enviada");
+      else if (Number(applicationStatus.status) === 2)
+        setStatusFriend("Recibido");
+      else if (Number(applicationStatus.status) === 3)
+        setStatusFriend("Amigos");
+    } else setStatusFriend("Seguir");
+  };
+
+  useEffect(() => {
+    handle();
+  }, [friendsByUser, id]);
   const dispatch = useDispatch();
   const handleRedirectChatUser = () => {
     dispatch(
@@ -18,6 +44,7 @@ function AboutProfile({ userInformation, isFriend }) {
       })
     );
   };
+
   return (
     <section className="w-2/5 border-r  border-zinc-700 p-4 calcViewHeightPageProfile">
       <div className="flex items-center mb-8 ml-2 justify-between ">
@@ -32,7 +59,7 @@ function AboutProfile({ userInformation, isFriend }) {
           )}
         </div>
         {isFriend && (
-          <div className="flex gap-6 items-center">
+          <div className="flex gap-8 items-center">
             <Link to={`/message/chat/${userInformation?._id}`}>
               <i
                 onClick={handleRedirectChatUser}
@@ -41,7 +68,42 @@ function AboutProfile({ userInformation, isFriend }) {
               ></i>
             </Link>
 
-            <span className="text-yellow cursor-pointer">+ Seguir</span>
+            <div className="flex text-yellow gap-1 items-center  ">
+              {statusFriend === "Seguir" && (
+                <>
+                  <DropDownSelect
+                    status={statusFriend}
+                    icon="bi-person-fill-add"
+                    select={[{ text: "Send friend request", icon: "bi-plus" }]}
+                  />
+                </>
+              )}
+              {statusFriend === "Enviada" && (
+                <>
+                  <i className="bi bi-person-fill-exclamation text-2xl cursor-default "></i>
+                  <span className="text-yellow">{statusFriend}</span>
+                </>
+              )}
+              {statusFriend === "Recibido" && (
+                <>
+                  <DropDownSelect
+                    status={statusFriend}
+                    icon="bi-people-fill"
+                    select={[
+                      { text: "Accept", icon: "bi-check" },
+                      { text: "Reject", icon: "bi-x" },
+                    ]}
+                  />
+                </>
+              )}
+              {statusFriend === "Amigos" && (
+                <DropDownSelect
+                  status={statusFriend}
+                  icon="bi-people-fill"
+                  select={[{ text: "Delete friend", icon: "bi-trash3-fill" }]}
+                />
+              )}
+            </div>
           </div>
         )}
       </div>
@@ -50,8 +112,9 @@ function AboutProfile({ userInformation, isFriend }) {
         <span className="text-sm">Matchs</span>
       </div>
       <div className="flex justify-between ">
+        <AvatarStack avatars={avatars} openModalFriends={setShow} show={show} />
         <AvatarStack avatars={avatars} />
-        <AvatarStack avatars={avatars} />
+        <ModalFriends setShow={setShow} show={show} />
       </div>
       {!isFriend && (
         <div>
