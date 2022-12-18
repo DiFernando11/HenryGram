@@ -7,9 +7,10 @@ function AvatarStack({ avatars, openModalFriends , show }) {
       {avatars.length &&
         avatars
           .map((avatar, index) => (
-            <Link to={"/profile/639b57fa5871ad62a8b88c34"}>
+            <Link key={index} to={"/profile/639b57d15871ad62a8b88c2d"}>
+
               <img
-                key={index}
+                
                 className="inline-block h-6 w-6 rounded-full ring-2 cursor-pointer border-2 border-yellow"
                 src={avatar}
                 alt="user Avatar"

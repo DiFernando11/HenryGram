@@ -1,4 +1,4 @@
-export const uploadImage = async (e, stateLoading, stateImage) => {
+export const uploadImage = async (e, stateLoading, stateImage, setImagePost) => {
   const files = e.target.files;
   const data = new FormData();
   data.append("file", files[0]);
@@ -13,7 +13,8 @@ export const uploadImage = async (e, stateLoading, stateImage) => {
   );
   const file = await res.json();
 
-  stateImage(file.secure_url);
+  stateImage( prev => ({ ...prev, image:{url:file.secure_url}}));
+  setImagePost(file.secure_url)
   console.log(file.secure_url);
   stateLoading(false);
 };

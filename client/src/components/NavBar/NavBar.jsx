@@ -65,6 +65,10 @@ export default function NavBar() {
                             to={`/profile/${friend._id}`}
                             className="flex items-center gap-3"
                           >
+
+                    ? searchUser.map((friend, index) => (
+                        <div key={index} className=" bg-black p-3 z-10 border border-slate-900 ">
+                          <Link to={`/profile/${friend._id}`} className="flex items-center gap-3">
                             <img
                               className="w-10 h-10 rounded-full"
                               src={friend.avatar}
@@ -144,9 +148,9 @@ export default function NavBar() {
                   ))}
                 </div> */}
               </li>
-              {routes.map((route) => {
+              {routes.map((route, index) => {
                 return (
-                  <li className="text-white">
+                  <li key={index} className="text-white">
                     <NavLink
                       to={route.to ? route.to : null}
                       className={({ isActive }) =>

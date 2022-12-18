@@ -5,6 +5,8 @@ import {
   LOGOUT,
   VERIFY_USER_TOKEN,
   GET_PROFILE_FRIEND,
+  POST_USER,
+  CLEAN_POST,
   GET_USERS_INFORMATION,
   GET_CHATS_ACTION,
   GET_CHAT_BY_USER,
@@ -20,6 +22,7 @@ const initialState = {
   userInformation: null,
   friendsByUser: [],
   userProfileFriend: {},
+  postUser: {},
   usersInformationFriends: [],
   searchUser: [],
   chatUsers: [],
@@ -67,6 +70,19 @@ const rootReducer = (state = initialState, action) => {
         userProfileFriend: action.payload,
       };
     }
+    case POST_USER: {
+      return{ 
+        ...state,
+        postUser: action.payload
+      }
+    }
+    case CLEAN_POST: {
+      return{
+        ...state,
+        postUser: {}
+      }
+    }
+    //User Information
     //SEARCH
     case GET_USERS_INFORMATION: {
       return {

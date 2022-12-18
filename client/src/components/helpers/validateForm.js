@@ -97,3 +97,11 @@ export const validateDisabled = (
 		setDisabled(true);
 	}
 };
+
+export const validatePost = ({description}, setDisabled) => {
+	if(description?.length !== 0){
+		setDisabled(false)
+	}else{
+		setDisabled(true)
+	}
+} 
