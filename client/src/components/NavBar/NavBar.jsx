@@ -59,16 +59,15 @@ export default function NavBar() {
                 />
                 <div className="absolute w-56 z-10">
                   {searchUser.length
-                    ? searchUser.map((friend) => (
-                        <div className=" bg-black p-3 z-10 border border-slate-900 ">
+                    ? searchUser.map((friend, index) => (
+                        <div
+                          key={index}
+                          className=" bg-black p-3 z-10 border border-slate-900 "
+                        >
                           <Link
                             to={`/profile/${friend._id}`}
                             className="flex items-center gap-3"
                           >
-
-                    ? searchUser.map((friend, index) => (
-                        <div key={index} className=" bg-black p-3 z-10 border border-slate-900 ">
-                          <Link to={`/profile/${friend._id}`} className="flex items-center gap-3">
                             <img
                               className="w-10 h-10 rounded-full"
                               src={friend.avatar}
