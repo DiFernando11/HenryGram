@@ -1,5 +1,6 @@
 const UserSchema = require("../models/User");
 const FriendSchema = require("../models/Friend");
+const MessageSchema = require("../models/Message")
 const ObjectId = require("mongoose").Types.ObjectId;
 const bycrypt = require("bcryptjs");
 const { confirmationEmail } = require("../config/nodemailer");
@@ -244,10 +245,16 @@ const getChat = async (req, res) => {
     .then((value) => {
       let response = Promise.all(
         value.map(async (el) => {
-          return await UserSchema.findOne(
+          let msg = await MessageSchema.findOne(
+            { $or: [{ users: [id, el.valueOf()] }, { users: [el.valueOf(), id] }] }
+          ).sort({ createdAt: -1 })
+
+          let usr = await UserSchema.findOne(
             { _id: ObjectId(el.valueOf()) },
-            { firstName: 1, avatar: 1 }
+            { firstName: 1, lastName: 1, avatar: 1 }
           );
+
+          return ({ msg, usr })
         })
       );
       return response;
