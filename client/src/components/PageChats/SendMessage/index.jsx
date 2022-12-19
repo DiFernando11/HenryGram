@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import {
   sendMessageBackAction,
   sendMessagesFrontAction,
@@ -10,7 +11,10 @@ let today = new Date();
 let hourSystem = today.toISOString();
 function SendMessage({ idTo, scrollLastMessage }) {
   const [sendMessage, setSendMessage] = useState("");
+  const { id } = useParams();
+
   const userInformation = useSelector((state) => state.userInformation);
+
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -19,10 +23,11 @@ function SendMessage({ idTo, scrollLastMessage }) {
 
   const handleSentMessage = (e) => {
     e.preventDefault();
+
     dispatch(
       sendMessageBackAction({
         from: userInformation._id,
-        to: idTo,
+        to: id,
         message: sendMessage,
       })
     );

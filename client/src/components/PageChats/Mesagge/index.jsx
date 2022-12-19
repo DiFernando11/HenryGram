@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useLocation, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { getMessageByUserBackAction } from "../../../redux/actions";
 import AvatarStack from "../avatarStack";
 import CardMessage from "../CardMessage";
@@ -8,19 +8,18 @@ import SendMessage from "../SendMessage";
 import styles from "./index.module.css";
 
 function Messages() {
-  const { state } = useLocation();
   const { id } = useParams();
   const dispatch = useDispatch();
   const chatByUser = useSelector((state) => state.chatByUser);
   const chatUsers = useSelector((state) => state.chatUsers);
   const chatPrevent = useSelector((state) => state.chatPrevent);
   const userInformation = useSelector((state) => state.userInformation);
+
   function scrollLastMessage() {
     var objDiv = document.getElementById("divu");
     objDiv.scrollTop = objDiv.scrollHeight;
   }
 
-  console.log(chatByUser, "bu");
   useEffect(() => {
     dispatch(
       getMessageByUserBackAction({
@@ -32,7 +31,7 @@ function Messages() {
     setTimeout(() => scrollLastMessage(), 500);
   }, [id, chatUsers]);
 
-  if (chatUsers.length) {
+  if (chatUsers?.length) {
     const chatUsersID = chatUsers.map((user) => user._id).includes(id);
     const chatUsersPreventID = chatPrevent.map((user) => user._id).includes(id);
     if (!chatUsersID && !chatUsersPreventID)
@@ -43,8 +42,10 @@ function Messages() {
     <section className={styles.section_Messages}>
       <div className={styles.header_message}>
         <div className={styles.userInformationChat}>
-          <img src={state?.image} alt="user_chat" />
-          <span>{state?.name}</span>
+          <img src={chatByUser?.informationUserTo?.avatar} alt="user_chat" />
+          <span>
+            {`${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName} `}
+          </span>
         </div>
         <div className={styles.actionsChat}>
           <AvatarStack avatars={avatars} />
@@ -54,20 +55,23 @@ function Messages() {
         </div>
       </div>
       <div id="divu" className={styles.messagesSent}>
-        {chatByUser.length &&
-          chatByUser.map((message, index) => (
+        {chatByUser?.projectedMessages?.length &&
+          chatByUser?.projectedMessages?.map((message, index) => (
             <CardMessage
               key={index}
-              idUser={state?.id}
               message={message.message}
-              image={state?.image}
-              name={state?.name}
+              image={chatByUser?.informationUserTo?.avatar}
+              name={chatByUser?.informationUserTo?.firstName}
+              lastName={chatByUser?.informationUserTo?.lastName}
               time={message.hour}
               fromSelf={message.fromSelf}
             />
           ))}
       </div>
-      <SendMessage idTo={state?.id} scrollLastMessage={scrollLastMessage} />
+      <SendMessage
+        informationTo={chatByUser.informationUserTo}
+        scrollLastMessage={scrollLastMessage}
+      />
     </section>
   );
 }

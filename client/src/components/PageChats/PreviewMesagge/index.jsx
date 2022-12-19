@@ -43,19 +43,36 @@ function PreviewMesagge({ title, messages, messagesGroup }) {
       </div>
       <span className={styles.textMessagePreview}>{title}</span>
       <div className={styles.containerAllMessage}>
+        {chatPrevent?.length
+          ? chatPrevent
+              ?.map((message, index) => (
+                <CardPreviewMessage
+                  key={index}
+                  image={message.avatar}
+                  // message={message.message}
+                  id={message._id}
+                  // time={message.time}
+                  //lastName = {message.lastName}
+                  name={message.firstName}
+                />
+              ))
+              .reverse()
+          : null}
         {isChat
-          ? messages.length &&
-            messages.map((message, index) => (
-              <CardPreviewMessage
-                key={index}
-                image={message.avatar}
-                message={message.message}
-                id={message._id}
-                // time={message.time}
-                //lastName = {message.lastName}
-                name={message.firstName}
-              />
-            ))
+          ? messages?.length &&
+            messages
+              ?.map((message, index) => (
+                <CardPreviewMessage
+                  key={index}
+                  image={message.avatar}
+                  message={message.message}
+                  id={message._id}
+                  // time={message.time}
+                  //lastName = {message.lastName}
+                  name={message.firstName}
+                />
+              ))
+              .reverse()
           : messagesGroup.length &&
             messagesGroup.map((message, index) => (
               <CardPreviewMessage
@@ -67,19 +84,6 @@ function PreviewMesagge({ title, messages, messagesGroup }) {
                 name={message.name}
               />
             ))}
-        {chatPrevent.length
-          ? chatPrevent.map((message, index) => (
-              <CardPreviewMessage
-                key={index}
-                image={message.avatar}
-                // message={message.message}
-                id={message._id}
-                // time={message.time}
-                //lastName = {message.lastName}
-                name={message.firstName}
-              />
-            ))
-          : null}
       </div>
     </section>
   );
