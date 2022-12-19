@@ -1,8 +1,5 @@
-
-
-
 import axios from 'axios';
-export const SEND_MESSAGE = 'SEND_MESSAGE';
+export const SEND_MESSAGE_FRONT = 'SEND_MESSAGE_FRONT';
 export const CREATE_USER = 'CREATE_USER';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
@@ -19,11 +16,10 @@ export const GET_CHAT_BY_USER = "GET_CHAT_BY_USER";
 export const SEND_MESSAGE_BACK = "SEND_MESSAGE_BACK";
 
 ////CHATS
-export const sendMessagesAction = (id, payload) => {
+export const sendMessagesFrontAction = (payload) => {
 	return {
-		type: SEND_MESSAGE,
+		type: SEND_MESSAGE_FRONT,
 		payload,
-		id,
 	};
 };
 //USERS INFORMATION

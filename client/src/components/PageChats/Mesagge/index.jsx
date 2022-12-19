@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation, useParams } from "react-router-dom";
 import { getMessageByUserBackAction } from "../../../redux/actions";
@@ -19,6 +19,8 @@ function Messages() {
     var objDiv = document.getElementById("divu");
     objDiv.scrollTop = objDiv.scrollHeight;
   }
+
+  console.log(chatByUser, "bu");
   useEffect(() => {
     dispatch(
       getMessageByUserBackAction({
@@ -65,7 +67,7 @@ function Messages() {
             />
           ))}
       </div>
-      <SendMessage idTo={state?.id} />
+      <SendMessage idTo={state?.id} scrollLastMessage={scrollLastMessage} />
     </section>
   );
 }

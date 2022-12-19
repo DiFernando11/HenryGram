@@ -14,6 +14,7 @@ import {
   ADD_CHAT_PREVENT_ACTION,
   SEARCH_USER,
   FRIENDS_BY_USER,
+  SEND_MESSAGE_FRONT,
 } from "../actions";
 
 const initialState = {
@@ -71,16 +72,16 @@ const rootReducer = (state = initialState, action) => {
       };
     }
     case POST_USER: {
-      return{ 
+      return {
         ...state,
-        postUser: action.payload
-      }
+        postUser: action.payload,
+      };
     }
     case CLEAN_POST: {
-      return{
+      return {
         ...state,
-        postUser: {}
-      }
+        postUser: {},
+      };
     }
     //User Information
     //SEARCH
@@ -123,6 +124,12 @@ const rootReducer = (state = initialState, action) => {
     case SEND_MESSAGE_BACK: {
       return {
         ...state,
+      };
+    }
+    case SEND_MESSAGE_FRONT: {
+      return {
+        ...state,
+        chatByUser: [...state.chatByUser, action.payload],
       };
     }
     //CHAT

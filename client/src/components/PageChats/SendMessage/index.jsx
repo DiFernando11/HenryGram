@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { sendMessageBackAction } from "../../../redux/actions";
+import {
+  sendMessageBackAction,
+  sendMessagesFrontAction,
+} from "../../../redux/actions";
 import styles from "./index.module.css";
-
-function SendMessage({ idTo }) {
-  console.log(idTo, "idTO");
+let today = new Date();
+// obtener la fecha y la hora
+let hourSystem = today.toISOString();
+function SendMessage({ idTo, scrollLastMessage }) {
   const [sendMessage, setSendMessage] = useState("");
   const userInformation = useSelector((state) => state.userInformation);
   const dispatch = useDispatch();
@@ -22,7 +26,17 @@ function SendMessage({ idTo }) {
         message: sendMessage,
       })
     );
+    dispatch(
+      sendMessagesFrontAction({
+        from: userInformation._id,
+        to: idTo,
+        message: sendMessage,
+        hour: hourSystem,
+        fromSelf: true,
+      })
+    );
     setSendMessage("");
+    setTimeout(() => scrollLastMessage(), 100);
   };
 
   return (
