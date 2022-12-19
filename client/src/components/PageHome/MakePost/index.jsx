@@ -104,7 +104,7 @@ function MakePost() {
       <div className="flex justify-center items-center gap-3 mt-5 w-11/12 m-auto  ">
         <img
           className="rounded-full w-12 h-12"
-          src={userInformation?.avatar}
+          src={userID?.avatar}
           alt="avatar user"
         />
         <input
