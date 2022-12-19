@@ -7,7 +7,6 @@ function CardPreviewMessage({ id, image, name }) {
   return (
     <NavLink
       to={`/message/chat/${id}`}
-      state={{ id, image, name }}
       style={({ isActive }) =>
         isActive
           ? {

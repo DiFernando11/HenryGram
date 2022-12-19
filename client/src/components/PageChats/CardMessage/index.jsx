@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import styles from "./index.module.css";
 
-function CardMessage({ image, name, message, fromSelf, time }) {
+function CardMessage({ image, name, lastName, message, fromSelf, time }) {
   const userInformation = useSelector((state) => state.userInformation);
   const timeDate = time.split("T");
   const dateTime = timeDate[1].split(".");
@@ -12,7 +12,7 @@ function CardMessage({ image, name, message, fromSelf, time }) {
   // const timeMessage = timeDate.split(",");
   const DBName = fromSelf
     ? `${userInformation.firstName} ${userInformation.lastName}`
-    : name;
+    : `${name} ${lastName}`;
   const DBImage = fromSelf ? userInformation.avatar : image;
   return (
     <div

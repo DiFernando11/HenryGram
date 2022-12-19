@@ -12,9 +12,9 @@ export default function NavBar() {
   const searchUser = useSelector((state) => state.searchUser);
   const userInformation = useSelector((state) => state.userInformation);
   const friendsByUser = useSelector((state) => state.friendsByUser);
-  // const requestFriends = friendsByUser.filter(
-  //   (friend) => Number(friend.status) === 3
-  // );
+  const requestFriends = friendsByUser.filter(
+    (friend) => Number(friend.status) === 2
+  );
   const pruebaRequestFriends = [
     {
       id: "639b57d15871ad62a8b88c2d",
@@ -133,7 +133,7 @@ export default function NavBar() {
                   status={"APPLICATION"}
                   icon={"bi-people-fill"}
                   select={pruebaRequestFriends}
-                  requests={friendsByUser.length}
+                  requests={requestFriends.length}
                   confirmed={true}
                 />
                 {/* <i className="bi bi-people-fill text-2xl "></i>

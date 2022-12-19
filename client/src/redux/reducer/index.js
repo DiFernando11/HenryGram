@@ -15,6 +15,8 @@ import {
   SEARCH_USER,
   FRIENDS_BY_USER,
   SEND_MESSAGE_FRONT,
+  SEND_FRIEND_REQUEST,
+  CONFIRMED_FRIEND_REQUEST,
 } from "../actions";
 
 const initialState = {
@@ -26,7 +28,7 @@ const initialState = {
   postUser: {},
   usersInformationFriends: [],
   searchUser: [],
-  chatUsers: [],
+  chatUsers: null,
   chatPrevent: [],
   chatByUser: [],
 };
@@ -102,6 +104,16 @@ const rootReducer = (state = initialState, action) => {
     }
     //SEARCH
     //FIRENDS
+    case SEND_FRIEND_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+    case CONFIRMED_FRIEND_REQUEST: {
+      return {
+        ...state,
+      };
+    }
     //CHAT
     case GET_CHATS_ACTION: {
       return {
@@ -129,7 +141,13 @@ const rootReducer = (state = initialState, action) => {
     case SEND_MESSAGE_FRONT: {
       return {
         ...state,
-        chatByUser: [...state.chatByUser, action.payload],
+        chatByUser: {
+          ...state.chatByUser.informationUserTo,
+          projectedMessages: [
+            ...state.chatByUser.projectedMessages,
+            action.payload,
+          ],
+        },
       };
     }
     //CHAT
