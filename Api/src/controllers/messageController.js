@@ -17,13 +17,29 @@ const getAllMessage = async (req, res, next) => {
 
         const twentyMessages = messages.slice(offset, offset + limit);
 
-        const projectedMessages = twentyMessages.map((msg) => {
-            return {
-                fromSelf: msg.sender.toString() === from,
-                message: msg.message.text,
-                hour: msg.createdAt,
+        const toUser = await UserSchema.find(
+            { _id: to }
+        )
 
-            };
+        console.log(toUser)
+
+        const projectedMessages = twentyMessages.map((msg) => {
+            if (msg.sender.toString() === from) {
+                return {
+                    fromSelf: msg.sender.toString() === from,
+                    message: msg.message.text,
+                    hour: msg.createdAt,
+                };
+            } else {
+                return {
+                    fromSelf: msg.sender.toString() === from,
+                    message: msg.message.text,
+                    hour: msg.createdAt,
+                    firstName: toUser[0].firstName,
+                    lastName: toUser[0].lastName,
+                    avatar: toUser[0].avatar
+                };
+            }
         });
         res.status(200).json(projectedMessages);
 
