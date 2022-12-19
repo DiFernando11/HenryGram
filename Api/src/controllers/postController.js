@@ -222,6 +222,35 @@ const likePost = async (req, res) => {
 	}
 };
 
+const updatePost = async (req, res) => {
+
+	/*
+		Controlador de la Ruta para actualizar una publicacion
+	*/
+
+	const { id } = req.params;
+
+	const { description,
+			hashtags,
+			images} = req.body;
+
+	try {
+		const post = await PostSchema.findOne({ _id: id });
+
+		if (post) {
+			description && (post.description = description);
+			hashtags && (post.hashtags = hashtags);
+			images && (post.images = images);
+			await post.save();
+			res.status(200).json(post);
+		} else {
+			res.status(404).json({ message: 'Post not found' });
+		}
+	} catch (error) {
+		res.status(500).json(error);
+	}
+};
+
 module.exports = {
 	postController,
 	postCommentController,
@@ -231,4 +260,5 @@ module.exports = {
 	getPostsByUser,
 	deletePost,
 	likePost,
+	updatePost
 };
