@@ -13,17 +13,17 @@ import {
   SEND_MESSAGE_BACK,
   ADD_CHAT_PREVENT_ACTION,
   SEARCH_USER,
-
+  FRIENDS_BY_USER,
 } from "../actions";
 
 const initialState = {
   createUser: [],
   userLogin: null,
   userInformation: null,
+  friendsByUser: [],
   userProfileFriend: {},
   postUser: {},
   usersInformationFriends: [],
-  // copyUsersInformationFriends: [],
   searchUser: [],
   chatUsers: [],
   chatPrevent: [],
@@ -54,6 +54,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         userInformation: action.payload,
+      };
+    }
+    case FRIENDS_BY_USER: {
+      return {
+        ...state,
+        friendsByUser: action.payload,
       };
     }
     //User Information
@@ -87,7 +93,10 @@ const rootReducer = (state = initialState, action) => {
     case SEARCH_USER: {
       return {
         ...state,
-        searchUser: searchFriendHelp(action.payload, state.usersInformationFriends),
+        searchUser: searchFriendHelp(
+          action.payload,
+          state.usersInformationFriends
+        ),
       };
     }
     //SEARCH

@@ -4,7 +4,13 @@ module.exports = {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
     "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/flowbite/**/*.js",
   ],
+  variants: {
+    extend: {
+      display: ["group-focus"],
+    },
+  },
   theme: {
     extend: {
       colors: {
@@ -15,17 +21,17 @@ module.exports = {
         blacker: "#171717",
         yellower: "#f59e0b",
         danger: "#CA0B00",
-        white: "#f4f4f4"
+        white: "#f4f4f4",
       },
       backgroundImage: {
         background: "url('./src/assets/fondo2.png')",
       },
-	    width: {
-		    validate: '40%',
-	    },
-	  	height: {
-			  validate: '40%',
-		  },
+      width: {
+        validate: "40%",
+      },
+      height: {
+        validate: "40%",
+      },
     },
   },
   plugins: [require("flowbite/plugin")],

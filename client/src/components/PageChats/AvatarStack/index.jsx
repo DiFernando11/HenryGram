@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function AvatarStack({ avatars }) {
+function AvatarStack({ avatars, openModalFriends , show }) {
   return (
     <div className="flex -space-x-1 overflow-hidden">
       {avatars.length &&
@@ -19,7 +19,10 @@ function AvatarStack({ avatars }) {
           ))
           .slice(0, 5)}
       {avatars.length > 5 && (
-        <div className="flex justify-center items-center w-6 h-6 text-xs text-white  bg-gray-700 rounded-full border-2 border-yellow hover:bg-gray-600 dark:border-gray-800 ">
+        <div
+          onClick={() => openModalFriends(!show)}
+          className="flex justify-center items-center w-6 h-6 text-xs text-white  bg-gray-700 rounded-full border-2 border-yellow hover:bg-gray-600 dark:border-gray-800 "
+        >
           +{avatars.length - 5}
         </div>
       )}

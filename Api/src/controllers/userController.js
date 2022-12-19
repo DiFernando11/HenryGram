@@ -201,11 +201,12 @@ const getFriendship = async (req, res) => {
 
   const { id } = req.params;
 
-  if (id.length !== 24) return res.status(404).json({ message: "Chat not found" });
+  if (id.length !== 24)
+    return res.status(404).json({ message: "FriendShip not found" });
 
   const f = await UserSchema.findOne({ _id: id }, { friends: 1 });
 
-  if (!f) return res.status(404).json({ message: "Chat not found" });
+  if (!f) return res.status(404).json({ message: "FriendShip not found" });
 
   Promise.resolve(f.friends)
     .then((value) => {
@@ -217,11 +218,7 @@ const getFriendship = async (req, res) => {
       return response;
     })
     .then((result) => {
-      if (result.length) {
-        return res.status(200).json(result);
-      } else {
-        return res.status(404).json({ message: "Friendship not found" });
-      }
+      return res.status(200).json(result);
     })
     .catch((e) => {
       console.log(e);
@@ -236,7 +233,8 @@ const getChat = async (req, res) => {
 
   const { id } = req.params;
 
-  if (id.length !== 24) return res.status(404).json({ message: "Chat not found" });
+  if (id.length !== 24)
+    return res.status(404).json({ message: "Chat not found" });
 
   const m = await UserSchema.findOne({ _id: ObjectId(id) }, { messages: 1 });
 
@@ -246,7 +244,10 @@ const getChat = async (req, res) => {
     .then((value) => {
       let response = Promise.all(
         value.map(async (el) => {
-          return await UserSchema.findOne({ _id: ObjectId(el.valueOf()) }, { firstName: 1, avatar: 1 });
+          return await UserSchema.findOne(
+            { _id: ObjectId(el.valueOf()) },
+            { firstName: 1, avatar: 1 }
+          );
         })
       );
       return response;
@@ -259,11 +260,10 @@ const getChat = async (req, res) => {
       }
     })
     .catch((e) => {
-      console.log(e)
+      console.log(e);
       return res.status(404).json({ message: "Chat not found" });
     });
 };
-
 
 module.exports = {
   postUser,
@@ -274,5 +274,5 @@ module.exports = {
   getFriendship,
   validateUser,
   getUserByToken,
-  getChat
+  getChat,
 };

@@ -12,7 +12,6 @@ function Messages() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const chatByUser = useSelector((state) => state.chatByUser);
-  console.log(chatByUser);
   const chatUsers = useSelector((state) => state.chatUsers);
   const chatPrevent = useSelector((state) => state.chatPrevent);
   const userInformation = useSelector((state) => state.userInformation);

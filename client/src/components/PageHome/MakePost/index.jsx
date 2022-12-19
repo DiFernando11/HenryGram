@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Modal } from 'flowbite-react';
 import logoMatch from '../../../assets/coheteHenry.png';
@@ -8,6 +9,7 @@ import { cleanPostState, postUser } from '../../../redux/actions';
 import Swal from 'sweetalert2';
 const giftUpload =
 	'https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921';
+  
 function MakePost() {
 	const userID = useSelector((state) => state.userInformation);
 	const post = useSelector((state) => state.postUser);
@@ -95,10 +97,25 @@ function MakePost() {
 	console.log(infoPost);
 	return (
 		<React.Fragment>
-			<i
-				onClick={() => setShow(!show)}
-				className="bi bi-plus-lg text-white mr-4 text-3xl cursor-pointer pr-9"
-			></i>
+      {/* <i
+        onClick={() => setShow(!show)}
+        className="bi bi-plus-lg text-white mr-4 text-3xl cursor-pointer pr-9"
+      ></i> */}
+      <div className="flex justify-center items-center gap-3 mt-5 w-11/12 m-auto  ">
+        <img
+          className="rounded-full w-12 h-12"
+          src={userInformation?.avatar}
+          alt="avatar user"
+        />
+        <input
+          type="search"
+          id="search"
+          className="block w-full p-3 pl-5 text-sm text-white border rounded-lg  bg-transparent border-amber-200 cursor-pointer"
+          placeholder="Create publication..."
+          autoComplete="off"
+          onClick={() => setShow(!show)}
+        />
+      </div>
 			{handleAlert(post)}
 			<Modal
 				show={show}

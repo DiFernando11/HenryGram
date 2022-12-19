@@ -1,10 +1,13 @@
 
+
+
 import axios from 'axios';
 export const SEND_MESSAGE = 'SEND_MESSAGE';
 export const CREATE_USER = 'CREATE_USER';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const VERIFY_USER_TOKEN = 'VERIFY_USER_TOKEN';
+export const FRIENDS_BY_USER = "FRIENDS_BY_USER";
 export const GET_PROFILE_FRIEND = 'GET_PROFILE_FRIEND';
 export const POST_USER = 'POST_USER';
 export const CLEAN_POST = 'CLEAN_POST';
@@ -69,6 +72,19 @@ export const verifyUserAction = (token) => {
 		}
 	};
 };
+
+export const getFriendsByUser = (id) => {
+  return async (dispatch) => {
+    try {
+      const result = await axios.get(
+        `http://localhost:3000/api/users/friends/${id}`
+      );
+      return dispatch({ type: FRIENDS_BY_USER, payload: result.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 //USERS INFORMATION
 // FRIENDS
 export const getProfileFriendAction = (idUser) => {
@@ -93,9 +109,13 @@ export const getInformationUsersAction = () => {
     }
   };
 };
+
+//FRIENDS
+//SEARCH
 export const searchUserAction = (payload) => {
   return { type: SEARCH_USER, payload };
 };
+
 //FRIENDS
 
 //POST USER
@@ -114,6 +134,7 @@ export const postUser = (post) => {
 export const cleanPostState = () => {
 	return  {type: CLEAN_POST}
 };
+
 
 //CHATS
 export const getChatsBackAction = (id) => {

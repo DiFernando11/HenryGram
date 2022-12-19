@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import React from "react";
+
 import MakePost from "../../PageHome/MakePost";
 import Post from "../../PageHome/Post";
 
@@ -8,11 +7,11 @@ function PostProfile({ isFriend }) {
   return (
     <section className="w-3/5 calcViewHeightPageProfile pt-2 ">
       {!isFriend && (
-        <div className="w-12 h-12 bg-amber-300 flex justify-center items-center rounded-full fixed ml-3 z-10 ">
-          <div className=" ml-[50px] justify-center items-center ">
-            <MakePost />
-          </div>
-        </div>
+        // <div className="w-12 h-12 bg-amber-300 flex justify-center items-center rounded-full fixed ml-3 z-10 ">
+        //   <div className=" ml-[50px] justify-center items-center ">
+        //   </div>
+        // </div>
+        <MakePost />
       )}
 
       <div>

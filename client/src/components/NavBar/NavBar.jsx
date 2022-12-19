@@ -1,30 +1,54 @@
 import { useState } from "react";
 import logo from "../../assets/hglogo.png";
 import { useAuth } from "../auth";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import SearchBar from "../SearchBar";
 import profilePicture from "../../assets/profilePicture.jpg";
-import { useDispatch, useSelector } from "react-redux";
-import { searchUserAction } from "../../redux/actions";
-const routes = [];
-routes.push(
-  { to: "/home", page: "HOME", icon: "bi-house-fill", private: true },
-  { to: "/message", page: "INBOX", icon: "bi-chat-dots-fill", private: true },
-  { to: "/", page: "LOGOUT", icon: "bi bi-box-arrow-left", private: true },
-  { to: "/profile", page: "PROFILE", icon: profilePicture, private: true }
-);
+import { useSelector } from "react-redux";
+import DropDownSelect from "../DropDownSelect/index";
 
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
   const searchUser = useSelector((state) => state.searchUser);
+  const userInformation = useSelector((state) => state.userInformation);
+  const friendsByUser = useSelector((state) => state.friendsByUser);
+  // const requestFriends = friendsByUser.filter(
+  //   (friend) => Number(friend.status) === 3
+  // );
+  const pruebaRequestFriends = [
+    {
+      id: "639b57d15871ad62a8b88c2d",
+      text: "Diego Apolo",
+      avatar:
+        "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
+    },
+    {
+      id: "639b57fa5871ad62a8b88c34",
+      text: "Diego Apolo",
+      avatar:
+        "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
+    },
+    {
+      id: "639e3f1acce29471f3b57770",
+      text: "Diego Apolo",
+      avatar:
+        "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
+    },
+  ];
+
   const auth = useAuth();
+  const navigate = useNavigate();
 
   return (
     <nav className="w-full bg-black shadow  h-16 z-10">
       <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8 relative">
         <div>
           <div className="flex items-center justify-between py-3 md:block">
-            <div className="flex ">
+            <div className="flex items-center  ">
+              <i
+                className="bi bi-arrow-left-short text-white text-3xl"
+                onClick={() => navigate(-1)}
+              ></i>
               <Link to={"/home"}>
                 <img src={logo} alt="logo" className="w-20" />
               </Link>
@@ -35,6 +59,13 @@ export default function NavBar() {
                 />
                 <div className="absolute w-56 z-10">
                   {searchUser.length
+                    ? searchUser.map((friend) => (
+                        <div className=" bg-black p-3 z-10 border border-slate-900 ">
+                          <Link
+                            to={`/profile/${friend._id}`}
+                            className="flex items-center gap-3"
+                          >
+
                     ? searchUser.map((friend, index) => (
                         <div key={index} className=" bg-black p-3 z-10 border border-slate-900 ">
                           <Link to={`/profile/${friend._id}`} className="flex items-center gap-3">
@@ -98,11 +129,30 @@ export default function NavBar() {
             }`}
           >
             <ul className="bg-black items-center rounded justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
+              <li className=" relative text-white flex gap-2 items-center p-2 text-white border border-black rounded-lg transition duration:200  cursor-pointer">
+                <DropDownSelect
+                  status={"APPLICATION"}
+                  icon={"bi-people-fill"}
+                  select={pruebaRequestFriends}
+                  requests={friendsByUser.length}
+                  confirmed={true}
+                />
+                {/* <i className="bi bi-people-fill text-2xl "></i>
+                <span className="w-4 h-4 bg-red-600 rounded-full absolute top-1 left-5 flex justify-center items-center text-xs">
+                  {requestFriends.length}
+                </span>
+                <span>APPLICATIONS</span>
+                <div className="absolute -bottom-12 border w-full">
+                  {requestFriends.map((friend) => (
+                    <div className="border">{friend.status}</div>
+                  ))}
+                </div> */}
+              </li>
               {routes.map((route, index) => {
                 return (
                   <li key={index} className="text-white">
                     <NavLink
-                      to={route.to}
+                      to={route.to ? route.to : null}
                       className={({ isActive }) =>
                         isActive
                           ? "flex items-center p-2 border border-white font-medium rounded-lg"
@@ -114,8 +164,8 @@ export default function NavBar() {
                     >
                       {route.page === "PROFILE" ? (
                         <img
-                          src={profilePicture}
-                          className="w-16 rounded-full"
+                          src={userInformation?.avatar}
+                          className="w-16 h-10 object-cover rounded-full"
                         />
                       ) : (
                         <i className={`bi ${route.icon} text-2xl `}></i>
@@ -134,3 +184,10 @@ export default function NavBar() {
     </nav>
   );
 }
+const routes = [];
+routes.push(
+  { to: "/home", page: "HOME", icon: "bi-house-fill", private: true },
+  { to: "/message", page: "INBOX", icon: "bi-chat-dots-fill", private: true },
+  { to: "/", page: "LOGOUT", icon: "bi bi-box-arrow-left", private: true },
+  { to: "/profile", page: "PROFILE", icon: profilePicture, private: true }
+);

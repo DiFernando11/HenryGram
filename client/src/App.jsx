@@ -10,12 +10,19 @@ import Home from "./components/PageHome/Home";
 import ProfileUser from "./components/PageProfile/ProfileUser/index";
 import ProfileFriends from "./components/PageProfile/ProfileFriends/index";
 import NavBar from "./components/NavBar/NavBar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getInformationUsersAction, verifyUserAction } from "./redux/actions";
+import {
+  getFriendsByUser,
+  getInformationUsersAction,
+  verifyUserAction,
+} from "./redux/actions";
+import ViewPost from "./components/PagePostDetail/viewPost";
 
 function App() {
   const [saveTokenData, setSaveTokenData] = useState(null);
+  const userInformation = useSelector((state) => state.userInformation);
+
   const dispatch = useDispatch();
 
   const getData = () => {
@@ -35,6 +42,11 @@ function App() {
   useEffect(() => {
     dispatch(getInformationUsersAction());
   }, []);
+  useEffect(() => {
+    if (userInformation) {
+      dispatch(getFriendsByUser(userInformation._id));
+    }
+  }, [userInformation]);
   return (
     <AuthProvider>
       <Routes>
@@ -97,7 +109,16 @@ function App() {
         >
           <Route path="chat/:id" element={<Messages />} />
         </Route>
-
+        <Route
+          path="/post/:id"
+          element={
+            <AuthRoute>
+              {/* <SideBar /> */}
+              <NavBar />
+              <ViewPost />
+            </AuthRoute>
+          }
+        />
         <Route
           path="/logout"
           element={
