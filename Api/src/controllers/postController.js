@@ -139,71 +139,6 @@ const getAllUPost = async (req, res) => {
 	}
 };
 
-// const getPosts = async (req, res) => {
-
-//     /*
-//         Controlador de la Ruta para obtener publicaciones recomendadas
-//     */
-
-//     const { userId } = req.params;
-//     const user = await UserSchema.findOne({ _id: userId });
-//     const RequiereAmountOfPosts = 60
-//     let posts = []
-
-//     if (user.friends.length > 0) {
-
-//         const friendships = user.friends.map(async (friend) => {
-//             return await FriendSchema.findOne({ _id: friend })
-//         })
-
-//         Promise.all(friendships).then((friendships) => {
-//             const friendPosts = friendships.map(async (friendShip) => {
-//                 if (friendShip.status === 3){
-//                     if (friendShip.requester._id === userId) {
-//                         return await PostSchema.find({ userId: friendShip.recipient._id })
-//                     } else {
-//                         return await PostSchema.find({ userId: friendShip.requester._id })
-//                     }
-
-//                 }
-//             })
-//             Promise.all(friendPosts).then((friendPosts) => {
-//                 friendPosts.forEach((post) => {
-//                     posts.push(post)
-//                 })
-//                posts = shuffle(posts)
-
-//                 if (posts.length > RequiereAmountOfPosts) {
-//                     return res.status(200).slice(0, RequiereAmountOfPosts)
-//                 } else {
-//                     allPosts = PostSchema.find()
-//                     console.log(typeof allPosts)
-//                 }
-
-//             })
-
-//         })
-
-//     }
-
-//     // posts.push(await PostSchema.find({ userId: friend._id }));
-//     // posts = posts.shuffle();
-
-//     // const RequiereAmountOfPosts = 60
-
-//     // if (posts.length > RequiereAmountOfPosts) {
-//     //     res.status(200).slice(0, RequiereAmountOfPosts)
-//     // } else {
-//     //     posts.push(await PostSchema.find().slice(0, RequiereAmountOfPosts - posts.length));
-//     // }
-
-//     // if (posts.length > 0) {
-//     //     res.status(200).json(posts);
-//     // } else {
-//     //     res.status(404).json({ message: "Posts not found" });
-//     // }
-// }
-
 const getPostsByHashtag = async (req, res) => {
 	/*
         Controlador de la Ruta para obtener publicaciones por hashtag
@@ -220,10 +155,28 @@ const getPostsByHashtag = async (req, res) => {
 	}
 };
 
+const getPostsByUser = async (req, res) => {
+
+	/*
+		Controlador de la Ruta para obtener publicaciones de un usuario
+	*/
+
+	const { id } = req.params;
+
+	try {
+		const posts = await PostSchema.find({ userId: id });
+		res.status(200).json(posts);
+	} catch (error) {
+		res.status(500).json(error);
+	}
+};
+
+
 module.exports = {
 	postController,
 	postCommentController,
 	getAllUPost,
 	recomendedPostController,
 	getPostsByHashtag,
+	getPostsByUser,
 };
