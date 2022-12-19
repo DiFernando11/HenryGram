@@ -171,6 +171,30 @@ const getPostsByUser = async (req, res) => {
 	}
 };
 
+const deletePost = async (req, res) => {
+
+	/*
+		Controlador de la Ruta para eliminar una publicacion
+	*/
+
+	const { id } = req.params;
+
+	try {
+		const post = await PostSchema.findOne({ _id: id });
+		console.log(post);
+		if (post) {
+			await post.delete();
+			console.log('Post deleted');
+			res.status(200).json({ message: 'Post deleted' });
+		} else {
+			console.log('Post not found');
+			res.status(404).json({ message: 'Post not found' });
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(500).json(error);
+	}
+};
 
 module.exports = {
 	postController,
@@ -179,4 +203,5 @@ module.exports = {
 	recomendedPostController,
 	getPostsByHashtag,
 	getPostsByUser,
+	deletePost
 };
