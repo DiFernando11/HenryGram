@@ -196,6 +196,32 @@ const deletePost = async (req, res) => {
 	}
 };
 
+const likePost = async (req, res) => {
+
+	/*
+		Controlador de la Ruta para dar like a una publicacion
+	*/
+
+	const { postId, userId } = req.query;
+
+	try {
+		const post = await PostSchema.findOne({ _id: postId });
+		if (post) {
+			if (post.likes.some((like) => String(like._id) === String(userId))) {
+				post.likes = post.likes.filter((like) => String(like._id) !== String(userId));
+			} else {
+				post.likes.push(userId);
+			}
+			await post.save();
+			res.status(200).json(post);
+		} else {
+			res.status(404).json({ message: 'Post not found' });
+		}
+	} catch (error) {
+		res.status(500).json(error);
+	}
+};
+
 module.exports = {
 	postController,
 	postCommentController,
@@ -203,5 +229,6 @@ module.exports = {
 	recomendedPostController,
 	getPostsByHashtag,
 	getPostsByUser,
-	deletePost
+	deletePost,
+	likePost,
 };

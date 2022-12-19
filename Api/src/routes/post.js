@@ -5,7 +5,8 @@ const { postController,
         recomendedPostController, 
         getPostsByHashtag, 
         getPostsByUser,
-        deletePost } = require('../controllers/postController');
+        deletePost,
+        likePost } = require('../controllers/postController');
 
 
 const router = express.Router();
@@ -14,6 +15,7 @@ router.post('/posts', postController);
 router.get('/posts', getAllUPost)
 router.get('/posts/:id', getPostsByUser) //id del usuario
 router.delete('/posts/:id', deletePost) //id del post
+router.post('/posts/like', likePost); //Por body se envia el id del post y el id del usuario como userId, postId
 router.post('/posts/comment', postCommentController);
 router.get('/posts/recomended/:userId', recomendedPostController)
 router.get('/posts/hashtag/:hashtag', getPostsByHashtag)
