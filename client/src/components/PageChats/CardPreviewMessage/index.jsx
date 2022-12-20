@@ -15,22 +15,6 @@ function CardPreviewMessage({
 }) {
   const timeHour = time ? timeHours(time) : null;
   let senderMessage = id !== sender;
-  const handleScroll = () => {
-    // console.log("height:", document.getElementById("divu").scrollHeight);
-    // console.log("top:", document.getElementById("divu").scrollTop);
-    // console.log("window:", document.getElementById("divu").clientHeight);
-    if (document.getElementById("divu").scrollTop === 0) {
-      console.log("llegue");
-      setPage(40);
-    }
-
-    // console.log("Top:", document.documentElement.scrollTop);
-  };
-  // const handleTopScroll = () => {
-
-  //   document.getElementById("divu").removeEventListener("scroll", handleScroll);
-
-  // };
   return (
     <NavLink
       to={`/message/chat/${id}`}

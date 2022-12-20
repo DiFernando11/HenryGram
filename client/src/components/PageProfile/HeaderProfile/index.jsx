@@ -5,7 +5,7 @@ import { uploadImage } from "../../helpers/uploadImage";
 const giftUpload =
   "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921";
 function HeaderProfile({ isFriend, userInformation }) {
-  console.log(userInformation);
+
   const [avatarUser, setAvatarUser] = useState("");
   const [loadingAvatar, setLoadingAvatar] = useState(false);
   const [bannerUser, setBannerUser] = useState("");
