@@ -7,7 +7,9 @@ const { postController,
         getPostsByUser,
         deletePost,
         likePost,
-        updatePost } = require('../controllers/postController');
+        updatePost,
+        getFriendsMatches,
+        getAllMatches } = require('../controllers/postController');
 
 
 const router = express.Router();
@@ -18,6 +20,8 @@ router.get('/posts/:id', getPostsByUser) //id del usuario
 router.delete('/posts/:id', deletePost) //id del post
 router.put('/posts/:id', updatePost) //id del post
 router.post('/posts/like', likePost); //Por body se envia el id del post y el id del usuario como userId, postId
+router.get('/posts/allMatches', getAllMatches) //Se pueden enviar querys de max para limitar la cantidad de matches
+router.get('/posts/matches/:userId', getFriendsMatches) //id del usuario
 router.post('/posts/comment', postCommentController);
 router.get('/posts/recomended/:userId', recomendedPostController)
 router.get('/posts/hashtag/:hashtag', getPostsByHashtag)
