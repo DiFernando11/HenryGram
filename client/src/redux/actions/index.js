@@ -165,6 +165,7 @@ export const addChatBackAction = (payload) => {
   return { type: ADD_CHAT_PREVENT_ACTION, payload };
 };
 export const getMessageByUserBackAction = (data) => {
+  if (data === "clear") return { type: GET_CHAT_BY_USER, payload: [] };
   return async (dispatch) => {
     try {
       const result = await axios.post(

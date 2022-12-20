@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
 import { getMessageByUserBackAction } from "../../../redux/actions";
@@ -8,6 +8,7 @@ import SendMessage from "../SendMessage";
 import styles from "./index.module.css";
 
 function Messages() {
+  const [page, setPage] = useState(20);
   const { id } = useParams();
   const dispatch = useDispatch();
   const chatByUser = useSelector((state) => state.chatByUser);
@@ -25,11 +26,49 @@ function Messages() {
       getMessageByUserBackAction({
         from: userInformation?._id,
         to: id,
-        limit: 20,
+        limit: page,
       })
     );
-    setTimeout(() => scrollLastMessage(), 500);
-  }, [id, chatUsers]);
+  }, [id, chatUsers, page]);
+
+  useEffect(() => {
+    scrollLastMessage();
+  }, [chatByUser]);
+  // console.log(document.getElementById("divu").scrollTop, "scroll");
+
+  const handleScroll = () => {
+    // console.log("height:", document.getElementById("divu").scrollHeight);
+    // console.log("top:", document.getElementById("divu").scrollTop);
+    // console.log("window:", document.getElementById("divu").clientHeight);
+    // console.log(document.getElementById("divu").clientHeight, "cliente");
+    // var y = document.getElementById("divu").scrollHeight;
+    // console.log(y, "y");
+    const heigthScroll = document.getElementById("divu").scrollHeight;
+    // console.log(document.getElementById("divu").scrollHeight, "heigt");
+    const containerHeight = document.getElementById("divu").clientHeight;
+
+    if (
+      document.getElementById("divu").scrollTop === 0 &&
+      heigthScroll !== containerHeight
+    ) {
+      setPage(40);
+    }
+
+    // console.log("Top:", document.documentElement.scrollTop);
+  };
+
+  useEffect(() => {
+    document.getElementById("divu").addEventListener("scroll", handleScroll);
+    setPage(20);
+    return () => {
+      if (document.getElementById("divu")) {
+        document
+          .getElementById("divu")
+          .removeEventListener("scroll", handleScroll);
+      }
+      dispatch(getMessageByUserBackAction("clear"));
+    };
+  }, [id]);
 
   if (chatUsers?.length) {
     const chatUsersID = chatUsers.map((user) => user.usr._id).includes(id);
