@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
 import { getMessageByUserBackAction } from "../../../redux/actions";
@@ -8,6 +8,7 @@ import SendMessage from "../SendMessage";
 import styles from "./index.module.css";
 
 function Messages() {
+  const [page, setPage] = useState(20);
   const { id } = useParams();
   const dispatch = useDispatch();
   const chatByUser = useSelector((state) => state.chatByUser);
@@ -25,14 +26,52 @@ function Messages() {
       getMessageByUserBackAction({
         from: userInformation?._id,
         to: id,
-        limit: 20,
+        limit: page,
       })
     );
-    setTimeout(() => scrollLastMessage(), 500);
-  }, [id, chatUsers]);
+  }, [id, chatUsers, page]);
+
+  useEffect(() => {
+    scrollLastMessage();
+  }, [chatByUser]);
+  // console.log(document.getElementById("divu").scrollTop, "scroll");
+
+  const handleScroll = () => {
+    // console.log("height:", document.getElementById("divu").scrollHeight);
+    // console.log("top:", document.getElementById("divu").scrollTop);
+    // console.log("window:", document.getElementById("divu").clientHeight);
+    // console.log(document.getElementById("divu").clientHeight, "cliente");
+    // var y = document.getElementById("divu").scrollHeight;
+    // console.log(y, "y");
+    const heigthScroll = document.getElementById("divu").scrollHeight;
+    // console.log(document.getElementById("divu").scrollHeight, "heigt");
+    const containerHeight = document.getElementById("divu").clientHeight;
+
+    if (
+      document.getElementById("divu").scrollTop === 0 &&
+      heigthScroll !== containerHeight
+    ) {
+      setPage(40);
+    }
+
+    // console.log("Top:", document.documentElement.scrollTop);
+  };
+
+  useEffect(() => {
+    document.getElementById("divu").addEventListener("scroll", handleScroll);
+    setPage(20);
+    return () => {
+      if (document.getElementById("divu")) {
+        document
+          .getElementById("divu")
+          .removeEventListener("scroll", handleScroll);
+      }
+      dispatch(getMessageByUserBackAction("clear"));
+    };
+  }, [id]);
 
   if (chatUsers?.length) {
-    const chatUsersID = chatUsers.map((user) => user._id).includes(id);
+    const chatUsersID = chatUsers.map((user) => user.usr._id).includes(id);
     const chatUsersPreventID = chatPrevent.map((user) => user._id).includes(id);
     if (!chatUsersID && !chatUsersPreventID)
       return <Navigate to={"/message"} />;
@@ -54,8 +93,8 @@ function Messages() {
           <i className="bi bi-three-dots-vertical"></i>
         </div>
       </div>
-      <div id="divu" className={styles.messagesSent}>
-        {chatByUser?.projectedMessages?.length &&
+      <div id="divu" className={`${styles.messagesSent} relative`}>
+        {chatByUser?.projectedMessages?.length ? (
           chatByUser?.projectedMessages?.map((message, index) => (
             <CardMessage
               key={index}
@@ -66,7 +105,14 @@ function Messages() {
               time={message.hour}
               fromSelf={message.fromSelf}
             />
-          ))}
+          ))
+        ) : (
+          <div className="absolute w-80 uppercase bottom-2 inset-x-1/3 text-lg text-center text-white p-5 bg-zinc-800 rounded-t-2xl rounded-br-2xl">
+            GREETS{" "}
+            {`${chatByUser?.informationUserTo?.firstName}
+            ${chatByUser?.informationUserTo?.lastName} 👋`}
+          </div>
+        )}
       </div>
       <SendMessage
         informationTo={chatByUser.informationUserTo}

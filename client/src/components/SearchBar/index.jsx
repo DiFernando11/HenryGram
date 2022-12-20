@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { searchUserAction } from "../../redux/actions";
 
-function SearchBar() {
+
+function SearchBar({ handleChangeSearch }) {
   const [searchFriend, setSearchFriend] = useState("");
   const dispatch = useDispatch();
   const handleChangeInfoUsers = (e) => {
     e.preventDefault();
     setSearchFriend(e.target.value);
-    dispatch(searchUserAction(e.target.value));
+    dispatch(handleChangeSearch(e.target.value));
   };
   const handleDeleteSearch = () => {
     setSearchFriend("");
     setTimeout(() => {
-      dispatch(searchUserAction(""));
+      dispatch(handleChangeSearch(""));
     }, 100);
   };
   return (

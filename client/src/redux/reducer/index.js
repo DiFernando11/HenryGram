@@ -1,4 +1,7 @@
-import { searchFriendHelp } from "../../components/helpers/searchFriends";
+import {
+  searchChatsHelp,
+  searchFriendHelp,
+} from "../../components/PageChats/utils";
 import {
   CREATE_USER,
   LOGIN,
@@ -17,6 +20,7 @@ import {
   SEND_MESSAGE_FRONT,
   SEND_FRIEND_REQUEST,
   CONFIRMED_FRIEND_REQUEST,
+  SEARCH_CHATS,
 } from "../actions";
 
 const initialState = {
@@ -28,7 +32,8 @@ const initialState = {
   postUser: {},
   usersInformationFriends: [],
   searchUser: [],
-  chatUsers: null,
+  chatUsers: [],
+  chatUsersCopy: [],
   chatPrevent: [],
   chatByUser: [],
 };
@@ -59,20 +64,9 @@ const rootReducer = (state = initialState, action) => {
         userInformation: action.payload,
       };
     }
-    case FRIENDS_BY_USER: {
-      return {
-        ...state,
-        friendsByUser: action.payload,
-      };
-    }
+
     //User Information
-    //FRIENDS
-    case GET_PROFILE_FRIEND: {
-      return {
-        ...state,
-        userProfileFriend: action.payload,
-      };
-    }
+
     case POST_USER: {
       return {
         ...state,
@@ -86,24 +80,25 @@ const rootReducer = (state = initialState, action) => {
       };
     }
     //User Information
-    //SEARCH
+    //FIRENDS
+    case FRIENDS_BY_USER: {
+      return {
+        ...state,
+        friendsByUser: action.payload,
+      };
+    }
+    case GET_PROFILE_FRIEND: {
+      return {
+        ...state,
+        userProfileFriend: action.payload,
+      };
+    }
     case GET_USERS_INFORMATION: {
       return {
         ...state,
         usersInformationFriends: action.payload,
       };
     }
-    case SEARCH_USER: {
-      return {
-        ...state,
-        searchUser: searchFriendHelp(
-          action.payload,
-          state.usersInformationFriends
-        ),
-      };
-    }
-    //SEARCH
-    //FIRENDS
     case SEND_FRIEND_REQUEST: {
       return {
         ...state,
@@ -119,6 +114,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         chatUsers: action.payload,
+        chatUsersCopy: action.payload,
       };
     }
     case ADD_CHAT_PREVENT_ACTION: {
@@ -142,7 +138,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         chatByUser: {
-          ...state.chatByUser.informationUserTo,
+          informationUserTo: state.chatByUser.informationUserTo,
           projectedMessages: [
             ...state.chatByUser.projectedMessages,
             action.payload,
@@ -151,6 +147,27 @@ const rootReducer = (state = initialState, action) => {
       };
     }
     //CHAT
+
+    //SEARCH
+
+    case SEARCH_USER: {
+      return {
+        ...state,
+        searchUser: searchFriendHelp(
+          action.payload,
+          state.usersInformationFriends
+        ),
+      };
+    }
+
+    case SEARCH_CHATS: {
+      return {
+        ...state,
+        chatUsers: searchChatsHelp(action.payload, state.chatUsersCopy),
+      };
+    }
+    //SEARCH
+
     default:
       return state;
   }

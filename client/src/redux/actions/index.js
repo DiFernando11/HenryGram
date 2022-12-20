@@ -11,19 +11,13 @@ export const CONFIRMED_FRIEND_REQUEST = "CONFIRMED_FRIEND_REQUEST";
 export const POST_USER = "POST_USER";
 export const CLEAN_POST = "CLEAN_POST";
 export const GET_USERS_INFORMATION = "GET_USERS_INFORMATION";
-export const SEARCH_USER = "SEARCH_USER";
 export const GET_CHATS_ACTION = "GET_CHATS_ACTION";
 export const ADD_CHAT_PREVENT_ACTION = "ADD_CHAT_PREVENT_ACTION";
 export const GET_CHAT_BY_USER = "GET_CHAT_BY_USER";
 export const SEND_MESSAGE_BACK = "SEND_MESSAGE_BACK";
+export const SEARCH_USER = "SEARCH_USER";
+export const SEARCH_CHATS = "SEARCH_CHATS_ACTION";
 
-////CHATS
-export const sendMessagesFrontAction = (payload) => {
-  return {
-    type: SEND_MESSAGE_FRONT,
-    payload,
-  };
-};
 //USERS INFORMATION
 //REGISTER
 export const createUser = (user) => {
@@ -84,7 +78,8 @@ export const getFriendsByUser = (id) => {
   };
 };
 //USERS INFORMATION
-// FRIENDS
+
+//FRIENDS
 export const getProfileFriendAction = (idUser) => {
   return async (dispatch) => {
     try {
@@ -107,13 +102,6 @@ export const getInformationUsersAction = () => {
     }
   };
 };
-
-//SEARCH
-export const searchUserAction = (payload) => {
-  return { type: SEARCH_USER, payload };
-};
-//FRIENDS
-
 export const sendRequestFriendAction = (data) => {
   return async (dispatch) => {
     try {
@@ -158,7 +146,6 @@ export const postUser = (post) => {
 export const cleanPostState = () => {
   return { type: CLEAN_POST };
 };
-
 //CHATS
 export const getChatsBackAction = (id) => {
   return async (dispatch) => {
@@ -166,6 +153,7 @@ export const getChatsBackAction = (id) => {
       const result = await axios.get(
         `http://localhost:3000/api/users/chat/${id}`
       );
+      console.log(result.data);
       return dispatch({ type: GET_CHATS_ACTION, payload: result.data });
     } catch (error) {
       console.log(error);
@@ -176,6 +164,7 @@ export const addChatBackAction = (payload) => {
   return { type: ADD_CHAT_PREVENT_ACTION, payload };
 };
 export const getMessageByUserBackAction = (data) => {
+  if (data === "clear") return { type: GET_CHAT_BY_USER, payload: [] };
   return async (dispatch) => {
     try {
       const result = await axios.post(
@@ -202,4 +191,18 @@ export const sendMessageBackAction = (data) => {
     }
   };
 };
+export const sendMessagesFrontAction = (payload) => {
+  return {
+    type: SEND_MESSAGE_FRONT,
+    payload,
+  };
+};
 //CHATS
+//SEARCH
+export const searchUserAction = (payload) => {
+  return { type: SEARCH_USER, payload };
+};
+export const searchChatsAction = (payload) => {
+  return { type: SEARCH_CHATS, payload };
+};
+//SEARCH
