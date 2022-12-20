@@ -334,7 +334,22 @@ const getFriendsMatches = async (req, res) => {
 		if (matches.length > 0) {
 			matches = matches.slice(0, maxAmount);
 			matches = shuffle(matches);
-			res.status(200).json(matches);
+			const matchesWithUsers = await Promise.all(
+				matches.map(async (match) => {
+					const user = await UserSchema.findOne({ _id: match.userId });
+					const userDestructured = { 
+						_id: user._id,
+						firtsName: user.firstName,
+						lastName: user.lastName,
+						avatar: user.avatar,
+					}
+					return {
+						match: match,
+						user: userDestructured
+					}
+				})
+			);
+			res.status(200).json(matchesWithUsers);
 		} else {
 			res.status(404).json({ message: 'No matches found' });
 		}
