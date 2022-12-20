@@ -58,8 +58,9 @@ function DropDownSelect({ status, icon, select, confirmed, requests }) {
       >
         <ul className="text-left border rounded-l-md rounded-br-md bg-zinc-800 cursor-pointer ">
           {select.length &&
-            select.map((item) => (
+            select.map((item , index) => (
               <li
+              key={index}
                 className="px-4 py-1 flex items-center gap-2  border-b"
                 onClick={
                   item.handleActionFriend ? item.handleActionFriend : null
