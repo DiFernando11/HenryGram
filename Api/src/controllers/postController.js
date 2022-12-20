@@ -1,25 +1,38 @@
 const PostSchema = require('../models/Post');
 const UserSchema = require('../models/User');
 const FriendSchema = require('../models/Friend');
+const GroupSchema = require('../models/Group');
 const shuffle = require('../utils/shuffle');
 const { all } = require('axios');
 
 const postController = async (req, res) => {
 	/*
-        Controlador de la Ruta para realizar un posteo
-    */
+		Controlador de la Ruta para realizar un posteo
+	*/
 
 	const { userId, description } = req.body;
+
+	let group = null
 
 	let image;
 	let hidden;
 	let isMatch;
 	let hashtags;
+	let title;
 
 	req.body.image ? (image = req.body.image) : (image = null);
 	req.body.hidden ? (hidden = req.body.hidden) : (hidden = false);
 	req.body.isMatch ? (isMatch = req.body.isMatch) : (isMatch = false);
 	req.body.hashtags ? (hashtags = req.body.hashtags) : (hashtags = null);
+	req.body.title ? (title = req.body.title) : (title = null);
+
+	if (isMatch) {
+		group = await GroupSchema.create({
+			title,
+			creator: userId,
+			users: [userId]
+		})
+	}
 
 	const post = PostSchema({
 		userId,
@@ -41,8 +54,8 @@ const postController = async (req, res) => {
 
 const postCommentController = async (req, res) => {
 	/*
-        Controlador de la Ruta pora realizar un comentario
-    */
+		Controlador de la Ruta pora realizar un comentario
+	*/
 
 	const { postId, userId, description } = req.body;
 
@@ -69,8 +82,8 @@ const postCommentController = async (req, res) => {
 
 const recomendedPostController = async (req, res) => {
 	/*
-        Controlador de la Ruta para obtener publicaciones recomendadas
-    */
+		Controlador de la Ruta para obtener publicaciones recomendadas
+	*/
 
 	const { userId } = req.params;
 
@@ -129,8 +142,8 @@ const recomendedPostController = async (req, res) => {
 
 const getAllUPost = async (req, res) => {
 	/*
-        Controlador de la Ruta para obtener todos las publicaciones
-    */
+		Controlador de la Ruta para obtener todos las publicaciones
+	*/
 	try {
 		const posts = await PostSchema.find();
 		res.status(200).json(posts);
@@ -141,8 +154,8 @@ const getAllUPost = async (req, res) => {
 
 const getPostsByHashtag = async (req, res) => {
 	/*
-        Controlador de la Ruta para obtener publicaciones por hashtag
-    */
+		Controlador de la Ruta para obtener publicaciones por hashtag
+	*/
 
 	const { hashtag } = req.params;
 

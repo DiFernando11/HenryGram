@@ -101,6 +101,7 @@ const getMessageByUser = async (req, res, next) => {
     next(ex);
   }
 };
+
 module.exports = {
   addMessage,
   getAllMessage,
