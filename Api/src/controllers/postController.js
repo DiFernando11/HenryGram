@@ -32,6 +32,11 @@ const postController = async (req, res) => {
 			creator: userId,
 			users: [userId]
 		})
+
+		const user = await UserSchema.findOneAndUpdate(
+			{ _id: userId },
+			{ $addToSet: { groups: group._id } }
+		)
 	}
 
 	const post = PostSchema({

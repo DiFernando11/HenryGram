@@ -16,10 +16,6 @@ const addChat = async (req, res, next) => {
             { $addToSet: { users: userId } }
         )
 
-        const userInfo = await UserSchema.find(
-            { _id: userId }
-        )
-
         const chat = await ChatSchema.create({
             groupId,
             userId,
