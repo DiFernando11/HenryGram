@@ -49,7 +49,7 @@ function AboutProfile({ userInformation, isFriend }) {
   }, [friendsByUser, id]);
 
   useEffect(() => {
-    if (userID && !chatUsers) {
+    if (userID && !chatUsers.length) {
       dispatch(getChatsBackAction(userID?._id));
     }
   }, [userID]);
@@ -62,13 +62,15 @@ function AboutProfile({ userInformation, isFriend }) {
       dispatch(
         addChatBackAction({
           avatar: userInformation?.avatar,
-          firstName: userInformation.firstName,
+          firstName: userInformation?.firstName,
+          lastName: userInformation?.lastName,
           _id: userInformation?._id,
         })
       );
     }
     navigate(`/message/chat/${userInformation?._id}`);
   };
+
   const handleSendRequestFriend = () => {
     dispatch(sendRequestFriendAction({ UserA: userID._id, UserB: id }));
     setStatusFriend("Enviada");

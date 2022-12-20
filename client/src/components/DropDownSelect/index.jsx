@@ -58,8 +58,9 @@ function DropDownSelect({ status, icon, select, confirmed, requests }) {
       >
         <ul className="text-left border rounded-l-md rounded-br-md bg-zinc-800 cursor-pointer ">
           {select.length &&
-            select.map((item) => (
+            select.map((item , index) => (
               <li
+              key={index}
                 className="px-4 py-1 flex items-center gap-2  border-b"
                 onClick={
                   item.handleActionFriend ? item.handleActionFriend : null
@@ -76,18 +77,18 @@ function DropDownSelect({ status, icon, select, confirmed, requests }) {
                 {item?.icon && <i className={`bi ${item.icon}`}></i>}
                 {confirmed && (
                   <div className="ml-3 text-xs flex gap-2 ">
-                    <button
+                    <span
                       className="border p-1 bg-green-700"
                       onClick={() => handleConfirmedRequestFriend(item?.id)}
                     >
                       CONFIRM
-                    </button>
-                    <button
+                    </span>
+                    <span
                       className="border p-1 bg-red-600"
                       onClick={() => handleRejectRequestFriend(item?.id)}
                     >
                       REJECT
-                    </button>
+                    </span>
                   </div>
                 )}
               </li>
