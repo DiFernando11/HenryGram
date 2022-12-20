@@ -32,7 +32,7 @@ function Messages() {
   }, [id, chatUsers]);
 
   if (chatUsers?.length) {
-    const chatUsersID = chatUsers.map((user) => user._id).includes(id);
+    const chatUsersID = chatUsers.map((user) => user.usr._id).includes(id);
     const chatUsersPreventID = chatPrevent.map((user) => user._id).includes(id);
     if (!chatUsersID && !chatUsersPreventID)
       return <Navigate to={"/message"} />;
@@ -54,8 +54,8 @@ function Messages() {
           <i className="bi bi-three-dots-vertical"></i>
         </div>
       </div>
-      <div id="divu" className={styles.messagesSent}>
-        {chatByUser?.projectedMessages?.length &&
+      <div id="divu" className={`${styles.messagesSent} relative`}>
+        {chatByUser?.projectedMessages?.length ? (
           chatByUser?.projectedMessages?.map((message, index) => (
             <CardMessage
               key={index}
@@ -66,7 +66,14 @@ function Messages() {
               time={message.hour}
               fromSelf={message.fromSelf}
             />
-          ))}
+          ))
+        ) : (
+          <div className="absolute w-80 uppercase bottom-2 inset-x-1/3 text-lg text-center text-white p-5 bg-zinc-800 rounded-t-2xl rounded-br-2xl">
+            GREETS{" "}
+            {`${chatByUser?.informationUserTo?.firstName}
+            ${chatByUser?.informationUserTo?.lastName} 👋`}
+          </div>
+        )}
       </div>
       <SendMessage
         informationTo={chatByUser.informationUserTo}

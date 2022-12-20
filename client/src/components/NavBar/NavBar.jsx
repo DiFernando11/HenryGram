@@ -6,6 +6,7 @@ import SearchBar from "../SearchBar";
 import profilePicture from "../../assets/profilePicture.jpg";
 import { useSelector } from "react-redux";
 import DropDownSelect from "../DropDownSelect/index";
+import { searchUserAction } from "../../redux/actions";
 
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
@@ -54,8 +55,9 @@ export default function NavBar() {
               </Link>
               <div>
                 <SearchBar
-                // searchFriend={searchFriend}
-                // handleChangeInfoUsers={handleChangeInfoUsers}
+                  handleChangeSearch={searchUserAction}
+                  // searchFriend={searchFriend}
+                  // handleChangeInfoUsers={handleChangeInfoUsers}
                 />
                 <div className="absolute w-56 z-10">
                   {searchUser.length

@@ -11,12 +11,11 @@ function Chats() {
 
   const chatUsers = useSelector((state) => state.chatUsers);
   const userInformation = useSelector((state) => state.userInformation);
-  console.log(chatUsers, "chat");
+
   useEffect(() => {
-    if ((userInformation, !chatUsers)) {
+    if (userInformation) {
       dispatch(getChatsBackAction(userInformation?._id));
     }
-    window.scrollTo({ bottom: 400, behavior: "smooth" });
   }, [userInformation]);
 
   return (
