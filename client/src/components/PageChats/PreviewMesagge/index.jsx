@@ -5,6 +5,7 @@ import logoMatch from "../../../assets/coheteHenry.png";
 import styles from "./index.module.css";
 import { useSelector } from "react-redux";
 import { searchChatsAction } from "../../../redux/actions";
+import SkeletonUser from "../../Skeletons/skeletonUser";
 
 function PreviewMesagge({ title, messages, messagesGroup }) {
   const [isChat, setIsChat] = useState(true);
@@ -51,28 +52,31 @@ function PreviewMesagge({ title, messages, messagesGroup }) {
                   key={index}
                   image={message.avatar}
                   id={message._id}
-                  lastName = {message.lastName}
+                  lastName={message.lastName}
                   name={message.firstName}
                 />
               ))
               .reverse()
           : null}
         {isChat
-          ? messages?.length &&
-            messages
-              ?.map((message, index) => (
-                <CardPreviewMessage
-                  key={index}
-                  image={message?.usr?.avatar}
-                  message={message?.msg?.message.text}
-                  id={message?.usr?._id}
-                  time={message?.msg?.createdAt}
-                  lastName={message?.usr?.lastName}
-                  name={message?.usr?.firstName}
-                  sender={message?.msg?.sender}
-                />
+          ? messages?.length
+            ? messages
+                ?.map((message, index) => (
+                  <CardPreviewMessage
+                    key={index}
+                    image={message?.usr?.avatar}
+                    message={message?.msg?.message.text}
+                    id={message?.usr?._id}
+                    time={message?.msg?.createdAt}
+                    lastName={message?.usr?.lastName}
+                    name={message?.usr?.firstName}
+                    sender={message?.msg?.sender}
+                  />
+                ))
+                .reverse()
+            : [1, 2, 3, 4, 5, 6, 7, 8].map((value) => (
+                <SkeletonUser key={value} />
               ))
-              .reverse()
           : messagesGroup.length &&
             messagesGroup.map((message, index) => (
               <CardPreviewMessage

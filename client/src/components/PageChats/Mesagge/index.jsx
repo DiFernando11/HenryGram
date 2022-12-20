@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
-import { getMessageByUserBackAction } from "../../../redux/actions";
+import {
+  getMessageByUserBackAction,
+  sendMessageBackAction,
+  sendMessagesFrontAction,
+} from "../../../redux/actions";
+import Loader from "../../Loader";
+import SkeletonUser from "../../Skeletons/skeletonUser";
 import AvatarStack from "../avatarStack";
 import CardMessage from "../CardMessage";
 import SendMessage from "../SendMessage";
@@ -9,12 +15,16 @@ import styles from "./index.module.css";
 
 function Messages() {
   const [page, setPage] = useState(20);
+  const [loadingOldMessage, setLoadingOldMessage] = useState(true);
+  const [loadginSkeletonMessages, setLoadginSkeletonMessages] = useState(true);
   const { id } = useParams();
   const dispatch = useDispatch();
   const chatByUser = useSelector((state) => state.chatByUser);
   const chatUsers = useSelector((state) => state.chatUsers);
   const chatPrevent = useSelector((state) => state.chatPrevent);
   const userInformation = useSelector((state) => state.userInformation);
+  let today = new Date();
+  let hourSystem = today.toISOString();
 
   function scrollLastMessage() {
     var objDiv = document.getElementById("divu");
@@ -29,37 +39,18 @@ function Messages() {
         limit: page,
       })
     );
+    setLoadingOldMessage(false);
   }, [id, chatUsers, page]);
 
   useEffect(() => {
     scrollLastMessage();
+    if (chatByUser?.projectedMessages) setLoadginSkeletonMessages(false);
   }, [chatByUser]);
-  // console.log(document.getElementById("divu").scrollTop, "scroll");
-
-  const handleScroll = () => {
-    // console.log("height:", document.getElementById("divu").scrollHeight);
-    // console.log("top:", document.getElementById("divu").scrollTop);
-    // console.log("window:", document.getElementById("divu").clientHeight);
-    // console.log(document.getElementById("divu").clientHeight, "cliente");
-    // var y = document.getElementById("divu").scrollHeight;
-    // console.log(y, "y");
-    const heigthScroll = document.getElementById("divu").scrollHeight;
-    // console.log(document.getElementById("divu").scrollHeight, "heigt");
-    const containerHeight = document.getElementById("divu").clientHeight;
-
-    if (
-      document.getElementById("divu").scrollTop === 0 &&
-      heigthScroll !== containerHeight
-    ) {
-      setPage(40);
-    }
-
-    // console.log("Top:", document.documentElement.scrollTop);
-  };
 
   useEffect(() => {
     document.getElementById("divu").addEventListener("scroll", handleScroll);
     setPage(20);
+    setLoadginSkeletonMessages(true);
     return () => {
       if (document.getElementById("divu")) {
         document
@@ -67,9 +58,40 @@ function Messages() {
           .removeEventListener("scroll", handleScroll);
       }
       dispatch(getMessageByUserBackAction("clear"));
+      setLoadginSkeletonMessages(true);
     };
   }, [id]);
 
+  const handleScroll = () => {
+    const heigthScroll = document.getElementById("divu").scrollHeight;
+    const containerHeight = document.getElementById("divu").clientHeight;
+
+    if (
+      document.getElementById("divu").scrollTop === 0 &&
+      heigthScroll !== containerHeight
+    ) {
+      // setLoadingOldMessage(true);
+      setPage(40);
+    }
+  };
+  const handleGreetUser = () => {
+    dispatch(
+      sendMessageBackAction({
+        from: userInformation._id,
+        to: id,
+        message: `Hello ${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName}`,
+      })
+    );
+    dispatch(
+      sendMessagesFrontAction({
+        from: userInformation._id,
+        to: id,
+        message: `Hello ${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName}`,
+        hour: hourSystem,
+        fromSelf: true,
+      })
+    );
+  };
   if (chatUsers?.length) {
     const chatUsersID = chatUsers.map((user) => user.usr._id).includes(id);
     const chatUsersPreventID = chatPrevent.map((user) => user._id).includes(id);
@@ -80,12 +102,18 @@ function Messages() {
   return (
     <section className={styles.section_Messages}>
       <div className={styles.header_message}>
-        <div className={styles.userInformationChat}>
-          <img src={chatByUser?.informationUserTo?.avatar} alt="user_chat" />
-          <span>
-            {`${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName} `}
-          </span>
-        </div>
+        {!chatByUser?.informationUserTo ? (
+          <SkeletonUser isMessage={false} />
+        ) : (
+          <div className={styles.userInformationChat}>
+            <img src={chatByUser?.informationUserTo?.avatar} alt="user_chat" />
+
+            <span>
+              {`${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName} `}
+            </span>
+          </div>
+        )}
+
         <div className={styles.actionsChat}>
           <AvatarStack avatars={avatars} />
           <i className={`bi bi-camera-video`}></i>
@@ -94,7 +122,18 @@ function Messages() {
         </div>
       </div>
       <div id="divu" className={`${styles.messagesSent} relative`}>
-        {chatByUser?.projectedMessages?.length ? (
+        {loadginSkeletonMessages ? (
+          [1, 2, 3, 4, 5, 6].map((value, index) => {
+            return (
+              <div
+                key={value}
+                className={`${index % 2 === 0 && "w-[300px] ml-auto"}`}
+              >
+                <SkeletonUser />
+              </div>
+            );
+          })
+        ) : chatByUser?.projectedMessages?.length ? (
           chatByUser?.projectedMessages?.map((message, index) => (
             <CardMessage
               key={index}
@@ -107,10 +146,12 @@ function Messages() {
             />
           ))
         ) : (
-          <div className="absolute w-80 uppercase bottom-2 inset-x-1/3 text-lg text-center text-white p-5 bg-zinc-800 rounded-t-2xl rounded-br-2xl">
-            GREETS{" "}
-            {`${chatByUser?.informationUserTo?.firstName}
-            ${chatByUser?.informationUserTo?.lastName} 👋`}
+          <div
+            onClick={handleGreetUser}
+            className="absolute cursor-pointer w-80 uppercase bottom-2 inset-x-1/3 text-lg text-center text-white p-5 bg-zinc-800 rounded-t-2xl rounded-br-2xl"
+          >
+            {` GREETS ${chatByUser?.informationUserTo?.firstName}
+         ${chatByUser?.informationUserTo?.lastName} 👋`}
           </div>
         )}
       </div>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useState } from "react";
 export const SEND_MESSAGE_FRONT = "SEND_MESSAGE_FRONT";
 export const CREATE_USER = "CREATE_USER";
 export const LOGIN = "LOGIN";
@@ -17,7 +18,6 @@ export const GET_CHAT_BY_USER = "GET_CHAT_BY_USER";
 export const SEND_MESSAGE_BACK = "SEND_MESSAGE_BACK";
 export const SEARCH_USER = "SEARCH_USER";
 export const SEARCH_CHATS = "SEARCH_CHATS_ACTION";
-
 //USERS INFORMATION
 //REGISTER
 export const createUser = (user) => {
@@ -153,7 +153,6 @@ export const getChatsBackAction = (id) => {
       const result = await axios.get(
         `http://localhost:3000/api/users/chat/${id}`
       );
-      console.log(result.data);
       return dispatch({ type: GET_CHATS_ACTION, payload: result.data });
     } catch (error) {
       console.log(error);

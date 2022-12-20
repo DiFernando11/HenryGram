@@ -1,32 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import SkeletonPost from "../../Skeletons/SkeletonPost";
 import MakePost from "../MakePost";
 import Post from "../Post";
 import RecommendedFriends from "../RecommendedFriends";
 
 function Home() {
+  // const [page, setPage] = useState(0);
+  const handleScroll = () => {
+    if (
+      document.getElementById("viewHeigthPost").clientHeight +
+        document.getElementById("viewHeigthPost").scrollTop >=
+      document.getElementById("viewHeigthPost").scrollHeight
+    ) {
+      posts = [...posts, ...posts];
+    }
+  };
+
+  useEffect(() => {
+    document
+      .getElementById("viewHeigthPost")
+      .addEventListener("scroll", handleScroll);
+
+    return () => {
+      if (document.getElementById("viewHeigthPost")) {
+        document
+          .getElementById("viewHeigthPost")
+          .removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
   return (
     <main className="w-full flex">
-      <div className="w-full calcViewHeight">
+      <div id="viewHeigthPost" className="w-full calcViewHeight">
         <MakePost />
-        {posts.length &&
-          posts.map((post) => (
-            <Post
-              key={post.id}
-              type={post.type}
-              seguir={post.seguir}
-              message={post.message}
-              user={post.user}
-              imagePost={post.imagePost}
-            />
-          ))}
+        {posts.length
+          ? posts.map((post) => (
+              <Post
+                key={post.id}
+                type={post.type}
+                seguir={post.seguir}
+                message={post.message}
+                user={post.user}
+                imagePost={post.imagePost}
+              />
+            ))
+          : [1, 2].map((value) => <SkeletonPost key={value} />)}
       </div>
       <RecommendedFriends />
     </main>
   );
 }
 
-const posts = [
+let posts = [
   {
     id: 1,
     type: "Match",
