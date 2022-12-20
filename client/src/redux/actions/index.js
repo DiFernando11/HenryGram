@@ -146,7 +146,6 @@ export const postUser = (post) => {
 export const cleanPostState = () => {
   return { type: CLEAN_POST };
 };
-
 //CHATS
 export const getChatsBackAction = (id) => {
   return async (dispatch) => {
