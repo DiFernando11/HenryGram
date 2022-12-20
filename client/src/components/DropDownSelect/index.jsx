@@ -4,7 +4,7 @@ function DropDownSelect({ status, icon, select, confirmed, requests }) {
   const [show, setShow] = useState(false);
 
   return (
-    <button
+    <div
       onBlur={() => setShow(false)}
       className="relative flex items-center justify-center items-center bg-transparent group"
     >
@@ -36,8 +36,8 @@ function DropDownSelect({ status, icon, select, confirmed, requests }) {
       >
         <ul className="text-left border rounded-l-md rounded-br-md bg-zinc-800 cursor-pointer ">
           {select.length &&
-            select.map((item) => (
-              <li className="px-4 py-1 flex items-center gap-2  border-b">
+            select.map((item, index) => (
+              <li key={index} className="px-4 py-1 flex items-center gap-2  border-b">
                 {item?.avatar && (
                   <img
                     src={item.avatar}
@@ -57,7 +57,7 @@ function DropDownSelect({ status, icon, select, confirmed, requests }) {
             ))}
         </ul>
       </div>
-    </button>
+    </div>
   );
 }
 

@@ -9,7 +9,7 @@ function ModalFriends({ show, setShow }) {
         <Modal.Header className="bg-black text-white">Friends</Modal.Header>
         <Modal.Body  className="bg-black">
           <div className="calcViewModalFriends">
-            {[1,2,3,4,5,6,7,8,9,10,11,12,13,14].map(() => <CardFriends/>)}
+            {[1,2,3,4,5,6,7,8,9,10,11,12,13,14].map((e, index) => <CardFriends key={index} />)}
           </div>
         </Modal.Body>
     

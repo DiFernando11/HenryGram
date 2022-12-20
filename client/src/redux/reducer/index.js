@@ -15,6 +15,8 @@ import {
   SEARCH_USER,
   FRIENDS_BY_USER,
   SEND_MESSAGE_FRONT,
+  GET_POSTS,
+  GET_ALL_POSTS
 } from "../actions";
 
 const initialState = {
@@ -29,6 +31,8 @@ const initialState = {
   chatUsers: [],
   chatPrevent: [],
   chatByUser: [],
+  userPostsProfile: [],
+  allPosts: []
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -131,6 +135,18 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         chatByUser: [...state.chatByUser, action.payload],
       };
+    }
+    case GET_POSTS:{
+      return {
+        ...state,
+        userPostsProfile: action.payload.reverse()
+      }
+    }
+    case GET_ALL_POSTS:{
+      return{
+        ...state,
+        allPosts: action.payload.reverse()
+      }
     }
     //CHAT
     default:

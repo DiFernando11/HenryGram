@@ -20,7 +20,6 @@ function Messages() {
     objDiv.scrollTop = objDiv.scrollHeight;
   }
 
-  console.log(chatByUser, "bu");
   useEffect(() => {
     dispatch(
       getMessageByUserBackAction({

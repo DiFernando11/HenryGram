@@ -1,9 +1,18 @@
-import React from "react";
-
+import React, {useEffect} from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getPostUSer } from "../../../redux/actions";
 import MakePost from "../../PageHome/MakePost";
 import Post from "../../PageHome/Post";
 
 function PostProfile({ isFriend }) {
+  const postUser = useSelector(state => state.userPostsProfile)
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.userInformation)
+  useEffect(() => {
+  user ? dispatch(getPostUSer(user._id)) : null
+  console.log(user)
+  }, [user])
+  
   return (
     <section className="w-3/5 calcViewHeightPageProfile pt-2 ">
       {!isFriend && (
@@ -15,15 +24,15 @@ function PostProfile({ isFriend }) {
       )}
 
       <div>
-        {posts.length &&
-          posts.map((post) => (
+        {postUser.length &&
+          postUser.map((post) => (
             <Post
-              key={post.id}
-              type={post.type}
+              key={post._id}
+              isMatch={post.isMatch}
               seguir={post.seguir}
-              message={post.message}
-              user={post.user}
-              imagePost={post.imagePost}
+              description={post.description}
+              user={user}
+              imagePost={post.image}
             />
           ))}
       </div>

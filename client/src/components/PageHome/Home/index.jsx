@@ -1,16 +1,25 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getPostAllUsers } from "../../../redux/actions";
 import MakePost from "../MakePost";
 import Post from "../Post";
 import RecommendedFriends from "../RecommendedFriends";
 
 function Home() {
+  const dispatch = useDispatch()
+  const postUsers = useSelector(state => state.allPosts)
+  console.log(postUsers)
+  useEffect(() => {
+    dispatch(getPostAllUsers())
+  }, [])
+  
+
   return (
     <main className="w-full flex">
       <div className="w-full calcViewHeight">
         <MakePost />
-        {posts.length &&
-          posts.map((post) => (
+        {postUsers.length &&
+          postUsers.map((post) => (
             <Post
               key={post.id}
               type={post.type}
