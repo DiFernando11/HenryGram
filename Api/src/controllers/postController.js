@@ -171,6 +171,85 @@ const getPostsByUser = async (req, res) => {
 	}
 };
 
+const deletePost = async (req, res) => {
+
+	/*
+		Controlador de la Ruta para eliminar una publicacion
+	*/
+
+	const { id } = req.params;
+
+	try {
+		const post = await PostSchema.findOne({ _id: id });
+		console.log(post);
+		if (post) {
+			await post.delete();
+			console.log('Post deleted');
+			res.status(200).json({ message: 'Post deleted' });
+		} else {
+			console.log('Post not found');
+			res.status(404).json({ message: 'Post not found' });
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(500).json(error);
+	}
+};
+
+const likePost = async (req, res) => {
+
+	/*
+		Controlador de la Ruta para dar like a una publicacion
+	*/
+
+	const { postId, userId } = req.query;
+
+	try {
+		const post = await PostSchema.findOne({ _id: postId });
+		if (post) {
+			if (post.likes.some((like) => String(like._id) === String(userId))) {
+				post.likes = post.likes.filter((like) => String(like._id) !== String(userId));
+			} else {
+				post.likes.push(userId);
+			}
+			await post.save();
+			res.status(200).json(post);
+		} else {
+			res.status(404).json({ message: 'Post not found' });
+		}
+	} catch (error) {
+		res.status(500).json(error);
+	}
+};
+
+const updatePost = async (req, res) => {
+
+	/*
+		Controlador de la Ruta para actualizar una publicacion
+	*/
+
+	const { id } = req.params;
+
+	const { description,
+			hashtags,
+			images} = req.body;
+
+	try {
+		const post = await PostSchema.findOne({ _id: id });
+
+		if (post) {
+			description && (post.description = description);
+			hashtags && (post.hashtags = hashtags);
+			images && (post.images = images);
+			await post.save();
+			res.status(200).json(post);
+		} else {
+			res.status(404).json({ message: 'Post not found' });
+		}
+	} catch (error) {
+		res.status(500).json(error);
+	}
+};
 
 module.exports = {
 	postController,
@@ -179,4 +258,7 @@ module.exports = {
 	recomendedPostController,
 	getPostsByHashtag,
 	getPostsByUser,
+	deletePost,
+	likePost,
+	updatePost
 };
