@@ -1,13 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { timeHours } from "../utils";
 import styles from "./index.module.css";
 
 function CardMessage({ image, name, lastName, message, fromSelf, time }) {
   const userInformation = useSelector((state) => state.userInformation);
-  const timeDate = time.split("T");
-  const dateTime = timeDate[1].split(".");
-  const date = dateTime[0].slice(0, 5);
-
+  const timesHours = timeHours(time);
 
   // const timeMessage = timeDate.split(",");
   const DBName = fromSelf
@@ -24,7 +22,7 @@ function CardMessage({ image, name, lastName, message, fromSelf, time }) {
       <div className={styles.textContainerMessage}>
         <div className={styles.flexHeaderMessage}>
           <span className={styles.nameTextMessage}>{DBName}</span>
-          <span className={styles.textHours}>{date}</span>
+          <span className={styles.textHours}>{timesHours}</span>
         </div>
         <span className={styles.textMessage}>{message}</span>
       </div>

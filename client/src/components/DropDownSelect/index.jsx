@@ -76,18 +76,18 @@ function DropDownSelect({ status, icon, select, confirmed, requests }) {
                 {item?.icon && <i className={`bi ${item.icon}`}></i>}
                 {confirmed && (
                   <div className="ml-3 text-xs flex gap-2 ">
-                    <button
+                    <span
                       className="border p-1 bg-green-700"
                       onClick={() => handleConfirmedRequestFriend(item?.id)}
                     >
                       CONFIRM
-                    </button>
-                    <button
+                    </span>
+                    <span
                       className="border p-1 bg-red-600"
                       onClick={() => handleRejectRequestFriend(item?.id)}
                     >
                       REJECT
-                    </button>
+                    </span>
                   </div>
                 )}
               </li>

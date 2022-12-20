@@ -4,13 +4,14 @@ import CardPreviewMessage from "../CardPreviewMessage";
 import logoMatch from "../../../assets/coheteHenry.png";
 import styles from "./index.module.css";
 import { useSelector } from "react-redux";
+import { searchChatsAction } from "../../../redux/actions";
 
 function PreviewMesagge({ title, messages, messagesGroup }) {
   const [isChat, setIsChat] = useState(true);
   const chatPrevent = useSelector((state) => state.chatPrevent);
   return (
     <section className={styles.container_preview_message}>
-      <SearchBar />
+      <SearchBar handleChangeSearch={searchChatsAction} />
       <div
         className="flex rounded-md shadow-sm items-center justify-center my-5"
         role="group"
@@ -49,10 +50,8 @@ function PreviewMesagge({ title, messages, messagesGroup }) {
                 <CardPreviewMessage
                   key={index}
                   image={message.avatar}
-                  // message={message.message}
                   id={message._id}
-                  // time={message.time}
-                  //lastName = {message.lastName}
+                  lastName = {message.lastName}
                   name={message.firstName}
                 />
               ))
@@ -64,12 +63,13 @@ function PreviewMesagge({ title, messages, messagesGroup }) {
               ?.map((message, index) => (
                 <CardPreviewMessage
                   key={index}
-                  image={message.avatar}
-                  message={message.message}
-                  id={message._id}
-                  // time={message.time}
-                  //lastName = {message.lastName}
-                  name={message.firstName}
+                  image={message?.usr?.avatar}
+                  message={message?.msg?.message.text}
+                  id={message?.usr?._id}
+                  time={message?.msg?.createdAt}
+                  lastName={message?.usr?.lastName}
+                  name={message?.usr?.firstName}
+                  sender={message?.msg?.sender}
                 />
               ))
               .reverse()

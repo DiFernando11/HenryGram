@@ -12,7 +12,6 @@ let hourSystem = today.toISOString();
 function SendMessage({ idTo, scrollLastMessage }) {
   const [sendMessage, setSendMessage] = useState("");
   const { id } = useParams();
-
   const userInformation = useSelector((state) => state.userInformation);
 
   const dispatch = useDispatch();
