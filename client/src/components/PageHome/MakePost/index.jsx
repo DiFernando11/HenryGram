@@ -94,7 +94,7 @@ function MakePost() {
 			});
 		}
 	};
-	console.log(infoPost);
+
 	return (
 		<React.Fragment>
       {/* <i

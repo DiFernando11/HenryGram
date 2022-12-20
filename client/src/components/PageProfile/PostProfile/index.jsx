@@ -2,6 +2,7 @@ import React from "react";
 
 import MakePost from "../../PageHome/MakePost";
 import Post from "../../PageHome/Post";
+import SkeletonPost from "../../Skeletons/SkeletonPost";
 
 function PostProfile({ isFriend }) {
   return (
@@ -15,17 +16,18 @@ function PostProfile({ isFriend }) {
       )}
 
       <div>
-        {posts.length &&
-          posts.map((post) => (
-            <Post
-              key={post.id}
-              type={post.type}
-              seguir={post.seguir}
-              message={post.message}
-              user={post.user}
-              imagePost={post.imagePost}
-            />
-          ))}
+        {!posts.length
+          ? posts.map((post) => (
+              <Post
+                key={post.id}
+                type={post.type}
+                seguir={post.seguir}
+                message={post.message}
+                user={post.user}
+                imagePost={post.imagePost}
+              />
+            ))
+          : [1, 2].map((value) => <SkeletonPost key={value} />)}
       </div>
     </section>
   );

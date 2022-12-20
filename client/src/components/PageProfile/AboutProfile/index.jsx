@@ -70,7 +70,7 @@ function AboutProfile({ userInformation, isFriend }) {
     }
     navigate(`/message/chat/${userInformation?._id}`);
   };
-  console.log(userInformation, "userInformation");
+
   const handleSendRequestFriend = () => {
     dispatch(sendRequestFriendAction({ UserA: userID._id, UserB: id }));
     setStatusFriend("Enviada");
