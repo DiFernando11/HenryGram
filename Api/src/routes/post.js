@@ -1,7 +1,6 @@
 const express = require('express');
 const { postController, postCommentController, getAllUPost, recomendedPostController, getPostsByHashtag, getPostsByUser } = require('../controllers/postController');
 
-
 const router = express.Router();
 
 router.post('/posts', postController);

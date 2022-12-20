@@ -5,6 +5,7 @@ const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
 const messageRoutes = require('./routes/message');
 const friendRoutes = require('./routes/friend');
+const groupRoutes = require('./routes/group')
 var morgan = require('morgan');
 const cors = require('cors');
 
@@ -32,6 +33,7 @@ app.use('/api', userRoutes);
 app.use('/api', postRoutes);
 app.use('/api', messageRoutes);
 app.use('/api', friendRoutes);
+app.use('/api', groupRoutes)
 
 
 // Routes
