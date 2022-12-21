@@ -192,7 +192,6 @@ export const getPostAllUsers = () => {
 	return async (dispatch) => {
 		try {
 			const result = await axios.get("http://localhost:3000/api/posts/")
-			console.log(result)
 			return dispatch ( { type: GET_ALL_POSTS , payload: result.data})
 		} catch (error) {
 			console.log(error)

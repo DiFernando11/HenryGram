@@ -10,7 +10,6 @@ function PostProfile({ isFriend }) {
   const user = useSelector(state => state.userInformation)
   useEffect(() => {
   user ? dispatch(getPostUSer(user._id)) : null
-  console.log(user)
   }, [user])
   
   return (

@@ -8,7 +8,7 @@ import RecommendedFriends from "../RecommendedFriends";
 function Home() {
   const dispatch = useDispatch()
   const postUsers = useSelector(state => state.allPosts)
-  console.log(postUsers)
+  console.log()
   useEffect(() => {
     dispatch(getPostAllUsers())
   }, [])
@@ -19,14 +19,14 @@ function Home() {
       <div className="w-full calcViewHeight">
         <MakePost />
         {postUsers.length &&
-          postUsers.map((post) => (
+          postUsers?.map((posts) => (
             <Post
-              key={post.id}
-              type={post.type}
-              seguir={post.seguir}
-              message={post.message}
-              user={post.user}
-              imagePost={post.imagePost}
+              key={posts.post_id}
+              isMatch={posts.post.isMatch}
+              seguir={posts.seguir}
+              description={posts.post.description}
+              user={posts.user}
+              imagePost={posts.post.image}
             />
           ))}
       </div>
