@@ -92,6 +92,12 @@ const recomendedPostController = async (req, res) => {
 
 	const { userId } = req.params;
 
+	const limit = req.query.limit ? parseInt(req.query.limit) : 1;
+
+	const maxAmount = 20
+
+	const range = [limit*maxAmount-maxAmount, limit*maxAmount]
+
 	let user = null;
 
 	try {
@@ -102,7 +108,7 @@ const recomendedPostController = async (req, res) => {
 
 	let userFriendsPosts = [];
 	let friendships = [];
-	const maxPosts = 10;
+	const maxPosts = 100;
 
 	if (user.friends.length > 0) {
 		friendships = user.friends.map(async (friend) => {
@@ -140,6 +146,8 @@ const recomendedPostController = async (req, res) => {
 								return false
 							}
 						});
+
+						posts = posts.slice(range[0], range[1])
 						const postsWithUser = []
 						posts.forEach((p) => {
 							const user = UserSchema.findOne({ _id: p.userId })
@@ -156,6 +164,8 @@ const recomendedPostController = async (req, res) => {
 									user: userDestructured,
 								});
 								if (postsWithUser.length === posts.length) {
+
+									console.log(postsWithUser.length)
 									return res.status(200).json(postsWithUser);
 								}
 							});
@@ -179,7 +189,7 @@ const getAllUPost = async (req, res) => {
 
 	const limit = req.query.limit ? parseInt(req.query.limit) : 1;
 
-	const maxAmount = 10
+	const maxAmount = 20
 
 	const range = [limit*maxAmount-maxAmount, limit*maxAmount]
 
