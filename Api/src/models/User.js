@@ -31,6 +31,9 @@ const UserSchema = schema({
     messages: [
         { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
     ],
+    groups: [
+        { type: mongoose.Schema.Types.ObjectId, ref: 'Group' }
+    ],
     rol: {
         type: String,
         enum: ['admin', 'user'],

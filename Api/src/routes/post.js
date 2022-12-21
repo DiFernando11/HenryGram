@@ -11,7 +11,6 @@ const { postController,
         getFriendsMatches,
         getAllMatches } = require('../controllers/postController');
 
-
 const router = express.Router();
 
 router.post('/posts', postController);
