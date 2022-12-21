@@ -9,6 +9,9 @@ const GroupSchema = mongoose.Schema({
     title: {
         String
     },
+    avatar: {
+        String
+    },
     users: Array,
 },
     {

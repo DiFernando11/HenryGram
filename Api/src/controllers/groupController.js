@@ -22,6 +22,8 @@ const addChat = async (req, res, next) => {
             content
         })
 
+        console.log(chat)
+
         res.status(200).json({ msg: "Message added successfully." });
     } catch (ex) {
         next(ex);

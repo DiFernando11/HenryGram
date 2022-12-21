@@ -29,6 +29,7 @@ const postController = async (req, res) => {
 	if (isMatch) {
 		group = await GroupSchema.create({
 			title,
+			avatar: image ?? 'https://res.cloudinary.com/dgmv4orvc/image/upload/v1671629546/Images/g8ivckqtlen69rgcyzop.png',
 			creator: userId,
 			users: [userId]
 		})
@@ -132,11 +133,11 @@ const recomendedPostController = async (req, res) => {
 						);
 						posts = userFriendsPosts.concat(posts);
 						let hash = {};
-						posts = posts.filter((o) =>{
+						posts = posts.filter((o) => {
 
-							if(o){
+							if (o) {
 								return hash[o._id] ? false : (hash[o._id] = true)
-							}else{
+							} else {
 								return false
 							}
 						});
@@ -172,11 +173,11 @@ const recomendedPostController = async (req, res) => {
 
 const getAllUPost = async (req, res) => {
 	/*
-        Controlador de la Ruta para obtener todos las publicaciones
-    */
+		Controlador de la Ruta para obtener todos las publicaciones
+	*/
 
 	const posts = []
-  
+
 	try {
 		const post = await PostSchema.find();
 
@@ -298,8 +299,8 @@ const updatePost = async (req, res) => {
 	const { id } = req.params;
 
 	const { description,
-			hashtags,
-			images} = req.body;
+		hashtags,
+		images } = req.body;
 
 	try {
 		const post = await PostSchema.findOne({ _id: id });
@@ -356,7 +357,7 @@ const getFriendsMatches = async (req, res) => {
 			const matchesWithUsers = await Promise.all(
 				matches.map(async (match) => {
 					const user = await UserSchema.findOne({ _id: match.userId });
-					const userDestructured = { 
+					const userDestructured = {
 						_id: user._id,
 						firtsName: user.firstName,
 						lastName: user.lastName,
@@ -386,10 +387,10 @@ const getAllMatches = async (req, res) => {
 
 	const { max } = req.query;
 	const maxAmount = max ? max : 20;
-	
+
 	try {
 		const matches = await PostSchema.find({ isMatch: true }).limit(maxAmount);
-		
+
 		if (matches.length > 0) {
 			matches = shuffle(matches);
 			res.status(200).json(matches);
