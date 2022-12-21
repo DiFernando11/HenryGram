@@ -10,7 +10,6 @@ function PostProfile({ isFriend }) {
   const dispatch = useDispatch()
   const user = useSelector(state => state.userInformation)
   useEffect(() => {
-    
   user ? dispatch(getPostUSer(user._id)) : null
   }, [user])
   console.log(postUser)
@@ -25,17 +24,17 @@ function PostProfile({ isFriend }) {
       )}
 
       <div>
-        {!postUser.length
-          && postUser.map((post) => (
-              <Post
-                key={post._id}
-                isMatch={post.isMatch}
-                seguir={post.seguir}
-                description={post.description}
-                user={user}
-                imagePost={post.image}
-              />
-            ))}
+        {postUser.length
+          ? postUser?.map((post) => (
+            <Post
+              key={post.id}
+              isMatch={post.isMatch}
+              seguir={post.seguir}
+              description={post.description}
+              user={user}
+              imagePost={post.image}
+            />
+          )) : [1, 2].map((value) => <SkeletonPost key={value} />)}
       </div>
     </section>
   );
