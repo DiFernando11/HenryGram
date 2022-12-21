@@ -158,8 +158,17 @@ const getAllUPost = async (req, res) => {
     */
 
 	const posts = []
+
+	const limit = req.query.limit ? parseInt(req.query.limit) : 1;
+
+	const maxAmount = 10
+
+	const range = [limit*maxAmount-maxAmount, limit*maxAmount]
+
 	try {
-		const post = await PostSchema.find();
+		let post = await PostSchema.find();
+
+		post = post.slice(range[0], range[1])
 
 		post.forEach((p) => {
 
@@ -363,24 +372,29 @@ const getAllMatches = async (req, res) => {
 	/*
 		Controlador de la Ruta para obtener todos los matches
 	*/
-	console.log('getAllMatches');
+	// console.log('getAllMatches');
 
-	const { max } = req.query;
-	const maxAmount = max ? max : 20;
-	
-	try {
-		const matches = await PostSchema.find({ isMatch: true }).limit(maxAmount);
+	// const { max } = req.query;
+	// const maxAmount = max ? max : 20;
+	// let matches = [];
+	// try {
+	// 	matches = await PostSchema.find({ isMatch: true }).limit(maxAmount);
+	// 	console.log(matches);
 		
-		if (matches.length > 0) {
-			matches = shuffle(matches);
-			res.status(200).json(matches);
-		} else {
-			res.status(404).json({ message: 'No matches found' });
-		}
-	} catch (error) {
-		console.log(error);
-		res.status(500).json(error);
-	}
+	// 	if (matches.length > 0) {
+	// 		matches = shuffle(matches);
+	// 		res.status(200).json(matches);
+	// 	} else {
+	// 		res.status(404).json({ message: 'No matches found' });
+	// 	}
+	// } catch (error) {
+	// 	console.log(error);
+	// 	res.status(500).json({
+	// 		error,
+	// 		message: 'Error getting matches'
+	// 	});
+	// }
+	res.status(200).json({ message: 'getAllMatches' });
 };
 
 module.exports = {
