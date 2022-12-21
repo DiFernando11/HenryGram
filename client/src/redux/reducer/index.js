@@ -18,6 +18,8 @@ import {
   SEARCH_USER,
   FRIENDS_BY_USER,
   SEND_MESSAGE_FRONT,
+  GET_POSTS,
+  GET_ALL_POSTS,
   SEND_FRIEND_REQUEST,
   CONFIRMED_FRIEND_REQUEST,
   SEARCH_CHATS,
@@ -36,6 +38,8 @@ const initialState = {
   chatUsersCopy: [],
   chatPrevent: [],
   chatByUser: [],
+  userPostsProfile: [],
+  allPosts: []
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -145,6 +149,18 @@ const rootReducer = (state = initialState, action) => {
           ],
         },
       };
+    }
+    case GET_POSTS:{
+      return {
+        ...state,
+        userPostsProfile: action.payload.reverse()
+      }
+    }
+    case GET_ALL_POSTS:{
+      return{
+        ...state,
+        allPosts: action.payload.reverse()
+      }
     }
     //CHAT
 

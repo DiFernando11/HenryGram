@@ -94,7 +94,6 @@ function MakePost() {
 			});
 		}
 	};
-
 	return (
 		<React.Fragment>
       {/* <i
@@ -150,7 +149,7 @@ function MakePost() {
 									className={
 										selectTypePost === 'Match'
 											? 'inline-flex items-center py-2 px-4 text-white bg-yellow rounded-l-lg border border-gray-900 transition-all duration:200 hover:bg-amber-300  hover:text-black dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 text-black bg-amber-300 font-semibold text-sm dark:focus:bg-gray-700'
-											: 'inline-flex items-center py-2 px-4 text-white bg-transparent rounded-l-lg border border-gray-900 transition-all duration:200 hover:bg-amber-300 hover:text-black dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700  bg-amber-300 font-semibold text-sm dark:focus:bg-gray-700'
+											: 'inline-flex items-center py-2 px-4 text-white bg-transparent rounded-l-lg border border-black transition-all duration:200 hover:bg-amber-300 hover:text-black dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 font-semibold text-sm dark:focus:bg-gray-700'
 									}
 								>
 									<img
@@ -166,8 +165,8 @@ function MakePost() {
 									type="button"
 									className={
 										selectTypePost === 'Normal'
-											? 'inline-flex items-center py-2 px-4 text-black font-semibold bg-yellow rounded-r-md border border-gray-900 transition-all duration:200 hover:yellow hover:text-black dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700'
-											: 'inline-flex items-center py-2 px-4 text-white font-semibold text-gray-900 bg-transparent rounded-r-md border border-gray-900 transition-all duration:200 hover:bg-amber-300 hover:text-black dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700'
+											? 'inline-flex items-center py-2 px-4 text-black font-semibold bg-yellow rounded-r-md border border-black transition-all duration:200 hover:yellow hover:text-black dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700'
+											: 'inline-flex items-center py-2 px-4 text-white font-semibold text-gray-900 bg-transparent rounded-r-md border border-black transition-all duration:200 hover:bg-amber-300 hover:text-black dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700'
 									}
 								>
 									Normal

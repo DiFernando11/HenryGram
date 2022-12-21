@@ -1,11 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getPostAllUsers } from "../../../redux/actions";
+
 import SkeletonPost from "../../Skeletons/SkeletonPost";
 import MakePost from "../MakePost";
 import Post from "../Post";
 import RecommendedFriends from "../RecommendedFriends";
 
 function Home() {
+  const dispatch = useDispatch()
+  const postUsers = useSelector(state => state.allPosts)
+  useEffect(() => {
+    dispatch(getPostAllUsers())
+  }, [])
+  
+
   // const [page, setPage] = useState(0);
   const handleScroll = () => {
     if (
@@ -34,15 +43,15 @@ function Home() {
     <main className="w-full flex">
       <div id="viewHeigthPost" className="w-full calcViewHeight">
         <MakePost />
-        {posts.length
-          ? posts.map((post) => (
+        {postUsers.length
+          ? postUsers?.map((posts) => (
               <Post
-                key={post.id}
-                type={post.type}
-                seguir={post.seguir}
-                message={post.message}
-                user={post.user}
-                imagePost={post.imagePost}
+              key={posts.post_id}
+              isMatch={posts.post.isMatch}
+              seguir={posts.seguir}
+              description={posts.post.description}
+              user={posts.user}
+              imagePost={posts.post.image}
               />
             ))
           : [1, 2].map((value) => <SkeletonPost key={value} />)}

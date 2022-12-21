@@ -1,23 +1,25 @@
-import axios from "axios";
-import { useState } from "react";
-export const SEND_MESSAGE_FRONT = "SEND_MESSAGE_FRONT";
-export const CREATE_USER = "CREATE_USER";
-export const LOGIN = "LOGIN";
-export const LOGOUT = "LOGOUT";
-export const VERIFY_USER_TOKEN = "VERIFY_USER_TOKEN";
+import axios from 'axios';
+export const SEND_MESSAGE_FRONT = 'SEND_MESSAGE_FRONT';
+export const CREATE_USER = 'CREATE_USER';
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
+export const VERIFY_USER_TOKEN = 'VERIFY_USER_TOKEN';
 export const FRIENDS_BY_USER = "FRIENDS_BY_USER";
-export const GET_PROFILE_FRIEND = "GET_PROFILE_FRIEND";
+export const GET_PROFILE_FRIEND = 'GET_PROFILE_FRIEND';
 export const SEND_FRIEND_REQUEST = "SEND_FRIEND_REQUEST";
 export const CONFIRMED_FRIEND_REQUEST = "CONFIRMED_FRIEND_REQUEST";
-export const POST_USER = "POST_USER";
-export const CLEAN_POST = "CLEAN_POST";
+export const POST_USER = 'POST_USER';
+export const CLEAN_POST = 'CLEAN_POST';
 export const GET_USERS_INFORMATION = "GET_USERS_INFORMATION";
+export const SEARCH_USER = "SEARCH_USER";
 export const GET_CHATS_ACTION = "GET_CHATS_ACTION";
 export const ADD_CHAT_PREVENT_ACTION = "ADD_CHAT_PREVENT_ACTION";
 export const GET_CHAT_BY_USER = "GET_CHAT_BY_USER";
 export const SEND_MESSAGE_BACK = "SEND_MESSAGE_BACK";
-export const SEARCH_USER = "SEARCH_USER";
+export const GET_POSTS = 'GET_POSTS';
+export const GET_ALL_POSTS = 'GET_ALL_POSTS';
 export const SEARCH_CHATS = "SEARCH_CHATS_ACTION";
+////CHATS
 //USERS INFORMATION
 //REGISTER
 export const createUser = (user) => {
@@ -53,6 +55,19 @@ export const logoutAction = () => {
 };
 // Estado global que tiene la informacion del usuario loguiado
 export const verifyUserAction = (token) => {
+	return async (dispatch) => {
+		try {
+			const result = await axios.get(
+				`http://localhost:3000/api/users/token?token=${token}`
+			);
+			return dispatch({ type: VERIFY_USER_TOKEN, payload: result.data });
+		} catch (error) {
+			console.log(error);
+		}
+	};
+};
+
+export const getFriendsByUser = (id) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
@@ -64,21 +79,7 @@ export const verifyUserAction = (token) => {
     }
   };
 };
-
-export const getFriendsByUser = (id) => {
-  return async (dispatch) => {
-    try {
-      const result = await axios.get(
-        `http://localhost:3000/api/users/friends/${id}`
-      );
-      return dispatch({ type: FRIENDS_BY_USER, payload: result.data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
 //USERS INFORMATION
-
 //FRIENDS
 export const getProfileFriendAction = (idUser) => {
   return async (dispatch) => {
@@ -93,14 +94,14 @@ export const getProfileFriendAction = (idUser) => {
   };
 };
 export const getInformationUsersAction = () => {
-  return async (dispatch) => {
-    try {
-      const result = await axios.get(`http://localhost:3000/api/users`);
-      return dispatch({ type: GET_USERS_INFORMATION, payload: result.data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	return async (dispatch) => {
+		try {
+			const result = await axios.get(`http://localhost:3000/api/users`);
+			return dispatch({ type: GET_USERS_INFORMATION, payload: result.data });
+		} catch (error) {
+			console.log(error);
+		}
+	};
 };
 export const sendRequestFriendAction = (data) => {
   return async (dispatch) => {
@@ -116,7 +117,7 @@ export const sendRequestFriendAction = (data) => {
   };
 };
 export const confirmedRequestFriendAction = (data) => {
-  return async (dispatch) => {
+	return async (dispatch) => {
     try {
       const result = await axios.post(
         "http://localhost:3000/api/friends/res",
@@ -127,6 +128,9 @@ export const confirmedRequestFriendAction = (data) => {
       console.log(error);
     }
   };
+};
+export const searchUserAction = (payload) => {
+	return { type: SEARCH_USER, payload };
 };
 //FRIENDS
 
@@ -144,23 +148,24 @@ export const postUser = (post) => {
 
 //CLEAN POST
 export const cleanPostState = () => {
-  return { type: CLEAN_POST };
+	return { type: CLEAN_POST };
 };
+
 //CHATS
 export const getChatsBackAction = (id) => {
-  return async (dispatch) => {
-    try {
-      const result = await axios.get(
-        `http://localhost:3000/api/users/chat/${id}`
-      );
-      return dispatch({ type: GET_CHATS_ACTION, payload: result.data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	return async (dispatch) => {
+		try {
+			const result = await axios.get(
+				`http://localhost:3000/api/users/chat/${id}`
+			);
+			return dispatch({ type: GET_CHATS_ACTION, payload: result.data });
+		} catch (error) {
+			console.log(error);
+		}
+	};
 };
 export const addChatBackAction = (payload) => {
-  return { type: ADD_CHAT_PREVENT_ACTION, payload };
+	return { type: ADD_CHAT_PREVENT_ACTION, payload };
 };
 export const getMessageByUserBackAction = (data) => {
   if (data === "clear") return { type: GET_CHAT_BY_USER, payload: [] };
@@ -178,17 +183,17 @@ export const getMessageByUserBackAction = (data) => {
 };
 
 export const sendMessageBackAction = (data) => {
-  return async (dispatch) => {
-    try {
-      const result = await axios.post(
-        `http://localhost:3000/api/messages`,
-        data
-      );
-      return dispatch({ type: SEND_MESSAGE_BACK, payload: result.data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	return async (dispatch) => {
+		try {
+			const result = await axios.post(
+				`http://localhost:3000/api/messages`,
+				data
+			);
+			return dispatch({ type: SEND_MESSAGE_BACK, payload: result.data });
+		} catch (error) {
+			console.log(error);
+		}
+	};
 };
 export const sendMessagesFrontAction = (payload) => {
   return {
@@ -197,11 +202,31 @@ export const sendMessagesFrontAction = (payload) => {
   };
 };
 //CHATS
-//SEARCH
-export const searchUserAction = (payload) => {
-  return { type: SEARCH_USER, payload };
-};
+
 export const searchChatsAction = (payload) => {
   return { type: SEARCH_CHATS, payload };
 };
 //SEARCH
+
+//GET ALL POSTS 
+export const getPostAllUsers = () => {
+	return async (dispatch) => {
+		try {
+			const result = await axios.get("http://localhost:3000/api/posts")
+			dispatch({ type: GET_ALL_POSTS, payload: result.data})
+		} catch (error) {
+			console.log(error)
+		}
+	}
+} 
+
+export const getPostUSer = (id) => {
+	return async (dispatch) => {
+		try {
+			const result = await axios.get(`http://localhost:3000/api/posts/${id}`)
+			dispatch({ type: GET_POSTS, payload: result.data})
+		} catch (error) {
+			console.log(error)
+		}
+	}
+}

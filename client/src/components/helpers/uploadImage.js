@@ -13,7 +13,7 @@ export const uploadImage = async (e, stateLoading, stateImage, setImagePost) => 
   );
   const file = await res.json();
 
-  stateImage( prev => ({ ...prev, image:{url:file.secure_url}}));
+  stateImage ? ( prev => ({ ...prev, image:{url:file.secure_url}})) : null ;
   setImagePost(file.secure_url)
   console.log(file.secure_url);
   stateLoading(false);
