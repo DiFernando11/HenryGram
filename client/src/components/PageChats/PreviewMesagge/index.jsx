@@ -4,13 +4,15 @@ import CardPreviewMessage from "../CardPreviewMessage";
 import logoMatch from "../../../assets/coheteHenry.png";
 import styles from "./index.module.css";
 import { useSelector } from "react-redux";
+import { searchChatsAction } from "../../../redux/actions";
+import SkeletonUser from "../../Skeletons/skeletonUser";
 
 function PreviewMesagge({ title, messages, messagesGroup }) {
   const [isChat, setIsChat] = useState(true);
   const chatPrevent = useSelector((state) => state.chatPrevent);
   return (
     <section className={styles.container_preview_message}>
-      <SearchBar />
+      <SearchBar handleChangeSearch={searchChatsAction} />
       <div
         className="flex rounded-md shadow-sm items-center justify-center my-5"
         role="group"
@@ -43,19 +45,38 @@ function PreviewMesagge({ title, messages, messagesGroup }) {
       </div>
       <span className={styles.textMessagePreview}>{title}</span>
       <div className={styles.containerAllMessage}>
+        {chatPrevent?.length
+          ? chatPrevent
+              ?.map((message, index) => (
+                <CardPreviewMessage
+                  key={index}
+                  image={message.avatar}
+                  id={message._id}
+                  lastName={message.lastName}
+                  name={message.firstName}
+                />
+              ))
+              .reverse()
+          : null}
         {isChat
-          ? messages.length &&
-            messages.map((message, index) => (
-              <CardPreviewMessage
-                key={index}
-                image={message.avatar}
-                message={message.message}
-                id={message._id}
-                // time={message.time}
-                //lastName = {message.lastName}
-                name={message.firstName}
-              />
-            ))
+          ? messages?.length
+            ? messages
+                ?.map((message, index) => (
+                  <CardPreviewMessage
+                    key={index}
+                    image={message?.usr?.avatar}
+                    message={message?.msg?.message.text}
+                    id={message?.usr?._id}
+                    time={message?.msg?.createdAt}
+                    lastName={message?.usr?.lastName}
+                    name={message?.usr?.firstName}
+                    sender={message?.msg?.sender}
+                  />
+                ))
+                .reverse()
+            : [1, 2, 3, 4, 5, 6, 7, 8].map((value) => (
+                <SkeletonUser key={value} />
+              ))
           : messagesGroup.length &&
             messagesGroup.map((message, index) => (
               <CardPreviewMessage
@@ -67,19 +88,6 @@ function PreviewMesagge({ title, messages, messagesGroup }) {
                 name={message.name}
               />
             ))}
-        {chatPrevent.length
-          ? chatPrevent.map((message, index) => (
-              <CardPreviewMessage
-                key={index}
-                image={message.avatar}
-                // message={message.message}
-                id={message._id}
-                // time={message.time}
-                //lastName = {message.lastName}
-                name={message.firstName}
-              />
-            ))
-          : null}
       </div>
     </section>
   );

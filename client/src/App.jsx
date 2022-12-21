@@ -42,6 +42,7 @@ function App() {
   useEffect(() => {
     dispatch(getInformationUsersAction());
   }, []);
+  
   useEffect(() => {
     if (userInformation) {
       dispatch(getFriendsByUser(userInformation._id));

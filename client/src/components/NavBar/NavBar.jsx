@@ -6,15 +6,16 @@ import SearchBar from "../SearchBar";
 import profilePicture from "../../assets/profilePicture.jpg";
 import { useSelector } from "react-redux";
 import DropDownSelect from "../DropDownSelect/index";
+import { searchUserAction } from "../../redux/actions";
 
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
   const searchUser = useSelector((state) => state.searchUser);
   const userInformation = useSelector((state) => state.userInformation);
   const friendsByUser = useSelector((state) => state.friendsByUser);
-  // const requestFriends = friendsByUser.filter(
-  //   (friend) => Number(friend.status) === 3
-  // );
+  const requestFriends = friendsByUser.filter(
+    (friend) => Number(friend.status) === 2
+  );
   const pruebaRequestFriends = [
     {
       id: "639b57d15871ad62a8b88c2d",
@@ -54,8 +55,9 @@ export default function NavBar() {
               </Link>
               <div>
                 <SearchBar
-                // searchFriend={searchFriend}
-                // handleChangeInfoUsers={handleChangeInfoUsers}
+                  handleChangeSearch={searchUserAction}
+                  // searchFriend={searchFriend}
+                  // handleChangeInfoUsers={handleChangeInfoUsers}
                 />
                 <div className="absolute w-56 z-10">
                   {searchUser.length
@@ -133,7 +135,7 @@ export default function NavBar() {
                   status={"APPLICATION"}
                   icon={"bi-people-fill"}
                   select={pruebaRequestFriends}
-                  requests={friendsByUser.length}
+                  requests={requestFriends.length}
                   confirmed={true}
                 />
                 {/* <i className="bi bi-people-fill text-2xl "></i>
