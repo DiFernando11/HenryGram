@@ -2,6 +2,7 @@ const UserSchema = require("../models/User");
 const FriendSchema = require("../models/Friend");
 const MessageSchema = require("../models/Message")
 const GroupSchema = require("../models/Group")
+const ChatSchema = require("../models/Chat")
 const ObjectId = require("mongoose").Types.ObjectId;
 const bycrypt = require("bcryptjs");
 const { confirmationEmail } = require("../config/nodemailer");
@@ -292,7 +293,12 @@ const getGroups = async (req, res) => {
       let response = Promise.all(
         value.map(async (el) => {
           let gr = await GroupSchema.findOne({ _id: el }).sort({ updatedAt: -1 })
-          return gr
+
+          let ch = await ChatSchema.findOne(
+            { groupId: gr._id }
+          ).sort({ createdAt: -1 })
+
+          return { gr, ch }
         })
       );
       return response;

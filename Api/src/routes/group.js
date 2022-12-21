@@ -1,8 +1,9 @@
 const express = require('express');
-const { addChat } = require('../controllers/groupController')
+const { addChat, getAllChat } = require('../controllers/groupController')
 
 const router = express.Router();
 
-router.post('/group', addChat);
+router.post('/groups', addChat);
+router.get('/groups/:id', getAllChat);
 
 module.exports = router;
