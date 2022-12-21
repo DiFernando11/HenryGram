@@ -12,7 +12,16 @@ const ChatSchema = mongoose.Schema({
         required: true
     },
     content: {
-        String
+        type: String
+    },
+    firstName: {
+        type: String
+    },
+    lastName: {
+        type: String
+    },
+    avatar: {
+        type: String
     }
 },
     {

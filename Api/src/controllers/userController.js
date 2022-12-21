@@ -1,6 +1,8 @@
 const UserSchema = require("../models/User");
 const FriendSchema = require("../models/Friend");
 const MessageSchema = require("../models/Message")
+const GroupSchema = require("../models/Group")
+const ChatSchema = require("../models/Chat")
 const ObjectId = require("mongoose").Types.ObjectId;
 const bycrypt = require("bcryptjs");
 const { confirmationEmail } = require("../config/nodemailer");
@@ -227,19 +229,19 @@ const getFriendship = async (req, res) => {
     });
 };
 
-const getChat = async (req, res) => {
+const getMessages = async (req, res) => {
   /*
-       Controlador de la Ruta para obtener el chat de un usuario
+       Controlador de la Ruta para obtener los mensajes con otros usuarios
   */
 
   const { id } = req.params;
 
   if (id.length !== 24)
-    return res.status(404).json({ message: "Chat not found" });
+    return res.status(404).json({ message: "Messages not found" });
 
   const m = await UserSchema.findOne({ _id: ObjectId(id) }, { messages: 1 });
 
-  if (!m) return res.status(404).json({ message: "Chat not found" });
+  if (!m) return res.status(404).json({ message: "Messages not found" });
 
   Promise.resolve(m.messages)
     .then((value) => {
@@ -263,14 +265,57 @@ const getChat = async (req, res) => {
       if (result.length) {
         return res.status(200).json(result);
       } else {
-        return res.status(404).json({ message: "Chat not found" });
+        return res.status(404).json({ message: "Messages not found" });
       }
     })
     .catch((e) => {
       console.log(e);
-      return res.status(404).json({ message: "Chat not found" });
+      return res.status(404).json({ message: "Messages not found" });
     });
 };
+
+const getGroups = async (req, res) => {
+  /*
+       Controlador de la Ruta para obtener los grupos de chat
+  */
+
+  const { id } = req.params;
+
+  if (id.length !== 24)
+    return res.status(404).json({ message: "Groups not found" });
+
+  const g = await UserSchema.findOne({ _id: ObjectId(id) }, { groups: 1 });
+
+  if (!g) return res.status(404).json({ message: "Groups not found" });
+
+  Promise.resolve(g.groups)
+    .then((value) => {
+      let response = Promise.all(
+        value.map(async (el) => {
+          let gr = await GroupSchema.findOne({ _id: el }).sort({ updatedAt: -1 })
+
+          let ch = await ChatSchema.findOne(
+            { groupId: gr._id }
+          ).sort({ createdAt: -1 })
+
+          return { gr, ch }
+        })
+      );
+      return response;
+    })
+    .then((result) => {
+      if (result.length) {
+        return res.status(200).json(result);
+      } else {
+        return res.status(404).json({ message: "Groups not found" });
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+      return res.status(404).json({ message: "Groups not found" });
+    });
+}
+
 
 module.exports = {
   postUser,
@@ -281,5 +326,6 @@ module.exports = {
   getFriendship,
   validateUser,
   getUserByToken,
-  getChat,
+  getMessages,
+  getGroups
 };

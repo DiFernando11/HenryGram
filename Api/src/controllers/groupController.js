@@ -2,6 +2,17 @@ const UserSchema = require("../models/User");
 const GroupSchema = require("../models/Group");
 const ChatSchema = require("../models/Chat");
 
+const getAllChat = async (req, res, next) => {
+    const { id } = req.params
+
+    const chats = await ChatSchema.find(
+        { groupId: id }
+    ).sort({ updatedAt: 1 });
+
+    console.log(id)
+    res.status(200).json(chats);
+}
+
 const addChat = async (req, res, next) => {
     try {
         const { groupId, userId, content } = req.body;
@@ -19,7 +30,10 @@ const addChat = async (req, res, next) => {
         const chat = await ChatSchema.create({
             groupId,
             userId,
-            content
+            content,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            avatar: user.avatar
         })
 
         res.status(200).json({ msg: "Message added successfully." });
@@ -30,5 +44,6 @@ const addChat = async (req, res, next) => {
 }
 
 module.exports = {
-    addChat
+    addChat,
+    getAllChat
 };
