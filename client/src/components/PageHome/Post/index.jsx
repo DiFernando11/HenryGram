@@ -5,7 +5,6 @@ import SendMessage from '../../PageChats/SendMessage';
 
 function Post({ isMatch, seguir, description, user, imagePost, postDetail }) {
 	const image = imagePost?.filter((e) => e.url);
-	console.log(image)
 	return (
 		<section
 			className={`w-11/12  h-auto mt-6 m-auto relative pt-8 p-6 ${
