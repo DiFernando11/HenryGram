@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+
+import React, { useEffect, useState } from "react";
 import { getPostAllUsers } from "../../../redux/actions";
+import SkeletonPost from "../../Skeletons/SkeletonPost";
 import MakePost from "../MakePost";
 import Post from "../Post";
 import RecommendedFriends from "../RecommendedFriends";
 
 function Home() {
+
   const dispatch = useDispatch()
   const postUsers = useSelector(state => state.allPosts)
   console.log()
@@ -14,28 +16,57 @@ function Home() {
   }, [])
   
 
+
+  // const [page, setPage] = useState(0);
+  const handleScroll = () => {
+    if (
+      document.getElementById("viewHeigthPost").clientHeight +
+        document.getElementById("viewHeigthPost").scrollTop >=
+      document.getElementById("viewHeigthPost").scrollHeight
+    ) {
+      posts = [...posts, ...posts];
+    }
+  };
+
+  useEffect(() => {
+    document
+      .getElementById("viewHeigthPost")
+      .addEventListener("scroll", handleScroll);
+
+    return () => {
+      if (document.getElementById("viewHeigthPost")) {
+        document
+          .getElementById("viewHeigthPost")
+          .removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
+
   return (
     <main className="w-full flex">
-      <div className="w-full calcViewHeight">
+      <div id="viewHeigthPost" className="w-full calcViewHeight">
         <MakePost />
-        {postUsers.length &&
-          postUsers?.map((posts) => (
-            <Post
-              key={posts.post_id}
+
+        {postsUsers.length
+          ? postsUsers.map((posts) => (
+              <Post
+             key={posts.post_id}
               isMatch={posts.post.isMatch}
               seguir={posts.seguir}
               description={posts.post.description}
               user={posts.user}
               imagePost={posts.post.image}
-            />
-          ))}
+              />
+            ))
+          : [1, 2].map((value) => <SkeletonPost key={value} />)}
+
       </div>
       <RecommendedFriends />
     </main>
   );
 }
 
-const posts = [
+let posts = [
   {
     id: 1,
     type: "Match",

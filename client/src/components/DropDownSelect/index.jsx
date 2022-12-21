@@ -1,8 +1,30 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { confirmedRequestFriendAction } from "../../redux/actions";
 
 function DropDownSelect({ status, icon, select, confirmed, requests }) {
+  const userInformation = useSelector((state) => state.userInformation);
   const [show, setShow] = useState(false);
-
+  const handleConfirmedRequestFriend = (id) => {
+    dispatch(
+      confirmedRequestFriendAction({
+        UserA: userInformation._id,
+        UserB: id,
+        resp: true,
+      })
+    );
+    setStatusFriend("Amigos");
+  };
+  const handleRejectRequestFriend = (id) => {
+    dispatch(
+      confirmedRequestFriendAction({
+        UserA: userInformation,
+        UserB: id,
+        resp: false,
+      })
+    );
+    setStatusFriend("Seguir");
+  };
   return (
     <div
       onBlur={() => setShow(false)}
@@ -36,8 +58,16 @@ function DropDownSelect({ status, icon, select, confirmed, requests }) {
       >
         <ul className="text-left border rounded-l-md rounded-br-md bg-zinc-800 cursor-pointer ">
           {select.length &&
-            select.map((item, index) => (
-              <li key={index} className="px-4 py-1 flex items-center gap-2  border-b">
+
+            select.map((item , index) => (
+              <li
+              key={index}
+                className="px-4 py-1 flex items-center gap-2  border-b"
+                onClick={
+                  item.handleActionFriend ? item.handleActionFriend : null
+                }
+              >
+
                 {item?.avatar && (
                   <img
                     src={item.avatar}
@@ -49,8 +79,18 @@ function DropDownSelect({ status, icon, select, confirmed, requests }) {
                 {item?.icon && <i className={`bi ${item.icon}`}></i>}
                 {confirmed && (
                   <div className="ml-3 text-xs flex gap-2 ">
-                    <button className="border p-1 bg-green-700">CONFIRM</button>
-                    <button className="border p-1 bg-red-600">REJECT</button>
+                    <span
+                      className="border p-1 bg-green-700"
+                      onClick={() => handleConfirmedRequestFriend(item?.id)}
+                    >
+                      CONFIRM
+                    </span>
+                    <span
+                      className="border p-1 bg-red-600"
+                      onClick={() => handleRejectRequestFriend(item?.id)}
+                    >
+                      REJECT
+                    </span>
                   </div>
                 )}
               </li>

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getPostUSer } from "../../../redux/actions";
 import MakePost from "../../PageHome/MakePost";
 import Post from "../../PageHome/Post";
+import SkeletonPost from "../../Skeletons/SkeletonPost";
 
 function PostProfile({ isFriend }) {
   const postUser = useSelector(state => state.userPostsProfile)
@@ -23,17 +24,19 @@ function PostProfile({ isFriend }) {
       )}
 
       <div>
+
         {postUser.length &&
           postUser.map((post) => (
-            <Post
-              key={post._id}
-              isMatch={post.isMatch}
-              seguir={post.seguir}
-              description={post.description}
-              user={user}
-              imagePost={post.image}
-            />
-          ))}
+              <Post
+                key={post.id}
+                type={post.type}
+                seguir={post.seguir}
+                message={post.message}
+                user={post.user}
+                imagePost={post.imagePost}
+              />
+            ))
+          : [1, 2].map((value) => <SkeletonPost key={value} />)}
       </div>
     </section>
   );

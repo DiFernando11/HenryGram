@@ -16,7 +16,6 @@ function Chats() {
     if (userInformation) {
       dispatch(getChatsBackAction(userInformation?._id));
     }
-    window.scrollTo({ bottom: 400, behavior: "smooth" });
   }, [userInformation]);
 
   return (

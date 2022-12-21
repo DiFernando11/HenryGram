@@ -9,7 +9,9 @@ const {
     LogIn,
     getFriendship,
     getUserByToken,
-    getChat } = require('../controllers/userController');
+    getMessages,
+    getGroups
+} = require('../controllers/userController');
 
 
 const router = express.Router();
@@ -22,7 +24,7 @@ router.get('/validateUser/:token', validateUser); //Ruta para activar un usuario
 router.post("/users/login", LogIn);
 router.get('/users/friends/:id', getFriendship);
 router.get('/users/token', getUserByToken);
-router.get('/users/chat/:id', getChat);
-
+router.get('/users/messages/:id', getMessages);
+router.get('/users/groups/:id', getGroups);
 
 module.exports = router;

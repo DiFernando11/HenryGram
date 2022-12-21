@@ -1,27 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams, useNavigate } from "react-router-dom";
 // import { Dropdown } from "flowbite";
-import { addChatBackAction } from "../../../redux/actions";
+import {
+  addChatBackAction,
+  confirmedRequestFriendAction,
+  getChatsBackAction,
+  sendRequestFriendAction,
+} from "../../../redux/actions";
 import DropDownSelect from "../../DropDownSelect";
 import AvatarStack from "../../PageChats/AvatarStack";
 import FavoriteActivities from "../FavoriteActivities";
+import ModalEditProfile from "../ModalEditProfile";
 import ModalFriends from "../ModalFriends";
 import OverYou from "../OverYou";
 
 function AboutProfile({ userInformation, isFriend }) {
   const [statusFriend, setStatusFriend] = useState("seguir");
   const [show, setShow] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
+  const chatUsers = useSelector((state) => state.chatUsers);
+  const chatPrevent = useSelector((state) => state.chatPrevent);
   const friendsByUser = useSelector((state) => state.friendsByUser);
-  const friendsAccepted = friendsByUser.filter(
-    (friend) => Number(friend.status) === 3
-  );
+  const userID = useSelector((state) => state.userInformation);
+
+  // const friendsAccepted = friendsByUser.filter(
+  //   (friend) => Number(friend.status) === 3
+  // );
+  const navigate = useNavigate();
   const { id } = useParams();
   const applicationStatus = friendsByUser.find(
     (friend) => friend.recipient == id || friend.requester == id
   );
 
-  const handle = () => {
+  const handleStatusFriend = () => {
     if (applicationStatus) {
       if (Number(applicationStatus.status) === 1) setStatusFriend("Enviada");
       else if (Number(applicationStatus.status) === 2)
@@ -31,18 +43,53 @@ function AboutProfile({ userInformation, isFriend }) {
     } else setStatusFriend("Seguir");
   };
 
-  useEffect(() => {
-    handle();
-  }, [friendsByUser, id]);
   const dispatch = useDispatch();
+  useEffect(() => {
+    handleStatusFriend();
+  }, [friendsByUser, id]);
+
+  useEffect(() => {
+    if (userID && !chatUsers.length) {
+      dispatch(getChatsBackAction(userID?._id));
+    }
+  }, [userID]);
+
   const handleRedirectChatUser = () => {
+    if (
+      !chatUsers.some((user) => user?._id === id) &&
+      !chatPrevent.some((user) => user?._id === id)
+    ) {
+      dispatch(
+        addChatBackAction({
+          avatar: userInformation?.avatar,
+          firstName: userInformation?.firstName,
+          lastName: userInformation?.lastName,
+          _id: userInformation?._id,
+        })
+      );
+    }
+    navigate(`/message/chat/${userInformation?._id}`);
+  };
+
+  const handleSendRequestFriend = () => {
+    dispatch(sendRequestFriendAction({ UserA: userID._id, UserB: id }));
+    setStatusFriend("Enviada");
+  };
+  const handleConfirmedReuqestFriend = () => {
     dispatch(
-      addChatBackAction({
-        avatar: userInformation?.avatar,
-        firstName: userInformation.firstName,
-        _id: userInformation?._id,
+      confirmedRequestFriendAction({ UserA: userID._id, UserB: id, resp: true })
+    );
+    setStatusFriend("Amigos");
+  };
+  const handleRejectReuqestFriend = () => {
+    dispatch(
+      confirmedRequestFriendAction({
+        UserA: userID._id,
+        UserB: id,
+        resp: false,
       })
     );
+    setStatusFriend("Seguir");
   };
 
   return (
@@ -60,13 +107,11 @@ function AboutProfile({ userInformation, isFriend }) {
         </div>
         {isFriend && (
           <div className="flex gap-8 items-center">
-            <Link to={`/message/chat/${userInformation?._id}`}>
-              <i
-                onClick={handleRedirectChatUser}
-                className="bi bi-chat-dots-fill text-yellow text-2xl"
-                title="Send message"
-              ></i>
-            </Link>
+            <i
+              onClick={handleRedirectChatUser}
+              className="bi bi-chat-dots-fill text-yellow text-2xl"
+              title="Send message"
+            ></i>
 
             <div className="flex text-yellow gap-1 items-center  ">
               {statusFriend === "Seguir" && (
@@ -74,14 +119,29 @@ function AboutProfile({ userInformation, isFriend }) {
                   <DropDownSelect
                     status={statusFriend}
                     icon="bi-person-fill-add"
-                    select={[{ text: "Send friend request", icon: "bi-plus" }]}
+                    select={[
+                      {
+                        text: "Send friend request",
+                        icon: "bi-plus",
+                        handleActionFriend: handleSendRequestFriend,
+                      },
+                    ]}
                   />
                 </>
               )}
               {statusFriend === "Enviada" && (
                 <>
-                  <i className="bi bi-person-fill-exclamation text-2xl cursor-default "></i>
-                  <span className="text-yellow">{statusFriend}</span>
+                  <DropDownSelect
+                    status={statusFriend}
+                    icon="bi-person-fill-exclamation"
+                    select={[
+                      {
+                        text: "Cancel request",
+                        icon: "bi-check",
+                        handleActionFriend: handleRejectReuqestFriend,
+                      },
+                    ]}
+                  />
                 </>
               )}
               {statusFriend === "Recibido" && (
@@ -90,8 +150,16 @@ function AboutProfile({ userInformation, isFriend }) {
                     status={statusFriend}
                     icon="bi-people-fill"
                     select={[
-                      { text: "Accept", icon: "bi-check" },
-                      { text: "Reject", icon: "bi-x" },
+                      {
+                        text: "Accept",
+                        icon: "bi-check",
+                        handleActionFriend: handleConfirmedReuqestFriend,
+                      },
+                      {
+                        text: "Reject",
+                        icon: "bi-x",
+                        handleActionFriend: handleRejectReuqestFriend,
+                      },
                     ]}
                   />
                 </>
@@ -100,13 +168,28 @@ function AboutProfile({ userInformation, isFriend }) {
                 <DropDownSelect
                   status={statusFriend}
                   icon="bi-people-fill"
-                  select={[{ text: "Delete friend", icon: "bi-trash3-fill" }]}
+                  select={[
+                    {
+                      text: "Delete friend",
+                      icon: "bi-trash3-fill",
+                      handleActionFriend: handleRejectReuqestFriend,
+                    },
+                  ]}
                 />
               )}
             </div>
           </div>
         )}
+        {!isFriend && (
+          <>
+            <i
+              className="bi bi-gear-fill text-xl text-yellow"
+              onClick={() => setShowEditProfile(!showEditProfile)}
+            ></i>
+          </>
+        )}
       </div>
+
       <div className="flex justify-between mb-3">
         <span className="text-sm">Friends</span>
         <span className="text-sm">Matchs</span>
@@ -115,6 +198,7 @@ function AboutProfile({ userInformation, isFriend }) {
         <AvatarStack avatars={avatars} openModalFriends={setShow} show={show} />
         <AvatarStack avatars={avatars} />
         <ModalFriends setShow={setShow} show={show} />
+        <ModalEditProfile show={showEditProfile} setShow={setShowEditProfile} />
       </div>
       {!isFriend && (
         <div>

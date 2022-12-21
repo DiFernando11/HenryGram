@@ -1,13 +1,14 @@
 import React from "react";
 import Post from "../../PageHome/Post";
+import SkeletonPost from "../../Skeletons/SkeletonPost";
 import CommentPostDetail from "../CommentPostDetail";
 
 function ViewPost() {
   return (
-    <main className="flex w-full h-[calc(100vh-4rem)] ">
-      <div className=" flex bg-transparent w-4/5 h-4/5  h-full m-auto border border-amber-300">
-        <section className="bg-transparent w-[65%]">
-          <Post
+    <main className="flex w-full h-[calc(100vh-4rem)] bg-[#fefbfb25] ">
+      <div className=" flex bg-[#363636] w-4/5 h-4/5 m-auto border  border-amber-300">
+        <section className="bg-[#363636] w-[65%]">
+          {/* <Post
             key={post.id}
             type={post.type}
             seguir={post.seguir}
@@ -15,7 +16,8 @@ function ViewPost() {
             user={post.user}
             imagePost={post.imagePost}
             postDetail={true}
-          />
+          /> */}
+          <SkeletonPost />
         </section>
         <section className="w-[35%] border border-amber-300 ">
           <CommentPostDetail />
