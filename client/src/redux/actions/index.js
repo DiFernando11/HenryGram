@@ -68,16 +68,16 @@ export const verifyUserAction = (token) => {
 };
 
 export const getFriendsByUser = (id) => {
-  return async (dispatch) => {
-    try {
-      const result = await axios.get(
-        `http://localhost:3000/api/users/token?token=${token}`
-      );
-      return dispatch({ type: VERIFY_USER_TOKEN, payload: result.data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	return async (dispatch) => {
+		try {
+			const result = await axios.get(
+				`http://localhost:3000/api/users/friends/${id}`
+			);
+			return dispatch({ type: FRIENDS_BY_USER, payload: result.data });
+		} catch (error) {
+			console.log(error);
+		}
+	};
 };
 //USERS INFORMATION
 //FRIENDS
