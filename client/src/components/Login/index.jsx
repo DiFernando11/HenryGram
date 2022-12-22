@@ -32,7 +32,6 @@ function Login() {
   const handleLoginUser = (e) => {
     e.preventDefault();
 
-    if (errors.email === '' && errors.password === ''){
       dispatch(loginAction(login));
       if (!userLogin) {
         Swal.fire({
@@ -45,13 +44,7 @@ function Login() {
           color: "#fafbfd"
         });
       }
-    } else {
-      Swal.fire(
-        "Please, check the fields",
-        "The fields are required",
-        "warning"
-      );
-    }
+    
 
   };
 
