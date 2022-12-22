@@ -2,14 +2,19 @@ import React from 'react';
 import logoMatch from '../../../assets/coheteHenry.png';
 import DropDownSelect from '../../DropDownSelect';
 import SendMessage from '../../PageChats/SendMessage';
+import MyMenu from './MyMenu';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
-function Post({ isMatch, seguir, description, user, imagePost, postDetail }) {
+function Post({ isMatch, seguir, description, user, imagePost, postId, postDetail, userIdLogged}) {
 	const image = imagePost?.filter((e) => e.url);
+	const location = useLocation() 
+
 	return (
 		<section
 			className={`w-11/12  h-auto mt-6 m-auto relative pt-8 p-6 ${
 				!postDetail && 'border border-amber-300'
-			}  containerBackrougndImagePost `}
+			}  containerBackrougndImagePost rounded shadow-md shadow-black`}
 		>
 			{isMatch && (
 				<div className="absolute ml-6 top-0 left-0 mt-2 flex items-center gap-1">
@@ -19,10 +24,11 @@ function Post({ isMatch, seguir, description, user, imagePost, postDetail }) {
 			)}
 
 			<div className="text-yellow-300 absolute top-1 right-0 mr-8  text-yellow">
-				<DropDownSelect
+				{/* <DropDownSelect
 					icon={'bi-three-dots'}
 					select={[{ text: 'Delete Post', icon: 'bi-trash3-fill' }]}
-				/>
+				/> */}
+				{ userIdLogged?._id === user._id || location.pathname === "/profile"? <MyMenu postId={postId} /> : null}
 			</div>
 			<div className="border-t border-neutral-600 pt-4 flex gap-2.5 relative">
 				<img
