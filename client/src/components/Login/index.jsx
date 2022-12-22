@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../auth/index";
 import Swal from "sweetalert2";
 import { loginAction, logoutAction } from "../../redux/actions";
+import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 
 function Login() {
   const dispatch = useDispatch();
+  const [passwordHide , setPasswordHide] = useState(true);
   const userLogin = useSelector((state) => state.userLogin);
   const auth = useAuth();
   const [login, setLogin] = useState({
@@ -35,6 +37,10 @@ function Login() {
     // navigate('/home');
   };
 
+  const showPassword = () => {
+    setPasswordHide(!passwordHide);
+  };
+
   const handleAlert = (result) => {
     if (result.token) {
       Swal.fire({
@@ -46,9 +52,16 @@ function Login() {
         }
       });
     } else {
+
+      let message = ''
+      if (userLogin === 'Email need confirmation'){
+        message = 'Please, confirm your email'
+      }else{
+        message = 'Please, try again'
+      }
       Swal.fire(
-        "Email or password are incorrect.",
-        "Please, try again.",
+        userLogin,
+        message,
         "warning"
       ).then(() => {
         dispatch(logoutAction());
@@ -57,7 +70,7 @@ function Login() {
   };
 
   return (
-    <div className="border border-white lg:h-1/2 h-2/3 bg-white lg:w-1/4 w-2/3 rounded flex flex-col">
+    <div className="border border-white lg:h-1/2 h-2/3 bg-white lg:w-1/4 w-2/3 rounded flex flex-col text-black">
       {userLogin && handleAlert(userLogin)}
       <h1 className="text-black mt-3 lg:mx-5 mx-auto lg:text-2xl text-3xl font-bold font-sans">
         Login
@@ -70,7 +83,7 @@ function Login() {
           Email
         </label>
         <input
-          className="border border-black w-10/12 mx-auto my-2 rounded lg:p-1 p-2"
+          className="border border-black w-10/12 mx-auto my-2 rounded lg:p-1 p-2 "
           name="email"
           type="text"
           value={login.email}
@@ -80,14 +93,21 @@ function Login() {
         <label className="lg:m-auto ml-9 font-bold text-xl" htmlFor="password">
           Contraseña
         </label>
-        <input
-          className="border border-black w-10/12 mx-auto my-2 rounded lg:p-1 p-2"
-          name="password"
-          type="password"
-          value={login.password}
-          placeholder="Contraseña..."
-          onChange={handleDataUser}
-        />
+        <div className="border flex justify-between border-black w-10/12 mx-auto my-2 rounded">
+          <input
+            className="w-full h-full border-none bg-transparent p-2"    
+            name="password"
+            type={passwordHide ? "password" : "text"}
+            value={login.password}
+            placeholder="Contraseña..."
+            onChange={handleDataUser}
+          />
+          {passwordHide ? ( 
+            <AiOutlineEye onClick={showPassword} className="text-black m-2 bg-none" />
+          ) : (
+            <AiOutlineEyeInvisible onClick={showPassword} className="text-black m-2" />
+          )}
+        </div>
         <button
           className="bg-black font-bold border text-white mx-auto lg:my-2 my-5 lg:p-2 p-3 w-2/3 rounded-lg transition duration:200 hover:border-black hover:bg-blacker "
           type="submit"

@@ -42,9 +42,10 @@ export const loginAction = (data) => {
       );
       return dispatch({ type: LOGIN, payload: result.data });
     } catch (error) {
+      console.log(error);
       return dispatch({
         type: LOGIN,
-        payload: "E-mail or password are not correct",
+        payload: error.response.data.message,
       });
     }
   };

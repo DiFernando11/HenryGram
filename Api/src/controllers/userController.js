@@ -56,6 +56,20 @@ const postUser = async (req, res) => {
   }
 };
 
+const sendConfirnmationEmail = async ( email, password, firstName ) => {
+
+  try{
+  
+    const token = getToken({ email: email, password: password });
+    console.log(token);
+  
+    confirmationEmail(firstName, email, token);
+  } catch (err) {
+    console.log(err);
+  }
+
+};
+
 const validateUser = async (req, res) => {
   /*
         Controlador de la ruta que valida los email de los usuarios
@@ -172,11 +186,26 @@ const LogIn = async (req, res) => {
     */
 
   const { email, password } = req.body;
+  let user = null;
 
-  const user = await UserSchema.findOne(
-    { email },
-    { password: 1, firstName: 1 }
-  );
+  try{
+      user = await UserSchema.findOne(
+      { email },
+      { password: 1, firstName: 1, active: 1 }
+    );
+  } catch(err){
+      res.status(500).json({message: "Internal server error"});
+  }
+
+
+  if (!user) {
+    return res.status(400).json({ message: "Wrong email" });
+  }
+  
+  if ( !user.active ) {
+    sendConfirnmationEmail(email, password, user.firstName)
+    return res.status(401).json({ message: "Email need confirmation" });
+  }
 
   token = getToken({ email: email, password: password });
   try {
@@ -185,14 +214,14 @@ const LogIn = async (req, res) => {
         if (result) {
           res.status(200).json({ token, firstName: user.firstName });
         } else {
-          res.status(404).json({ message: "wrong Password is invalid" });
+          res.status(404).json({ message: "Wrong Password" });
         }
       });
     } else {
-      res.status(404).json({ message: "wrong email is invalid " });
+      res.status(404).json({ message: "wrong email" });
     }
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: "Internal server error" });
     console.log("error");
   }
 };
