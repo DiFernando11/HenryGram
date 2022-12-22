@@ -1,3 +1,4 @@
+import { Transition } from "@headlessui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useParams, useNavigate } from "react-router-dom";
@@ -198,7 +199,7 @@ function AboutProfile({ userInformation, isFriend }) {
         <AvatarStack avatars={avatars} openModalFriends={setShow} show={show} />
         <AvatarStack avatars={avatars} />
         <ModalFriends setShow={setShow} show={show} />
-        <ModalEditProfile show={showEditProfile} setShow={setShowEditProfile} />
+        
       </div>
       {!isFriend && (
         <div>
@@ -208,6 +209,18 @@ function AboutProfile({ userInformation, isFriend }) {
           <FavoriteActivities />
         </div>
       )}
+      <Transition
+				appear
+				show={showEditProfile}
+				enter="ease-out duration-300"
+				enterFrom="opacity-0"
+				enterTo="opacity-100"
+				leave="ease-in duration-200"
+				leaveFrom="opacity-100"
+				leaveTo="opacity-0"	
+			>
+        <ModalEditProfile show={showEditProfile} setShow={setShowEditProfile} />
+        </Transition>
     </section>
   );
 }

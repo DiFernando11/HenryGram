@@ -1,3 +1,4 @@
+import { Transition } from "@headlessui/react";
 import React, {useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getPostUSer } from "../../../redux/actions";
@@ -12,7 +13,6 @@ function PostProfile({ isFriend }) {
   useEffect(() => {
   user ? dispatch(getPostUSer(user._id)) : null
   }, [user])
-  console.log(postUser)
   return (
     <section className="w-3/5 calcViewHeightPageProfile pt-2 ">
       {!isFriend && (
@@ -20,14 +20,25 @@ function PostProfile({ isFriend }) {
         //   <div className=" ml-[50px] justify-center items-center ">
         //   </div>
         // </div>
+        <Transition
+				appear
+				show={!isFriend}
+				enter="ease-out duration-300"
+				enterFrom="opacity-0"
+				enterTo="opacity-100"
+				leave="ease-in duration-200"
+				leaveFrom="opacity-100"
+				leaveTo="opacity-0"	
+			>
         <MakePost />
+        </Transition>
       )}
 
       <div>
         {postUser.length
           ? postUser?.map((post) => (
             <Post
-              key={post.id}
+              key={post._id}
               isMatch={post.isMatch}
               seguir={post.seguir}
               description={post.description}

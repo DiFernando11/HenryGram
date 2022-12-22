@@ -160,7 +160,7 @@ export const getChatsBackAction = (id) => {
 			);
 			return dispatch({ type: GET_CHATS_ACTION, payload: result.data });
 		} catch (error) {
-			console.log(error);
+			console.error('error en la funcion getChatsBackAction');
 		}
 	};
 };
