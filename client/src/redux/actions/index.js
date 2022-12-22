@@ -19,6 +19,7 @@ export const SEND_MESSAGE_BACK = "SEND_MESSAGE_BACK";
 export const GET_POSTS = 'GET_POSTS';
 export const GET_ALL_POSTS = 'GET_ALL_POSTS';
 export const SEARCH_CHATS = "SEARCH_CHATS_ACTION";
+export const CLEAR = 'CLEAR'
 ////CHATS
 //USERS INFORMATION
 //REGISTER
@@ -230,4 +231,8 @@ export const getPostUSer = (id) => {
 			console.log(error)
 		}
 	}
+}
+
+export const clearState = () => {
+  return { type: CLEAR }
 }

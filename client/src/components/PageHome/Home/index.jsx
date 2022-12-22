@@ -46,7 +46,7 @@ function Home() {
         {postUsers.length
           ? postUsers?.map((posts) => (
               <Post
-              key={posts.post_id}
+              key={posts.post._id}
               isMatch={posts.post.isMatch}
               seguir={posts.seguir}
               description={posts.post.description}
