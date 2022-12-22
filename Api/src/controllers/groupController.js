@@ -3,14 +3,24 @@ const GroupSchema = require("../models/Group");
 const ChatSchema = require("../models/Chat");
 
 const getAllChat = async (req, res, next) => {
-    const { id } = req.params
 
-    const chats = await ChatSchema.find(
-        { groupId: id }
-    ).sort({ updatedAt: 1 });
+    try {
 
-    console.log(id)
-    res.status(200).json(chats);
+        const { id, limit } = req.query
+
+        const offset = 10;
+
+        const chats = await ChatSchema.find(
+            { groupId: id }
+        ).sort({ updatedAt: -1 });
+
+        const twentyMessages = chats.slice(offset * (limit - 1), offset * limit);
+
+        res.status(200).json(twentyMessages);
+
+    } catch (ex) {
+        next(ex)
+    }
 }
 
 const addChat = async (req, res, next) => {
