@@ -65,7 +65,7 @@ function Register() {
 			color: "#fafbfd"
 		  }).then((response) => {
 			if (response.isConfirmed) {
-				dispatch(clearState());
+				dispatch(clearState("register"));
 				navigate('/')
 			}
 		  });

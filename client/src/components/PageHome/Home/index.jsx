@@ -10,11 +10,12 @@ import RecommendedFriends from "../RecommendedFriends";
 function Home() {
   const dispatch = useDispatch()
   const postUsers = useSelector(state => state.allPosts)
+  const user = useSelector(state => state.userInformation)
   useEffect(() => {
     dispatch(getPostAllUsers())
   }, [])
   
-
+console.log(postUsers)
   // const [page, setPage] = useState(0);
   const handleScroll = () => {
     if (
@@ -47,6 +48,8 @@ function Home() {
           ? postUsers?.map((posts) => (
               <Post
               key={posts.post._id}
+              postId={posts.post._id}
+              userIdLogged = {user}
               isMatch={posts.post.isMatch}
               seguir={posts.seguir}
               description={posts.post.description}

@@ -24,6 +24,8 @@ import {
   CONFIRMED_FRIEND_REQUEST,
   SEARCH_CHATS,
   CLEAR,
+  DELETE_POST,
+  CLEAR_DELETE_POST
 } from "../actions";
 
 const initialState = {
@@ -40,7 +42,8 @@ const initialState = {
   chatPrevent: [],
   chatByUser: [],
   userPostsProfile: [],
-  allPosts: []
+  allPosts: [],
+  deletePost:[],
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -188,6 +191,20 @@ const rootReducer = (state = initialState, action) => {
       return{
         ...state,
         createUser:[]
+      }
+    }
+    case DELETE_POST:{
+      return{
+        ...state,
+        deletePost: action.payload[0],
+        userPostsProfile: state.userPostsProfile.filter( e => e._id != action.payload[1]),
+        allPosts: state.allPosts.filter( e => e.post._id !== action.payload[1])
+      }
+    }
+    case CLEAR_DELETE_POST: {
+      return{
+        ...state,
+        deletePost: []
       }
     }
     default:
