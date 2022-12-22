@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
 import { useAuth } from "../auth/index";
 import Swal from "sweetalert2";
 import { loginAction, logoutAction } from "../../redux/actions";
@@ -10,34 +11,48 @@ function Login() {
   const dispatch = useDispatch();
   const [passwordHide , setPasswordHide] = useState(true);
   const userLogin = useSelector((state) => state.userLogin);
+
   const auth = useAuth();
   const [login, setLogin] = useState({
     email: "",
     password: "",
   });
+
   const navigate = useNavigate();
+
+
+
   const handleDataUser = (e) => {
     setLogin({
       ...login,
       [e.target.name]: e.target.value,
     });
   };
+
   const handleLoginUser = (e) => {
     e.preventDefault();
-    dispatch(loginAction(login));
-    if (!userLogin) {
-      Swal.fire({
-        title: "Waiting for confirmation...",
-        didOpen: () => {
-          Swal.showLoading();
-        },
-        background: '#1e1c1d',
-        iconColor: "#fcd34d",
-        color: "#fafbfd"
-      });
+
+    if (errors.email === '' && errors.password === ''){
+      dispatch(loginAction(login));
+      if (!userLogin) {
+        Swal.fire({
+          title: "Waiting for confirmation...",
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          background: '#1e1c1d',
+          iconColor: "#fcd34d",
+          color: "#fafbfd"
+        });
+      }
+    } else {
+      Swal.fire(
+        "Please, check the fields",
+        "The fields are required",
+        "warning"
+      );
     }
-    // auth.login({ login });
-    // navigate('/home');
+
   };
 
   const showPassword = () => {
@@ -58,7 +73,6 @@ function Login() {
         }
       });
     } else {
-
       let message = ''
       if (userLogin === 'Email need confirmation'){
         message = 'Please, confirm your email'
@@ -74,7 +88,6 @@ function Login() {
       });
     }
   };
-
   return (
     <div className="border border-white lg:h-1/2 h-2/3 bg-white lg:w-1/4 w-2/3 rounded flex flex-col text-black">
       {userLogin && handleAlert(userLogin)}
