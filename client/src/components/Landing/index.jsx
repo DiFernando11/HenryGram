@@ -5,7 +5,7 @@ function Landing() {
 	return (
 		<div className="border border-black bg-cover bg-background h-screen w-screen flex flex-col lg:flex-row items-center justify-evenly bg-black">
 			<div className="lg:w-1/3">
-				<h1 className="font-bold my-5 text-yellow text-8xl font-sans">
+				<h1 className="font-bold my-5 text-yellow text-6xl font-sans">
 					HenryGram
 				</h1>
 				<h3 className="text-white font-bold font-sans lg:inline hidden">
