@@ -317,8 +317,8 @@ const updatePost = async (req, res) => {
 	const { id } = req.params;
 
 	const { description,
-		hashtags,
-		images } = req.body;
+			hashtags,
+			images } = req.body;
 
 	try {
 		const post = await PostSchema.findOne({ _id: id });

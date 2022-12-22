@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../auth/index";
@@ -10,34 +10,88 @@ function Login() {
   const dispatch = useDispatch();
   const [passwordHide , setPasswordHide] = useState(true);
   const userLogin = useSelector((state) => state.userLogin);
+
   const auth = useAuth();
   const [login, setLogin] = useState({
     email: "",
     password: "",
   });
+
+  const [error, setError] = useState({
+    email: "", 
+    password: "",
+  });
+
   const navigate = useNavigate();
+
+  const handleErrors = (e) => {
+
+    if (e.target.name === "email") {
+      if (e.target.value === "") {
+        setError({
+          ...error,
+          email: "Email is required",
+        });
+      } else if (/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(e.target.value) === false) {
+        setError({
+          ...error,
+          email: "Email is invalid",
+        });
+      } else {
+        setError({
+          ...error,
+          email: "",
+        });
+      }
+    }
+
+    if (e.target.name === "password") {
+      if (e.target.value === "") {
+        setError({
+          ...error,
+          password: "Password is required",
+        });
+      } else if (e.target.value.length < 8) {
+        setError({
+          ...error,
+          password: "Password must be at least 8 characters",
+        });
+      } else {
+        setError({
+          ...error,
+          password: "",
+        });
+      }
+    }
+  };
+
+
+
   const handleDataUser = (e) => {
     setLogin({
       ...login,
       [e.target.name]: e.target.value,
     });
+    handleErrors(e);
   };
+
   const handleLoginUser = (e) => {
     e.preventDefault();
-    dispatch(loginAction(login));
-    if (!userLogin) {
-      Swal.fire({
-        title: "Waiting for confirmation...",
-        didOpen: () => {
-          Swal.showLoading();
-        },
-        background: '#1e1c1d',
-        iconColor: "#fcd34d",
-        color: "#fafbfd"
-      });
-    }
-    // auth.login({ login });
-    // navigate('/home');
+
+      dispatch(loginAction(login));
+      if (!userLogin) {
+        Swal.fire({
+          title: "Waiting for confirmation...",
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          background: '#1e1c1d',
+          iconColor: "#fcd34d",
+          color: "#fafbfd"
+        });
+      }
+    
+
   };
 
   const showPassword = () => {
@@ -58,7 +112,6 @@ function Login() {
         }
       });
     } else {
-
       let message = ''
       if (userLogin === 'Email need confirmation'){
         message = 'Please, confirm your email'
@@ -74,9 +127,8 @@ function Login() {
       });
     }
   };
-
   return (
-    <div className="border border-white lg:h-1/2 h-2/3 bg-white lg:w-1/4 w-2/3 rounded flex flex-col text-black">
+    <div className="border border-white lg:h-fit h-fit bg-white lg:w-1/4 w-2/3 rounded flex flex-col text-black py-2">
       {userLogin && handleAlert(userLogin)}
       <h1 className="text-black mt-3 lg:mx-5 mx-auto lg:text-2xl text-4xl font-bold font-sans">
         Login
@@ -96,6 +148,7 @@ function Login() {
           placeholder="Email..."
           onChange={handleDataUser}
         />
+        {error.email && ( <p className="text-red-500 text-xs w-10/12 mx-auto">{error.email}</p> )}
         <label className="lg:m-auto ml-9 font-bold text-xl" htmlFor="password">
           Contraseña
         </label>
@@ -114,9 +167,11 @@ function Login() {
             <AiOutlineEyeInvisible onClick={showPassword} className="text-black m-2" />
           )}
         </div>
+        {error.password && ( <p className="text-red-500 text-xs w-10/12 mx-auto">{error.password}</p> )}
         <button
-          className="bg-black font-bold border text-white mx-auto lg:my-1 my-7 lg:p-2 p-3 lg:w-1/2 w-2/3 rounded-lg transition duration:200 hover:border-black hover:bg-blacker "
+          className="bg-black font-bold border text-white mx-auto lg:my-1 my-7 lg:p-2 p-3 lg:w-1/2 w-2/3 rounded-lg transition duration:200 hover:border-black hover:bg-blacker disabled:cursor-not-allowed"
           type="submit"
+          disabled = {login.email === '' && login.password === '' ? true : false}
         >
           Ingresar
         </button>
@@ -124,7 +179,7 @@ function Login() {
       <hr className="border-black w-10/12 mx-auto" />
       <button
         onClick={() => navigate("/register")}
-        className="bg-yellow font-sans font-bold border border-yellower rounded-lg lg:p-2 p-3 lg:w-1/2 w-2/3 mx-auto text-black transition duration:200 lg:my-5 hover:bg-yellower mt-7"
+        className="bg-yellow font-sans font-bold border border-yellower rounded-lg lg:p-2 p-3 lg:w-1/2 w-2/3 mx-auto text-black transition duration:200 lg:my-5 hover:bg-yellower mt-7 "
       >
         Crear cuenta
       </button>
