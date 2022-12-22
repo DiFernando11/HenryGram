@@ -37,20 +37,21 @@ export const createUser = (user) => {
 };
 //LOGIN
 export const loginAction = (data) => {
-	return async (dispatch) => {
-		try {
-			const result = await axios.post(
-				'http://localhost:3000/api/users/login',
-				data
-			);
-			return dispatch({ type: LOGIN, payload: result.data });
-		} catch (error) {
-			return dispatch({
-				type: LOGIN,
-				payload: 'E-mail or password are not correct',
-			});
-		}
-	};
+  return async (dispatch) => {
+    try {
+      const result = await axios.post(
+        "http://localhost:3000/api/users/login",
+        data
+      );
+      return dispatch({ type: LOGIN, payload: result.data });
+    } catch (error) {
+      console.log(error);
+      return dispatch({
+        type: LOGIN,
+        payload: error.response.data.message,
+      });
+    }
+  };
 };
 //LOGOUT
 export const logoutAction = () => {
