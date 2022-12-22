@@ -23,6 +23,7 @@ import {
   SEND_FRIEND_REQUEST,
   CONFIRMED_FRIEND_REQUEST,
   SEARCH_CHATS,
+  CLEAR,
 } from "../actions";
 
 const initialState = {
@@ -183,7 +184,12 @@ const rootReducer = (state = initialState, action) => {
       };
     }
     //SEARCH
-
+    case CLEAR: {
+      return{
+        ...state,
+        createUser:[]
+      }
+    }
     default:
       return state;
   }

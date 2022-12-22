@@ -30,7 +30,7 @@ const postUser = async (req, res) => {
     /*
             Si el usuario ya existe, debería devolver un error
         */
-    res.status(400).json({ msg: "User already exists" });
+    return res.status(400).json({ msg: "User already exists" });
   }
 
   password = encryptPassword(password);
