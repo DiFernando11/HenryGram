@@ -1,23 +1,27 @@
-import React, { useState } from "react";
+import React, { Children, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import {
-  sendMessageBackAction,
-  sendMessagesFrontAction,
-} from "../../../redux/actions";
+import { io } from "socket.io-client";
+const socket = io("http://localhost:3000");
+import { chatTimeReal, sendMessageBackAction } from "../../../redux/actions";
 import styles from "./index.module.css";
-let today = new Date();
+
 // obtener la fecha y la hora
-let hourSystem = today.toISOString();
-function SendMessage({ idTo, scrollLastMessage }) {
+
+function SendMessage({ scrollLastMessage }) {
+  let today = new Date();
+  let hourSystem = today.toISOString();
   const [sendMessage, setSendMessage] = useState("");
+
   const { id } = useParams();
   const userInformation = useSelector((state) => state.userInformation);
-
+  const chatTimeRealArray = useSelector((state) => state.chatTimeReal);
+  // const
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setSendMessage(e.target.value);
+    // socket.emit("registrarse", userInformation?._id);
   };
 
   const handleSentMessage = (e) => {
@@ -30,18 +34,40 @@ function SendMessage({ idTo, scrollLastMessage }) {
         message: sendMessage,
       })
     );
-    dispatch(
-      sendMessagesFrontAction({
-        from: userInformation._id,
-        to: idTo,
-        message: sendMessage,
-        hour: hourSystem,
-        fromSelf: true,
-      })
-    );
+    socket.emit("message", userInformation._id, id, sendMessage, hourSystem);
+    const messageInformation = {
+      from: userInformation._id,
+      to: id,
+      message: sendMessage,
+      hour: hourSystem,
+      fromSelf: true,
+    };
+    dispatch(chatTimeReal(messageInformation));
+
+    // setMessagesFront([
+    //   ...messagesFront,
+    //   {
+    //     from: userInformation._id,
+    //     to: id,
+    //     message: sendMessage,
+    //     hour: hourSystem,
+    //     fromSelf: true,
+    //   },
+    // ]);
     setSendMessage("");
-    setTimeout(() => scrollLastMessage(), 100);
+    scrollLastMessage && setTimeout(() => scrollLastMessage(), 100);
   };
+  useEffect(() => {
+    const receivedMessage = (sendMessage) => {
+      dispatch(chatTimeReal(sendMessage));
+      // setMessagesFront([sendMessage, ...messagesFront]);
+    };
+    socket.on("message", receivedMessage);
+    scrollLastMessage && setTimeout(() => scrollLastMessage(), 100);
+    return () => {
+      socket.off("message", receivedMessage);
+    };
+  }, [chatTimeRealArray]);
 
   return (
     <form onSubmit={handleSentMessage}>

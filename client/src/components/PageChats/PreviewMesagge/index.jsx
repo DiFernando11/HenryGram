@@ -1,15 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchBar from "../../SearchBar";
 import CardPreviewMessage from "../CardPreviewMessage";
 import logoMatch from "../../../assets/coheteHenry.png";
 import styles from "./index.module.css";
-import { useSelector } from "react-redux";
-import { searchChatsAction } from "../../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  changeUltimateMessageTimeRealAction,
+  searchChatsAction,
+} from "../../../redux/actions";
 import SkeletonUser from "../../Skeletons/skeletonUser";
+
 
 function PreviewMesagge({ title, messages, messagesGroup }) {
   const [isChat, setIsChat] = useState(true);
   const chatPrevent = useSelector((state) => state.chatPrevent);
+  const chatTimeRealUser = useSelector((state) => state.chatTimeReal);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (messages.length) {
+      dispatch(changeUltimateMessageTimeRealAction());
+    }
+  }, [chatTimeRealUser]);
   return (
     <section className={styles.container_preview_message}>
       <SearchBar handleChangeSearch={searchChatsAction} />

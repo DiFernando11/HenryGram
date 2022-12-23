@@ -1,4 +1,5 @@
 import {
+  changeMessageUltimateHelp,
   searchChatsHelp,
   searchFriendHelp,
 } from "../../components/PageChats/utils";
@@ -17,7 +18,6 @@ import {
   ADD_CHAT_PREVENT_ACTION,
   SEARCH_USER,
   FRIENDS_BY_USER,
-  SEND_MESSAGE_FRONT,
   GET_POSTS,
   GET_ALL_POSTS,
   SEND_FRIEND_REQUEST,
@@ -26,6 +26,8 @@ import {
   CLEAR,
   DELETE_POST,
   CLEAR_DELETE_POST
+    CHAT_TIME_REAL,
+  CHANGE_PREVIEW_ULTIMATE_MESSAGE,
 } from "../actions";
 
 const initialState = {
@@ -41,6 +43,7 @@ const initialState = {
   chatUsersCopy: [],
   chatPrevent: [],
   chatByUser: [],
+  chatTimeReal: [],
   userPostsProfile: [],
   allPosts: [],
   deletePost:[],
@@ -142,18 +145,25 @@ const rootReducer = (state = initialState, action) => {
         ...state,
       };
     }
-    case SEND_MESSAGE_FRONT: {
+    case CHAT_TIME_REAL: {
+      if (action.payload === "clear") return { ...state, chatTimeReal: [] };
       return {
         ...state,
-        chatByUser: {
-          informationUserTo: state.chatByUser.informationUserTo,
-          projectedMessages: [
-            ...state.chatByUser.projectedMessages,
-            action.payload,
-          ],
-        },
+        chatTimeReal: [...state.chatTimeReal, action.payload],
       };
     }
+
+    case CHANGE_PREVIEW_ULTIMATE_MESSAGE: {
+      return {
+        ...state,
+        chatUsers: changeMessageUltimateHelp(
+          state.chatUsers,
+          state.chatTimeReal
+        ),
+      };
+    }
+
+
     case GET_POSTS:{
       return {
         ...state,
@@ -166,6 +176,7 @@ const rootReducer = (state = initialState, action) => {
         allPosts: action.payload.reverse()
       }
     }
+
     //CHAT
 
     //SEARCH
