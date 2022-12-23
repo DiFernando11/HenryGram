@@ -22,6 +22,8 @@ export const SEARCH_CHATS = 'SEARCH_CHATS_ACTION';
 export const CLEAR = 'CLEAR';
 export const DELETE_POST = 'DELETE_POST';
 export const CLEAR_DELETE_POST = 'CLEAR_DELETE_POST';
+export const UPDATE_POST = "UPDATE_POST"
+export const CLEAR_UPDATE = 'CLEAR_UPDATE'
 ////CHATS
 //USERS INFORMATION
 //REGISTER
@@ -240,7 +242,9 @@ export const clearState = (data) => {
 		return { type: CLEAR };
 	} else if (data === 'delete') {
 		return { type: CLEAR_DELETE_POST };
-	}
+	}else if (data === 'update'){
+		return {type: CLEAR_UPDATE}
+	 }
 };
 //DELETE POST
 export const deletePostFront = (id) => {
@@ -255,3 +259,16 @@ export const deletePostFront = (id) => {
 		}
 	};
 };
+
+//UPDATE POST
+export const updatePostFront = (body) =>{
+	return async (dispatch) => {
+		try {
+			const result = await axios.put(`http://localhost:3000/api/posts/${body.id}`, body);
+			console.log("Esta es la respuesta del back:", result.data)
+			dispatch({type: UPDATE_POST, payload: [result.data, body.id] })
+		} catch (error) {
+			console.log(error)
+		}
+	}
+}

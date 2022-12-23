@@ -13,7 +13,6 @@ function PostProfile({ isFriend }) {
 	useEffect(() => {
 		user ? dispatch(getPostUSer(user._id)) : null;
 	}, [user]);
-console.log(postUser)
 	return (
 		<section className="w-3/5 calcViewHeightPageProfile pt-2 ">
 			{!isFriend && (
@@ -22,7 +21,6 @@ console.log(postUser)
 				//   </div>
 				// </div>
 				<Transition
-					appear
 					show={!isFriend}
 					enter="ease-out duration-300"
 					enterFrom="opacity-0"
