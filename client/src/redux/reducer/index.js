@@ -25,8 +25,8 @@ import {
   SEARCH_CHATS,
   CLEAR,
   DELETE_POST,
-  CLEAR_DELETE_POST
-    CHAT_TIME_REAL,
+  CLEAR_DELETE_POST,
+  CHAT_TIME_REAL,
   CHANGE_PREVIEW_ULTIMATE_MESSAGE,
 } from "../actions";
 
@@ -42,11 +42,11 @@ const initialState = {
   chatUsers: [],
   chatUsersCopy: [],
   chatPrevent: [],
-  chatByUser: [],
+  chatByUser: { informationUserTo: {}, projectedMessages: ["Dada"] },
   chatTimeReal: [],
   userPostsProfile: [],
   allPosts: [],
-  deletePost:[],
+  deletePost: [],
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -163,18 +163,17 @@ const rootReducer = (state = initialState, action) => {
       };
     }
 
-
-    case GET_POSTS:{
+    case GET_POSTS: {
       return {
         ...state,
-        userPostsProfile: action.payload.reverse()
-      }
+        userPostsProfile: action.payload.reverse(),
+      };
     }
-    case GET_ALL_POSTS:{
-      return{
+    case GET_ALL_POSTS: {
+      return {
         ...state,
-        allPosts: action.payload.reverse()
-      }
+        allPosts: action.payload.reverse(),
+      };
     }
 
     //CHAT
@@ -199,24 +198,28 @@ const rootReducer = (state = initialState, action) => {
     }
     //SEARCH
     case CLEAR: {
-      return{
+      return {
         ...state,
-        createUser:[]
-      }
+        createUser: [],
+      };
     }
-    case DELETE_POST:{
-      return{
+    case DELETE_POST: {
+      return {
         ...state,
         deletePost: action.payload[0],
-        userPostsProfile: state.userPostsProfile.filter( e => e._id != action.payload[1]),
-        allPosts: state.allPosts.filter( e => e.post._id !== action.payload[1])
-      }
+        userPostsProfile: state.userPostsProfile.filter(
+          (e) => e._id != action.payload[1]
+        ),
+        allPosts: state.allPosts.filter(
+          (e) => e.post._id !== action.payload[1]
+        ),
+      };
     }
     case CLEAR_DELETE_POST: {
-      return{
+      return {
         ...state,
-        deletePost: []
-      }
+        deletePost: [],
+      };
     }
     default:
       return state;
