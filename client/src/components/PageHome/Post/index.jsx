@@ -28,7 +28,7 @@ function Post({ isMatch, seguir, description, user, imagePost, postId, postDetai
 					icon={'bi-three-dots'}
 					select={[{ text: 'Delete Post', icon: 'bi-trash3-fill' }]}
 				/> */}
-				{ userIdLogged?._id === user._id || location.pathname === "/profile"? <MyMenu postId={postId} /> : null}
+				{ userIdLogged?._id === user._id || location.pathname === "/profile"? <MyMenu postId={postId} description={description} imagePost={imagePost} isMatch={isMatch} /> : null}
 			</div>
 			<div className="border-t border-neutral-600 pt-4 flex gap-2.5 relative">
 				<img
