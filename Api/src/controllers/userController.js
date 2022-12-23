@@ -1,6 +1,8 @@
 const UserSchema = require("../models/User");
 const FriendSchema = require("../models/Friend");
 const MessageSchema = require("../models/Message")
+const GroupSchema = require("../models/Group")
+const ChatSchema = require("../models/Chat")
 const ObjectId = require("mongoose").Types.ObjectId;
 const bycrypt = require("bcryptjs");
 const { confirmationEmail } = require("../config/nodemailer");
@@ -28,7 +30,7 @@ const postUser = async (req, res) => {
     /*
             Si el usuario ya existe, debería devolver un error
         */
-    res.status(400).json({ msg: "User already exists" });
+    return res.status(400).json({ msg: "User already exists" });
   }
 
   password = encryptPassword(password);
@@ -52,6 +54,20 @@ const postUser = async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
+};
+
+const sendConfirnmationEmail = async ( email, password, firstName ) => {
+
+  try{
+  
+    const token = getToken({ email: email, password: password });
+    console.log(token);
+  
+    confirmationEmail(firstName, email, token);
+  } catch (err) {
+    console.log(err);
+  }
+
 };
 
 const validateUser = async (req, res) => {
@@ -170,11 +186,26 @@ const LogIn = async (req, res) => {
     */
 
   const { email, password } = req.body;
+  let user = null;
 
-  const user = await UserSchema.findOne(
-    { email },
-    { password: 1, firstName: 1 }
-  );
+  try{
+      user = await UserSchema.findOne(
+      { email },
+      { password: 1, firstName: 1, active: 1 }
+    );
+  } catch(err){
+      res.status(500).json({message: "Internal server error"});
+  }
+
+
+  if (!user) {
+    return res.status(400).json({ message: "Wrong email" });
+  }
+  
+  if ( !user.active ) {
+    sendConfirnmationEmail(email, password, user.firstName)
+    return res.status(401).json({ message: "Email need confirmation" });
+  }
 
   token = getToken({ email: email, password: password });
   try {
@@ -183,14 +214,14 @@ const LogIn = async (req, res) => {
         if (result) {
           res.status(200).json({ token, firstName: user.firstName });
         } else {
-          res.status(404).json({ message: "wrong Password is invalid" });
+          res.status(404).json({ message: "Wrong Password" });
         }
       });
     } else {
-      res.status(404).json({ message: "wrong email is invalid " });
+      res.status(404).json({ message: "wrong email" });
     }
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: "Internal server error" });
     console.log("error");
   }
 };
@@ -227,19 +258,19 @@ const getFriendship = async (req, res) => {
     });
 };
 
-const getChat = async (req, res) => {
+const getMessages = async (req, res) => {
   /*
-       Controlador de la Ruta para obtener el chat de un usuario
+       Controlador de la Ruta para obtener los mensajes con otros usuarios
   */
 
   const { id } = req.params;
 
   if (id.length !== 24)
-    return res.status(404).json({ message: "Chat not found" });
+    return res.status(404).json({ message: "Messages not found" });
 
   const m = await UserSchema.findOne({ _id: ObjectId(id) }, { messages: 1 });
 
-  if (!m) return res.status(404).json({ message: "Chat not found" });
+  if (!m) return res.status(404).json({ message: "Messages not found" });
 
   Promise.resolve(m.messages)
     .then((value) => {
@@ -263,14 +294,93 @@ const getChat = async (req, res) => {
       if (result.length) {
         return res.status(200).json(result);
       } else {
-        return res.status(404).json({ message: "Chat not found" });
+        return res.status(404).json({ message: "Messages not found" });
       }
     })
     .catch((e) => {
       console.log(e);
-      return res.status(404).json({ message: "Chat not found" });
+      return res.status(404).json({ message: "Messages not found" });
     });
 };
+
+const getGroups = async (req, res) => {
+  /*
+       Controlador de la Ruta para obtener los grupos de chat
+  */
+
+  const { id } = req.params;
+
+  if (id.length !== 24)
+    return res.status(404).json({ message: "Groups not found" });
+
+  const g = await UserSchema.findOne({ _id: ObjectId(id) }, { groups: 1 });
+
+  if (!g) return res.status(404).json({ message: "Groups not found" });
+
+  Promise.resolve(g.groups)
+    .then((value) => {
+      let response = Promise.all(
+        value.map(async (el) => {
+          let gr = await GroupSchema.findOne({ _id: el }).sort({ updatedAt: -1 })
+
+          let ch = await ChatSchema.findOne(
+            { groupId: gr._id }
+          ).sort({ createdAt: -1 })
+
+          return { gr, ch }
+        })
+      );
+      return response;
+    })
+    .then((result) => {
+      if (result.length) {
+        return res.status(200).json(result);
+      } else {
+        return res.status(404).json({ message: "Groups not found" });
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+      return res.status(404).json({ message: "Groups not found" });
+    });
+}
+
+const updateUserInfo = async (req, res) => {
+
+  const { id } = req.params;
+  const { firstName, lastName, gender, avatar } = req.body;
+
+  console.log(req.body);
+
+  let user = null;
+
+  try {
+    user = await UserSchema.findOne({ _id: id });
+  } catch (err) {
+
+    return res.status(500).json({ message: "Internal server error" });
+  }
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  } else {
+
+    firstName ? user.firstName = firstName : null;
+    lastName ? user.lastName = lastName : null;
+    avatar ? user.avatar = avatar : null;
+    gender ? user.gender = gender : null;
+
+    try {
+      await user.save();
+      return res.status(200).json({ message: "User updated" });
+    } catch (err) {
+      return res.status(500).json({ message: "Internal server error" });
+    }
+
+  }
+};
+
+
 
 module.exports = {
   postUser,
@@ -281,5 +391,7 @@ module.exports = {
   getFriendship,
   validateUser,
   getUserByToken,
-  getChat,
+  getMessages,
+  getGroups,
+  updateUserInfo
 };

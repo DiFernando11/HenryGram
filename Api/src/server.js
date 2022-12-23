@@ -1,15 +1,15 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const userRoutes = require("./routes/user");
-const postRoutes = require("./routes/post");
-const messageRoutes = require("./routes/message");
-const friendRoutes = require("./routes/friend");
 
-const cors = require("cors");
 
-var morgan = require("morgan");
-// const cors = require("cors");
+const express = require('express');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const userRoutes = require('./routes/user');
+const postRoutes = require('./routes/post');
+const messageRoutes = require('./routes/message');
+const friendRoutes = require('./routes/friend');
+const groupRoutes = require('./routes/group')
+var morgan = require('morgan');
+const cors = require('cors');
 
 const app = express();
 // Settings
@@ -29,15 +29,13 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
   next();
 });
-app.use("/api", userRoutes);
-app.use("/api", postRoutes);
-app.use("/api", messageRoutes);
-app.use("/api", friendRoutes);
-// app.options("http://127.0.0.1:5173", cors());
 
-// io.on("connection", (socket) => {
-//   console.log(socket.id);
-// });
+app.use('/api', userRoutes);
+app.use('/api', postRoutes);
+app.use('/api', messageRoutes);
+app.use('/api', friendRoutes);
+app.use('/api', groupRoutes)
+
 
 // Routes
 app.get("/", (req, res) => {

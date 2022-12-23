@@ -13,6 +13,7 @@ import Messages from "./components/PageChats/Mesagge";
 import Home from "./components/PageHome/Home";
 import ProfileUser from "./components/PageProfile/ProfileUser/index";
 import ProfileFriends from "./components/PageProfile/ProfileFriends/index";
+import ValidateUser from "./components/ValidateUser/ValidateUser"
 import NavBar from "./components/NavBar/NavBar";
 import {
   chatTimeReal,
@@ -137,7 +138,17 @@ function App() {
             </AuthRoute>
           }
         />
+        <Route 
+          path="/validate"
+          element={
+            <NotAuthRoute>
+              <ValidateUser />
+            </NotAuthRoute>
+          }
+        />
+
         <Route path="*" element={<p>Not found</p>} />
+
       </Routes>
     </AuthProvider>
   );

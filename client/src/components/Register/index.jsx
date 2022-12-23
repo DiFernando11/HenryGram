@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { validateDisabled, validateForm } from '../helpers/validateForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { createUser } from '../../redux/actions';
+import { clearState, createUser } from '../../redux/actions';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
 function Register() {
 	const user = useSelector((state) => state.createUser);
 	const dispatch = useDispatch();
+	const navigate = useNavigate()
 	const [form, setForm] = useState({
 		firstName: '',
 		lastName: '',
@@ -33,6 +36,15 @@ function Register() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		dispatch(createUser(form));
+		Swal.fire({
+			title: "Waiting for confirmation...",
+			didOpen: () => {
+			  Swal.showLoading();
+			},
+			background: '#1e1c1d',
+			iconColor: "#fcd34d",
+			color: "#fafbfd"
+		  });
 		setForm({
 			firstName: '',
 			lastName: '',
@@ -43,8 +55,24 @@ function Register() {
 		});
 		e.target.reset();
 	};
+	const handleAlert = () => {
+		Swal.fire({
+			icon: "success",
+			title: "Registered successfully.",
+			html: '<h2>Please, check your email.</h2>',
+			background: '#1e1c1d',
+			iconColor: "#fcd34d",
+			color: "#fafbfd"
+		  }).then((response) => {
+			if (response.isConfirmed) {
+				dispatch(clearState("register"));
+				navigate('/')
+			}
+		  });
+	}
 	return (
 		<div className="h-screen w-screen bg-background bg-cover bg-black bg-no-repeat text-black flex items-center justify-center">
+			{user.firstName ? handleAlert() : null}
 			<form
 				onSubmit={handleSubmit}
 				className="w-10/12 h-[90%] flex flex-col bg-white p-5 justify-evenly rounded lg:w-1/3"
@@ -63,7 +91,7 @@ function Register() {
 				<span
 					className={`${
 						error.firstName ? 'text-danger' : 'text-white'
-					} text-sm`}
+					} text-sm select-none`}
 				>
 					No de contener numeros ni caracteres especiales
 				</span>
@@ -78,7 +106,7 @@ function Register() {
 					value={form.lastName}
 				/>
 				<span
-					className={`${error.lastName ? 'text-danger' : 'text-white'} text-sm`}
+					className={`text-sm select-none ${error.lastName ? 'text-danger' : 'text-white'}`}
 				>
 					No de contener numeros ni caracteres especiales
 				</span>
@@ -93,7 +121,7 @@ function Register() {
 					value={form.email}
 				/>
 				<span
-					className={`${error.email ? 'text-danger' : 'text-white'} text-sm`}
+					className={`${error.email ? 'text-danger' : 'text-white'} text-sm select-none`}
 				>
 					Use un correo válido
 				</span>
@@ -108,7 +136,7 @@ function Register() {
 					value={form.password}
 				/>
 				<span
-					className={`${error.password ? 'text-danger' : 'text-white'} text-sm`}
+					className={`${error.password ? 'text-danger' : 'text-white'} text-sm select-none`}
 				>
 					Debe tener al menos 8 carácteres, una mayuscula y un número
 				</span>
@@ -123,7 +151,7 @@ function Register() {
 					value={form.confirm}
 				/>
 				<span
-					className={`${error.confirm ? 'text-danger' : 'text-white'} text-sm`}
+					className={`${error.confirm ? 'text-danger' : 'text-white'} text-sm select-none`}
 				>
 					La contraseña no coincide
 				</span>

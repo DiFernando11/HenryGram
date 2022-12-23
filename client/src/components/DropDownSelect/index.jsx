@@ -26,7 +26,7 @@ function DropDownSelect({ status, icon, select, confirmed, requests }) {
     setStatusFriend("Seguir");
   };
   return (
-    <button
+    <div
       onBlur={() => setShow(false)}
       className="relative flex items-center justify-center items-center bg-transparent group"
     >
@@ -95,7 +95,7 @@ function DropDownSelect({ status, icon, select, confirmed, requests }) {
             ))}
         </ul>
       </div>
-    </button>
+    </div>
   );
 }
 

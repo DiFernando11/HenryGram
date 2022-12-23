@@ -18,10 +18,15 @@ import {
   ADD_CHAT_PREVENT_ACTION,
   SEARCH_USER,
   FRIENDS_BY_USER,
+  GET_POSTS,
+  GET_ALL_POSTS,
   SEND_FRIEND_REQUEST,
   CONFIRMED_FRIEND_REQUEST,
   SEARCH_CHATS,
-  CHAT_TIME_REAL,
+  CLEAR,
+  DELETE_POST,
+  CLEAR_DELETE_POST
+    CHAT_TIME_REAL,
   CHANGE_PREVIEW_ULTIMATE_MESSAGE,
 } from "../actions";
 
@@ -39,6 +44,9 @@ const initialState = {
   chatPrevent: [],
   chatByUser: [],
   chatTimeReal: [],
+  userPostsProfile: [],
+  allPosts: [],
+  deletePost:[],
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -144,6 +152,7 @@ const rootReducer = (state = initialState, action) => {
         chatTimeReal: [...state.chatTimeReal, action.payload],
       };
     }
+
     case CHANGE_PREVIEW_ULTIMATE_MESSAGE: {
       return {
         ...state,
@@ -152,6 +161,20 @@ const rootReducer = (state = initialState, action) => {
           state.chatTimeReal
         ),
       };
+    }
+
+
+    case GET_POSTS:{
+      return {
+        ...state,
+        userPostsProfile: action.payload.reverse()
+      }
+    }
+    case GET_ALL_POSTS:{
+      return{
+        ...state,
+        allPosts: action.payload.reverse()
+      }
     }
 
     //CHAT
@@ -175,7 +198,26 @@ const rootReducer = (state = initialState, action) => {
       };
     }
     //SEARCH
-
+    case CLEAR: {
+      return{
+        ...state,
+        createUser:[]
+      }
+    }
+    case DELETE_POST:{
+      return{
+        ...state,
+        deletePost: action.payload[0],
+        userPostsProfile: state.userPostsProfile.filter( e => e._id != action.payload[1]),
+        allPosts: state.allPosts.filter( e => e.post._id !== action.payload[1])
+      }
+    }
+    case CLEAR_DELETE_POST: {
+      return{
+        ...state,
+        deletePost: []
+      }
+    }
     default:
       return state;
   }

@@ -6,15 +6,16 @@ const { off } = require("../server");
 const getAllMessage = async (req, res, next) => {
   try {
     const { from, to, limit } = req.body;
-    const offset = 0;
+
+    const offset = 10;
 
     const messages = await MessageSchema.find({
       users: {
         $all: [from, to],
       },
-    }).sort({ updatedAt: 1 });
+    }).sort({ updatedAt: -1 });
 
-    const twentyMessages = messages.slice(offset, offset + limit);
+    const twentyMessages = messages.slice(offset * (limit - 1), offset * limit);
 
     const toUser = await UserSchema.find({ _id: to });
 
@@ -101,6 +102,7 @@ const getMessageByUser = async (req, res, next) => {
     next(ex);
   }
 };
+
 module.exports = {
   addMessage,
   getAllMessage,
