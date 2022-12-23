@@ -345,6 +345,42 @@ const getGroups = async (req, res) => {
     });
 }
 
+const updateUserInfo = async (req, res) => {
+
+  const { id } = req.params;
+  const { firstName, lastName, gender, avatar } = req.body;
+
+  console.log(req.body);
+
+  let user = null;
+
+  try {
+    user = await UserSchema.findOne({ _id: id });
+  } catch (err) {
+
+    return res.status(500).json({ message: "Internal server error" });
+  }
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  } else {
+
+    firstName ? user.firstName = firstName : null;
+    lastName ? user.lastName = lastName : null;
+    avatar ? user.avatar = avatar : null;
+    gender ? user.gender = gender : null;
+
+    try {
+      await user.save();
+      return res.status(200).json({ message: "User updated" });
+    } catch (err) {
+      return res.status(500).json({ message: "Internal server error" });
+    }
+
+  }
+};
+
+
 
 module.exports = {
   postUser,
@@ -356,5 +392,6 @@ module.exports = {
   validateUser,
   getUserByToken,
   getMessages,
-  getGroups
+  getGroups,
+  updateUserInfo
 };

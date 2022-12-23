@@ -1,4 +1,8 @@
 import { Route, Routes } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
+const socket = io("http://localhost:3000");
 import "./App.css";
 import { AuthProvider, AuthRoute, NotAuthRoute } from "./components/auth";
 import Logout from "./components/Logout";
@@ -11,9 +15,8 @@ import ProfileUser from "./components/PageProfile/ProfileUser/index";
 import ProfileFriends from "./components/PageProfile/ProfileFriends/index";
 import ValidateUser from "./components/ValidateUser/ValidateUser"
 import NavBar from "./components/NavBar/NavBar";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import {
+  chatTimeReal,
   getFriendsByUser,
   getInformationUsersAction,
   verifyUserAction,
@@ -23,6 +26,7 @@ import ViewPost from "./components/PagePostDetail/viewPost";
 function App() {
   const [saveTokenData, setSaveTokenData] = useState(null);
   const userInformation = useSelector((state) => state.userInformation);
+  const chatTimeRealArray = useSelector((state) => state.chatTimeReal);
 
   const dispatch = useDispatch();
 
@@ -43,12 +47,15 @@ function App() {
   useEffect(() => {
     dispatch(getInformationUsersAction());
   }, []);
-  
+
+
   useEffect(() => {
     if (userInformation) {
       dispatch(getFriendsByUser(userInformation._id));
+      socket.emit("registrarse", userInformation?._id);
     }
   }, [userInformation]);
+
   return (
     <AuthProvider>
       <Routes>

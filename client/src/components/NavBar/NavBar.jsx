@@ -1,7 +1,13 @@
 import { useState } from "react";
 import logo from "../../assets/hglogo.png";
 import { useAuth } from "../auth";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import SearchBar from "../SearchBar";
 import profilePicture from "../../assets/profilePicture.jpg";
 import { useSelector } from "react-redux";
@@ -12,10 +18,13 @@ export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
   const searchUser = useSelector((state) => state.searchUser);
   const userInformation = useSelector((state) => state.userInformation);
+  const chatTimeReal = useSelector((state) => state.chatTimeReal);
   const friendsByUser = useSelector((state) => state.friendsByUser);
   const requestFriends = friendsByUser.filter(
     (friend) => Number(friend.status) === 2
   );
+  let set = new Set(chatTimeReal.map(JSON.stringify));
+  let arrSinDuplicaciones = Array.from(set).map(JSON.parse);
   const pruebaRequestFriends = [
     {
       id: "639b57d15871ad62a8b88c2d",
@@ -36,6 +45,8 @@ export default function NavBar() {
         "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
     },
   ];
+  const { id } = useParams();
+  const { pathname } = useLocation();
 
   const auth = useAuth();
   const navigate = useNavigate();
@@ -151,7 +162,7 @@ export default function NavBar() {
               </li>
               {routes.map((route, index) => {
                 return (
-                  <li key={index} className="text-white">
+                  <li key={index} className="text-white relative">
                     <NavLink
                       to={route.to ? route.to : null}
                       className={({ isActive }) =>
@@ -163,6 +174,15 @@ export default function NavBar() {
                         route.page === "LOGOUT" ? () => auth.logout() : null
                       }
                     >
+                      {route.page === "INBOX" &&
+                      arrSinDuplicaciones.length &&
+                      !["/message", `/message/chat/${id}`].includes(
+                        pathname
+                      ) ? (
+                        <span className="bg-red-600 w-5 h-5 rounded-full absolute top-1 left-5 flex items-center justify-center text-xs">
+                          {arrSinDuplicaciones.length}
+                        </span>
+                      ) : null}
                       {route.page === "PROFILE" ? (
                         <img
                           src={userInformation?.avatar}

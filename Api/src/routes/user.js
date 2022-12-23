@@ -10,7 +10,8 @@ const {
     getFriendship,
     getUserByToken,
     getMessages,
-    getGroups
+    getGroups,
+    updateUserInfo
 } = require('../controllers/userController');
 
 
@@ -26,5 +27,6 @@ router.get('/users/friends/:id', getFriendship);
 router.get('/users/token', getUserByToken);
 router.get('/users/messages/:id', getMessages);
 router.get('/users/groups/:id', getGroups);
+router.put('/users/:id', updateUserInfo);
 
 module.exports = router;

@@ -1,30 +1,34 @@
-import axios from 'axios';
-export const SEND_MESSAGE_FRONT = 'SEND_MESSAGE_FRONT';
-export const CREATE_USER = 'CREATE_USER';
-export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
-export const VERIFY_USER_TOKEN = 'VERIFY_USER_TOKEN';
-export const FRIENDS_BY_USER = 'FRIENDS_BY_USER';
-export const GET_PROFILE_FRIEND = 'GET_PROFILE_FRIEND';
-export const SEND_FRIEND_REQUEST = 'SEND_FRIEND_REQUEST';
-export const CONFIRMED_FRIEND_REQUEST = 'CONFIRMED_FRIEND_REQUEST';
-export const POST_USER = 'POST_USER';
-export const CLEAN_POST = 'CLEAN_POST';
-export const GET_USERS_INFORMATION = 'GET_USERS_INFORMATION';
-export const SEARCH_USER = 'SEARCH_USER';
-export const GET_CHATS_ACTION = 'GET_CHATS_ACTION';
-export const ADD_CHAT_PREVENT_ACTION = 'ADD_CHAT_PREVENT_ACTION';
-export const GET_CHAT_BY_USER = 'GET_CHAT_BY_USER';
-export const SEND_MESSAGE_BACK = 'SEND_MESSAGE_BACK';
+
+import axios from "axios";
+import { useState } from "react";
+export const CREATE_USER = "CREATE_USER";
+export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
+export const VERIFY_USER_TOKEN = "VERIFY_USER_TOKEN";
+export const FRIENDS_BY_USER = "FRIENDS_BY_USER";
+export const GET_PROFILE_FRIEND = "GET_PROFILE_FRIEND";
+export const SEND_FRIEND_REQUEST = "SEND_FRIEND_REQUEST";
+export const CONFIRMED_FRIEND_REQUEST = "CONFIRMED_FRIEND_REQUEST";
+export const POST_USER = "POST_USER";
+export const CLEAN_POST = "CLEAN_POST";
+export const GET_USERS_INFORMATION = "GET_USERS_INFORMATION";
+export const GET_CHATS_ACTION = "GET_CHATS_ACTION";
+export const ADD_CHAT_PREVENT_ACTION = "ADD_CHAT_PREVENT_ACTION";
+export const GET_CHAT_BY_USER = "GET_CHAT_BY_USER";
+export const SEND_MESSAGE_BACK = "SEND_MESSAGE_BACK";
+export const CHAT_TIME_REAL = "CHAT_TIME_REAL";
+export const CHANGE_PREVIEW_ULTIMATE_MESSAGE =
+  "CHANGE_PREVIEW_ULTIMATE_MESSAGE";
 export const GET_POSTS = 'GET_POSTS';
 export const GET_ALL_POSTS = 'GET_ALL_POSTS';
-export const SEARCH_CHATS = 'SEARCH_CHATS_ACTION';
 export const CLEAR = 'CLEAR';
 export const DELETE_POST = 'DELETE_POST';
 export const CLEAR_DELETE_POST = 'CLEAR_DELETE_POST';
 export const UPDATE_POST = "UPDATE_POST"
 export const CLEAR_UPDATE = 'CLEAR_UPDATE'
-////CHATS
+export const SEARCH_USER = "SEARCH_USER";
+export const SEARCH_CHATS = "SEARCH_CHATS_ACTION";
+
 //USERS INFORMATION
 //REGISTER
 export const createUser = (user) => {
@@ -201,11 +205,12 @@ export const sendMessageBackAction = (data) => {
 		}
 	};
 };
-export const sendMessagesFrontAction = (payload) => {
-	return {
-		type: SEND_MESSAGE_FRONT,
-		payload,
-	};
+
+export const chatTimeReal = (payload) => {
+  return { type: CHAT_TIME_REAL, payload };
+};
+export const changeUltimateMessageTimeRealAction = () => {
+  return { type: CHANGE_PREVIEW_ULTIMATE_MESSAGE };
 };
 //CHATS
 
