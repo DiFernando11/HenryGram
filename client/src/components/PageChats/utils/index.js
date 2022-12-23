@@ -27,3 +27,15 @@ export const searchChatsHelp = (name, arr) => {
       );
   }
 };
+
+export const changeMessageUltimateHelp = (chat, message) => {
+  if (!message.length) return chat;
+  const findMessage =
+    chat?.length &&
+    chat?.find((user) =>
+      user?.msg?.users.includes(message[message.length - 1].to)
+    );
+  if (!findMessage) return chat;
+  findMessage.msg.message.text = message[message.length - 1].message;
+  return chat;
+};

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-export const SEND_MESSAGE_FRONT = "SEND_MESSAGE_FRONT";
+
 export const CREATE_USER = "CREATE_USER";
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
@@ -16,6 +16,9 @@ export const GET_CHATS_ACTION = "GET_CHATS_ACTION";
 export const ADD_CHAT_PREVENT_ACTION = "ADD_CHAT_PREVENT_ACTION";
 export const GET_CHAT_BY_USER = "GET_CHAT_BY_USER";
 export const SEND_MESSAGE_BACK = "SEND_MESSAGE_BACK";
+export const CHAT_TIME_REAL = "CHAT_TIME_REAL";
+export const CHANGE_PREVIEW_ULTIMATE_MESSAGE =
+  "CHANGE_PREVIEW_ULTIMATE_MESSAGE";
 export const SEARCH_USER = "SEARCH_USER";
 export const SEARCH_CHATS = "SEARCH_CHATS_ACTION";
 //USERS INFORMATION
@@ -190,11 +193,12 @@ export const sendMessageBackAction = (data) => {
     }
   };
 };
-export const sendMessagesFrontAction = (payload) => {
-  return {
-    type: SEND_MESSAGE_FRONT,
-    payload,
-  };
+
+export const chatTimeReal = (payload) => {
+  return { type: CHAT_TIME_REAL, payload };
+};
+export const changeUltimateMessageTimeRealAction = () => {
+  return { type: CHANGE_PREVIEW_ULTIMATE_MESSAGE };
 };
 //CHATS
 //SEARCH

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
+// import { io } from "socket.io-client";
+// const socket = io("http://localhost:3000");
 import {
+  chatTimeReal,
   getMessageByUserBackAction,
   sendMessageBackAction,
-  sendMessagesFrontAction,
 } from "../../../redux/actions";
 import Loader from "../../Loader";
 import SkeletonUser from "../../Skeletons/skeletonUser";
@@ -23,9 +25,7 @@ function Messages() {
   const chatUsers = useSelector((state) => state.chatUsers);
   const chatPrevent = useSelector((state) => state.chatPrevent);
   const userInformation = useSelector((state) => state.userInformation);
-  let today = new Date();
-  let hourSystem = today.toISOString();
-
+  const chatTimeRealUser = useSelector((state) => state.chatTimeReal);
   function scrollLastMessage() {
     var objDiv = document.getElementById("divu");
     objDiv.scrollTop = objDiv.scrollHeight;
@@ -43,9 +43,11 @@ function Messages() {
   }, [id, chatUsers, page]);
 
   useEffect(() => {
-    scrollLastMessage();
-    if (chatByUser?.projectedMessages) setLoadginSkeletonMessages(false);
-  }, [chatByUser]);
+    if (chatByUser?.projectedMessages && chatUsers.length) {
+      setLoadginSkeletonMessages(false);
+      setTimeout(() => scrollLastMessage(), 100);
+    }
+  }, [chatByUser, chatUsers]);
 
   useEffect(() => {
     document.getElementById("divu").addEventListener("scroll", handleScroll);
@@ -59,6 +61,7 @@ function Messages() {
       }
       dispatch(getMessageByUserBackAction("clear"));
       setLoadginSkeletonMessages(true);
+      dispatch(chatTimeReal("clear"));
     };
   }, [id]);
 
@@ -74,26 +77,9 @@ function Messages() {
       setPage(40);
     }
   };
-  const handleGreetUser = () => {
-    dispatch(
-      sendMessageBackAction({
-        from: userInformation._id,
-        to: id,
-        message: `Hello ${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName}`,
-      })
-    );
-    dispatch(
-      sendMessagesFrontAction({
-        from: userInformation._id,
-        to: id,
-        message: `Hello ${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName}`,
-        hour: hourSystem,
-        fromSelf: true,
-      })
-    );
-  };
+
   if (chatUsers?.length) {
-    const chatUsersID = chatUsers.map((user) => user.usr._id).includes(id);
+    const chatUsersID = chatUsers.map((user) => user?.usr?._id).includes(id);
     const chatUsersPreventID = chatPrevent.map((user) => user._id).includes(id);
     if (!chatUsersID && !chatUsersPreventID)
       return <Navigate to={"/message"} />;
@@ -122,19 +108,34 @@ function Messages() {
         </div>
       </div>
       <div id="divu" className={`${styles.messagesSent} relative`}>
-        {loadginSkeletonMessages ? (
-          [1, 2, 3, 4, 5, 6].map((value, index) => {
-            return (
-              <div
-                key={value}
-                className={`${index % 2 === 0 && "w-[300px] ml-auto"}`}
-              >
-                <SkeletonUser />
-              </div>
-            );
-          })
-        ) : chatByUser?.projectedMessages?.length ? (
-          chatByUser?.projectedMessages?.map((message, index) => (
+        {loadginSkeletonMessages
+          ? [1, 2, 3, 4, 5, 6].map((value, index) => {
+              return (
+                <div
+                  key={value}
+                  className={`${index % 2 === 0 && "w-[300px] ml-auto"}`}
+                >
+                  <SkeletonUser />
+                </div>
+              );
+            })
+          : chatByUser?.projectedMessages?.length
+          ? chatByUser?.projectedMessages?.map((message, index) => (
+              <CardMessage
+                key={index}
+                message={message.message}
+                image={chatByUser?.informationUserTo?.avatar}
+                name={chatByUser?.informationUserTo?.firstName}
+                lastName={chatByUser?.informationUserTo?.lastName}
+                time={message.hour}
+                fromSelf={message.fromSelf}
+              />
+            ))
+          : null}
+
+        {chatTimeRealUser
+          .sort((a, b) => new Date(a.hour) - new Date(b.hour))
+          .map((message, index) => (
             <CardMessage
               key={index}
               message={message.message}
@@ -143,17 +144,10 @@ function Messages() {
               lastName={chatByUser?.informationUserTo?.lastName}
               time={message.hour}
               fromSelf={message.fromSelf}
+              from={message.from}
+              to={message.to}
             />
-          ))
-        ) : (
-          <div
-            onClick={handleGreetUser}
-            className="absolute cursor-pointer w-80 uppercase bottom-2 inset-x-1/3 text-lg text-center text-white p-5 bg-zinc-800 rounded-t-2xl rounded-br-2xl"
-          >
-            {` GREETS ${chatByUser?.informationUserTo?.firstName}
-         ${chatByUser?.informationUserTo?.lastName} 👋`}
-          </div>
-        )}
+          ))}
       </div>
       <SendMessage
         informationTo={chatByUser.informationUserTo}

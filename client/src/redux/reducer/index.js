@@ -1,4 +1,5 @@
 import {
+  changeMessageUltimateHelp,
   searchChatsHelp,
   searchFriendHelp,
 } from "../../components/PageChats/utils";
@@ -17,10 +18,11 @@ import {
   ADD_CHAT_PREVENT_ACTION,
   SEARCH_USER,
   FRIENDS_BY_USER,
-  SEND_MESSAGE_FRONT,
   SEND_FRIEND_REQUEST,
   CONFIRMED_FRIEND_REQUEST,
   SEARCH_CHATS,
+  CHAT_TIME_REAL,
+  CHANGE_PREVIEW_ULTIMATE_MESSAGE,
 } from "../actions";
 
 const initialState = {
@@ -36,6 +38,7 @@ const initialState = {
   chatUsersCopy: [],
   chatPrevent: [],
   chatByUser: [],
+  chatTimeReal: [],
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -134,18 +137,23 @@ const rootReducer = (state = initialState, action) => {
         ...state,
       };
     }
-    case SEND_MESSAGE_FRONT: {
+    case CHAT_TIME_REAL: {
+      if (action.payload === "clear") return { ...state, chatTimeReal: [] };
       return {
         ...state,
-        chatByUser: {
-          informationUserTo: state.chatByUser.informationUserTo,
-          projectedMessages: [
-            ...state.chatByUser.projectedMessages,
-            action.payload,
-          ],
-        },
+        chatTimeReal: [...state.chatTimeReal, action.payload],
       };
     }
+    case CHANGE_PREVIEW_ULTIMATE_MESSAGE: {
+      return {
+        ...state,
+        chatUsers: changeMessageUltimateHelp(
+          state.chatUsers,
+          state.chatTimeReal
+        ),
+      };
+    }
+
     //CHAT
 
     //SEARCH

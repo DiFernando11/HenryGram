@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import logoMatch from "../../../assets/coheteHenry.png";
 import { timeHours } from "../utils";
@@ -13,6 +14,8 @@ function CardPreviewMessage({
   time,
   sender,
 }) {
+
+
   const timeHour = time ? timeHours(time) : null;
   let senderMessage = id !== sender;
   return (
