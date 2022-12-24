@@ -1,15 +1,20 @@
+import React, { useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import {
 	EllipsisHorizontalCircleIcon,
 	TrashIcon,
+	PencilSquareIcon,
 } from '@heroicons/react/20/solid';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { clearState, deletePostFront } from '../../../redux/actions';
+import EditPost from '../EditPost/EditPost';
 
-export default function MyMenu({ postId }) {
+export default function MyMenu({ postId, description, imagePost, isMatch }) {
 	const postDeleted = useSelector((state) => state.deletePost);
+	const update = useSelector((state) => state.updatePost);
+	const [show, setShow] = useState(false);
 	const dispatch = useDispatch();
 	const handleClick = (id) => {
 		dispatch(deletePostFront(id));
@@ -36,9 +41,10 @@ export default function MyMenu({ postId }) {
 			}
 		});
 	};
+	
 	return (
 		<div className="w-7">
-			{postDeleted.message === "Post deleted" ? handleAlert() : null}
+			{postDeleted.message === 'Post deleted' ? handleAlert() : null}
 			<Menu>
 				<Menu.Button className="flex items-center content-center">
 					<EllipsisHorizontalCircleIcon
@@ -61,17 +67,48 @@ export default function MyMenu({ postId }) {
 								<button
 									className={`${
 										active ? ' bg-blacker border-yellow' : 'text-gray-900'
-									} group flex w-full items-center justify-evenly rounded-md px-2 py-2 text-sm bg-black border border-black transition duration:200`}
+									} group flex w-full items-center rounded-t-md px-2 py-2 text-sm bg-black border border-blacker transition duration:200`}
 									onClick={() => handleClick(postId)}
 								>
-									<TrashIcon className="h-5" />
+									<TrashIcon className="h-5 mr-5" />
 									Delete post
+								</button>
+							)}
+						</Menu.Item>
+						<Menu.Item>
+							{({ active }) => (
+								<button
+									className={`${
+										active ? ' bg-blacker border-yellow' : 'text-gray-900'
+									} group flex w-full items-center rounded-b-md px-2 py-2 text-sm bg-black border border-blacker transition duration:200`}
+									onClick={() => setShow(true)}
+								>
+									<PencilSquareIcon className="h-5 mr-5" />
+									Edit
 								</button>
 							)}
 						</Menu.Item>
 					</Menu.Items>
 				</Transition>
 			</Menu>
+			<Transition
+				show={show}
+				enter="ease-out duration-300"
+				enterFrom="opacity-0"
+				enterTo="opacity-100"
+				leave="ease-in duration-200"
+				leaveFrom="opacity-100"
+				leaveTo="opacity-0"
+			>
+				<EditPost
+					id={postId}
+					description={description}
+					imagePosts={imagePost}
+					show={show}
+					setShow={setShow}
+					isMatch={isMatch}
+				/>
+			</Transition>
 		</div>
 	);
 }
