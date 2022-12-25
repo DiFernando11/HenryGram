@@ -94,7 +94,7 @@ function AboutProfile({ userInformation, isFriend }) {
   };
 
   return (
-    <section className="w-2/5 border-r  border-zinc-700 p-4 calcViewHeightPageProfile">
+    <section className="xl:w-2/5 border-r  border-zinc-700 p-4  xl:h-[calc(100vh-9rem)] xl:overflow-y-scroll">
       <div className="flex items-center mb-8 ml-2 justify-between ">
         <div className="flex gap-2 items-center">
           <h1 className="text-white text-lg">

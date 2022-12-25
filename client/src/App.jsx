@@ -22,6 +22,7 @@ import {
   verifyUserAction,
 } from "./redux/actions";
 import ViewPost from "./components/PagePostDetail/viewPost";
+import SideBar from "./components/SideBar";
 
 function App() {
   const [saveTokenData, setSaveTokenData] = useState(null);
@@ -71,8 +72,8 @@ function App() {
           path="/home"
           element={
             <AuthRoute>
-              {/* <SideBar /> */}
               <NavBar />
+              <SideBar />
               <Home />
             </AuthRoute>
           }
@@ -81,7 +82,7 @@ function App() {
           path="/profile"
           element={
             <AuthRoute>
-              {/* <SideBar /> */}
+              <SideBar />
               <NavBar />
               <ProfileUser />
             </AuthRoute>
@@ -91,7 +92,7 @@ function App() {
           path="/profile/:id"
           element={
             <AuthRoute>
-              {/* <SideBar /> */}
+              <SideBar />
               <NavBar />
               <ProfileFriends />
             </AuthRoute>
@@ -110,7 +111,7 @@ function App() {
           path="/message"
           element={
             <AuthRoute>
-              {/* <SideBar /> */}
+              <SideBar />
               <NavBar />
               <Chats />
             </AuthRoute>
