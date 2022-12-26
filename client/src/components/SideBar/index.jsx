@@ -17,7 +17,7 @@ function SideBar() {
   const navigate = useNavigate();
   return (
     <aside
-      className="sm:block hidden w-[22rem] bgSideBar font-sans relative bg-[url('https://us.123rf.com/450wm/ngonhan/ngonhan1208/ngonhan120801436/15207298-textura-de-fondo-amarillo-para-el-dise%C3%B1o.jpg')]"
+      className="sm:block hidden w-[22rem] bgSideBar font-sans relative bg-[url('https://besthqwallpapers.com/Uploads/21-8-2020/140202/thumb2-yellow-lines-background-material-design-yellow-lines-creative-yellow-background-lines-background.jpg')] "
       aria-label="Sidebar"
     >
       <i

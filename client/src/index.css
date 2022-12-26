@@ -54,8 +54,7 @@ span {
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 0, 0.123);
 }
-.calcViewHeight {
-  /* height: calc(100vh - 4rem); con navbar*/
+/* .calcViewHeight {
   height: calc(100vh);
   overflow-y: scroll;
 }
@@ -65,20 +64,51 @@ span {
 }
 .calcViewHeightPageProfile {
   height: calc(100vh - 13rem);
-  /* height: calc(100vh - 13rem); con nav */ 
   overflow-y: scroll;
 }
 .calcViewModalFriends {
   height: calc(100vh - 15rem);
   overflow-y: scroll;
-}
+} */
 .text_sombra {
   color: white;
   text-shadow: black 0.1em 0.1em 0.2em;
 }
-.bgSideBar{
-background-color: rgb(220, 195, 5);
+.bgSideBar {
+  background-color: rgb(220, 195, 5);
 }
+.modal-container {
+  display: inline-block;
+  position: relative;
+}
+.modal-container.active {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  background-color: rgba(39, 38, 38, 0.82);
+  z-index: 10;
+}
+
+.modal-container.active::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(209, 29, 29, 0.56);
+  z-index: 0;
+}
+.modal-container.active img {
+  z-index: 10;
+  width: 50%;
+  height: 50%;
+  border: 5px solid rgb(207, 212, 49);
+}
+
 body {
   background-color: #363636;
 }

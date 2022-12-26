@@ -5,19 +5,16 @@ import { uploadImage } from "../../helpers/uploadImage";
 import { validatePost } from "../../helpers/validateForm";
 import { useSelector, useDispatch } from "react-redux";
 import { cleanPostState, postUser } from "../../../redux/actions";
-import { Dialog, Transition } from "@headlessui/react";
+import { Transition } from "@headlessui/react";
 import Swal from "sweetalert2";
-import { useLocation } from "react-router-dom";
 const giftUpload =
   "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921";
 
 function MakePost() {
   const userID = useSelector((state) => state.userInformation);
   const post = useSelector((state) => state.postUser);
-  const { pathname } = useLocation();
-  const isProfile = pathname === "/profile";
   const dispatch = useDispatch();
-  const [imagePost, setImagePost] = useState("");
+  const [imagePost, setImagePost] = useState([]);
   const [loadingPostImage, setLoadingPostImage] = useState(false);
   const [show, setShow] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -29,7 +26,10 @@ function MakePost() {
     description: "",
     image: {},
   });
-
+  const handleDeleteImageSend = (indexImage) => {
+    const imageSend = imagePost.filter((image, index) => index !== indexImage);
+    setImagePost(imageSend);
+  };
   const handleSelectTypePost = (type, boolean) => {
     validatePost(infoPost, setDisabled);
     setSelectTypePost(type);
@@ -46,7 +46,7 @@ function MakePost() {
   };
 
   const handleSavePostImage = async (e) => {
-    await uploadImage(e, setLoadingPostImage, setInfoPost, setImagePost);
+    await uploadImage(e, setLoadingPostImage, infoPost, null, setImagePost);
     validatePost(infoPost, setDisabled);
     // setInfoPost({ ...infoPost, image: imagePost });
   };
@@ -232,13 +232,22 @@ function MakePost() {
                           <div className="flex items-center space-x-1 sm:pr-4 ">
                             <button
                               type="button"
-                              className="p-2 text-gray-500 rounded cursor-pointer  dark:text-gray-400"
+                              className={`p-2 text-gray-500 rounded ${
+                                (imagePost.length > 3 || loadingPostImage) &&
+                                "cursor-not-allowed pointer-events-none"
+                              } cursor-pointer  `}
                             >
-                              <label htmlFor="file-input">
-                                <i className="bi bi-image text-lg text-yellow"></i>
+                              <label htmlFor="file-input-post">
+                                <i
+                                  className={`bi bi-image text-lg ${
+                                    (imagePost.length > 3 ||
+                                      loadingPostImage) &&
+                                    "text-neutral-400"
+                                  } text-yellow`}
+                                ></i>
                               </label>
                               <input
-                                id="file-input"
+                                id="file-input-post"
                                 name="foto"
                                 type="file"
                                 onChange={handleSavePostImage}
@@ -271,13 +280,30 @@ function MakePost() {
                           required
                         ></textarea>
                       </div>
-                      {!loadingPostImage && !imagePost ? null : (
-                        <img
-                          className="w-full h-44 object-cover"
-                          src={loadingPostImage ? giftUpload : imagePost}
-                          alt="post image"
-                        />
-                      )}
+                      <div className="grid grid-flow-col auto-cols-[minmax(0,_2fr)] gap-2 items-center bg-transparent">
+                        {imagePost.length
+                          ? imagePost.map((url, index) => (
+                              <div className="relative pt-3" key={url}>
+                                <i
+                                  onClick={() => handleDeleteImageSend(index)}
+                                  className="bi bi-x absolute bg-amber-300 text-black right-0 top-0 text-lg rounded-full border w-5 h-5 flex justify-center items-center"
+                                ></i>
+                                <img
+                                  className="w-full h-20 object-cover rounded"
+                                  src={url}
+                                  alt="post image"
+                                />
+                              </div>
+                            ))
+                          : null}
+                        {loadingPostImage && (
+                          <img
+                            className="w-full h-20 object-cover rounded"
+                            src={giftUpload}
+                            alt="gif upload"
+                          />
+                        )}
+                      </div>
                     </div>
                     <button
                       type="submit"

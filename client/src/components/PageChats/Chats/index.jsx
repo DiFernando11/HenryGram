@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Outlet, useLocation, useParams } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { getChatsBackAction } from "../../../redux/actions";
 import PreviewMesagge from "../PreviewMesagge";
 
@@ -11,8 +11,6 @@ function Chats() {
   const userInformation = useSelector((state) => state.userInformation);
   const { pathname } = useLocation();
   const responsiveIsCell = pathname === "/message";
-  console.log(pathname, responsiveIsCell, "location");
-
   useEffect(() => {
     if (userInformation) {
       dispatch(getChatsBackAction(userInformation?._id));

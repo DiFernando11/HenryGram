@@ -13,7 +13,7 @@ import Messages from "./components/PageChats/Mesagge";
 import Home from "./components/PageHome/Home";
 import ProfileUser from "./components/PageProfile/ProfileUser/index";
 import ProfileFriends from "./components/PageProfile/ProfileFriends/index";
-import ValidateUser from "./components/ValidateUser/ValidateUser"
+import ValidateUser from "./components/ValidateUser/ValidateUser";
 import NavBar from "./components/NavBar/NavBar";
 import {
   chatTimeReal,
@@ -25,6 +25,23 @@ import ViewPost from "./components/PagePostDetail/viewPost";
 import SideBar from "./components/SideBar";
 
 function App() {
+  //PORFAVOR NO BORRRAR
+  //PORFAVOR NO BORRRAR
+  //PORFAVOR NO BORRRAR
+  //PORFAVOR NO BORRRAR
+  // document.querySelectorAll(".modal-container img").forEach((el) => {
+  //   el.addEventListener("click", function (ev) {
+  //     ev.stopPropagation();
+  //     this.parentNode.classList.add("active");
+  //     console.log("expan click");
+  //   });
+  // });
+  // document.querySelectorAll(".modal-container").forEach((el) => {
+  //   el.addEventListener("click", function (ev) {
+  //     this.classList.remove("active");
+  //     console.log("remove click");
+  //   });
+  // });
   const [saveTokenData, setSaveTokenData] = useState(null);
   const userInformation = useSelector((state) => state.userInformation);
   const chatTimeRealArray = useSelector((state) => state.chatTimeReal);
@@ -48,7 +65,6 @@ function App() {
   useEffect(() => {
     dispatch(getInformationUsersAction());
   }, []);
-
 
   useEffect(() => {
     if (userInformation) {
@@ -139,7 +155,7 @@ function App() {
             </AuthRoute>
           }
         />
-        <Route 
+        <Route
           path="/validate"
           element={
             <NotAuthRoute>
@@ -149,7 +165,6 @@ function App() {
         />
 
         <Route path="*" element={<p>Not found</p>} />
-
       </Routes>
     </AuthProvider>
   );
