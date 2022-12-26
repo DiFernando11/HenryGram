@@ -7,10 +7,10 @@ const GroupSchema = mongoose.Schema({
         required: true
     },
     title: {
-        String
+        type: String
     },
     avatar: {
-        String
+        type: String
     },
     users: Array,
 },
