@@ -17,6 +17,7 @@ export const GET_CHAT_BY_USER = "GET_CHAT_BY_USER";
 export const SEND_MESSAGE_BACK = "SEND_MESSAGE_BACK";
 export const GET_CHATS_GROUP = "GET_CHATS_GROUP";
 export const GET_MESSAGE_BY_USER_GROUP = "GET_MESSAGE_BY_USER_GROUP";
+export const SEND_MESSAGE_BY_GROUP = "SEND_MESSAGE_BY_GROUP";
 export const MESSAGES_IS_CHAT = "MESSAGES_IS_CHAT";
 export const CHAT_TIME_REAL = "CHAT_TIME_REAL";
 export const CHANGE_PREVIEW_ULTIMATE_MESSAGE =
@@ -173,7 +174,7 @@ export const getChatsBackAction = (id) => {
       );
       return dispatch({ type: GET_CHATS_ACTION, payload: result.data });
     } catch (error) {
-      console.error("error en la funcion getChatsBackAction");
+      console.error(error);
     }
   };
 };
@@ -181,7 +182,7 @@ export const addChatBackAction = (payload) => {
   return { type: ADD_CHAT_PREVENT_ACTION, payload };
 };
 export const getMessageByUserBackAction = (data) => {
-  if (data === "clear") return { type: GET_CHAT_BY_USER, payload: [] };
+  if (data === "clear") return { type: GET_CHAT_BY_USER, payload: null };
   return async (dispatch) => {
     try {
       const result = await axios.post(
@@ -195,13 +196,14 @@ export const getMessageByUserBackAction = (data) => {
   };
 };
 
-export const sendMessageBackAction = (data) => {
+export const sendMessageBackAction = (from, to, message) => {
   return async (dispatch) => {
     try {
-      const result = await axios.post(
-        `http://localhost:3000/api/messages`,
-        data
-      );
+      const result = await axios.post(`http://localhost:3000/api/messages`, {
+        from,
+        to,
+        message,
+      });
       return dispatch({ type: SEND_MESSAGE_BACK, payload: result.data });
     } catch (error) {
       console.log(error);
@@ -210,7 +212,7 @@ export const sendMessageBackAction = (data) => {
 };
 
 export const getChatsGroupAction = (id) => {
-  if (id === "clear") return { type: GET_CHATS_GROUP, payload: [] };
+  if (id === "clear") return { type: GET_CHATS_GROUP, payload: null };
   return async (dispatch) => {
     try {
       const result = await axios.get(
@@ -235,6 +237,20 @@ export const getChatByUserGroupAction = (id, limit) => {
       });
     } catch (error) {
       console.error("error en la funcion getChatsBackAction");
+    }
+  };
+};
+export const sendMessageByGroup = (userId, groupId, content) => {
+  return async (dispatch) => {
+    try {
+      const result = await axios.post(`http://localhost:3000/api/groups`, {
+        userId,
+        groupId,
+        content,
+      });
+      return dispatch({ type: SEND_MESSAGE_BY_GROUP, payload: result.data });
+    } catch (error) {
+      console.log(error);
     }
   };
 };
@@ -284,8 +300,8 @@ export const clearState = (data) => {
     return { type: CLEAR_DELETE_POST };
   } else if (data === "update") {
     return { type: CLEAR_UPDATE };
-  } else if (data === 'posts'){
-    return {type: CLEAR_POSTS}
+  } else if (data === "posts") {
+    return { type: CLEAR_POSTS };
   }
 };
 //DELETE POST

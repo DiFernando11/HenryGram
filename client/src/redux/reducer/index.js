@@ -33,6 +33,8 @@ import {
   GET_CHATS_GROUP,
   MESSAGES_IS_CHAT,
   CLEAR_POSTS,
+  GET_MESSAGE_BY_USER_GROUP,
+  SEND_MESSAGE_BY_GROUP,
 } from "../actions";
 
 const initialState = {
@@ -44,17 +46,17 @@ const initialState = {
   postUser: {},
   usersInformationFriends: [],
   searchUser: [],
-  chatUsers: [],
+  chatUsers: null,
   chatUsersCopy: [],
   chatPrevent: [],
-  chatByUser: { informationUserTo: {}, projectedMessages: [] },
-  isChat: true,
+  chatByUser: null,
   // chatByUser: { informationUserTo: {}, projectedMessages: ["Dada"] },
+  isChat: true,
   chatTimeReal: [],
   userPostsProfile: [],
   allPosts: [],
   updatePost: [],
-  deletePost:[],
+  deletePost: [],
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -148,7 +150,18 @@ const rootReducer = (state = initialState, action) => {
         chatByUser: action.payload,
       };
     }
+    case GET_MESSAGE_BY_USER_GROUP: {
+      return {
+        ...state,
+        chatByUser: action.payload,
+      };
+    }
     case SEND_MESSAGE_BACK: {
+      return {
+        ...state,
+      };
+    }
+    case SEND_MESSAGE_BY_GROUP: {
       return {
         ...state,
       };
@@ -261,10 +274,10 @@ const rootReducer = (state = initialState, action) => {
       };
     }
     case CLEAR_POSTS: {
-      return{
+      return {
         ...state,
-        userPostsProfile: []
-      }
+        userPostsProfile: [],
+      };
     }
     default:
       return state;
