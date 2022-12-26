@@ -15,7 +15,7 @@ function HeaderProfile({ isFriend, userInformation }) {
 	const [bannerUser, setBannerUser] = useState('');
 	const [loadingBanner, setLoadingBanner] = useState(false);
 
-	const userId = useSelector((state) => state.userInformation._id);
+	const userId = useSelector((state) => state.userInformation?._id);
 	const handleSaveAvatarUser = (e) => {
 		uploadImage(e, setLoadingAvatar, null, setAvatarUser, null, userId)
 			.then((res) => {
