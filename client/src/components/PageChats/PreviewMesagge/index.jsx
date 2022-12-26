@@ -8,19 +8,20 @@ import {
   changeUltimateMessageTimeRealAction,
   getChatsBackAction,
   getChatsGroupAction,
+  messagesIsChat,
   searchChatsAction,
 } from "../../../redux/actions";
 import SkeletonUser from "../../Skeletons/skeletonUser";
 
-function PreviewMesagge({ title}) {
-  const [isChat, setIsChat] = useState(true);
+function PreviewMesagge({ title }) {
+  // const [isChat, setIsChat] = useState(true);
+  const isChat = useSelector((state) => state.isChat);
   const chatPrevent = useSelector((state) => state.chatPrevent);
   const messages = useSelector((state) => state.chatUsers);
-  const chatTimeRealUser = useSelector((state) => state.chatTimeReal);
   const userInformation = useSelector((state) => state.userInformation);
   const dispatch = useDispatch();
   const handleSwitchChats = () => {
-    setIsChat(!isChat);
+    dispatch(messagesIsChat());
   };
 
   useEffect(() => {
@@ -29,11 +30,11 @@ function PreviewMesagge({ title}) {
         dispatch(getChatsGroupAction(userInformation._id));
       } else {
         dispatch(getChatsBackAction(userInformation._id));
-        console.log("entre")
+        console.log("entre");
       }
       dispatch(getChatsGroupAction("clear"));
     }
-  }, [isChat]);
+  }, [isChat, userInformation]);
   // useEffect(() => {
   //   if (messages.length) {
   //     dispatch(changeUltimateMessageTimeRealAction());
@@ -47,13 +48,16 @@ function PreviewMesagge({ title}) {
         role="group"
       >
         <button
-          onClick={() => setIsChat(true)}
+          onClick={handleSwitchChats}
           type="button"
-          className={`inline-flex items-center gap-3 py-2 px-4  ${
+          className={`inline-flex items-center gap-3 py-2 px-4 ${
+            !messages.length &&
+            "pointer-events-none cursor-not-allowed text-white"
+          }  ${
             isChat
               ? "text-black bg-amber-300 text-base font-semibold"
               : "text-sm font-medium text-white bg-gray-900"
-          }   rounded-l-lg border border-gray-900   dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700`}
+          }   rounded-l-lg border border-gray-900   dark:border-white`}
         >
           <i className="bi bi-chat-right-text-fill"></i>
           Chats
@@ -62,11 +66,14 @@ function PreviewMesagge({ title}) {
         <button
           onClick={handleSwitchChats}
           type="button"
-          className={`inline-flex items-center gap-3 py-2 px-4 ${
+          className={`inline-flex items-center gap-3 py-2 px-4  ${
+            !messages.length &&
+            "pointer-events-none cursor-not-allowed text-white"
+          } ${
             !isChat
               ? "text-black bg-amber-300 text-base font-semibold"
               : "text-sm font-medium text-white bg-gray-900"
-          } rounded-r-md border border-gray-900 dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700`}
+          } rounded-r-md border border-gray-900 dark:border-white`}
         >
           <img src={logoMatch} className={"w-6 h-6"} />
           Match
@@ -106,7 +113,7 @@ function PreviewMesagge({ title}) {
               .reverse()
           : messages?.map((message, index) => (
               <CardPreviewMessage
-                key={message?.ch?.groupId}
+                key={index}
                 image={message?.ch?.avatar}
                 message={message?.ch?.content}
                 id={message?.ch?.userId}

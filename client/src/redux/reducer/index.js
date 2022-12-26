@@ -31,6 +31,7 @@ import {
   UPDATE_POST,
   CLEAR_UPDATE,
   GET_CHATS_GROUP,
+  MESSAGES_IS_CHAT,
 } from "../actions";
 
 const initialState = {
@@ -45,7 +46,9 @@ const initialState = {
   chatUsers: [],
   chatUsersCopy: [],
   chatPrevent: [],
-  chatByUser: { informationUserTo: {}, projectedMessages: ["Dada"] },
+  chatByUser: { informationUserTo: {}, projectedMessages: [] },
+  isChat: true,
+  // chatByUser: { informationUserTo: {}, projectedMessages: ["Dada"] },
   chatTimeReal: [],
   userPostsProfile: [],
   allPosts: [],
@@ -152,6 +155,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         chatUsers: action.payload,
+      };
+    }
+    case MESSAGES_IS_CHAT: {
+      return {
+        ...state,
+        isChat: !state.isChat,
       };
     }
     case CHAT_TIME_REAL: {
