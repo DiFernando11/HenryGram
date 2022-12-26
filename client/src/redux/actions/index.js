@@ -321,7 +321,6 @@ export const updatePostFront = (body) => {
 //EDIT PROFILE
 
 export const editProfileAction = (data) => {
-
 	return async (dispatch) => {
 		try {
 			const result = await axios.put(

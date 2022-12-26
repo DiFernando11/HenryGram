@@ -357,7 +357,6 @@ const updateUserInfo = async (req, res) => {
   try {
     user = await UserSchema.findOne({ _id: id });
   } catch (err) {
-
     return res.status(500).json({ message: "Internal server error" });
   }
 
@@ -365,10 +364,10 @@ const updateUserInfo = async (req, res) => {
     return res.status(404).json({ message: "User not found" });
   } else {
 
-    firstName ? user.firstName = firstName : null;
-    lastName ? user.lastName = lastName : null;
-    avatar ? user.avatar = avatar : null;
-    gender ? user.gender = gender : null;
+    firstName ? user.firstName = firstName : user.firstName;
+    lastName ? user.lastName = lastName : user.lastName;
+    avatar ? user.avatar = avatar : user.avatar;
+    gender ? user.gender = gender : user.gender;
 
     try {
       await user.save();
