@@ -68,7 +68,6 @@ export const logoutAction = () => {
 };
 // Estado global que tiene la informacion del usuario loguiado
 export const verifyUserAction = (token) => {
-	token = 123
 	return async (dispatch) => {
 		try {
 			const result = await axios.get(

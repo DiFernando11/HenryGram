@@ -16,9 +16,7 @@ import ProfileUser from "./components/PageProfile/ProfileUser/index";
 import ProfileFriends from "./components/PageProfile/ProfileFriends/index";
 import ValidateUser from "./components/ValidateUser/ValidateUser";
 import NavBar from "./components/NavBar/NavBar";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import {
   chatTimeReal,
   getFriendsByUser,
@@ -81,9 +79,20 @@ function App() {
       socket.emit("registrarse", userInformation?._id);
     }else if(userInformation === "error"){
       console.log("error");
-      localStorage.removeItem("sessionStarted");
-      dispatch(logoutAction());
-      navigate("/");
+      Swal.fire({
+        icon: "error",
+        title: "Su sesión ha expirado",
+        text: "Por favor vuelva a iniciar sesión",
+        type: "error",
+        confirmButtonText: "Ok",
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.removeItem("sessionStarted");
+          dispatch(logoutAction());
+          window.location.reload();
+        }
+      });
     }
   }, [userInformation]);
 
@@ -93,11 +102,16 @@ function App() {
         icon: "error",
         title: "Su sesión ha expirado",
         text: "Por favor vuelva a iniciar sesión",
-      });
-      localStorage.removeItem("sessionStarted");
-      dispatch(logoutAction());
-      navigate("/");
+        type: "error",
+        confirmButtonText: "Ok",
 
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.removeItem("sessionStarted");
+          dispatch(logoutAction());
+          window.location.reload();
+        }
+      });
     }
   }, []);
 
