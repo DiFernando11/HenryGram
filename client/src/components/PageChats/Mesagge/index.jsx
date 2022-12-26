@@ -6,6 +6,7 @@ import axios from "axios";
 // const socket = io("http://localhost:3000");
 import {
   chatTimeReal,
+  getChatByUserGroupAction,
   getMessageByUserBackAction,
   sendMessageBackAction,
 } from "../../../redux/actions";
@@ -32,10 +33,25 @@ function Messages() {
   const chatPrevent = useSelector((state) => state.chatPrevent);
   const userInformation = useSelector((state) => state.userInformation);
   const chatTimeRealUser = useSelector((state) => state.chatTimeReal);
+  if (chatUsers?.length) {
+    const chatUsersID = chatUsers.map((user) => user?.usr?._id).includes(id);
+    const chatUsersPreventID = chatPrevent.map((user) => user._id).includes(id);
+    if (!chatUsersID && !chatUsersPreventID)
+      return <Navigate to={"/message"} />;
+  }
   function scrollLastMessage() {
     var objDiv = document.getElementById("divu");
     objDiv.scrollTop = objDiv.scrollHeight;
   }
+  useEffect(() => {
+    dispatch(
+      getMessageByUserBackAction({
+        from: userInformation?._id,
+        to: id,
+        limit: 1,
+      })
+    );
+  }, [id, chatUsers]);
 
   useEffect(() => {
     try {
@@ -70,17 +86,7 @@ function Messages() {
   }, [page]);
 
   useEffect(() => {
-    dispatch(
-      getMessageByUserBackAction({
-        from: userInformation?._id,
-        to: id,
-        limit: 1,
-      })
-    );
-  }, [id, chatUsers]);
-
-  useEffect(() => {
-    if (chatByUser?.projectedMessages && chatUsers.length) {
+    if (chatByUser?.projectedMessages && chatUsers?.length) {
       setLoadginSkeletonMessages(false);
       setTimeout(() => scrollLastMessage(), 100);
     }
@@ -126,13 +132,6 @@ function Messages() {
     }
   };
 
-  if (chatUsers?.length) {
-    const chatUsersID = chatUsers.map((user) => user?.usr?._id).includes(id);
-    const chatUsersPreventID = chatPrevent.map((user) => user._id).includes(id);
-    if (!chatUsersID && !chatUsersPreventID)
-      return <Navigate to={"/message"} />;
-  }
-
   return (
     <section className="lg:w-[70%] sm:w-[50%] w-full">
       <div className={styles.header_message}>
@@ -159,6 +158,10 @@ function Messages() {
         id="divu"
         className={`${styles.messagesSent} relative h-[calc(100vh-12rem)] sm:h-[calc(100vh-8rem)] overflow-y-scroll`}
       >
+        {!chatByUser?.projectedMessages?.length && chatByUser && (
+          <div className="text-white text-lg uppercase text-center bg-black p-4 rounded m-auto">{`greets ${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName} 👋`}</div>
+        )}
+
         {loadingOldMessage && <Loader />}
         {!isMoreMessages && (
           <h1 className="text-center text-white bg-black rounded-full uppercase p-2 font-semibold">
@@ -181,18 +184,7 @@ function Messages() {
               // <div>hOKLA</div>
             ))
           : null}
-        {loadginSkeletonMessages
-          ? [1, 2, 3, 4, 5, 6].map((value, index) => {
-              return (
-                <div
-                  key={value}
-                  className={`${index % 2 === 0 && "w-[300px] ml-auto"}`}
-                >
-                  <SkeletonUser />
-                </div>
-              );
-            })
-          : chatByUser?.projectedMessages?.length
+        {chatByUser?.projectedMessages?.length
           ? chatByUser?.projectedMessages
               ?.map((message, index) => (
                 <CardMessage
@@ -223,11 +215,22 @@ function Messages() {
               to={message.to}
             />
           ))}
-        
+        {!chatByUser
+          ? [1, 2, 3, 4, 5, 6].map((value, index) => {
+              return (
+                <div
+                  key={value}
+                  className={`${index % 2 === 0 && "w-[300px] ml-auto"}`}
+                >
+                  <SkeletonUser />
+                </div>
+              );
+            })
+          : null}
       </div>
       <SendMessage
-        informationTo={chatByUser.informationUserTo}
         scrollLastMessage={scrollLastMessage}
+        messageSend={sendMessageBackAction}
       />
     </section>
   );

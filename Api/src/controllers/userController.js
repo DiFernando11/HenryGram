@@ -1,8 +1,8 @@
 const UserSchema = require("../models/User");
 const FriendSchema = require("../models/Friend");
-const MessageSchema = require("../models/Message")
-const GroupSchema = require("../models/Group")
-const ChatSchema = require("../models/Chat")
+const MessageSchema = require("../models/Message");
+const GroupSchema = require("../models/Group");
+const ChatSchema = require("../models/Chat");
 const ObjectId = require("mongoose").Types.ObjectId;
 const bycrypt = require("bcryptjs");
 const { confirmationEmail } = require("../config/nodemailer");
@@ -56,18 +56,15 @@ const postUser = async (req, res) => {
   }
 };
 
-const sendConfirnmationEmail = async ( email, password, firstName ) => {
-
-  try{
-  
+const sendConfirnmationEmail = async (email, password, firstName) => {
+  try {
     const token = getToken({ email: email, password: password });
     console.log(token);
-  
+
     confirmationEmail(firstName, email, token);
   } catch (err) {
     console.log(err);
   }
-
 };
 
 const validateUser = async (req, res) => {
@@ -188,22 +185,21 @@ const LogIn = async (req, res) => {
   const { email, password } = req.body;
   let user = null;
 
-  try{
-      user = await UserSchema.findOne(
+  try {
+    user = await UserSchema.findOne(
       { email },
       { password: 1, firstName: 1, active: 1 }
     );
-  } catch(err){
-      res.status(500).json({message: "Internal server error"});
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" });
   }
-
 
   if (!user) {
     return res.status(400).json({ message: "Wrong email" });
   }
-  
-  if ( !user.active ) {
-    sendConfirnmationEmail(email, password, user.firstName)
+
+  if (!user.active) {
+    sendConfirnmationEmail(email, password, user.firstName);
     return res.status(401).json({ message: "Email need confirmation" });
   }
 
@@ -276,26 +272,22 @@ const getMessages = async (req, res) => {
     .then((value) => {
       let response = Promise.all(
         value.map(async (el) => {
-          let msg = await MessageSchema.findOne(
-            { $or: [{ users: [id, el.valueOf()] }, { users: [el.valueOf(), id] }] }
-          ).sort({ createdAt: -1 })
+          let msg = await MessageSchema.findOne({
+            $or: [{ users: [id, el.valueOf()] }, { users: [el.valueOf(), id] }],
+          }).sort({ createdAt: -1 });
 
           let usr = await UserSchema.findOne(
             { _id: ObjectId(el.valueOf()) },
             { firstName: 1, lastName: 1, avatar: 1 }
           );
 
-          return ({ msg, usr })
+          return { msg, usr };
         })
       );
       return response;
     })
     .then((result) => {
-      if (result.length) {
-        return res.status(200).json(result);
-      } else {
-        return res.status(404).json({ message: "Messages not found" });
-      }
+      return res.status(200).json(result);
     })
     .catch((e) => {
       console.log(e);
@@ -321,13 +313,15 @@ const getGroups = async (req, res) => {
     .then((value) => {
       let response = Promise.all(
         value.map(async (el) => {
-          let gr = await GroupSchema.findOne({ _id: el }).sort({ updatedAt: -1 })
+          let gr = await GroupSchema.findOne({ _id: el }).sort({
+            updatedAt: -1,
+          });
 
-          let ch = await ChatSchema.findOne(
-            { groupId: gr._id }
-          ).sort({ createdAt: -1 })
+          let ch = await ChatSchema.findOne({ groupId: gr._id }).sort({
+            createdAt: -1,
+          });
 
-          return { gr, ch }
+          return { gr, ch };
         })
       );
       return response;
@@ -343,10 +337,9 @@ const getGroups = async (req, res) => {
       console.log(e);
       return res.status(404).json({ message: "Groups not found" });
     });
-}
+};
 
 const updateUserInfo = async (req, res) => {
-
   const { id } = req.params;
   const { firstName, lastName, gender, avatar } = req.body;
 
@@ -357,18 +350,16 @@ const updateUserInfo = async (req, res) => {
   try {
     user = await UserSchema.findOne({ _id: id });
   } catch (err) {
-
     return res.status(500).json({ message: "Internal server error" });
   }
 
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   } else {
-
-    firstName ? user.firstName = firstName : null;
-    lastName ? user.lastName = lastName : null;
-    avatar ? user.avatar = avatar : null;
-    gender ? user.gender = gender : null;
+    firstName ? (user.firstName = firstName) : null;
+    lastName ? (user.lastName = lastName) : null;
+    avatar ? (user.avatar = avatar) : null;
+    gender ? (user.gender = gender) : null;
 
     try {
       await user.save();
@@ -376,11 +367,8 @@ const updateUserInfo = async (req, res) => {
     } catch (err) {
       return res.status(500).json({ message: "Internal server error" });
     }
-
   }
 };
-
-
 
 module.exports = {
   postUser,
@@ -393,5 +381,5 @@ module.exports = {
   getUserByToken,
   getMessages,
   getGroups,
-  updateUserInfo
+  updateUserInfo,
 };
