@@ -11,7 +11,7 @@ import { Spinner } from "flowbite-react";
 
 // obtener la fecha y la hora
 
-function SendMessage({ scrollLastMessage }) {
+function SendMessage({ scrollLastMessage, messageSend }) {
   let today = new Date();
   let hourSystem = today.toISOString();
   const [sendMessage, setSendMessage] = useState("");
@@ -45,13 +45,7 @@ function SendMessage({ scrollLastMessage }) {
   const handleSentMessage = (e) => {
     e.preventDefault();
 
-    dispatch(
-      sendMessageBackAction({
-        from: userInformation._id,
-        to: id,
-        message: sendMessage,
-      })
-    );
+    dispatch(messageSend(userInformation._id, id, sendMessage));
     socket.emit("message", userInformation._id, id, sendMessage, hourSystem);
     const messageInformation = {
       from: userInformation._id,
@@ -126,9 +120,7 @@ function SendMessage({ scrollLastMessage }) {
           className="absolute inset-y-0 left-0 flex items-center pl-3"
           onClick={() => setShowEmoji(!showEmoji)}
         >
-
           <i className="bi bi-emoji-sunglasses text-yellow"></i>
-
         </div>
         <input
           type="search"

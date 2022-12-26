@@ -6,7 +6,6 @@ export const uploadImage = async (
   stateImage,
   setImagePost,
   setImageArray,
-  userId
 ) => {
   const files = e.target.files;
   const data = new FormData();

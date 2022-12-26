@@ -26,6 +26,7 @@ import {
 } from "./redux/actions";
 import ViewPost from "./components/PagePostDetail/viewPost";
 import SideBar from "./components/SideBar";
+import MessageGroup from "./components/PageChats/MessageGroup";
 
 function App() {
   //PORFAVOR NO BORRRAR
@@ -176,6 +177,7 @@ function App() {
           }
         >
           <Route path="chat/:id" element={<Messages />} />
+          <Route path="chat/group/:id" element={<MessageGroup />} />
         </Route>
         <Route
           path="/post/:id"
