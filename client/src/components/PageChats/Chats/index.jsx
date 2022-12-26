@@ -1,8 +1,19 @@
-import React from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, Outlet, useParams, useLocation } from "react-router-dom";
+import { getChatsBackAction } from "../../../redux/actions";
 import PreviewMesagge from "../PreviewMesagge";
 
 function Chats() {
+  const dispatch = useDispatch();
+  const chatUsers = useSelector((state) => state.chatUsers);
+  const userInformation = useSelector((state) => state.userInformation);
+
+  useEffect(() => {
+    if (userInformation) {
+      dispatch(getChatsBackAction(userInformation?._id));
+    }
+  }, [userInformation]);
   const { pathname } = useLocation();
 
   const responsiveIsCell = pathname === "/message";
