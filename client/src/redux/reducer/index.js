@@ -50,6 +50,7 @@ const initialState = {
   userPostsProfile: [],
   allPosts: [],
   updatePost: [],
+  deletePost:[],
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
