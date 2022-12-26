@@ -43,7 +43,7 @@ export default function MyMenu({ postId, description, imagePost, isMatch }) {
 	
 	return (
 		<div className="w-7">
-			{postDeleted.message === 'Post deleted' ? handleAlert() : null}
+			{postDeleted?.message === 'Post deleted' ? handleAlert() : null}
 			<Menu>
 				<Menu.Button className="flex items-center content-center">
 					<EllipsisHorizontalCircleIcon

@@ -31,7 +31,7 @@ function Home() {
         });
     }
   }, [page]);
-  console.log(newsLoadPost);
+
   const handleScroll = () => {
     if (
       document.getElementById("viewHeigthPost").clientHeight +
