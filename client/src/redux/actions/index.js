@@ -59,6 +59,7 @@ export const logoutAction = () => {
 };
 // Estado global que tiene la informacion del usuario loguiado
 export const verifyUserAction = (token) => {
+	token = 123
 	return async (dispatch) => {
 		try {
 			const result = await axios.get(
@@ -66,7 +67,7 @@ export const verifyUserAction = (token) => {
 			);
 			return dispatch({ type: VERIFY_USER_TOKEN, payload: result.data });
 		} catch (error) {
-			console.log(error);
+			return dispatch({ type: VERIFY_USER_TOKEN, payload: 'error' });
 		}
 	};
 };
@@ -255,3 +256,22 @@ export const deletePostFront = (id) => {
 		}
 	};
 };
+
+//EDIT PROFILE
+
+export const editProfileAction = (data) => {
+
+	return async (dispatch) => {
+		try {
+			const result = await axios.put(
+				`http://localhost:3000/api/users/${data.id}`,
+				data
+			);
+			dispatch({ type: EDIT_PROFILE, payload: result.data });
+		} catch (error) {
+			console.log(error);
+		}
+	};
+}
+
+

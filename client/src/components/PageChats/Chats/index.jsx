@@ -2,13 +2,15 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet, useParams } from "react-router-dom";
 import { getChatsBackAction } from "../../../redux/actions";
+import { useAuth } from "../../auth";
 
 import PreviewMesagge from "../PreviewMesagge";
 import styles from "./index.module.css";
 
 function Chats() {
   const dispatch = useDispatch();
-
+  const auth = useAuth();
+  console.log("auth mensaje", auth);
   const chatUsers = useSelector((state) => state.chatUsers);
   const userInformation = useSelector((state) => state.userInformation);
 

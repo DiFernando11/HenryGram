@@ -30,12 +30,12 @@ function Login() {
       if (e.target.value === "") {
         setError({
           ...error,
-          email: "Email is required",
+          email: "Email Requerido",
         });
       } else if (/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(e.target.value) === false) {
         setError({
           ...error,
-          email: "Email is invalid",
+          email: "Email con formato incorrecto",
         });
       } else {
         setError({
@@ -49,12 +49,12 @@ function Login() {
       if (e.target.value === "") {
         setError({
           ...error,
-          password: "Password is required",
+          password: "Contraseña Requerida",
         });
       } else if (e.target.value.length < 8) {
         setError({
           ...error,
-          password: "Password must be at least 8 characters",
+          password: "Contraseña debe tener al menos 8 caracteres",
         });
       } else {
         setError({

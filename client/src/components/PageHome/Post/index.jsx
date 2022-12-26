@@ -10,11 +10,12 @@ function Post({ isMatch, seguir, description, user, imagePost, postId, postDetai
 	const image = imagePost?.filter((e) => e.url);
 	const location = useLocation() 
 
+	// console.log(window.matchMedia('(prefers-color-scheme: dark)'))
+
 	return (
 		<section
-			className={`w-11/12  h-auto mt-6 m-auto relative pt-8 p-6 ${
-				!postDetail && 'border border-amber-300'
-			}  containerBackrougndImagePost rounded shadow-md shadow-black`}
+			className={`w-11/12  h-auto mt-6 m-auto relative pt-8 p-6 
+			${ !postDetail && 'border border-amber-300' } containerBackrougndImagePost rounded shadow-md shadow-black` }
 		>
 			{isMatch && (
 				<div className="absolute ml-6 top-0 left-0 mt-2 flex items-center gap-1">

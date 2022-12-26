@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { AuthProvider, AuthRoute, NotAuthRoute } from "./components/auth";
+import { AuthProvider, AuthRoute, NotAuthRoute, useAuth } from "./components/auth";
+import Swal from "sweetalert2";
 import Logout from "./components/Logout";
 import Chats from "./components/PageChats/Chats";
 import Landing from "./components/Landing";
@@ -12,19 +13,23 @@ import ProfileFriends from "./components/PageProfile/ProfileFriends/index";
 import ValidateUser from "./components/ValidateUser/ValidateUser"
 import NavBar from "./components/NavBar/NavBar";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   getFriendsByUser,
   getInformationUsersAction,
   verifyUserAction,
+  logoutAction
 } from "./redux/actions";
 import ViewPost from "./components/PagePostDetail/viewPost";
 
 function App() {
   const [saveTokenData, setSaveTokenData] = useState(null);
   const userInformation = useSelector((state) => state.userInformation);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const auth = useAuth()
+  ;
 
   const getData = () => {
     return localStorage.getItem("sessionStarted");
@@ -35,7 +40,7 @@ function App() {
       setSaveTokenData(getData());
       // dispatch(searchUsersAction());
       if (saveTokenData) {
-        await dispatch(verifyUserAction(saveTokenData));
+        dispatch(verifyUserAction(saveTokenData));
       }
     })();
   }, [saveTokenData]);
@@ -45,10 +50,31 @@ function App() {
   }, []);
   
   useEffect(() => {
-    if (userInformation) {
+    console.log("userInformation", userInformation);
+    if (userInformation && userInformation !== "error") {
       dispatch(getFriendsByUser(userInformation._id));
+    }else if(userInformation === "error"){
+      console.log("error");
+      localStorage.removeItem("sessionStarted");
+      dispatch(logoutAction());
+      navigate("/");
     }
   }, [userInformation]);
+
+  useEffect(() => {
+    if (userInformation === "error") {
+      Swal.fire({
+        icon: "error",
+        title: "Su sesión ha expirado",
+        text: "Por favor vuelva a iniciar sesión",
+      });
+      localStorage.removeItem("sessionStarted");
+      dispatch(logoutAction());
+      navigate("/");
+
+    }
+  }, []);
+
   return (
     <AuthProvider>
       <Routes>

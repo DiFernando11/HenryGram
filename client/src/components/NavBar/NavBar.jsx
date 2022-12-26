@@ -130,7 +130,7 @@ export default function NavBar() {
             }`}
           >
             <ul className="bg-black items-center rounded justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
-              <li className=" relative text-white flex gap-2 items-center p-2 text-white border border-black rounded-lg transition duration:200  cursor-pointer">
+              <li className=" relative text-white flex gap-2 items-center p-2 border border-black rounded-lg transition duration:200  cursor-pointer">
                 <DropDownSelect
                   status={"APPLICATION"}
                   icon={"bi-people-fill"}
