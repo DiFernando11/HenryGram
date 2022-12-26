@@ -1,17 +1,16 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Outlet, useParams } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { getChatsBackAction } from "../../../redux/actions";
-
 import PreviewMesagge from "../PreviewMesagge";
-import styles from "./index.module.css";
 
 function Chats() {
   const dispatch = useDispatch();
 
   const chatUsers = useSelector((state) => state.chatUsers);
   const userInformation = useSelector((state) => state.userInformation);
-
+  const { pathname } = useLocation();
+  const responsiveIsCell = pathname === "/message";
   useEffect(() => {
     if (userInformation) {
       dispatch(getChatsBackAction(userInformation?._id));
@@ -19,8 +18,8 @@ function Chats() {
   }, [userInformation]);
 
   return (
-    <main className={styles.page_Chats}>
-      <div className={styles.sections_Preview_Page}>
+    <main className="flex w-full bg-[url('https://unageek.com/wp-content/uploads/2020/03/Fondo_pantalla_chat_WA_StarWars_UnaGeek_Oscuro.jpg')]">
+      <div className={`lg:w-[30%]  sm:w-[50%] w-screen sm:flex ${!responsiveIsCell && "hidden"}`}>
         <PreviewMesagge
           title={"Messages"}
           messages={chatUsers}

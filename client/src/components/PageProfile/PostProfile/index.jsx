@@ -14,7 +14,7 @@ function PostProfile({ isFriend }) {
 		user ? dispatch(getPostUSer(user._id)) : null;
 	}, [user]);
 	return (
-		<section className="w-3/5 calcViewHeightPageProfile pt-2 ">
+		<section className="xl:w-3/5 xl:h-[calc(100vh-9rem)] xl:overflow-y-scroll pt-2 ">
 			{!isFriend && (
 				// <div className="w-12 h-12 bg-amber-300 flex justify-center items-center rounded-full fixed ml-3 z-10 ">
 				//   <div className=" ml-[50px] justify-center items-center ">

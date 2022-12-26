@@ -55,7 +55,7 @@ function PreviewMesagge({ title, messages, messagesGroup }) {
         </button>
       </div>
       <span className={styles.textMessagePreview}>{title}</span>
-      <div className={styles.containerAllMessage}>
+      <div className={`${styles.containerAllMessage} h-[calc(100vh-16rem)] sm:h-[calc(100vh-12rem)] overflow-y-scroll `}>
         {chatPrevent?.length
           ? chatPrevent
               ?.map((message, index) => (

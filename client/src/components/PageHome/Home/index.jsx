@@ -27,7 +27,6 @@ function Home() {
           setLoading(false);
         })
         .catch((error) => {
-    
           console.log(error);
         });
     }
@@ -59,8 +58,12 @@ function Home() {
   }, []);
   return (
     <main className="w-full flex">
-      <div id="viewHeigthPost" className="w-full calcViewHeight">
+      <div
+        id="viewHeigthPost"
+        className="w-full h-[calc(100vh-4rem)] sm:h-screen overflow-y-scroll"
+      >
         <MakePost />
+       
         {postUsers.length
           ? postUsers?.map((posts) => (
               <Post

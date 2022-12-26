@@ -20,7 +20,7 @@ function Profile({ userInformation }) {
   return (
     <main className="w-full">
       <HeaderProfile userInformation={userInformation} isFriend={isFriend} />
-      <div className=" w-full flex calcViewHeightPageProfile">
+      <div className=" w-full xl:flex sm:h-[calc(100vh-9rem)] lg:h-[calc(100vh-9rem)] h-[calc(100vh-13rem)] overflow-y-scroll" >
         <AboutProfile userInformation={userInformation} isFriend={isFriend} />
         <PostProfile userInformation={userInformation} isFriend={isFriend} />
       </div>

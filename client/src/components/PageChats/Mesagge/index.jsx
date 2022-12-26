@@ -100,7 +100,7 @@ function Messages() {
       setIsMoreMessages(true);
     };
   }, [id]);
-  
+
   useEffect(() => {
     document.getElementById("divu").addEventListener("scroll", handleScroll);
     return () => {
@@ -115,7 +115,6 @@ function Messages() {
   const handleScroll = () => {
     const heigthScroll = document.getElementById("divu").scrollHeight;
     const containerHeight = document.getElementById("divu").clientHeight;
-    // console.log(document.getElementById("divu").scrollTop, "scrollTop");
     if (isMoreMessages) {
       if (
         document.getElementById("divu").scrollTop === 0 &&
@@ -135,7 +134,7 @@ function Messages() {
   }
 
   return (
-    <section className={styles.section_Messages}>
+    <section className="lg:w-[70%] sm:w-[50%] w-full">
       <div className={styles.header_message}>
         {!chatByUser?.informationUserTo ? (
           <SkeletonUser isMessage={false} />
@@ -143,20 +142,23 @@ function Messages() {
           <div className={styles.userInformationChat}>
             <img src={chatByUser?.informationUserTo?.avatar} alt="user_chat" />
 
-            <span>
+            <span className="truncate w-4/5">
               {`${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName} `}
             </span>
           </div>
         )}
 
         <div className={styles.actionsChat}>
-          <AvatarStack avatars={avatars} />
-          <i className={`bi bi-camera-video`}></i>
-          <i className="bi bi-telephone"></i>
-          <i className="bi bi-three-dots-vertical"></i>
+          {/* <AvatarStack avatars={avatars} /> */}
+          <i className={`bi bi-camera-video lg:block hidden`}></i>
+          <i className="bi bi-telephone lg:block hidden"></i>
+          <i className="bi bi-three-dots-vertical lg:block hidden"></i>
         </div>
       </div>
-      <div id="divu" className={`${styles.messagesSent} relative`}>
+      <div
+        id="divu"
+        className={`${styles.messagesSent} relative h-[calc(100vh-12rem)] sm:h-[calc(100vh-8rem)] overflow-y-scroll`}
+      >
         {loadingOldMessage && <Loader />}
         {!isMoreMessages && (
           <h1 className="text-center text-white bg-black rounded-full uppercase p-2 font-semibold">
@@ -221,6 +223,7 @@ function Messages() {
               to={message.to}
             />
           ))}
+        
       </div>
       <SendMessage
         informationTo={chatByUser.informationUserTo}

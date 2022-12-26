@@ -48,7 +48,6 @@ const initialState = {
   chatTimeReal: [],
   userPostsProfile: [],
   allPosts: [],
-  deletePost:[],
   updatePost: [],
 
 };
@@ -192,7 +191,6 @@ const rootReducer = (state = initialState, action) => {
 				),
 			};
 		}
-
 		case SEARCH_CHATS: {
 			return {
 				...state,
@@ -247,6 +245,7 @@ const rootReducer = (state = initialState, action) => {
 		default:
 			return state;
 	}
+
 };
 
 export default rootReducer;
