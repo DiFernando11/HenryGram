@@ -356,7 +356,6 @@ const updateUserInfo = async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   } else {
-
     firstName ? user.firstName = firstName : user.firstName;
     lastName ? user.lastName = lastName : user.lastName;
     avatar ? user.avatar = avatar : user.avatar;
