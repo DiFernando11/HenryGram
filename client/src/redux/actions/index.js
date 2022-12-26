@@ -16,6 +16,8 @@ export const ADD_CHAT_PREVENT_ACTION = "ADD_CHAT_PREVENT_ACTION";
 export const GET_CHAT_BY_USER = "GET_CHAT_BY_USER";
 export const SEND_MESSAGE_BACK = "SEND_MESSAGE_BACK";
 export const GET_CHATS_GROUP = "GET_CHATS_GROUP";
+export const GET_MESSAGE_BY_USER_GROUP = "GET_MESSAGE_BY_USER_GROUP";
+export const MESSAGES_IS_CHAT = "MESSAGES_IS_CHAT";
 export const CHAT_TIME_REAL = "CHAT_TIME_REAL";
 export const CHANGE_PREVIEW_ULTIMATE_MESSAGE =
   "CHANGE_PREVIEW_ULTIMATE_MESSAGE";
@@ -219,6 +221,25 @@ export const getChatsGroupAction = (id) => {
       console.error("error en la funcion getChatsBackAction");
     }
   };
+};
+export const getChatByUserGroupAction = (id, limit) => {
+  // http://localhost:3000/api/groups?id=63a23d1113cae7910c834510&limit=1
+  return async (dispatch) => {
+    try {
+      const result = await axios.get(
+        `http://localhost:3000/api/groups?id=${id}&limit=${limit}`
+      );
+      return dispatch({
+        type: GET_MESSAGE_BY_USER_GROUP,
+        payload: result.data,
+      });
+    } catch (error) {
+      console.error("error en la funcion getChatsBackAction");
+    }
+  };
+};
+export const messagesIsChat = () => {
+  return { type: MESSAGES_IS_CHAT };
 };
 export const chatTimeReal = (payload) => {
   return { type: CHAT_TIME_REAL, payload };

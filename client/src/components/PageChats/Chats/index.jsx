@@ -4,6 +4,7 @@ import PreviewMesagge from "../PreviewMesagge";
 
 function Chats() {
   const { pathname } = useLocation();
+
   const responsiveIsCell = pathname === "/message";
 
   return (
