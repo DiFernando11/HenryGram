@@ -30,6 +30,7 @@ function SendMessage({ scrollLastMessage }) {
     const imageSend = sendImages.filter((image, index) => index !== indexImage);
     setSendImage(imageSend);
   };
+
   const myCallback = (code) => {
     const emoji = code.emoji;
     setSendMessage(`${sendMessage} ${emoji}`);
@@ -74,6 +75,9 @@ function SendMessage({ scrollLastMessage }) {
       socket.off("message", receivedMessage);
     };
   }, [chatTimeRealArray]);
+  useEffect(() => {
+    setShowEmoji(false);
+  }, [id]);
 
   useEffect(() => {
     setShowEmoji(false);
@@ -103,6 +107,7 @@ function SendMessage({ scrollLastMessage }) {
           </div>
         )}
       </div>
+
       {showEmoji && (
         <div className="absolute bottom-14 bg-black">
           <EmojiPicker onEmojiClick={myCallback} />
@@ -121,7 +126,9 @@ function SendMessage({ scrollLastMessage }) {
           className="absolute inset-y-0 left-0 flex items-center pl-3"
           onClick={() => setShowEmoji(!showEmoji)}
         >
+
           <i className="bi bi-emoji-sunglasses text-yellow"></i>
+
         </div>
         <input
           type="search"

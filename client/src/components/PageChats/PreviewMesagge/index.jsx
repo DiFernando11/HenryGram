@@ -16,11 +16,11 @@ function PreviewMesagge({ title, messages, messagesGroup }) {
   const chatPrevent = useSelector((state) => state.chatPrevent);
   const chatTimeRealUser = useSelector((state) => state.chatTimeReal);
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (messages.length) {
-      dispatch(changeUltimateMessageTimeRealAction());
-    }
-  }, [chatTimeRealUser]);
+  // useEffect(() => {
+  //   if (messages.length) {
+  //     dispatch(changeUltimateMessageTimeRealAction());
+  //   }
+  // }, [chatTimeRealUser]);
   return (
     <section className={styles.container_preview_message}>
       <SearchBar handleChangeSearch={searchChatsAction} />

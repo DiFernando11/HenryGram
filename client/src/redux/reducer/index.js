@@ -49,6 +49,7 @@ const initialState = {
   userPostsProfile: [],
   allPosts: [],
   updatePost: [],
+
 };
 const rootReducer = (state = initialState, action) => {
 	switch (action.type) {

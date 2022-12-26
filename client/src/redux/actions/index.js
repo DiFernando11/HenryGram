@@ -249,6 +249,7 @@ export const clearState = (data) => {
 	}else if (data === 'update'){
 		return {type: CLEAR_UPDATE}
 	 }
+
 };
 //DELETE POST
 export const deletePostFront = (id) => {
