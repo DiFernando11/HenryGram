@@ -3,7 +3,7 @@ POST http://localhost:3000/api/posts HTTP/1.1
 Content-Type: application/json
 
 {
-    "userId": "5f9b5b5b5b5b5b5b5b5b5b5b",
+    "userId": "639b57c05871ad62a8b88c2a",
     "description": "This is a post description",
     "image": [
         {
