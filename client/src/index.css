@@ -54,22 +54,7 @@ span {
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 0, 0.123);
 }
-/* .calcViewHeight {
-  height: calc(100vh);
-  overflow-y: scroll;
-}
-.calcViewHeightRecommendedeFriends {
-  height: calc(100vh - 8rem);
-  overflow-y: scroll;
-}
-.calcViewHeightPageProfile {
-  height: calc(100vh - 13rem);
-  overflow-y: scroll;
-}
-.calcViewModalFriends {
-  height: calc(100vh - 15rem);
-  overflow-y: scroll;
-} */
+
 .text_sombra {
   color: white;
   text-shadow: black 0.1em 0.1em 0.2em;

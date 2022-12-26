@@ -29,7 +29,8 @@ import {
   CHAT_TIME_REAL,
   CHANGE_PREVIEW_ULTIMATE_MESSAGE,
   UPDATE_POST,
-	CLEAR_UPDATE,
+  CLEAR_UPDATE,
+  GET_CHATS_GROUP,
 } from "../actions";
 
 const initialState = {
@@ -49,37 +50,36 @@ const initialState = {
   userPostsProfile: [],
   allPosts: [],
   updatePost: [],
-
 };
 const rootReducer = (state = initialState, action) => {
-	switch (action.type) {
-		//User Information
-		case CREATE_USER: {
-			return {
-				...state,
-				createUser: action.payload,
-			};
-		}
-		case LOGIN: {
-			return {
-				...state,
-				userLogin: action.payload,
-			};
-		}
-		case LOGOUT: {
-			return {
-				...state,
-				userLogin: null,
-			};
-		}
-		case VERIFY_USER_TOKEN: {
-			return {
-				...state,
-				userInformation: action.payload,
-			};
-		}
+  switch (action.type) {
+    //User Information
+    case CREATE_USER: {
+      return {
+        ...state,
+        createUser: action.payload,
+      };
+    }
+    case LOGIN: {
+      return {
+        ...state,
+        userLogin: action.payload,
+      };
+    }
+    case LOGOUT: {
+      return {
+        ...state,
+        userLogin: null,
+      };
+    }
+    case VERIFY_USER_TOKEN: {
+      return {
+        ...state,
+        userInformation: action.payload,
+      };
+    }
 
-		//User Information
+    //User Information
     case POST_USER: {
       return {
         ...state,
@@ -130,6 +130,7 @@ const rootReducer = (state = initialState, action) => {
         chatUsersCopy: action.payload,
       };
     }
+
     case ADD_CHAT_PREVENT_ACTION: {
       return {
         ...state,
@@ -145,6 +146,12 @@ const rootReducer = (state = initialState, action) => {
     case SEND_MESSAGE_BACK: {
       return {
         ...state,
+      };
+    }
+    case GET_CHATS_GROUP: {
+      return {
+        ...state,
+        chatUsers: action.payload,
       };
     }
     case CHAT_TIME_REAL: {
@@ -180,72 +187,71 @@ const rootReducer = (state = initialState, action) => {
 
     //CHAT
 
-		//SEARCH
+    //SEARCH
 
-		case SEARCH_USER: {
-			return {
-				...state,
-				searchUser: searchFriendHelp(
-					action.payload,
-					state.usersInformationFriends
-				),
-			};
-		}
-		case SEARCH_CHATS: {
-			return {
-				...state,
-				chatUsers: searchChatsHelp(action.payload, state.chatUsersCopy),
-			};
-		}
-		//SEARCH
-		case CLEAR: {
-			return {
-				...state,
-				createUser: [],
-			};
-		}
-		case DELETE_POST: {
-			return {
-				...state,
-				deletePost: action.payload[0],
-				userPostsProfile: state.userPostsProfile.filter(
-					(e) => e._id != action.payload[1]
-				),
-				allPosts: state.allPosts.filter(
-					(e) => e.post._id !== action.payload[1]
-				),
-			};
-		}
-		case CLEAR_DELETE_POST: {
-			return {
-				...state,
-				deletePost: [],
-			};
-		}
-		//Update Post
-		case UPDATE_POST: {
-			const indice = state.userPostsProfile.findIndex((elemento, indice) => {
-				if (elemento._id === action.payload[1]) {
-				  return true;
-				}
-			  });
-			  state.userPostsProfile[indice] = action.payload[0]
-			  console.log(state.userPostsProfile)
-			return {
-				...state,
-				updatePost: action.payload[0],
-			};
-		}
-		case CLEAR_UPDATE: {
-			return{
-				...state,
-				updatePost:[]
-			}
-		}
-		default:
-			return state;
-	}
-
+    case SEARCH_USER: {
+      return {
+        ...state,
+        searchUser: searchFriendHelp(
+          action.payload,
+          state.usersInformationFriends
+        ),
+      };
+    }
+    case SEARCH_CHATS: {
+      return {
+        ...state,
+        chatUsers: searchChatsHelp(action.payload, state.chatUsersCopy),
+      };
+    }
+    //SEARCH
+    case CLEAR: {
+      return {
+        ...state,
+        createUser: [],
+      };
+    }
+    case DELETE_POST: {
+      return {
+        ...state,
+        deletePost: action.payload[0],
+        userPostsProfile: state.userPostsProfile.filter(
+          (e) => e._id != action.payload[1]
+        ),
+        allPosts: state.allPosts.filter(
+          (e) => e.post._id !== action.payload[1]
+        ),
+      };
+    }
+    case CLEAR_DELETE_POST: {
+      return {
+        ...state,
+        deletePost: [],
+      };
+    }
+    //Update Post
+    case UPDATE_POST: {
+      const indice = state.userPostsProfile.findIndex((elemento, indice) => {
+        if (elemento._id === action.payload[1]) {
+          return true;
+        }
+      });
+      state.userPostsProfile[indice] = action.payload[0];
+      console.log(state.userPostsProfile);
+      return {
+        ...state,
+        updatePost: action.payload[0],
+      };
+    }
+    case CLEAR_UPDATE: {
+      return {
+        ...state,
+        updatePost: [],
+      };
+    }
+    default:
+      return state;
+  }
 };
 
 export default rootReducer;
