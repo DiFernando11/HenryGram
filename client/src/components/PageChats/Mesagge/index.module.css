@@ -1,6 +1,4 @@
-.section_Messages {
-  width: 70%;
-}
+
 .header_message {
   padding: 0 32px;
   height: 70px;
@@ -33,8 +31,6 @@
 }
 
 .messagesSent {
-  height: calc(100vh - 12rem);
   padding: 12px;
-  overflow-y: scroll;
   scroll-behavior: smooth;
 }

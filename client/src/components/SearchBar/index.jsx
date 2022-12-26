@@ -23,7 +23,7 @@ function SearchBar({ handleChangeSearch }) {
       </label>
       <div className="relative w-full">
         <div className="absolute inset-y-0 left-0 flex items-center pl-8 pointer-events-none">
-          <i className="bi bi-search text-white"></i>
+          <i className="bi bi-search text-white text-xs"></i>
         </div>
         <input
           type="text"

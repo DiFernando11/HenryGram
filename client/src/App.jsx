@@ -1,4 +1,8 @@
 import { Route, Routes } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
+const socket = io("http://localhost:3000");
 import "./App.css";
 import { AuthProvider, AuthRoute, NotAuthRoute, useAuth } from "./components/auth";
 import Swal from "sweetalert2";
@@ -10,23 +14,44 @@ import Messages from "./components/PageChats/Mesagge";
 import Home from "./components/PageHome/Home";
 import ProfileUser from "./components/PageProfile/ProfileUser/index";
 import ProfileFriends from "./components/PageProfile/ProfileFriends/index";
-import ValidateUser from "./components/ValidateUser/ValidateUser"
+import ValidateUser from "./components/ValidateUser/ValidateUser";
 import NavBar from "./components/NavBar/NavBar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
+  chatTimeReal,
   getFriendsByUser,
   getInformationUsersAction,
   verifyUserAction,
   logoutAction
 } from "./redux/actions";
 import ViewPost from "./components/PagePostDetail/viewPost";
+import SideBar from "./components/SideBar";
 
 function App() {
+  //PORFAVOR NO BORRRAR
+  //PORFAVOR NO BORRRAR
+  //PORFAVOR NO BORRRAR
+  //PORFAVOR NO BORRRAR
+  // document.querySelectorAll(".modal-container img").forEach((el) => {
+  //   el.addEventListener("click", function (ev) {
+  //     ev.stopPropagation();
+  //     this.parentNode.classList.add("active");
+  //     console.log("expan click");
+  //   });
+  // });
+  // document.querySelectorAll(".modal-container").forEach((el) => {
+  //   el.addEventListener("click", function (ev) {
+  //     this.classList.remove("active");
+  //     console.log("remove click");
+  //   });
+  // });
   const [saveTokenData, setSaveTokenData] = useState(null);
   const userInformation = useSelector((state) => state.userInformation);
   const navigate = useNavigate();
+  const chatTimeRealArray = useSelector((state) => state.chatTimeReal);
+
   const dispatch = useDispatch();
   const auth = useAuth()
   ;
@@ -48,11 +73,12 @@ function App() {
   useEffect(() => {
     dispatch(getInformationUsersAction());
   }, []);
-  
+
   useEffect(() => {
     console.log("userInformation", userInformation);
     if (userInformation && userInformation !== "error") {
       dispatch(getFriendsByUser(userInformation._id));
+      socket.emit("registrarse", userInformation?._id);
     }else if(userInformation === "error"){
       console.log("error");
       localStorage.removeItem("sessionStarted");
@@ -90,8 +116,8 @@ function App() {
           path="/home"
           element={
             <AuthRoute>
-              {/* <SideBar /> */}
               <NavBar />
+              <SideBar />
               <Home />
             </AuthRoute>
           }
@@ -100,7 +126,7 @@ function App() {
           path="/profile"
           element={
             <AuthRoute>
-              {/* <SideBar /> */}
+              <SideBar />
               <NavBar />
               <ProfileUser />
             </AuthRoute>
@@ -110,7 +136,7 @@ function App() {
           path="/profile/:id"
           element={
             <AuthRoute>
-              {/* <SideBar /> */}
+              <SideBar />
               <NavBar />
               <ProfileFriends />
             </AuthRoute>
@@ -129,7 +155,7 @@ function App() {
           path="/message"
           element={
             <AuthRoute>
-              {/* <SideBar /> */}
+              <SideBar />
               <NavBar />
               <Chats />
             </AuthRoute>
@@ -157,7 +183,7 @@ function App() {
             </AuthRoute>
           }
         />
-        <Route 
+        <Route
           path="/validate"
           element={
             <NotAuthRoute>
@@ -167,7 +193,6 @@ function App() {
         />
 
         <Route path="*" element={<p>Not found</p>} />
-
       </Routes>
     </AuthProvider>
   );

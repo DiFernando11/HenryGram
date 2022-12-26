@@ -22,6 +22,9 @@ module.exports = {
         danger: "#CA0B00",
         white: "#f4f4f4",
       },
+      gridAutoColumns: {
+        "2fr": "minmax(0, 2fr)",
+      },
       backgroundImage: {
         background: "url('./src/assets/fondo2.png')",
       },
