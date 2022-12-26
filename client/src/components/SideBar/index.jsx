@@ -95,7 +95,7 @@ function SideBar() {
           </ul>
 
           <NavLink
-            to={"/profile"}
+            to={`/profile/${userInformation?._id}`}
             className="absolute bottom-8 inset-x-0 border-t pt-10 border-zinc-400"
           >
             <img
