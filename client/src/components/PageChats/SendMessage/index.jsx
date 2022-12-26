@@ -1,4 +1,5 @@
-import React, { Children, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import EmojiPicker from "emoji-picker-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
@@ -12,15 +13,21 @@ function SendMessage({ scrollLastMessage }) {
   let today = new Date();
   let hourSystem = today.toISOString();
   const [sendMessage, setSendMessage] = useState("");
-
+  const [showEmoji, setShowEmoji] = useState(false);
   const { id } = useParams();
   const userInformation = useSelector((state) => state.userInformation);
   const chatTimeRealArray = useSelector((state) => state.chatTimeReal);
+
   // const
+  const myCallback = (code) => {
+    const emoji = code.emoji;
+    setSendMessage(`${sendMessage} ${emoji}`);
+  };
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setSendMessage(e.target.value);
+    setShowEmoji(false);
     // socket.emit("registrarse", userInformation?._id);
   };
 
@@ -68,9 +75,18 @@ function SendMessage({ scrollLastMessage }) {
       socket.off("message", receivedMessage);
     };
   }, [chatTimeRealArray]);
+  useEffect(() => {
+    setShowEmoji(false);
+  }, [id]);
 
   return (
     <form onSubmit={handleSentMessage}>
+      {showEmoji && (
+        <div className="absolute bottom-14 bg-black">
+          <EmojiPicker onEmojiClick={myCallback} />
+        </div>
+      )}
+
       <label
         htmlFor="search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -79,7 +95,10 @@ function SendMessage({ scrollLastMessage }) {
       </label>
 
       <div className={`relative ${styles.inputSentMessage}`}>
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <div
+          className="absolute inset-y-0 left-0 flex items-center pl-3"
+          onClick={() => setShowEmoji(!showEmoji)}
+        >
           <i className="bi bi-emoji-sunglasses text-yellow-300"></i>
         </div>
         <input

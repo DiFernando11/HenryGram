@@ -25,8 +25,8 @@ import {
   SEARCH_CHATS,
   CLEAR,
   DELETE_POST,
-  CLEAR_DELETE_POST
-   CHAT_TIME_REAL,
+  CLEAR_DELETE_POST,
+  CHAT_TIME_REAL,
   CHANGE_PREVIEW_ULTIMATE_MESSAGE,
   UPDATE_POST,
 	CLEAR_UPDATE,
@@ -44,12 +44,13 @@ const initialState = {
   chatUsers: [],
   chatUsersCopy: [],
   chatPrevent: [],
-  chatByUser: [],
+  chatByUser: { informationUserTo: {}, projectedMessages: ["Dada"] },
   chatTimeReal: [],
   userPostsProfile: [],
   allPosts: [],
   deletePost:[],
   updatePost: [],
+
 };
 const rootReducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -165,18 +166,17 @@ const rootReducer = (state = initialState, action) => {
       };
     }
 
-
-    case GET_POSTS:{
+    case GET_POSTS: {
       return {
         ...state,
-        userPostsProfile: action.payload.reverse()
-      }
+        userPostsProfile: action.payload.reverse(),
+      };
     }
-    case GET_ALL_POSTS:{
-      return{
+    case GET_ALL_POSTS: {
+      return {
         ...state,
-        allPosts: action.payload.reverse()
-      }
+        allPosts: action.payload.reverse(),
+      };
     }
 
     //CHAT
