@@ -17,7 +17,7 @@ function HeaderProfile({ isFriend, userInformation }) {
 
 	const userId = useSelector((state) => state.userInformation._id);
 	const handleSaveAvatarUser = (e) => {
-		uploadImage(e, setLoadingAvatar, null, setAvatarUser, null, userId)
+		uploadImage(e, setLoadingAvatar, null, setAvatarUser)
 			.then((res) => {
 				dispatch(editProfileAction({
 					avatar: res,
@@ -26,7 +26,7 @@ function HeaderProfile({ isFriend, userInformation }) {
 			})
 	};
 	const handleSaveBannerUser = (e) => {
-		uploadImage(e, setLoadingBanner, null, setBannerUser, null, userId);
+		uploadImage(e, setLoadingBanner, null, setBannerUser);
 	};
 	return (
 		<header className="relative h-36">

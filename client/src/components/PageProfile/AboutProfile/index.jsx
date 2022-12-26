@@ -49,7 +49,7 @@ function AboutProfile({ userInformation, isFriend }) {
 	}, [friendsByUser, id]);
 
 	useEffect(() => {
-		if (userID && !chatUsers.length) {
+		if (userID && !chatUsers?.length) {
 			dispatch(getChatsBackAction(userID?._id));
 		}
 	}, [userID]);
