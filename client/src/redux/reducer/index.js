@@ -31,6 +31,7 @@ import {
   UPDATE_POST,
   CLEAR_UPDATE,
   GET_CHATS_GROUP,
+  CLEAR_POSTS,
 } from "../actions";
 
 const initialState = {
@@ -249,6 +250,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         updatePost: [],
       };
+    }
+    case CLEAR_POSTS: {
+      return{
+        ...state,
+        userPostsProfile: []
+      }
     }
     default:
       return state;
