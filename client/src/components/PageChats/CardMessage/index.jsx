@@ -17,7 +17,7 @@ function CardMessage({
 }) {
   const { id } = useParams();
   const userInformation = useSelector((state) => state.userInformation);
-  if (userInformation._id !== from && id && to && from && id !== from) return;
+  if (userInformation?._id !== from && id && to && from && id !== from) return;
   const timesHours = timeHours(time);
 
   // const timeMessage = timeDate.split(",");
