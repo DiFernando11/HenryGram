@@ -26,9 +26,9 @@ export const uploadImage = async (
     file.secure_url && setImageArray
       ? setImageArray((prev) => [...prev, file.secure_url])
       : null;
-
     stateLoading(false);
   } catch (error) {
     console.log(error);
   }
+
 };

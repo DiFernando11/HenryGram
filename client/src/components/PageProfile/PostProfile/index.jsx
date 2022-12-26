@@ -13,7 +13,6 @@ function PostProfile({ isFriend }) {
 	useEffect(() => {
 		user ? dispatch(getPostUSer(user._id)) : null;
 	}, [user]);
-console.log(postUser)
 	return (
 		<section className="xl:w-3/5 xl:h-[calc(100vh-9rem)] xl:overflow-y-scroll pt-2 ">
 			{!isFriend && (
@@ -22,7 +21,6 @@ console.log(postUser)
 				//   </div>
 				// </div>
 				<Transition
-					appear
 					show={!isFriend}
 					enter="ease-out duration-300"
 					enterFrom="opacity-0"

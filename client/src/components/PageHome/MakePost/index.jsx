@@ -1,12 +1,13 @@
-import React, { useState, useEffect, Fragment } from "react";
-import { Modal, Button, Label, TextInput, Checkbox } from "flowbite-react";
-import logoMatch from "../../../assets/coheteHenry.png";
-import { uploadImage } from "../../helpers/uploadImage";
-import { validatePost } from "../../helpers/validateForm";
-import { useSelector, useDispatch } from "react-redux";
-import { cleanPostState, postUser } from "../../../redux/actions";
-import { Transition } from "@headlessui/react";
-import Swal from "sweetalert2";
+import React, { useState } from 'react';
+import { Modal } from 'flowbite-react';
+import logoMatch from '../../../assets/coheteHenry.png';
+import { uploadImage } from '../../helpers/uploadImage';
+import { validatePost } from '../../helpers/validateForm';
+import { useSelector, useDispatch } from 'react-redux';
+import { cleanPostState, postUser } from '../../../redux/actions';
+import { Transition } from '@headlessui/react';
+import Swal from 'sweetalert2';
+
 const giftUpload =
   "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921";
 
@@ -125,6 +126,7 @@ function MakePost() {
           onClick={() => setShow(!show)}
         />
       </div>
+
 
       {handleAlert(post)}
       <Transition
