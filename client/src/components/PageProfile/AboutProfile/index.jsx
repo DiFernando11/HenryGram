@@ -54,6 +54,7 @@ function AboutProfile({ userInformation, isFriend }) {
 		}
 	}, [userID]);
 
+	
 	const handleRedirectChatUser = () => {
 		if (
 			!chatUsers.some((user) => user?._id === id) &&
