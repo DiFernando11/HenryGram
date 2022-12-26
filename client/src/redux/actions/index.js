@@ -30,6 +30,7 @@ export const UPDATE_POST = "UPDATE_POST";
 export const CLEAR_UPDATE = "CLEAR_UPDATE";
 export const SEARCH_USER = "SEARCH_USER";
 export const SEARCH_CHATS = "SEARCH_CHATS_ACTION";
+export const CLEAR_POSTS = "CLEAR_POSTS";
 
 //USERS INFORMATION
 //REGISTER
@@ -283,6 +284,8 @@ export const clearState = (data) => {
     return { type: CLEAR_DELETE_POST };
   } else if (data === "update") {
     return { type: CLEAR_UPDATE };
+  } else if (data === 'posts'){
+    return {type: CLEAR_POSTS}
   }
 };
 //DELETE POST

@@ -1,11 +1,13 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, {useEffect} from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import AboutProfile from "../AboutProfile";
 import HeaderProfile from "../HeaderProfile";
 import PostProfile from "../PostProfile";
+import { clearState } from "../../../redux/actions";
 
 function Profile({ userInformation }) {
+  const dispatch = useDispatch()
   const userInformationVerify = useSelector((state) => state.userInformation);
   const userProfileFriend = useSelector((state) => state.userProfileFriend);
   const { id } = useParams();
@@ -16,6 +18,7 @@ function Profile({ userInformation }) {
     else result = true;
     return result;
   };
+  
   const isFriend = handleIsFriend();
   return (
     <main className="w-full">

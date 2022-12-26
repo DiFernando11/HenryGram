@@ -32,6 +32,7 @@ import {
   CLEAR_UPDATE,
   GET_CHATS_GROUP,
   MESSAGES_IS_CHAT,
+  CLEAR_POSTS,
 } from "../actions";
 
 const initialState = {
@@ -53,6 +54,7 @@ const initialState = {
   userPostsProfile: [],
   allPosts: [],
   updatePost: [],
+  deletePost:[],
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -257,6 +259,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         updatePost: [],
       };
+    }
+    case CLEAR_POSTS: {
+      return{
+        ...state,
+        userPostsProfile: []
+      }
     }
     default:
       return state;

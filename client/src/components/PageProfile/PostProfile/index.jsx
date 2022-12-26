@@ -1,18 +1,28 @@
 import { Transition } from '@headlessui/react';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getPostUSer } from '../../../redux/actions';
+import { getPostUSer, clearState } from '../../../redux/actions';
 import MakePost from '../../PageHome/MakePost';
 import Post from '../../PageHome/Post';
 import SkeletonPost from '../../Skeletons/SkeletonPost';
-
-function PostProfile({ isFriend }) {
+import { useParams } from 'react-router-dom';
+function PostProfile({ userInformation, isFriend }) {
 	const postUser = useSelector((state) => state.userPostsProfile);
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.userInformation);
+	const {id} = useParams()
 	useEffect(() => {
-		user ? dispatch(getPostUSer(user._id)) : null;
-	}, [user]);
+	
+		return () => {
+		  dispatch(clearState('posts'));
+	  };
+	  }, [id])
+	
+
+	useEffect(() => {
+		userInformation._id ? dispatch(getPostUSer(userInformation._id)) : null;
+		
+	}, [userInformation]);
 	return (
 		<section className="xl:w-3/5 xl:h-[calc(100vh-9rem)] xl:overflow-y-scroll pt-2 ">
 			{!isFriend && (
@@ -42,7 +52,7 @@ function PostProfile({ isFriend }) {
 								isMatch={post.isMatch}
 								seguir={post.seguir}
 								description={post.description}
-								user={user}
+								user={userInformation}
 								imagePost={post.image}
 							/>
 					  ))

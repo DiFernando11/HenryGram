@@ -13,7 +13,6 @@ import EditPost from '../EditPost/EditPost';
 
 export default function MyMenu({ postId, description, imagePost, isMatch }) {
 	const postDeleted = useSelector((state) => state.deletePost);
-	const update = useSelector((state) => state.updatePost);
 	const [show, setShow] = useState(false);
 	const dispatch = useDispatch();
 	const handleClick = (id) => {
