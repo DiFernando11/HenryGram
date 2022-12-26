@@ -6,23 +6,41 @@ import styles from "./index.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeUltimateMessageTimeRealAction,
+  getChatsBackAction,
+  getChatsGroupAction,
   searchChatsAction,
 } from "../../../redux/actions";
 import SkeletonUser from "../../Skeletons/skeletonUser";
 
-
-function PreviewMesagge({ title, messages, messagesGroup }) {
+function PreviewMesagge({ title}) {
   const [isChat, setIsChat] = useState(true);
   const chatPrevent = useSelector((state) => state.chatPrevent);
+  const messages = useSelector((state) => state.chatUsers);
   const chatTimeRealUser = useSelector((state) => state.chatTimeReal);
+  const userInformation = useSelector((state) => state.userInformation);
   const dispatch = useDispatch();
+  const handleSwitchChats = () => {
+    setIsChat(!isChat);
+  };
+
+  useEffect(() => {
+    if (userInformation) {
+      if (!isChat) {
+        dispatch(getChatsGroupAction(userInformation._id));
+      } else {
+        dispatch(getChatsBackAction(userInformation._id));
+        console.log("entre")
+      }
+      dispatch(getChatsGroupAction("clear"));
+    }
+  }, [isChat]);
   // useEffect(() => {
   //   if (messages.length) {
   //     dispatch(changeUltimateMessageTimeRealAction());
   //   }
   // }, [chatTimeRealUser]);
   return (
-    <section className={styles.container_preview_message}>
+    <section className={`${styles.container_preview_message} sm:mb-2 sm:ml-2`}>
       <SearchBar handleChangeSearch={searchChatsAction} />
       <div
         className="flex rounded-md shadow-sm items-center justify-center my-5"
@@ -42,7 +60,7 @@ function PreviewMesagge({ title, messages, messagesGroup }) {
         </button>
 
         <button
-          onClick={() => setIsChat(false)}
+          onClick={handleSwitchChats}
           type="button"
           className={`inline-flex items-center gap-3 py-2 px-4 ${
             !isChat
@@ -55,7 +73,9 @@ function PreviewMesagge({ title, messages, messagesGroup }) {
         </button>
       </div>
       <span className={styles.textMessagePreview}>{title}</span>
-      <div className={`${styles.containerAllMessage} h-[calc(100vh-16rem)] sm:h-[calc(100vh-12rem)] overflow-y-scroll `}>
+      <div
+        className={`${styles.containerAllMessage} h-[calc(100vh-16rem)] sm:h-[calc(100vh-12rem)] overflow-y-scroll `}
+      >
         {chatPrevent?.length
           ? chatPrevent
               ?.map((message, index) => (
@@ -70,35 +90,34 @@ function PreviewMesagge({ title, messages, messagesGroup }) {
               .reverse()
           : null}
         {isChat
-          ? messages?.length
-            ? messages
-                ?.map((message, index) => (
-                  <CardPreviewMessage
-                    key={index}
-                    image={message?.usr?.avatar}
-                    message={message?.msg?.message.text}
-                    id={message?.usr?._id}
-                    time={message?.msg?.createdAt}
-                    lastName={message?.usr?.lastName}
-                    name={message?.usr?.firstName}
-                    sender={message?.msg?.sender}
-                  />
-                ))
-                .reverse()
-            : [1, 2, 3, 4, 5, 6, 7, 8].map((value) => (
-                <SkeletonUser key={value} />
+          ? messages
+              ?.map((message, index) => (
+                <CardPreviewMessage
+                  key={index}
+                  image={message?.usr?.avatar}
+                  message={message?.msg?.message.text}
+                  id={message?.usr?._id}
+                  time={message?.msg?.createdAt}
+                  lastName={message?.usr?.lastName}
+                  name={message?.usr?.firstName}
+                  sender={message?.msg?.sender}
+                />
               ))
-          : messagesGroup.length &&
-            messagesGroup.map((message, index) => (
+              .reverse()
+          : messages?.map((message, index) => (
               <CardPreviewMessage
-                key={index}
-                id={message.id}
-                image={message.image}
-                // message={message.message}
-                time={message.time}
-                name={message.name}
+                key={message?.ch?.groupId}
+                image={message?.ch?.avatar}
+                message={message?.ch?.content}
+                id={message?.ch?.userId}
+                time={message?.ch?.createdAt}
+                name={message?.ch?.firstName}
+                title={`Grupo ${index}`}
+                sender={message?.ch?.userId}
               />
             ))}
+        {!messages.length &&
+          [1, 2, 3, 4, 5, 6, 7, 8].map((value) => <SkeletonUser key={value} />)}
       </div>
     </section>
   );

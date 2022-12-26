@@ -15,16 +15,17 @@ export const GET_CHATS_ACTION = "GET_CHATS_ACTION";
 export const ADD_CHAT_PREVENT_ACTION = "ADD_CHAT_PREVENT_ACTION";
 export const GET_CHAT_BY_USER = "GET_CHAT_BY_USER";
 export const SEND_MESSAGE_BACK = "SEND_MESSAGE_BACK";
+export const GET_CHATS_GROUP = "GET_CHATS_GROUP";
 export const CHAT_TIME_REAL = "CHAT_TIME_REAL";
 export const CHANGE_PREVIEW_ULTIMATE_MESSAGE =
   "CHANGE_PREVIEW_ULTIMATE_MESSAGE";
-export const GET_POSTS = 'GET_POSTS';
-export const GET_ALL_POSTS = 'GET_ALL_POSTS';
-export const CLEAR = 'CLEAR';
-export const DELETE_POST = 'DELETE_POST';
-export const CLEAR_DELETE_POST = 'CLEAR_DELETE_POST';
-export const UPDATE_POST = "UPDATE_POST"
-export const CLEAR_UPDATE = 'CLEAR_UPDATE'
+export const GET_POSTS = "GET_POSTS";
+export const GET_ALL_POSTS = "GET_ALL_POSTS";
+export const CLEAR = "CLEAR";
+export const DELETE_POST = "DELETE_POST";
+export const CLEAR_DELETE_POST = "CLEAR_DELETE_POST";
+export const UPDATE_POST = "UPDATE_POST";
+export const CLEAR_UPDATE = "CLEAR_UPDATE";
 export const SEARCH_USER = "SEARCH_USER";
 export const SEARCH_CHATS = "SEARCH_CHATS_ACTION";
 
@@ -205,6 +206,19 @@ export const sendMessageBackAction = (data) => {
   };
 };
 
+export const getChatsGroupAction = (id) => {
+  if (id === "clear") return { type: GET_CHATS_GROUP, payload: [] };
+  return async (dispatch) => {
+    try {
+      const result = await axios.get(
+        `http://localhost:3000/api/users/groups/${id}`
+      );
+      return dispatch({ type: GET_CHATS_GROUP, payload: result.data });
+    } catch (error) {
+      console.error("error en la funcion getChatsBackAction");
+    }
+  };
+};
 export const chatTimeReal = (payload) => {
   return { type: CHAT_TIME_REAL, payload };
 };
@@ -242,14 +256,13 @@ export const getPostUSer = (id) => {
 };
 //CLEAR STATE OF CREATE USER
 export const clearState = (data) => {
-	if (data === 'register') {
-		return { type: CLEAR };
-	} else if (data === 'delete') {
-		return { type: CLEAR_DELETE_POST };
-	}else if (data === 'update'){
-		return {type: CLEAR_UPDATE}
-	 }
-
+  if (data === "register") {
+    return { type: CLEAR };
+  } else if (data === "delete") {
+    return { type: CLEAR_DELETE_POST };
+  } else if (data === "update") {
+    return { type: CLEAR_UPDATE };
+  }
 };
 //DELETE POST
 export const deletePostFront = (id) => {
@@ -266,14 +279,17 @@ export const deletePostFront = (id) => {
 };
 
 //UPDATE POST
-export const updatePostFront = (body) =>{
-	return async (dispatch) => {
-		try {
-			const result = await axios.put(`http://localhost:3000/api/posts/${body.id}`, body);
-			console.log("Esta es la respuesta del back:", result.data)
-			dispatch({type: UPDATE_POST, payload: [result.data, body.id] })
-		} catch (error) {
-			console.log(error)
-		}
-	}
-}
+export const updatePostFront = (body) => {
+  return async (dispatch) => {
+    try {
+      const result = await axios.put(
+        `http://localhost:3000/api/posts/${body.id}`,
+        body
+      );
+      console.log("Esta es la respuesta del back:", result.data);
+      dispatch({ type: UPDATE_POST, payload: [result.data, body.id] });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

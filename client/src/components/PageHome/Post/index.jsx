@@ -17,7 +17,6 @@ function Post({
   userIdLogged,
 }) {
   // const image = imagePost?.filter((e) => e.url);
-  console.log(imagePost);
   const location = useLocation();
 
   return (
@@ -58,6 +57,7 @@ function Post({
             if (!image.hasOwnProperty("url")) return;
             return (
               <img
+              key={image.url}
                 className="w-full h-[150px] sm:h-[300px] object-cover"
                 src={image.url}
                 alt="post user"
