@@ -1,9 +1,12 @@
+import { editProfileAction } from "../../redux/actions/index"; 
+import { useDispatch } from "react-redux";
 export const uploadImage = async (
   e,
   stateLoading,
   stateImage,
   setImagePost,
-  setImageArray
+  setImageArray,
+  userId
 ) => {
   const files = e.target.files;
   const data = new FormData();
@@ -27,6 +30,7 @@ export const uploadImage = async (
       ? setImageArray((prev) => [...prev, file.secure_url])
       : null;
     stateLoading(false);
+      return file.secure_url
   } catch (error) {
     console.log(error);
   }

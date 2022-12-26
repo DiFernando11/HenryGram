@@ -1,20 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 //import logoUploadImage from "../../../assets/subirImage.png";
 import logoUploadImage from '../../../assets/camera.png';
 import { uploadImage } from '../../helpers/uploadImage';
+import { useSelector } from 'react-redux';
+import { editProfileAction } from '../../../redux/actions/index';
+import { useDispatch } from 'react-redux';
 const giftUpload =
 	'https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921';
 
 function HeaderProfile({ isFriend, userInformation }) {
+	const dispatch = useDispatch();
 	const [avatarUser, setAvatarUser] = useState('');
 	const [loadingAvatar, setLoadingAvatar] = useState(false);
 	const [bannerUser, setBannerUser] = useState('');
 	const [loadingBanner, setLoadingBanner] = useState(false);
+
+	const userId = useSelector((state) => state.userInformation._id);
 	const handleSaveAvatarUser = (e) => {
-		uploadImage(e, setLoadingAvatar, null, setAvatarUser);
+		uploadImage(e, setLoadingAvatar, null, setAvatarUser, null, userId)
+			.then((res) => {
+				dispatch(editProfileAction({
+					avatar: res,
+					id: userId
+				}))
+			})
 	};
 	const handleSaveBannerUser = (e) => {
-		uploadImage(e, setLoadingBanner, null, setBannerUser);
+		uploadImage(e, setLoadingBanner, null, setBannerUser, null, userId);
 	};
 	return (
 		<header className="relative h-36">
