@@ -13,6 +13,7 @@ import profilePicture from "../../assets/profilePicture.jpg";
 import { useSelector } from "react-redux";
 import DropDownSelect from "../DropDownSelect/index";
 import { searchUserAction } from "../../redux/actions";
+import CardUser from "../CardUser";
 
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
@@ -52,13 +53,13 @@ export default function NavBar() {
   const navigate = useNavigate();
 
   return (
-    <nav className="w-full bg-black shadow  h-16 z-10">
-      <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8 relative">
+    <nav className="w-full bg-black shadow  h-16 z-10 block sm:hidden ">
+      <div className="justify-between mx-auto lg:max-w-7xl md:items-center md:flex md:px-8 relative z-10">
         <div>
           <div className="flex items-center justify-between py-3 md:block">
             <div className="flex items-center  ">
               <i
-                className="bi bi-arrow-left-short text-white text-3xl"
+                className="bi bi-arrow-left-short text-white text-3xl ml-2"
                 onClick={() => navigate(-1)}
               ></i>
               <Link to={"/home"}>
@@ -73,24 +74,7 @@ export default function NavBar() {
                 <div className="absolute w-56 z-10">
                   {searchUser.length
                     ? searchUser.map((friend, index) => (
-                        <div
-                          key={index}
-                          className=" bg-black p-3 z-10 border border-slate-900 "
-                        >
-                          <Link
-                            to={`/profile/${friend._id}`}
-                            className="flex items-center gap-3"
-                          >
-                            <img
-                              className="w-10 h-10 rounded-full"
-                              src={friend.avatar}
-                              alt={`Friend ${friend.firstName}`}
-                            />
-                            <span>
-                              {friend.firstName} {friend.lastName}
-                            </span>
-                          </Link>
-                        </div>
+                        <CardUser friend={friend} key={index} />
                       ))
                     : null}
                 </div>
@@ -98,13 +82,13 @@ export default function NavBar() {
             </div>
             <div className="md:hidden">
               <button
-                className="p-2 text-gray-700 rounded-md outline-none focus:border-gray-400 focus:border"
+                className="p-2 rounded-md outline-none focus:border-gray-400 focus:border text-white mr-2"
                 onClick={() => setNavbar(!navbar)}
               >
                 {navbar ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
+                    className="w-6 h-6 text-white"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -140,8 +124,8 @@ export default function NavBar() {
               navbar ? "block" : "hidden"
             }`}
           >
-            <ul className="bg-black items-center rounded justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
-              <li className=" relative text-white flex gap-2 items-center p-2 text-white border border-black rounded-lg transition duration:200  cursor-pointer">
+            <ul className="p-2 bg-black items-center rounded justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
+              <li className=" relative text-white flex gap-2 items-center p-2 border border-black rounded-lg transition duration:200  cursor-pointer">
                 <DropDownSelect
                   status={"APPLICATION"}
                   icon={"bi-people-fill"}
@@ -149,16 +133,7 @@ export default function NavBar() {
                   requests={requestFriends.length}
                   confirmed={true}
                 />
-                {/* <i className="bi bi-people-fill text-2xl "></i>
-                <span className="w-4 h-4 bg-red-600 rounded-full absolute top-1 left-5 flex justify-center items-center text-xs">
-                  {requestFriends.length}
-                </span>
-                <span>APPLICATIONS</span>
-                <div className="absolute -bottom-12 border w-full">
-                  {requestFriends.map((friend) => (
-                    <div className="border">{friend.status}</div>
-                  ))}
-                </div> */}
+          
               </li>
               {routes.map((route, index) => {
                 return (

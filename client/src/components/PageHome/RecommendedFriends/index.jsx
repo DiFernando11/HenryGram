@@ -5,7 +5,7 @@ import SkeletonUser from "../../Skeletons/skeletonUser";
 
 function RecommendedFriends() {
   return (
-    <section className="w-2/6 bg-neutral-800">
+    <section className="w-2/6 bg-neutral-800 hidden lg:block">
       <div className="flex items-center h-16 justify-center gap-2 ">
         <h3 className="text-white">People you can match</h3>
         <img src={logoMatch} className="w-6 h-6" alt="logo match" />

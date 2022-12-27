@@ -2,9 +2,12 @@ import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Transition } from '@headlessui/react';
+
 function ModalEditProfile({ show, setShow }) {
+
 	const user = useSelector((state) => state.userInformation);
-  console.log(user)
+	
+	console.log(user)
 	const [edit, setEdit] = useState({
 		name: user.firstName,
 		lastName: user.lastName,

@@ -13,14 +13,13 @@ function CardPreviewMessage({
   message,
   time,
   sender,
+  title,
 }) {
-
-
   const timeHour = time ? timeHours(time) : null;
   let senderMessage = id !== sender;
   return (
     <NavLink
-      to={`/message/chat/${id}`}
+      to={`${title ? `/message/chat/group/${id}` : `/message/chat/${id}`}`}
       style={({ isActive }) =>
         isActive
           ? {
@@ -42,11 +41,18 @@ function CardPreviewMessage({
           <span className="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
         </div>
 
-        <div className="items-center self-center font-bold">
-          <span className="block leading-5">{`${name} ${lastName}`}</span>
+        <div className="items-center self-center font-bold w-4/5 truncate">
+          <span className="block leading-5 w-4/5  truncate">{`${
+            title ? title : name
+          } ${lastName ? lastName : ""}`}</span>
 
-          <span className={styles.textMessage}>
-            <b>{senderMessage ? "Tu: " : ""} </b> {message}
+          <span
+            className={`${styles.textMessage} w-4/5 truncate inline-block `}
+          >
+            <b>
+              {message ? (senderMessage ? "Tu: " : `${name} :`) : "No messages"}{" "}
+            </b>{" "}
+            {message}
           </span>
           {!senderMessage ? (
             <span className="absolute flex items-center justify-center text-xs text-black bottom-1 right-0 mr-4 m-2 bg-amber-300 w-4 h-4 rounded-full">

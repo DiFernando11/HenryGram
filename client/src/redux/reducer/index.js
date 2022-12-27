@@ -28,6 +28,13 @@ import {
   CLEAR_DELETE_POST,
   CHAT_TIME_REAL,
   CHANGE_PREVIEW_ULTIMATE_MESSAGE,
+  UPDATE_POST,
+  CLEAR_UPDATE,
+  GET_CHATS_GROUP,
+  MESSAGES_IS_CHAT,
+  CLEAR_POSTS,
+  GET_MESSAGE_BY_USER_GROUP,
+  SEND_MESSAGE_BY_GROUP,
 } from "../actions";
 
 const initialState = {
@@ -39,14 +46,17 @@ const initialState = {
   postUser: {},
   usersInformationFriends: [],
   searchUser: [],
-  chatUsers: [],
+  chatUsers: null,
   chatUsersCopy: [],
   chatPrevent: [],
-  chatByUser: [],
+  chatByUser: null,
+  // chatByUser: { informationUserTo: {}, projectedMessages: ["Dada"] },
+  isChat: true,
   chatTimeReal: [],
   userPostsProfile: [],
   allPosts: [],
-  deletePost:[],
+  updatePost: [],
+  deletePost: [],
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -77,7 +87,6 @@ const rootReducer = (state = initialState, action) => {
     }
 
     //User Information
-
     case POST_USER: {
       return {
         ...state,
@@ -128,6 +137,7 @@ const rootReducer = (state = initialState, action) => {
         chatUsersCopy: action.payload,
       };
     }
+
     case ADD_CHAT_PREVENT_ACTION: {
       return {
         ...state,
@@ -140,9 +150,32 @@ const rootReducer = (state = initialState, action) => {
         chatByUser: action.payload,
       };
     }
+    case GET_MESSAGE_BY_USER_GROUP: {
+      return {
+        ...state,
+        chatByUser: action.payload,
+      };
+    }
     case SEND_MESSAGE_BACK: {
       return {
         ...state,
+      };
+    }
+    case SEND_MESSAGE_BY_GROUP: {
+      return {
+        ...state,
+      };
+    }
+    case GET_CHATS_GROUP: {
+      return {
+        ...state,
+        chatUsers: action.payload,
+      };
+    }
+    case MESSAGES_IS_CHAT: {
+      return {
+        ...state,
+        isChat: !state.isChat,
       };
     }
     case CHAT_TIME_REAL: {
@@ -163,18 +196,17 @@ const rootReducer = (state = initialState, action) => {
       };
     }
 
-
-    case GET_POSTS:{
+    case GET_POSTS: {
       return {
         ...state,
-        userPostsProfile: action.payload.reverse()
-      }
+        userPostsProfile: action.payload.reverse(),
+      };
     }
-    case GET_ALL_POSTS:{
-      return{
+    case GET_ALL_POSTS: {
+      return {
         ...state,
-        allPosts: action.payload.reverse()
-      }
+        allPosts: action.payload.reverse(),
+      };
     }
 
     //CHAT
@@ -190,7 +222,6 @@ const rootReducer = (state = initialState, action) => {
         ),
       };
     }
-
     case SEARCH_CHATS: {
       return {
         ...state,
@@ -199,24 +230,54 @@ const rootReducer = (state = initialState, action) => {
     }
     //SEARCH
     case CLEAR: {
-      return{
+      return {
         ...state,
-        createUser:[]
-      }
+        createUser: [],
+      };
     }
-    case DELETE_POST:{
-      return{
+    case DELETE_POST: {
+      return {
         ...state,
         deletePost: action.payload[0],
-        userPostsProfile: state.userPostsProfile.filter( e => e._id != action.payload[1]),
-        allPosts: state.allPosts.filter( e => e.post._id !== action.payload[1])
-      }
+        userPostsProfile: state.userPostsProfile.filter(
+          (e) => e._id != action.payload[1]
+        ),
+        allPosts: state.allPosts.filter(
+          (e) => e.post._id !== action.payload[1]
+        ),
+      };
     }
     case CLEAR_DELETE_POST: {
-      return{
+      return {
         ...state,
-        deletePost: []
-      }
+        deletePost: [],
+      };
+    }
+    //Update Post
+    case UPDATE_POST: {
+      const indice = state.userPostsProfile.findIndex((elemento, indice) => {
+        if (elemento._id === action.payload[1]) {
+          return true;
+        }
+      });
+      state.userPostsProfile[indice] = action.payload[0];
+      console.log(state.userPostsProfile);
+      return {
+        ...state,
+        updatePost: action.payload[0],
+      };
+    }
+    case CLEAR_UPDATE: {
+      return {
+        ...state,
+        updatePost: [],
+      };
+    }
+    case CLEAR_POSTS: {
+      return {
+        ...state,
+        userPostsProfile: [],
+      };
     }
     default:
       return state;

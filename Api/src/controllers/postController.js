@@ -29,7 +29,7 @@ const postController = async (req, res) => {
 	if (isMatch) {
 		group = await GroupSchema.create({
 			title,
-			avatar: image ?? 'https://res.cloudinary.com/dgmv4orvc/image/upload/v1671629546/Images/g8ivckqtlen69rgcyzop.png',
+			avatar: image ? image : 'https://res.cloudinary.com/dgmv4orvc/image/upload/v1671629546/Images/g8ivckqtlen69rgcyzop.png',
 			creator: userId,
 			users: [userId]
 		})
@@ -97,7 +97,7 @@ const recomendedPostController = async (req, res) => {
 
 	const maxAmount = 20
 
-	const range = [limit*maxAmount-maxAmount, limit*maxAmount]
+	const range = [limit * maxAmount - maxAmount, limit * maxAmount]
 
 	let user = null;
 
@@ -192,7 +192,7 @@ const getAllUPost = async (req, res) => {
 
 	const maxAmount = 20
 
-	const range = [limit*maxAmount-maxAmount, limit*maxAmount]
+	const range = [limit * maxAmount - maxAmount, limit * maxAmount]
 
 	try {
 		let post = await PostSchema.find();
@@ -248,6 +248,10 @@ const getPostsByUser = async (req, res) => {
 	*/
 
 	const { id } = req.params;
+
+	if (!id || id === 'undefined') {
+		res.status(404).json({ message: 'Posts not found' });
+	}
 
 	try {
 		const posts = await PostSchema.find({ userId: id });
@@ -317,8 +321,8 @@ const updatePost = async (req, res) => {
 	const { id } = req.params;
 
 	const { description,
-			hashtags,
-			images } = req.body;
+		hashtags,
+		images } = req.body;
 
 	try {
 		const post = await PostSchema.findOne({ _id: id });
@@ -429,7 +433,7 @@ const getAllMatches = async (req, res) => {
 	// try {
 	// 	matches = await PostSchema.find({ isMatch: true }).limit(maxAmount);
 	// 	console.log(matches);
-		
+
 	// 	if (matches.length > 0) {
 	// 		matches = shuffle(matches);
 	// 		res.status(200).json(matches);
