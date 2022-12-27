@@ -250,14 +250,14 @@ const getPostsByUser = async (req, res) => {
 	const { id } = req.params;
 
 	if (!id || id === 'undefined') {
-		res.status(404).json({ message: 'Posts not found' });
+		return res.status(404).json({ message: 'Posts not found' });
 	}
 
 	try {
 		const posts = await PostSchema.find({ userId: id });
-		res.status(200).json(posts);
+		return res.status(200).json(posts);
 	} catch (error) {
-		res.status(500).json(error);
+		return res.status(500).json(error);
 	}
 };
 
