@@ -29,7 +29,7 @@ function PreviewMesagge({ title }) {
   const handleSwitchChats = () => {
     setIsChat(!isChat);
   };
-
+  console.log(messages, ",esgae");
   useEffect(() => {
     if (userInformation) {
       if (!isChat) {
@@ -126,7 +126,9 @@ function PreviewMesagge({ title }) {
                 id={message?.gr?._id}
                 time={message?.ch?.createdAt}
                 name={message?.ch?.firstName}
-                title={`Grupo ${index}`}
+                title={`${
+                  message?.gr?.title ? message?.gr?.title : `Grupo ${index}`
+                } `}
                 sender={message?.ch?.userId}
               />
             ))}
