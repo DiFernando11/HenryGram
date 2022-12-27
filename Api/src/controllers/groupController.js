@@ -89,10 +89,15 @@ const resInvite = async (req, res, next) => {
     }
 }
 
-const getInvite = async (req, res, next) => {
+const getIGroups = async (req, res, next) => {
     try {
+        const { userId } = req.params;
 
-        res.status(200).json({ msg: "b" });
+        const groups = await GroupSchema.find(
+            { creator: userId }
+        )
+
+        res.status(200).json(groups);
     } catch (ex) {
         next(ex);
     }
@@ -103,5 +108,5 @@ module.exports = {
     addChat,
     reqInvite,
     resInvite,
-    getInvite
+    getIGroups
 };
