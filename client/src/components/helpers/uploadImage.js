@@ -1,11 +1,11 @@
-import { editProfileAction } from "../../redux/actions/index"; 
+import { editProfileAction } from "../../redux/actions/index";
 import { useDispatch } from "react-redux";
 export const uploadImage = async (
   e,
   stateLoading,
   stateImage,
   setImagePost,
-  setImageArray,
+  setImageArray
 ) => {
   const files = e.target.files;
   const data = new FormData();
@@ -22,16 +22,20 @@ export const uploadImage = async (
     );
     const file = await res.json();
     file.secure_url && stateImage
-      ? (prev) => ({ ...prev, image: { url: file.secure_url } })
+      ? stateImage((prev) => ({
+          ...prev,
+          image: [...prev.image, { url: file.secure_url }],
+        }))
       : null;
+    // (prev) => ({ ...prev, image: { url: file.secure_url } })
+
     file.secure_url && setImagePost ? setImagePost(file.secure_url) : null;
     file.secure_url && setImageArray
       ? setImageArray((prev) => [...prev, file.secure_url])
       : null;
     stateLoading(false);
-      return file.secure_url
+    return file.secure_url;
   } catch (error) {
     console.log(error);
   }
-
 };

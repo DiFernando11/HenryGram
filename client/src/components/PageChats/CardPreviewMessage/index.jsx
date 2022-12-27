@@ -17,6 +17,9 @@ function CardPreviewMessage({
 }) {
   const timeHour = time ? timeHours(time) : null;
   let senderMessage = id !== sender;
+  const chatTimeReal = useSelector((state) => state.chatTimeReal);
+  const findChatTimeReal = chatTimeReal.some((chat) => chat.from === id);
+
   return (
     <NavLink
       to={`${title ? `/message/chat/group/${id}` : `/message/chat/${id}`}`}
@@ -51,13 +54,11 @@ function CardPreviewMessage({
           >
             <b>
               {message ? (senderMessage ? "Tu: " : `${name} :`) : "No messages"}{" "}
-            </b>{" "}
+            </b>
             {message}
           </span>
-          {!senderMessage ? (
-            <span className="absolute flex items-center justify-center text-xs text-black bottom-1 right-0 mr-4 m-2 bg-amber-300 w-4 h-4 rounded-full">
-              1
-            </span>
+          {findChatTimeReal ? (
+            <span className="absolute flex items-center justify-center text-xs text-black bottom-1 right-0 mr-4 m-2 bg-red-600 w-4 h-4 rounded-full"></span>
           ) : null}
           {timeHour && (
             <span className="m-1 mr-2 mt-3.5 absolute -top-2 right-0 text-xs ">
