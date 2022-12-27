@@ -13,6 +13,7 @@ const GroupSchema = mongoose.Schema({
         type: String
     },
     users: Array,
+    pendings: Array
 },
     {
         timestamps: true

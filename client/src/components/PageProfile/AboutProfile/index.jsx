@@ -2,7 +2,6 @@ import { Transition } from '@headlessui/react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate, useParams, useNavigate } from 'react-router-dom'
-// import { Dropdown } from "flowbite"
 import {
 	addChatBackAction,
 	confirmedRequestFriendAction,
@@ -191,7 +190,6 @@ function AboutProfile({ userInformation, isFriend }) {
 						</>
 					)}
 				</div>
-				
 			</div>
 
 			<div className="flex justify-between mb-3">
