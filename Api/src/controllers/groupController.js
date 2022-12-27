@@ -110,7 +110,7 @@ const resInvite = async (req, res, next) => {
     }
 }
 
-const getIGroups = async (req, res, next) => {
+const getGroups = async (req, res, next) => {
     try {
         const { userId } = req.params;
 
@@ -129,5 +129,5 @@ module.exports = {
     addChat,
     reqInvite,
     resInvite,
-    getIGroups
+    getGroups
 };
