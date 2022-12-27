@@ -11,7 +11,7 @@ import { RxCross1 } from 'react-icons/rx';
 const giftUpload =
 	'https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921';
 
-function HeaderProfile({ isFriend, userInformation }) {
+function HeaderProfile({ userInformation }) {
 	const dispatch = useDispatch();
 	const [avatarUser, setAvatarUser] = useState('');
 	const [loadingAvatar, setLoadingAvatar] = useState(false);

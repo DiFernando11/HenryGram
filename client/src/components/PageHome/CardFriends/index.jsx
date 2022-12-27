@@ -1,6 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 function CardFriends() {
+
+  const userInformation = useSelector((state) => state.userProfileFriend);
+
   return (
     <div className=" flex items-center justify-between p-2 bg-neutral-800 my-1 ">
       <div className=" flex items-center gap-3  ">

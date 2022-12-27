@@ -7,6 +7,7 @@ import {
 	confirmedRequestFriendAction,
 	getChatsBackAction,
 	sendRequestFriendAction,
+	getFriendsAvatarAndName
 } from '../../../redux/actions'
 import DropDownSelect from '../../DropDownSelect'
 import AvatarStack from '../../PageChats/AvatarStack'
@@ -14,10 +15,12 @@ import FavoriteActivities from '../FavoriteActivities'
 import ModalEditProfile from '../ModalEditProfile'
 import ModalFriends from '../ModalFriends'
 import OverYou from '../OverYou'
+import axios from 'axios'
 
-function AboutProfile({ userInformation, isFriend }) {
+function AboutProfile({ userInformation }) {
 
 	//useInformation: Profile information
+	const dispatch = useDispatch()
 	const [statusFriend, setStatusFriend] = useState('seguir')
 	const [show, setShow] = useState(false)
 	const [showEditProfile, setShowEditProfile] = useState(false)
@@ -31,6 +34,19 @@ function AboutProfile({ userInformation, isFriend }) {
 		(friend) => friend.recipient == id || friend.requester == id
 	)
 
+	const [friendsAvatars, setFriendsAvatars] = useState([])
+	
+	useEffect(() => {
+		const findFriends = async(id) =>{
+			console.log('useEffect', id)
+			await axios.get( `http://localhost:3000/api/users/nameAndAvatar/${id}` )
+			.then( res => {
+				console.log(res.data)
+				setFriendsAvatars(res.data)
+			})
+		}
+		findFriends(userInformation._id)
+	}, [userInformation])
 
 	const handleStatusFriend = () => {
 		if (applicationStatus) {
@@ -42,7 +58,7 @@ function AboutProfile({ userInformation, isFriend }) {
 		} else setStatusFriend('Seguir')
 	}
 
-	const dispatch = useDispatch()
+
 	useEffect(() => {
 		handleStatusFriend()
 	}, [friendsByUser, id])
@@ -91,8 +107,13 @@ function AboutProfile({ userInformation, isFriend }) {
 		setStatusFriend('Seguir')
 	}
 
+	const handleCloseModals = () => {
+		if (show) setShow(false)
+		if (showEditProfile) setShowEditProfile(false)
+	}
+
 	return (
-		<section className="xl:w-2/5 border-r  border-zinc-700 p-4  xl:h-[calc(100vh-9rem)] xl:overflow-y-scroll">
+		<section className="xl:w-2/5 border-r  border-zinc-700 p-4  xl:h-[calc(100vh-9rem)] xl:overflow-y-scroll" onClick={ handleCloseModals }>
 			<div className="flex items-center mb-8 ml-2 justify-between ">
 				<div className="flex gap-2 items-center">
 					<h1 className="text-white text-2xl font-black">
@@ -191,14 +212,18 @@ function AboutProfile({ userInformation, isFriend }) {
 					)}
 				</div>
 			</div>
+			<div className="flex justify-between">
+				<div className='flex w-fit justify center items-center flex-col gap-3'>
+					<span className="text-md">Friends</span>
+					{
+						friendsAvatars.length !== 0 && <AvatarStack avatars={friendsAvatars} openModalFriends={setShow} show={show}/>
+					}
+				</div>
+				<div className='flex w-fit justify center items-center flex-col gap-3'>
+					<span className="text-md">Matchs</span>
+					<AvatarStack avatars={friendsAvatars} />
+				</div>
 
-			<div className="flex justify-between mb-3">
-				<span className="text-sm">Friends</span>
-				<span className="text-sm">Matchs</span>
-			</div>
-			<div className="flex justify-between ">
-				<AvatarStack avatars={avatars} openModalFriends={setShow} show={show} />
-				<AvatarStack avatars={avatars} />
 				<ModalFriends setShow={setShow} show={show} />
 			</div>
 			<div>
@@ -222,14 +247,5 @@ function AboutProfile({ userInformation, isFriend }) {
 		</section>
 	)
 }
-const avatars = [
-	'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80',
-	'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-	'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-]
 
 export default AboutProfile
