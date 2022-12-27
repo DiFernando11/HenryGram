@@ -27,7 +27,7 @@ function MakePost() {
     description: "",
     image: [],
   });
-  console.log(infoPost);
+
   const navigate = useNavigate();
   const handleDeleteImageSend = (indexImage) => {
     const imageSend = imagePost.filter((image, index) => index !== indexImage);
