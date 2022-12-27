@@ -47,6 +47,7 @@ const postController = async (req, res) => {
 		hidden,
 		isMatch,
 		hashtags,
+		group: (isMatch) ? group._id : null
 	});
 
 	try {
