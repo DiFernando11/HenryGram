@@ -9,7 +9,8 @@ const { postController,
         likePost,
         updatePost,
         getFriendsMatches,
-        getAllMatches } = require('../controllers/postController');
+        getAllMatches,
+        getComments } = require('../controllers/postController');
 
 const router = express.Router();
 
@@ -22,6 +23,7 @@ router.post('/posts/like', likePost); //Por body se envia el id del post y el id
 router.get('/posts/matchess', getAllMatches)
 router.get('/posts/matches/:userId', getFriendsMatches) //id del usuario
 router.post('/posts/comment', postCommentController);
+router.get('/posts/comment/:id', getComments) //id del post
 router.get('/posts/recomended/:userId', recomendedPostController)
 router.get('/posts/hashtag/:hashtag', getPostsByHashtag)
 

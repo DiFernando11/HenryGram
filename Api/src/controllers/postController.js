@@ -447,6 +447,27 @@ const getAllMatches = async (req, res) => {
 
 };
 
+const getComments = async (req, res) => {
+
+	/*
+		Controlador de la Ruta para obtener los comentarios de una publicacion
+	*/
+
+	const { id } = req.params;
+
+	try {
+		const post = await PostSchema.findOne({ _id: id });
+		if (post) {
+			res.status(200).json(post.comments);
+		} else {
+			res.status(404).json({ message: 'Post not found' });
+		}
+	} catch (error) {
+		res.status(500).json(error);
+	}
+};
+
+
 module.exports = {
 	postController,
 	postCommentController,
@@ -458,5 +479,6 @@ module.exports = {
 	likePost,
 	updatePost,
 	getFriendsMatches,
-	getAllMatches
+	getAllMatches,
+	getComments,
 };
