@@ -53,7 +53,7 @@ function App() {
 
   const dispatch = useDispatch();
   const auth = useAuth()
-  ;
+
 
   const getData = () => {
     return localStorage.getItem("sessionStarted");
@@ -68,6 +68,8 @@ function App() {
       }
     })();
   }, [saveTokenData]);
+
+ 
 
   useEffect(() => {
     dispatch(getInformationUsersAction());
