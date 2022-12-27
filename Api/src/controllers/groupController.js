@@ -83,7 +83,38 @@ const reqInvite = async (req, res, next) => {
 const resInvite = async (req, res, next) => {
     try {
 
-        res.status(200).json({ msg: "b" });
+        const { groupId, userId, response } = req.body;
+
+        if (response) {
+            const popUser = await GroupSchema.updateOne(
+                { _id: groupId },
+                {
+                    $pull: {
+                        pendings: userId
+                    }
+                }
+            )
+
+            const pushUser = await GroupSchema.findOneAndUpdate(
+                { _id: groupId },
+                {
+                    $addToSet: { users: userId }
+                }
+            )
+
+            return res.status(200).json({ msg: "Accepted." });
+        } else {
+            const popUser = await GroupSchema.updateOne(
+                { _id: groupId },
+                {
+                    $pull: {
+                        pendings: userId
+                    }
+                }
+            )
+
+            return res.status(200).json({ msg: "Not accepted." });
+        }
     } catch (ex) {
         next(ex);
     }
