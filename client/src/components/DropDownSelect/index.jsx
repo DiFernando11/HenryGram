@@ -39,7 +39,7 @@ function DropDownSelect({ status, icon, select, confirmed, requests , position =
             {requests}
           </span>
         )}
-        <i className={`bi ${icon} ${confirmed ? "text-3xl" : "text-2xl"}`}></i>
+        <i className={`bi ${icon} ${confirmed ? "text-3xl" : "text-2xl"} text-yellow`}></i>
         {status ? (
           <span
             className={`${
@@ -74,7 +74,7 @@ function DropDownSelect({ status, icon, select, confirmed, requests , position =
                   />
                 )}
                 <span className="uppercase"> {item.text}</span>
-                {item?.icon && <i className={`bi ${item.icon}`}></i>}
+                {item?.icon && <i className={`bi ${item.icon} text-yellow`}></i>}
                 {confirmed && (
                   <div className="ml-3 text-xs flex gap-2 ">
                     <span

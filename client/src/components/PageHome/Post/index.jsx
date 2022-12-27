@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logoMatch from "../../../assets/coheteHenry.png";
 import SendMessage from "../../PageChats/SendMessage";
 import MyMenu from "./MyMenu";
 import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useParams } from "react-router-dom";
+import DropDownSelect from "../../DropDownSelect";
+import StatusFriend from "../../StatusFriend";
 
 function Post({
   isMatch,
-  seguir,
   description,
   user,
   imagePost,
@@ -15,10 +16,7 @@ function Post({
   postDetail,
   userIdLogged,
 }) {
-  // const image = imagePost?.filter((e) => e.url);
   const location = useLocation();
-
-  // console.log(window.matchMedia('(prefers-color-scheme: dark)'))
 
   return (
     <section
@@ -39,21 +37,20 @@ function Post({
           <MyMenu postId={postId} />
         ) : null}
       </div>
-      <div className="border-t border-neutral-600 pt-4 flex gap-2.5 relative">
-        <img
-          className="w-10 h-10 rounded-full object-cover"
-          src={user.avatar}
-          alt={user.firstName}
-        />
+      <div className="border-t border-neutral-600 pt-4 flex gap-2.5 relative items-center justify-between">
         <Link to={`/profile/${user._id}`}>
-          <span className="leading-10">{user.firstName}</span>
+          <div className="flex gap-3">
+            <img
+              className="w-10 h-10 rounded-full object-cover"
+              src={user.avatar}
+              alt={user.firstName}
+            />
+            <span className="leading-10">{user.firstName}</span>
+          </div>
         </Link>
-        {!seguir && (
-          <span className="absolute top-0 right-0 mt-7  text-sm cursor-pointer">
-            + Seguir
-          </span>
-        )}
+        <StatusFriend user={user._id} />
       </div>
+
       <p className="my-5 text-white text-sm">{description}</p>
       <div className="grid grid-flow-col auto-cols-[minmax(0,_2fr)] gap-2 items-center bg-transparent">
         {imagePost &&
@@ -77,8 +74,12 @@ function Post({
             <Link to={`/post/${postId}`}>
               <i className="bi bi-chat-square-dots text-2xl sm:text-3xl text-yellow"></i>
             </Link>
-            {isMatch  && (
-              <img src={logoMatch} alt="match" className="w-8 h-8 cursor-pointer grayscale" />
+            {isMatch && (
+              <img
+                src={logoMatch}
+                alt="match"
+                className="w-8 h-8 cursor-pointer grayscale"
+              />
             )}
           </div>
           <SendMessage />
