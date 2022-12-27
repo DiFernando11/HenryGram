@@ -471,6 +471,26 @@ const getComments = async (req, res) => {
 	}
 };
 
+const getPostsById = async (req, res) => {
+
+	/*
+		Controlador de la Ruta para obtener un post por su id
+	*/
+
+	const { id } = req.params;
+
+	try {
+		const post = await PostSchema.findOne({ _id: id });
+		if (post) {
+			res.status(200).json(post);
+		} else {
+			res.status(404).json({ message: 'Post not found' });
+		}
+	} catch (error) {
+		res.status(500).json(error);
+	}
+};
+
 
 module.exports = {
 	postController,
@@ -485,4 +505,5 @@ module.exports = {
 	getFriendsMatches,
 	getAllMatches,
 	getComments,
+	getPostsById,
 };
