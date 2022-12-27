@@ -35,6 +35,7 @@ import {
   CLEAR_POSTS,
   GET_MESSAGE_BY_USER_GROUP,
   SEND_MESSAGE_BY_GROUP,
+  EDIT_PROFILE,
 } from "../actions";
 
 const initialState = {

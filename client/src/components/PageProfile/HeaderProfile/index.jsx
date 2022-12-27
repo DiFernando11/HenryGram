@@ -26,7 +26,13 @@ function HeaderProfile({ isFriend, userInformation }) {
 			})
 	};
 	const handleSaveBannerUser = (e) => {
-		uploadImage(e, setLoadingBanner, null, setBannerUser);
+		uploadImage(e, setLoadingBanner, null, setBannerUser)
+			.then((res) => {
+				dispatch(editProfileAction({
+					banner: res,
+					id: userId
+				}))
+			})
 	};
 	return (
 		<header className="relative h-36">

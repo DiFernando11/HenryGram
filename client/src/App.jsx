@@ -74,12 +74,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log("userInformation", userInformation);
     if (userInformation && userInformation !== "error") {
       dispatch(getFriendsByUser(userInformation._id));
       socket.emit("registrarse", userInformation?._id);
     }else if(userInformation === "error"){
-      console.log("error");
       Swal.fire({
         icon: "error",
         title: "Su sesión ha expirado",

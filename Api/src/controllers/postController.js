@@ -250,14 +250,14 @@ const getPostsByUser = async (req, res) => {
 	const { id } = req.params;
 
 	if (!id || id === 'undefined') {
-		res.status(404).json({ message: 'Posts not found' });
+		return res.status(404).json({ message: 'Posts not found' });
 	}
 
 	try {
 		const posts = await PostSchema.find({ userId: id });
-		res.status(200).json(posts);
+		return res.status(200).json(posts);
 	} catch (error) {
-		res.status(500).json(error);
+		return res.status(500).json(error);
 	}
 };
 
@@ -451,6 +451,47 @@ const getAllMatches = async (req, res) => {
 
 };
 
+const getComments = async (req, res) => {
+
+	/*
+		Controlador de la Ruta para obtener los comentarios de una publicacion
+	*/
+
+	const { id } = req.params;
+
+	try {
+		const post = await PostSchema.findOne({ _id: id });
+		if (post) {
+			res.status(200).json(post.comments);
+		} else {
+			res.status(404).json({ message: 'Post not found' });
+		}
+	} catch (error) {
+		res.status(500).json(error);
+	}
+};
+
+const getPostsById = async (req, res) => {
+
+	/*
+		Controlador de la Ruta para obtener un post por su id
+	*/
+
+	const { id } = req.params;
+
+	try {
+		const post = await PostSchema.findOne({ _id: id });
+		if (post) {
+			res.status(200).json(post);
+		} else {
+			res.status(404).json({ message: 'Post not found' });
+		}
+	} catch (error) {
+		res.status(500).json(error);
+	}
+};
+
+
 module.exports = {
 	postController,
 	postCommentController,
@@ -462,5 +503,7 @@ module.exports = {
 	likePost,
 	updatePost,
 	getFriendsMatches,
-	getAllMatches
+	getAllMatches,
+	getComments,
+	getPostsById,
 };
