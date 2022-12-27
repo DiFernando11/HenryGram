@@ -15,7 +15,7 @@ function HeaderProfile({ isFriend, userInformation }) {
 	const [bannerUser, setBannerUser] = useState('');
 	const [loadingBanner, setLoadingBanner] = useState(false);
 
-	const userId = useSelector((state) => state.userInformation._id);
+	const userId = useSelector((state) => state.userInformation?._id);
 	const handleSaveAvatarUser = (e) => {
 		uploadImage(e, setLoadingAvatar, null, setAvatarUser)
 			.then((res) => {
@@ -26,7 +26,13 @@ function HeaderProfile({ isFriend, userInformation }) {
 			})
 	};
 	const handleSaveBannerUser = (e) => {
-		uploadImage(e, setLoadingBanner, null, setBannerUser);
+		uploadImage(e, setLoadingBanner, null, setBannerUser)
+			.then((res) => {
+				dispatch(editProfileAction({
+					banner: res,
+					id: userId
+				}))
+			})
 	};
 	return (
 		<header className="relative h-36">
