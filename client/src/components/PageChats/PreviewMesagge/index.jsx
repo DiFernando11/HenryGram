@@ -23,7 +23,7 @@ function PreviewMesagge({ title }) {
   );
   const chatPrevent = useSelector((state) => state.chatPrevent);
   const messages = useSelector((state) => state.chatUsers);
-  console.log(messages);
+
   const userInformation = useSelector((state) => state.userInformation);
   const dispatch = useDispatch();
   const handleSwitchChats = () => {

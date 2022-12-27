@@ -51,7 +51,7 @@ function CardPreviewMessage({
           >
             <b>
               {message ? (senderMessage ? "Tu: " : `${name} :`) : "No messages"}{" "}
-            </b>{" "}
+            </b>
             {message}
           </span>
           {!senderMessage ? (
