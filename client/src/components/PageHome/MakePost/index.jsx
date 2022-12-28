@@ -118,7 +118,7 @@ function MakePost() {
           if (selectTypePost === "Normal") {
             navigate(`/profile/${userID?._id}`);
           } else {
-            navigate(`/message`);
+            navigate(`/message`, { state: { isMatch: true } });
           }
         }
       });
@@ -140,7 +140,7 @@ function MakePost() {
         className={`justify-center items-center gap-3 mt-5 w-11/12 m-auto hidden sm:flex `}
       >
         <img
-          className="rounded-full w-12 h-12"
+          className="rounded-full w-12 h-12 border bg-neutral-600 border-amber-300"
           src={userID?.avatar}
           alt="avatar user"
         />
@@ -149,8 +149,9 @@ function MakePost() {
           id="search"
           className="block w-full p-3 pl-5 text-sm text-white border rounded-lg  bg-transparent border-amber-200 cursor-pointer"
           placeholder="Create publication..."
-          autoComplete="off"
+          readOnly
           onClick={() => setShow(!show)}
+          autoComplete="off"
         />
       </div>
 

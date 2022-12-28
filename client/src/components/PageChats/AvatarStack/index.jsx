@@ -15,6 +15,7 @@ function AvatarStack({ avatars, openModalFriends , show }) {
                 className="inline-block h-8 w-8 rounded-full ring-2 cursor-pointer border-2 border-yellow"
                 src={avatar.avatar}
                 alt="user Avatar"
+                title={`${avatar.firstName} ${avatar.lastName} `}
               />
             </Link>
           ))

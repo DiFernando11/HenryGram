@@ -87,7 +87,7 @@ const userRedux = useSelector(state => state.userInformation)
 				<Link to={`/profile/${user._id}`}>
 					<div className="flex gap-3">
 						<img
-							className="w-10 h-10 rounded-full object-cover"
+							className="w-10 h-10 rounded-full object-cover border bg-neutral-600 border-amber-300"
 							src={user.avatar}
 							alt={user.firstName}
 						/>

@@ -119,7 +119,7 @@ const getGroups = async (req, res, next) => {
   try {
     const { userId } = req.params;
 
-    const groups = await GroupSchema.find({ creator: userId });
+    const groups = await GroupSchema.find({ users: userId });
 
     res.status(200).json(groups);
   } catch (ex) {

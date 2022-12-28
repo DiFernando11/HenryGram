@@ -46,8 +46,8 @@ function CardPreviewMessage({
           <span className="absolute bottom-2 right-4  w-3 h-3 bg-red-500 rounded-full"/>
         ): null}
         <div className="relative mr-2 flex items-center">
-          <img className={styles.imageCard} src={image} alt={"user message"} />
-          <span className="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+          <img className={`${styles.imageCard} border bg-neutral-600 border-amber-300`} src={image} alt={"user message"} />
+          <span className="top-1 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
         </div>
 
         <div className="items-center self-center font-bold w-4/5 truncate">
