@@ -7,6 +7,7 @@ import {
   getChatByUserGroupAction,
   getMessageByUserBackAction,
   messagesIsChat,
+  responseInvitationGroupAction,
   sendMessageByGroup,
 } from "../../../redux/actions";
 import SkeletonUser from "../../Skeletons/skeletonUser";
@@ -20,9 +21,12 @@ function MessageGroup() {
   const [isMoreMessages, setIsMoreMessages] = useState(true);
   const [loadingOldMessage, setLoadingOldMessage] = useState(false);
   const [oldMessage, setOldMessage] = useState([]);
+  const [pendings, setPendings] = useState([]);
+  const [findChatUser, setFindChatUser] = useState(null);
   const chatUsers = useSelector((state) => state.chatUsers);
   const chatTimeRealUser = useSelector((state) => state.chatTimeReal);
   const userInformation = useSelector((state) => state.userInformation);
+  const isCreatorGroup = findChatUser?.gr?.creator === userInformation?._id;
   function scrollLastMessage() {
     var objDiv = document.getElementById("divu");
     objDiv.scrollTop = objDiv.scrollHeight;
@@ -32,6 +36,11 @@ function MessageGroup() {
 
   useEffect(() => {
     dispatch(getChatByUserGroupAction(id, 1));
+    if (chatUsers?.length) {
+      const findChat = chatUsers?.find((chat) => chat?.gr?._id === id);
+      setFindChatUser(findChat);
+      setPendings(findChat?.gr?.pendings);
+    }
   }, [id, chatUsers]);
 
   useEffect(() => {
@@ -101,16 +110,31 @@ function MessageGroup() {
       }
     }
   };
+  const handleResponseInvitation = (response, idUser) => {
+    dispatch(
+      responseInvitationGroupAction({
+        groupId: findChatUser?.gr?._id,
+        userId: idUser,
+        response: response,
+      })
+    );
+    handleHideInvitation(idUser);
+  };
+  const handleHideInvitation = (idUser) => {
+    const responsePendings = pendings.filter((user) => user !== idUser);
+    setPendings(responsePendings);
+  };
+
   return (
     <section className="lg:w-[70%] sm:w-[50%] w-full">
       <div className={styles.header_message}>
-        {!chatByUser?.length ? (
+        {!findChatUser ? (
           <SkeletonUser isMessage={false} />
         ) : (
           <div className={styles.userInformationChat}>
-            <img src={chatByUser[0]?.avatar} alt="user_chat" />
+            <img src={findChatUser.gr.avatar} alt="user_chat" />
 
-            <span className="truncate w-4/5">GRUPO 0</span>
+            <span className="truncate w-4/5">{findChatUser.gr.title}</span>
           </div>
         )}
 
@@ -124,6 +148,47 @@ function MessageGroup() {
         id="divu"
         className={` ${styles.messagesSent} relative h-[calc(100vh-12rem)] sm:h-[calc(100vh-8rem)] overflow-y-scroll`}
       >
+        {isCreatorGroup && pendings?.length
+          ? pendings.map((idUser) => (
+              <div
+                key={idUser}
+                className="w-[98%] bg-amber-300 py-4 px-2 flex items-center justify-between justify-self-center absolute z-10"
+              >
+                <span
+                  onClick={() => handleHideInvitation(idUser)}
+                  className="absolute -top-1 left-1 text-black font-black cursor-pointer"
+                >
+                  X
+                </span>
+                <div className="flex items-center gap-3 ml-3">
+                  <img
+                    src="https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo"
+                    alt="user avatar"
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <span className="text-black font-black uppercase truncate w-4/5">
+                    Diego Apolo
+                  </span>
+                </div>
+                <span className="uppercase text-black font-black lg:block hidden">
+                  join the group
+                </span>
+                <div className="flex gap-3 items-center justify-center font-black">
+                  <span
+                    onClick={() => handleResponseInvitation(false, idUser)}
+                    className="cursor-pointer font-black text-red-700 text-lg bg-amber-400 rounded-full w-8 h-8 flex items-center justify-center"
+                  >
+                    X
+                  </span>
+                  <i
+                    onClick={() => handleResponseInvitation(true, idUser)}
+                    className="bi bi-check2 font-black text-green-800 bg-amber-400 rounded-full w-8 h-8 text-2xl flex items-center justify-center"
+                  ></i>
+                </div>
+              </div>
+            ))
+          : null}
+
         {loadingOldMessage && <Loader />}
         {!isMoreMessages && (
           <h1 className="text-center text-white bg-black rounded-full uppercase p-2 font-semibold">

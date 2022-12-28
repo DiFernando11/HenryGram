@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import logoMatch from "../../../assets/coheteHenry.png";
 import SendMessage from "../../PageChats/SendMessage";
 import MyMenu from "./MyMenu";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, Link, useParams } from "react-router-dom";
 import DropDownSelect from "../../DropDownSelect";
 import StatusFriend from "../../StatusFriend";
+import { invitationSendGroupAction } from "../../../redux/actions";
 
 function Post({
   isMatch,
@@ -15,9 +16,21 @@ function Post({
   postId,
   postDetail,
   userIdLogged,
+  group,
 }) {
   const location = useLocation();
+  const dispatch = useDispatch();
+  const userInformation = useSelector((state) => state.userInformation);
+  const invitationGroupSend = useSelector((state) => state.invitationGroupSend);
 
+  const handleSendInvitationGroup = () => {
+    dispatch(
+      invitationSendGroupAction({
+        groupId: group,
+        userId: userInformation?._id,
+      })
+    );
+  };
   return (
     <section
       className={`w-11/12  h-auto mt-6 m-auto relative pt-8 p-6 
@@ -76,6 +89,7 @@ function Post({
             </Link>
             {isMatch && (
               <img
+                onClick={handleSendInvitationGroup}
                 src={logoMatch}
                 alt="match"
                 className="w-8 h-8 cursor-pointer grayscale"

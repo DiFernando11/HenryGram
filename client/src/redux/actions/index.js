@@ -18,6 +18,8 @@ export const SEND_MESSAGE_BACK = "SEND_MESSAGE_BACK";
 export const GET_CHATS_GROUP = "GET_CHATS_GROUP";
 export const GET_MESSAGE_BY_USER_GROUP = "GET_MESSAGE_BY_USER_GROUP";
 export const SEND_MESSAGE_BY_GROUP = "SEND_MESSAGE_BY_GROUP";
+export const INVITATION_SEND_GROUP = "INVITATION_SEND_GROUP";
+export const RESPONSE_GROUP_INVITATION = "RESPONSE_GROUP_INVITATION";
 export const MESSAGES_IS_CHAT = "MESSAGES_IS_CHAT";
 export const CHAT_TIME_REAL = "CHAT_TIME_REAL";
 export const CHANGE_PREVIEW_ULTIMATE_MESSAGE =
@@ -70,16 +72,16 @@ export const logoutAction = () => {
 };
 // Estado global que tiene la informacion del usuario loguiado
 export const verifyUserAction = (token) => {
-	return async (dispatch) => {
-		try {
-			const result = await axios.get(
-				`http://localhost:3000/api/users/token?token=${token}`
-			);
-			return dispatch({ type: VERIFY_USER_TOKEN, payload: result.data });
-		} catch (error) {
-			return dispatch({ type: VERIFY_USER_TOKEN, payload: 'error' });
-		}
-	};
+  return async (dispatch) => {
+    try {
+      const result = await axios.get(
+        `http://localhost:3000/api/users/token?token=${token}`
+      );
+      return dispatch({ type: VERIFY_USER_TOKEN, payload: result.data });
+    } catch (error) {
+      return dispatch({ type: VERIFY_USER_TOKEN, payload: "error" });
+    }
+  };
 };
 
 export const getFriendsByUser = (id) => {
@@ -255,6 +257,36 @@ export const sendMessageByGroup = (userId, groupId, content) => {
     }
   };
 };
+export const invitationSendGroupAction = (payload) => {
+  return async (dispatch) => {
+    try {
+      const result = await axios.post(
+        `http://localhost:3000/api/groups/req`,
+        payload
+      );
+      console.log(result.data, "data");
+      return dispatch({ type: INVITATION_SEND_GROUP, payload: result.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+export const responseInvitationGroupAction = (payload) => {
+  return async (dispatch) => {
+    try {
+      const result = await axios.post(
+        `http://localhost:3000/api/groups/res`,
+        payload
+      );
+      return dispatch({
+        type: RESPONSE_GROUP_INVITATION,
+        payload: result.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 export const messagesIsChat = () => {
   return { type: MESSAGES_IS_CHAT };
 };
@@ -338,17 +370,15 @@ export const updatePostFront = (body) => {
 //EDIT PROFILE
 
 export const editProfileAction = (data) => {
-	return async (dispatch) => {
-		try {
-			const result = await axios.put(
-				`http://localhost:3000/api/users/${data.id}`,
-				data
-			);
-			dispatch({ type: EDIT_PROFILE, payload: result.data });
-		} catch (error) {
-			console.log(error);
-		}
-	};
-}
-
-
+  return async (dispatch) => {
+    try {
+      const result = await axios.put(
+        `http://localhost:3000/api/users/${data.id}`,
+        data
+      );
+      dispatch({ type: EDIT_PROFILE, payload: result.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
