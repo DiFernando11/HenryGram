@@ -76,7 +76,7 @@ function SideBar() {
           </div>
 
           <ul className="flex flex-col">
-            <li className=" flex items-center px-2 py-5 relative text-base font-medium text-gray-900 rounded-lg cursor-pointer transition duration:200 border border-transparent hover:border-white hover:text-white">
+            <li className=" flex items-center px-2 py-5 relative text-base font-medium rounded-lg cursor-pointer transition duration:200 border border-transparent hover:border-white hover:text-white">
               <DropDownSelect
                 status={"APPLICATION"}
                 icon={"bi-people-fill"}
@@ -117,7 +117,7 @@ function SideBar() {
             </li>
             <li
               onClick={() => auth.logout()}
-              className=" flex items-center px-2 py-5 border border-transparent cursor-ponter text-base font-medium text-gray-900 rounded-lg cursor-pointer transition duration:200 hover:border-white hover:text-white"
+              className=" flex items-center px-2 py-5 border border-transparent cursor-ponter text-base font-medium text-black rounded-lg cursor-pointer transition duration:200 hover:border-white hover:text-white"
             >
               <i className={`bi bi-box-arrow-left text-2xl `}></i>
               <span className="ml-3 text-black text_sombra text-lg">
@@ -132,7 +132,7 @@ function SideBar() {
           >
             <img
               src={userInformation?.avatar}
-              className="w-12 h-12  block m-auto rounded-full object-cover"
+              className="w-12 h-12  block m-auto rounded-full border border-black object-cover"
               alt="Flowbite Logo"
             />
             <span className="uppercase text-center block py-1 text_sombra text-lg font-semibold">{`Welcome ${userInformation?.firstName}`}</span>
@@ -145,6 +145,6 @@ function SideBar() {
 const activeStyle =
   "flex items-center px-2 py-5 border border-white font-medium rounded-lg bg-yellow text-white";
 const notActiveStyle =
-  "flex items-center px-2 py-5 font-medium rounded-lg border border-yellow hover:text-white hover:border-white transition duration:200";
+  "flex items-center px-2 py-5 font-medium rounded-lg border border-yellow text-black hover:text-white hover:border-white transition duration:200";
 
 export default SideBar;
