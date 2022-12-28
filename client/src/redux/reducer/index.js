@@ -36,6 +36,8 @@ import {
   GET_MESSAGE_BY_USER_GROUP,
   SEND_MESSAGE_BY_GROUP,
   EDIT_PROFILE,
+  GET_COMMENTS,
+  GET_POST_BY_ID
 } from "../actions";
 
 const initialState = {
@@ -58,6 +60,8 @@ const initialState = {
   allPosts: [],
   updatePost: [],
   deletePost: [],
+  comments: [],
+  postById:{},
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -279,6 +283,18 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         userPostsProfile: [],
       };
+    }
+    case GET_COMMENTS :{
+      return{
+        ...state,
+        comments: action.payload
+      }
+    }
+    case GET_POST_BY_ID: {
+      return{
+        ...state,
+        postById: action.payload
+      }
     }
     default:
       return state;

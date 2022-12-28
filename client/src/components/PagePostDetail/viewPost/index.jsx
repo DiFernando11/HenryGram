@@ -1,26 +1,40 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Post from "../../PageHome/Post";
 import SkeletonPost from "../../Skeletons/SkeletonPost";
 import CommentPostDetail from "../CommentPostDetail";
-
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getComments, getPostById, getProfileFriendAction } from "../../../redux/actions";
 function ViewPost() {
+  const post = useSelector(state => state.postById)
+  const comments = useSelector(state => state.comments)
+  const user = useSelector(state => state.userProfileFriend)
+  const dispatch = useDispatch()
+  const {id, userId} = useParams()
+  console.log("post:", post, "comments:", comments, "user:", user)
+  useEffect(() => {
+  dispatch(getComments(id))
+  dispatch(getPostById(id))
+  dispatch(getProfileFriendAction(userId))
+  }, [id])
   return (
-    <main className="flex w-full h-[calc(100vh-4rem)] bg-[#fefbfb25] ">
-      <div className=" flex bg-[#363636] w-4/5 h-4/5 m-auto border  border-amber-300">
+    <main className="flex w-full h-screen bg-[#fefbfb25] ">
+      <div className=" flex bg-[#363636] w-4/5 h-4/5 m-auto border border-amber-300">
         <section className="bg-[#363636] w-[65%]">
-          {/* <Post
-            key={post.id}
-            type={post.type}
+          {post?._id ? <Post
+            key={post._id}
+            postId={post._id}
+            isMatch={post.isMatch}
             seguir={post.seguir}
-            message={post.message}
-            user={post.user}
-            imagePost={post.imagePost}
+            description={post.description}
+            user={user}
+            imagePost={post.image}
             postDetail={true}
-          /> */}
-          <SkeletonPost />
+          />
+          : <SkeletonPost />}
         </section>
-        <section className="w-[35%] border border-amber-300 ">
-          <CommentPostDetail />
+        <section className="w-[35%] border border-l-yellow px-3">
+          <CommentPostDetail comments={comments} />
         </section>
       </div>
     </main>
