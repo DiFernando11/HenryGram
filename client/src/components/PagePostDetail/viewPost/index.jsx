@@ -18,7 +18,7 @@ function ViewPost() {
   dispatch(getProfileFriendAction(userId))
   }, [id])
   return (
-    <main className="flex w-full h-screen bg-[#fefbfb25] ">
+    <main className="flex w-full h-screen">
       <div className=" flex bg-[#363636] w-4/5 h-4/5 m-auto border border-amber-300">
         <section className="bg-[#363636] w-[65%]">
           {post?._id ? <Post

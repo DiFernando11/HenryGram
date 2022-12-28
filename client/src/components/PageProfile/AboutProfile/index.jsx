@@ -1,7 +1,7 @@
 import { Transition } from '@headlessui/react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Navigate, useParams, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useParams, useNavigate, useLocation } from 'react-router-dom'
 import {
 	addChatBackAction,
 	confirmedRequestFriendAction,
@@ -30,6 +30,7 @@ function AboutProfile({ userInformation }) {
 	const userID = useSelector((state) => state.userInformation?._id)
 	const navigate = useNavigate()
 	const { id } = useParams()
+	const location = useLocation()
 	const applicationStatus = friendsByUser.find(
 		(friend) => friend.recipient == id || friend.requester == id
 	)
@@ -38,10 +39,8 @@ function AboutProfile({ userInformation }) {
 	
 	useEffect(() => {
 		const findFriends = async(id) =>{
-			console.log('useEffect', id)
 			await axios.get( `http://localhost:3000/api/users/nameAndAvatar/${id}` )
 			.then( res => {
-				console.log(res.data)
 				setFriendsAvatars(res.data)
 			})
 		}
@@ -126,7 +125,7 @@ function AboutProfile({ userInformation }) {
 					)}
 				</div>
 				<div className='fit flex justify-between gap-6'>
-					{(userInformation._id !== userID)&& (
+					{(userInformation._id !== userID) && (
 						<div className="flex gap-8 items-center">
 							<i
 								onClick={handleRedirectChatUser}
@@ -135,7 +134,7 @@ function AboutProfile({ userInformation }) {
 							></i>
 						</div>
 					)}
-					{(userInformation._id !== userID)&& (
+					{(userInformation._id !== userID) && (
 						<div className="flex text-yellow gap-1 items-center  ">
 							{statusFriend === 'Seguir' && (
 								<>
