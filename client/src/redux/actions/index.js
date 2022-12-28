@@ -94,6 +94,7 @@ export const getFriendsByUser = (id) => {
 			const result = await axios.get(
 				`http://localhost:3000/api/users/friends/${id}`
 			);
+			console.log(result.data);
 			return dispatch({ type: FRIENDS_BY_USER, payload: result.data });
 		} catch (error) {
 			console.log(error);
