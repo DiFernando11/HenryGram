@@ -37,7 +37,10 @@ import {
   SEND_MESSAGE_BY_GROUP,
   EDIT_PROFILE,
   GET_COMMENTS,
-  GET_POST_BY_ID
+  GET_POST_BY_ID,
+  INVITATION_SEND_GROUP,
+  RESPONSE_GROUP_INVITATION,
+  LIKE_DISLIKE_POST,
 } from "../actions";
 
 const initialState = {
@@ -56,6 +59,7 @@ const initialState = {
   // chatByUser: { informationUserTo: {}, projectedMessages: ["Dada"] },
   isChat: true,
   chatTimeReal: [],
+  invitationGroupSend: "",
   userPostsProfile: [],
   allPosts: [],
   updatePost: [],
@@ -177,6 +181,17 @@ const rootReducer = (state = initialState, action) => {
         chatUsers: action.payload,
       };
     }
+    case INVITATION_SEND_GROUP: {
+      return {
+        ...state,
+        invitationGroupSend: action.payload,
+      };
+    }
+    case RESPONSE_GROUP_INVITATION: {
+      return {
+        ...state,
+      };
+    }
     case MESSAGES_IS_CHAT: {
       return {
         ...state,
@@ -284,6 +299,7 @@ const rootReducer = (state = initialState, action) => {
         userPostsProfile: [],
       };
     }
+
     case GET_COMMENTS :{
       return{
         ...state,
@@ -295,6 +311,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         postById: action.payload
       }
+
+    case LIKE_DISLIKE_POST: {
+      return {
+        ...state,
+      };
+
     }
     default:
       return state;

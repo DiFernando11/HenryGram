@@ -1,28 +1,73 @@
-import React, { useEffect, useState } from 'react';
-import logoMatch from '../../../assets/coheteHenry.png';
-import SendMessage from '../../PageChats/SendMessage';
-import MyMenu from './MyMenu';
-import { useSelector } from 'react-redux';
-import { useLocation, Link, useParams } from 'react-router-dom';
-import DropDownSelect from '../../DropDownSelect';
-import StatusFriend from '../../StatusFriend';
+import React, { useEffect, useState } from "react";
+import logoMatch from "../../../assets/coheteHenry.png";
+import SendMessage from "../../PageChats/SendMessage";
+import MyMenu from "./MyMenu";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, Link, useParams } from "react-router-dom";
+import DropDownSelect from "../../DropDownSelect";
+import StatusFriend from "../../StatusFriend";
+import {
+  invitationSendGroupAction,
+  likeDislikePostAction,
+} from "../../../redux/actions";
 import Comments from '../Comments/Comments';
-
 function Post({
-	isMatch,
-	description,
-	user,
-	imagePost,
-	postId,
-	postDetail,
-	userIdLogged,
+  isMatch,
+  description,
+  user,
+  imagePost,
+  postId,
+  postDetail,
+  userIdLogged,
+  group,
+  likes,
 }) {
-	const userRedux = useSelector(state => state.userInformation)
+const userRedux = useSelector(state => state.userInformation)
 	const location = useLocation();
-	console.log(userRedux)
-	return (
-		<section
-			className={`w-11/12  h-auto mt-6 m-auto relative pt-8 p-6 
+
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const userInformation = useSelector((state) => state.userInformation);
+
+  const [youLikePost, setYouLikePost] = useState({
+    youLike: false,
+    numberLikes: 0,
+  });
+  const invitationGroupSend = useSelector((state) => state.invitationGroupSend);
+
+  const handleSendInvitationGroup = () => {
+    dispatch(
+      invitationSendGroupAction({
+        groupId: group,
+        userId: userInformation?._id,
+      })
+    );
+  };
+  const handleLikeDislikePost = () => {
+    if (youLikePost.youLike) {
+      setYouLikePost({
+        youLike: false,
+        numberLikes: youLikePost.numberLikes - 1,
+      });
+    } else {
+      setYouLikePost({
+        youLike: true,
+        numberLikes: youLikePost.numberLikes + 1,
+      });
+    }
+    dispatch(likeDislikePostAction({ postId, userId: userInformation?._id }));
+  };
+
+  useEffect(() => {
+    if (userInformation) {
+      const youLike = likes?.some((like) => like._id === userInformation?._id);
+      const numberLikes = likes?.length;
+      setYouLikePost({ youLike, numberLikes });
+    }
+  }, [userInformation]);
+  return (
+    <section
+      className={`w-11/12  h-auto mt-6 m-auto relative pt-8 p-6 
 			${
 				!postDetail && 'border border-amber-300'
 			} containerBackrougndImagePost rounded shadow-md shadow-black`}
@@ -68,27 +113,37 @@ function Post({
 						);
 					})}
 			</div>
-
-			{!postDetail && (
-				<>
-					<div className="flex gap-8 mt-5 mb-5 items-center border-y border-neutral-700 py-4">
-						<i className="bi bi-hand-thumbs-up text-2xl sm:text-3xl text-yellow"></i>
-						<Link to={`/post/${postId}/${user._id}`}>
-							<i className="bi bi-chat-square-dots text-2xl sm:text-3xl text-yellow"></i>
-						</Link>
-						{isMatch && (
-							<img
-								src={logoMatch}
-								alt="match"
-								className="w-8 h-8 cursor-pointer grayscale"
-							/>
-						)}
-					</div>
-					<Comments postId={postId} />
-				</>
-			)}
-		</section>
-	);
+      {!postDetail && (
+        <>
+          <div className="flex gap-8 mt-5 mb-5 items-center border-y border-neutral-700 py-4">
+            <div className="flex items-center gap-2">
+              <i
+                onClick={handleLikeDislikePost}
+                className={`bi ${
+                  youLikePost.youLike
+                    ? "bi-hand-thumbs-up-fill"
+                    : "bi-hand-thumbs-up"
+                }  text-2xl sm:text-3xl text-yellow`}
+              ></i>
+              {likes?.length && <span>{youLikePost.numberLikes}</span>}
+            </div>
+            <Link to={`/post/${postId}`}>
+              <i className="bi bi-chat-square-dots text-2xl sm:text-3xl text-yellow"></i>
+            </Link>
+            {isMatch && (
+              <img
+                onClick={handleSendInvitationGroup}
+                src={logoMatch}
+                alt="match"
+                className="w-8 h-8 cursor-pointer grayscale"
+              />
+            )}
+          </div>
+          <Comments postId={postId} />
+        </>
+      )}
+    </section>
+  );
 }
 
 export default Post;

@@ -1,39 +1,42 @@
-import axios from 'axios';
-import { useState } from 'react';
-export const CREATE_USER = 'CREATE_USER';
-export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
-export const VERIFY_USER_TOKEN = 'VERIFY_USER_TOKEN';
-export const FRIENDS_BY_USER = 'FRIENDS_BY_USER';
-export const GET_PROFILE_FRIEND = 'GET_PROFILE_FRIEND';
-export const SEND_FRIEND_REQUEST = 'SEND_FRIEND_REQUEST';
-export const CONFIRMED_FRIEND_REQUEST = 'CONFIRMED_FRIEND_REQUEST';
-export const POST_USER = 'POST_USER';
-export const CLEAN_POST = 'CLEAN_POST';
-export const GET_USERS_INFORMATION = 'GET_USERS_INFORMATION';
-export const GET_CHATS_ACTION = 'GET_CHATS_ACTION';
-export const ADD_CHAT_PREVENT_ACTION = 'ADD_CHAT_PREVENT_ACTION';
-export const GET_CHAT_BY_USER = 'GET_CHAT_BY_USER';
-export const SEND_MESSAGE_BACK = 'SEND_MESSAGE_BACK';
-export const GET_CHATS_GROUP = 'GET_CHATS_GROUP';
-export const GET_MESSAGE_BY_USER_GROUP = 'GET_MESSAGE_BY_USER_GROUP';
-export const SEND_MESSAGE_BY_GROUP = 'SEND_MESSAGE_BY_GROUP';
-export const MESSAGES_IS_CHAT = 'MESSAGES_IS_CHAT';
-export const CHAT_TIME_REAL = 'CHAT_TIME_REAL';
+import axios from "axios";
+import { useState } from "react";
+export const CREATE_USER = "CREATE_USER";
+export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
+export const VERIFY_USER_TOKEN = "VERIFY_USER_TOKEN";
+export const FRIENDS_BY_USER = "FRIENDS_BY_USER";
+export const GET_PROFILE_FRIEND = "GET_PROFILE_FRIEND";
+export const SEND_FRIEND_REQUEST = "SEND_FRIEND_REQUEST";
+export const CONFIRMED_FRIEND_REQUEST = "CONFIRMED_FRIEND_REQUEST";
+export const POST_USER = "POST_USER";
+export const CLEAN_POST = "CLEAN_POST";
+export const GET_USERS_INFORMATION = "GET_USERS_INFORMATION";
+export const GET_CHATS_ACTION = "GET_CHATS_ACTION";
+export const ADD_CHAT_PREVENT_ACTION = "ADD_CHAT_PREVENT_ACTION";
+export const GET_CHAT_BY_USER = "GET_CHAT_BY_USER";
+export const SEND_MESSAGE_BACK = "SEND_MESSAGE_BACK";
+export const GET_CHATS_GROUP = "GET_CHATS_GROUP";
+export const GET_MESSAGE_BY_USER_GROUP = "GET_MESSAGE_BY_USER_GROUP";
+export const SEND_MESSAGE_BY_GROUP = "SEND_MESSAGE_BY_GROUP";
+export const INVITATION_SEND_GROUP = "INVITATION_SEND_GROUP";
+export const RESPONSE_GROUP_INVITATION = "RESPONSE_GROUP_INVITATION";
+export const MESSAGES_IS_CHAT = "MESSAGES_IS_CHAT";
+export const CHAT_TIME_REAL = "CHAT_TIME_REAL";
 export const CHANGE_PREVIEW_ULTIMATE_MESSAGE =
-	'CHANGE_PREVIEW_ULTIMATE_MESSAGE';
-export const GET_POSTS = 'GET_POSTS';
-export const GET_ALL_POSTS = 'GET_ALL_POSTS';
-export const CLEAR = 'CLEAR';
-export const DELETE_POST = 'DELETE_POST';
-export const CLEAR_DELETE_POST = 'CLEAR_DELETE_POST';
-export const UPDATE_POST = 'UPDATE_POST';
-export const CLEAR_UPDATE = 'CLEAR_UPDATE';
-export const SEARCH_USER = 'SEARCH_USER';
-export const SEARCH_CHATS = 'SEARCH_CHATS_ACTION';
-export const CLEAR_POSTS = 'CLEAR_POSTS';
-export const EDIT_PROFILE = 'EDIT_PROFILE';
-export const GET_FRIENDS_AVATAR_AND_NAME = 'GET_FRIENDS_AVATAR_AND_NAME';
+  "CHANGE_PREVIEW_ULTIMATE_MESSAGE";
+export const GET_POSTS = "GET_POSTS";
+export const GET_ALL_POSTS = "GET_ALL_POSTS";
+export const CLEAR = "CLEAR";
+export const DELETE_POST = "DELETE_POST";
+export const CLEAR_DELETE_POST = "CLEAR_DELETE_POST";
+export const UPDATE_POST = "UPDATE_POST";
+export const CLEAR_UPDATE = "CLEAR_UPDATE";
+export const SEARCH_USER = "SEARCH_USER";
+export const SEARCH_CHATS = "SEARCH_CHATS_ACTION";
+export const CLEAR_POSTS = "CLEAR_POSTS";
+export const EDIT_PROFILE = "EDIT_PROFILE";
+export const LIKE_DISLIKE_POST = "LIKE_DISLIKE_POST";
+export const GET_FRIENDS_AVATAR_AND_NAME = "GET_FRIENDS_AVATAR_AND_NAME";
 export const POST_COMMENTS = 'POST_COMMENTS';
 export const GET_COMMENTS = 'GET_COMMENTS'
 export const GET_POST_BY_ID = "GET_POST_BY_ID"
@@ -73,16 +76,16 @@ export const logoutAction = () => {
 };
 // Estado global que tiene la informacion del usuario loguiado
 export const verifyUserAction = (token) => {
-	return async (dispatch) => {
-		try {
-			const result = await axios.get(
-				`http://localhost:3000/api/users/token?token=${token}`
-			);
-			return dispatch({ type: VERIFY_USER_TOKEN, payload: result.data });
-		} catch (error) {
-			return dispatch({ type: VERIFY_USER_TOKEN, payload: 'error' });
-		}
-	};
+  return async (dispatch) => {
+    try {
+      const result = await axios.get(
+        `http://localhost:3000/api/users/token?token=${token}`
+      );
+      return dispatch({ type: VERIFY_USER_TOKEN, payload: result.data });
+    } catch (error) {
+      return dispatch({ type: VERIFY_USER_TOKEN, payload: "error" });
+    }
+  };
 };
 
 export const getFriendsByUser = (id) => {
@@ -153,16 +156,16 @@ export const searchUserAction = (payload) => {
 //FRIENDS
 
 export const getFriendsAvatarAndName = (id) => {
-	return async (dispatch) => {
-		try {
-			const result = await axios.get(
-				`http://localhost:3000/api/users/nameAndAvatar/${id}`
-			);
-			return result.data;
-		} catch (error) {
-			console.log(error);
-		}
-	};
+  return async (dispatch) => {
+    try {
+      const result = await axios.get(
+        `http://localhost:3000/api/users/nameAndAvatar/${id}`
+      );
+      return result.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 };
 
 //POST USER
@@ -270,6 +273,36 @@ export const sendMessageByGroup = (userId, groupId, content) => {
 			console.log(error);
 		}
 	};
+};
+export const invitationSendGroupAction = (payload) => {
+  return async (dispatch) => {
+    try {
+      const result = await axios.post(
+        `http://localhost:3000/api/groups/req`,
+        payload
+      );
+      console.log(result.data, "data");
+      return dispatch({ type: INVITATION_SEND_GROUP, payload: result.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+export const responseInvitationGroupAction = (payload) => {
+  return async (dispatch) => {
+    try {
+      const result = await axios.post(
+        `http://localhost:3000/api/groups/res`,
+        payload
+      );
+      return dispatch({
+        type: RESPONSE_GROUP_INVITATION,
+        payload: result.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 };
 export const messagesIsChat = () => {
 	return { type: MESSAGES_IS_CHAT };
@@ -405,3 +438,19 @@ export const getPostById = (id) => {
     }
   }
 }
+
+
+//LIKES
+export const likeDislikePostAction = (data) => {
+  return async (dispatch) => {
+    try {
+      await axios.post(
+        `http://localhost:3000/api/posts/like?postId=${data.postId}&userId=${data.userId}`,
+        data
+      );
+      dispatch({ type: LIKE_DISLIKE_POST });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

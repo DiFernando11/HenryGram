@@ -44,9 +44,9 @@ function SendMessage({ scrollLastMessage, messageSend }) {
 
   const handleSentMessage = (e) => {
     e.preventDefault();
-
-    dispatch(messageSend(userInformation._id, id, sendMessage));
-    socket.emit("message", userInformation._id, id, sendMessage, hourSystem);
+console.log(userInformation?._id, id, sendMessage , "message")
+    dispatch(messageSend(userInformation?._id, id, sendMessage));
+    socket.emit("message", userInformation?._id, id, sendMessage, hourSystem);
     const messageInformation = {
       from: userInformation._id,
       to: id,
