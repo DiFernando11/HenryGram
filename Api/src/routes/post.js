@@ -17,7 +17,7 @@ const router = express.Router();
 
 router.post('/posts', postController);
 router.get('/posts', getAllUPost)
-router.get('/posts/:id', getPostsByUser) //id del usuario
+router.get('/posts/user', getPostsByUser) //id del usuario
 router.get('/posts/id/:id', getPostsById) //id del post
 router.delete('/posts/:id', deletePost) //id del post
 router.put('/posts/:id', updatePost) //id del post
