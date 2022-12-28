@@ -38,6 +38,7 @@ import {
   EDIT_PROFILE,
   INVITATION_SEND_GROUP,
   RESPONSE_GROUP_INVITATION,
+  LIKE_DISLIKE_POST,
 } from "../actions";
 
 const initialState = {
@@ -292,6 +293,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         userPostsProfile: [],
+      };
+    }
+    case LIKE_DISLIKE_POST: {
+      return {
+        ...state,
       };
     }
     default:

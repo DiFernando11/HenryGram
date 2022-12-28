@@ -302,7 +302,7 @@ const likePost = async (req, res) => {
         post.likes.push(userId);
       }
       await post.save();
-      res.status(200).json(post);
+      res.status(200).json({message: "I like o dislike it sent with success"});
     } else {
       res.status(404).json({ message: "Post not found" });
     }

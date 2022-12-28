@@ -124,7 +124,7 @@ function MessageGroup() {
     const responsePendings = pendings.filter((user) => user !== idUser);
     setPendings(responsePendings);
   };
-
+  console.log(chatTimeRealUser);
   return (
     <section className="lg:w-[70%] sm:w-[50%] w-full">
       <div className={styles.header_message}>
@@ -253,7 +253,7 @@ function MessageGroup() {
               );
             })
           : null}
-        {!chatByUser?.length && chatByUser && (
+        {!chatByUser?.length && chatByUser && !chatTimeRealUser?.length && (
           <div className="text-white text-lg uppercase text-center bg-black p-4 rounded m-auto">{`greetings to all 👋`}</div>
         )}
       </div>
