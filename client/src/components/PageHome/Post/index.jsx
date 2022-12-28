@@ -6,7 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, Link, useParams } from "react-router-dom";
 import DropDownSelect from "../../DropDownSelect";
 import StatusFriend from "../../StatusFriend";
-import { invitationSendGroupAction } from "../../../redux/actions";
+import {
+  invitationSendGroupAction,
+  likeDislikePostAction,
+} from "../../../redux/actions";
 
 function Post({
   isMatch,
@@ -17,10 +20,16 @@ function Post({
   postDetail,
   userIdLogged,
   group,
+  likes,
 }) {
   const location = useLocation();
   const dispatch = useDispatch();
   const userInformation = useSelector((state) => state.userInformation);
+
+  const [youLikePost, setYouLikePost] = useState({
+    youLike: false,
+    numberLikes: 0,
+  });
   const invitationGroupSend = useSelector((state) => state.invitationGroupSend);
 
   const handleSendInvitationGroup = () => {
@@ -31,6 +40,28 @@ function Post({
       })
     );
   };
+  const handleLikeDislikePost = () => {
+    if (youLikePost.youLike) {
+      setYouLikePost({
+        youLike: false,
+        numberLikes: youLikePost.numberLikes - 1,
+      });
+    } else {
+      setYouLikePost({
+        youLike: true,
+        numberLikes: youLikePost.numberLikes + 1,
+      });
+    }
+    dispatch(likeDislikePostAction({ postId, userId: userInformation?._id }));
+  };
+
+  useEffect(() => {
+    if (userInformation) {
+      const youLike = likes?.some((like) => like._id === userInformation?._id);
+      const numberLikes = likes?.length;
+      setYouLikePost({ youLike, numberLikes });
+    }
+  }, [userInformation]);
   return (
     <section
       className={`w-11/12  h-auto mt-6 m-auto relative pt-8 p-6 
@@ -83,7 +114,17 @@ function Post({
       {!postDetail && (
         <>
           <div className="flex gap-8 mt-5 mb-5 items-center border-y border-neutral-700 py-4">
-            <i className="bi bi-hand-thumbs-up text-2xl sm:text-3xl text-yellow"></i>
+            <div className="flex items-center gap-2">
+              <i
+                onClick={handleLikeDislikePost}
+                className={`bi ${
+                  youLikePost.youLike
+                    ? "bi-hand-thumbs-up-fill"
+                    : "bi-hand-thumbs-up"
+                }  text-2xl sm:text-3xl text-yellow`}
+              ></i>
+              {likes?.length && <span>{youLikePost.numberLikes}</span>}
+            </div>
             <Link to={`/post/${postId}`}>
               <i className="bi bi-chat-square-dots text-2xl sm:text-3xl text-yellow"></i>
             </Link>
