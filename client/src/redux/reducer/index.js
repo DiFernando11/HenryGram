@@ -311,7 +311,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         postById: action.payload
       }
-
+    }
     case LIKE_DISLIKE_POST: {
       return {
         ...state,
