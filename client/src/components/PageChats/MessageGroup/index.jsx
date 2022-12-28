@@ -10,23 +10,28 @@ import {
   responseInvitationGroupAction,
   sendMessageByGroup,
 } from "../../../redux/actions";
+import AvatarStack from "../AvatarStack/index";
 import SkeletonUser from "../../Skeletons/skeletonUser";
 import CardMessage from "../CardMessage";
 import SendMessage from "../SendMessage";
 import styles from "./index.module.css";
 import Loader from "../../Loader";
+
 function MessageGroup() {
   const chatByUser = useSelector((state) => state.chatByUser);
   const [page, setPage] = useState(1);
   const [isMoreMessages, setIsMoreMessages] = useState(true);
   const [loadingOldMessage, setLoadingOldMessage] = useState(false);
   const [oldMessage, setOldMessage] = useState([]);
-  const [pendings, setPendings] = useState([]);
   const [findChatUser, setFindChatUser] = useState(null);
+  const [integrantsGroup, setIntegrantsGroup] = useState([]);
+  const [pendingsUser, setPendingsUser] = useState([]);
   const chatUsers = useSelector((state) => state.chatUsers);
   const chatTimeRealUser = useSelector((state) => state.chatTimeReal);
   const userInformation = useSelector((state) => state.userInformation);
+
   const isCreatorGroup = findChatUser?.gr?.creator === userInformation?._id;
+
   function scrollLastMessage() {
     var objDiv = document.getElementById("divu");
     objDiv.scrollTop = objDiv.scrollHeight;
@@ -39,9 +44,42 @@ function MessageGroup() {
     if (chatUsers?.length) {
       const findChat = chatUsers?.find((chat) => chat?.gr?._id === id);
       setFindChatUser(findChat);
-      setPendings(findChat?.gr?.pendings);
     }
   }, [id, chatUsers]);
+
+  useEffect(() => {
+    try {
+      if (findChatUser && findChatUser?.gr?.users.length > 1) {
+        axios
+          .post(`http://localhost:3000/api/users/info`, {
+            users: findChatUser.gr?.users.slice(0, 4),
+          })
+          .then((response) => {
+            console.log(response, "response");
+            setIntegrantsGroup(response.data);
+          });
+      }
+    } catch (error) {
+      console.error("error en la funcion user Integrants");
+    }
+    try {
+      if (findChatUser && findChatUser?.gr?.pendings.length) {
+        axios
+          .post(`http://localhost:3000/api/users/info`, {
+            users: findChatUser?.gr?.pendings,
+          })
+          .then((response) => {
+            setPendingsUser(response.data);
+          });
+      }
+    } catch (error) {
+      console.error("error en la funcion get pendindg users");
+    }
+    return () => {
+      setIntegrantsGroup([]);
+      setPendingsUser([]);
+    };
+  }, [findChatUser]);
 
   useEffect(() => {
     try {
@@ -121,10 +159,10 @@ function MessageGroup() {
     handleHideInvitation(idUser);
   };
   const handleHideInvitation = (idUser) => {
-    const responsePendings = pendings.filter((user) => user !== idUser);
-    setPendings(responsePendings);
+    const responsePendings = pendingsUser.filter((user) => user._id !== idUser);
+    setPendingsUser(responsePendings);
   };
-  console.log(chatTimeRealUser);
+
   return (
     <section className="lg:w-[70%] sm:w-[50%] w-full">
       <div className={styles.header_message}>
@@ -139,6 +177,7 @@ function MessageGroup() {
         )}
 
         <div className={styles.actionsChat}>
+          <AvatarStack avatars={integrantsGroup} />
           <i className={`bi bi-camera-video lg:block hidden`}></i>
           <i className="bi bi-telephone lg:block hidden"></i>
           <i className="bi bi-three-dots-vertical lg:block hidden"></i>
@@ -148,26 +187,28 @@ function MessageGroup() {
         id="divu"
         className={` ${styles.messagesSent} relative h-[calc(100vh-12rem)] sm:h-[calc(100vh-8rem)] overflow-y-scroll`}
       >
-        {isCreatorGroup && pendings?.length
-          ? pendings.map((idUser) => (
+        {isCreatorGroup &&
+        findChatUser?.gr?.pendings?.length &&
+        pendingsUser.length
+          ? pendingsUser.map((user) => (
               <div
-                key={idUser}
+                key={user._id}
                 className="w-[98%] bg-amber-300 py-4 px-2 flex items-center justify-between justify-self-center absolute z-10"
               >
                 <span
-                  onClick={() => handleHideInvitation(idUser)}
+                  onClick={() => handleHideInvitation(user._id)}
                   className="absolute -top-1 left-1 text-black font-black cursor-pointer"
                 >
                   X
                 </span>
                 <div className="flex items-center gap-3 ml-3">
                   <img
-                    src="https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo"
+                    src={user.avatar}
                     alt="user avatar"
                     className="w-10 h-10 rounded-full"
                   />
                   <span className="text-black font-black uppercase truncate w-4/5">
-                    Diego Apolo
+                    {`${user.firstName} ${user.lastName}`}
                   </span>
                 </div>
                 <span className="uppercase text-black font-black lg:block hidden">
@@ -175,13 +216,13 @@ function MessageGroup() {
                 </span>
                 <div className="flex gap-3 items-center justify-center font-black">
                   <span
-                    onClick={() => handleResponseInvitation(false, idUser)}
+                    onClick={() => handleResponseInvitation(false, user._id)}
                     className="cursor-pointer font-black text-red-700 text-lg bg-amber-400 rounded-full w-8 h-8 flex items-center justify-center"
                   >
                     X
                   </span>
                   <i
-                    onClick={() => handleResponseInvitation(true, idUser)}
+                    onClick={() => handleResponseInvitation(true, user._id)}
                     className="bi bi-check2 font-black text-green-800 bg-amber-400 rounded-full w-8 h-8 text-2xl flex items-center justify-center"
                   ></i>
                 </div>

@@ -45,13 +45,13 @@ function HeaderProfile({ userInformation }) {
 	return (
 		<header className="relative h-36">
 			<img
-				className="w-full h-36 object-cover absolute "
+				className="w-full h-36 object-cover absolute  "
 				src={loadingBanner ? giftUpload : bannerUser || userInformation?.banner}
 				alt="Portada User"
 			/>
 			<div className="absolute">
 				<img
-					className="w-32 h-32 object-cover rounded-full relative ml-5 top-1.5"
+					className="w-32 h-32 object-cover rounded-full relative ml-5 top-1.5 border bg-neutral-600 border-amber-300"
 					src={
 						loadingAvatar ? giftUpload : avatarUser || userInformation?.avatar
 					}

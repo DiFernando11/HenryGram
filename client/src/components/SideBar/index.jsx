@@ -138,7 +138,7 @@ function SideBar() {
           >
             <img
               src={userInformation?.avatar}
-              className="w-12 h-12  block m-auto rounded-full border border-black object-cover"
+              className="w-12 h-12  block m-auto rounded-full object-cover border bg-neutral-600 border-amber-300"
               alt="Flowbite Logo"
             />
             <span className="uppercase text-center block py-1 text_sombra text-lg font-semibold">{`Welcome ${userInformation?.firstName}`}</span>
