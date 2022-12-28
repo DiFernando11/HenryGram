@@ -33,6 +33,7 @@ module.exports = {
       },
       height: {
         validate: "40%",
+        about: "25vh",
       },
     },
   },

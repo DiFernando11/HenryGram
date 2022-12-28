@@ -23,7 +23,7 @@ function PreviewMesagge({ title }) {
   );
   const chatPrevent = useSelector((state) => state.chatPrevent);
   const messages = useSelector((state) => state.chatUsers);
-  console.log(messages);
+
   const userInformation = useSelector((state) => state.userInformation);
   const dispatch = useDispatch();
   const handleSwitchChats = () => {
@@ -40,11 +40,7 @@ function PreviewMesagge({ title }) {
       dispatch(getChatsGroupAction("clear"));
     }
   }, [isChat, userInformation]);
-  // useEffect(() => {
-  //   if (messages.length) {
-  //     dispatch(changeUltimateMessageTimeRealAction());
-  //   }
-  // }, [chatTimeRealUser]);
+
   return (
     <section className={`${styles.container_preview_message} sm:mb-2 sm:ml-2`}>
       <SearchBar handleChangeSearch={searchChatsAction} />
@@ -121,12 +117,19 @@ function PreviewMesagge({ title }) {
           : messages?.map((message, index) => (
               <CardPreviewMessage
                 key={index}
-                image={message?.ch?.avatar}
+                image={
+                  message?.gr?.avatar ||
+                  "https://res.cloudinary.com/dgmv4orvc/image/upload/v1671629546/Images/g8ivckqtlen69rgcyzop.png"
+                }
                 message={message?.ch?.content}
                 id={message?.gr?._id}
                 time={message?.ch?.createdAt}
                 name={message?.ch?.firstName}
-                title={`Grupo ${index}`}
+                title={`${
+                  message?.gr?.title ? message?.gr?.title : `Grupo ${index}`
+                } `}
+                creator={message?.gr?.creator}
+                pendings={message?.gr?.pendings}
                 sender={message?.ch?.userId}
               />
             ))}

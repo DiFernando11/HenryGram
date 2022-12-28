@@ -158,7 +158,7 @@ function Messages() {
         id="divu"
         className={`${styles.messagesSent} relative h-[calc(100vh-12rem)] sm:h-[calc(100vh-8rem)] overflow-y-scroll`}
       >
-        {!chatByUser?.projectedMessages?.length && chatByUser && (
+        {!chatByUser?.projectedMessages?.length && chatByUser && !chatTimeRealUser?.length (
           <div className="text-white text-lg uppercase text-center bg-black p-4 rounded m-auto">{`greets ${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName} 👋`}</div>
         )}
 

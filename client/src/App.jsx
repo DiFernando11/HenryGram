@@ -53,7 +53,7 @@ function App() {
 
   const dispatch = useDispatch();
   const auth = useAuth()
-  ;
+
 
   const getData = () => {
     return localStorage.getItem("sessionStarted");
@@ -69,17 +69,17 @@ function App() {
     })();
   }, [saveTokenData]);
 
+ 
+
   useEffect(() => {
     dispatch(getInformationUsersAction());
   }, []);
 
   useEffect(() => {
-    console.log("userInformation", userInformation);
     if (userInformation && userInformation !== "error") {
       dispatch(getFriendsByUser(userInformation._id));
       socket.emit("registrarse", userInformation?._id);
     }else if(userInformation === "error"){
-      console.log("error");
       Swal.fire({
         icon: "error",
         title: "Su sesión ha expirado",
@@ -180,7 +180,7 @@ function App() {
           <Route path="chat/group/:id" element={<MessageGroup />} />
         </Route>
         <Route
-          path="/post/:id"
+          path="/post/:id/:userId"
           element={
             <AuthRoute>
               {/* <SideBar /> */}

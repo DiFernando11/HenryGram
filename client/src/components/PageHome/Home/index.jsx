@@ -56,6 +56,7 @@ function Home() {
       }
     };
   }, []);
+
   return (
     <main className="w-full flex">
       <div
@@ -63,7 +64,7 @@ function Home() {
         className="w-full h-[calc(100vh-4rem)] sm:h-screen overflow-y-scroll"
       >
         <MakePost />
-       
+
         {postUsers.length
           ? postUsers?.map((posts) => (
               <Post
@@ -75,6 +76,7 @@ function Home() {
                 description={posts.post.description}
                 user={posts.user}
                 imagePost={posts.post.image}
+                group={posts.post.group}
               />
             ))
           : [1, 2].map((value) => <SkeletonPost key={value} />)}
@@ -91,6 +93,7 @@ function Home() {
               description={posts.post.description}
               user={posts.user}
               imagePost={posts.post.image}
+              group={posts.post.group}
             />
           ))}
       </div>

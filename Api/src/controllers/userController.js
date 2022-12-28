@@ -341,7 +341,7 @@ const getGroups = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   const { id } = req.params;
-  const { firstName, lastName, gender, avatar } = req.body;
+  const { firstName, lastName, gender, avatar, banner } = req.body;
 
   console.log(req.body);
 
@@ -360,6 +360,7 @@ const updateUserInfo = async (req, res) => {
     lastName ? user.lastName = lastName : user.lastName;
     avatar ? user.avatar = avatar : user.avatar;
     gender ? user.gender = gender : user.gender;
+    banner ? user.banner = banner : user.banner;
 
     try {
       await user.save();
@@ -369,6 +370,70 @@ const updateUserInfo = async (req, res) => {
     }
   }
 };
+
+const getNameAndAvatar = async (req, res) => {
+
+  const { userId } = req.params;
+  const friends = []
+  try {
+    let friendships = await FriendSchema.find({ $or: [{ requester: userId }, { recipient: userId }] });
+    if (friendships.length > 0) {
+      friendships.forEach((friendship) => {
+        if (friendship.requester === userId) {
+          friends.push(friendship.recipient)
+        } else {
+          friends.push(friendship.requester)
+        }
+      })
+    } else {
+      return res.status(404).json({ message: "Friendship not found" });
+    }
+    let users = await UserSchema.find({ _id: { $in: friends } }, { _id: 1, firstName: 1, lastName: 1, avatar: 1 });
+    if (users) {
+      return res.status(200).json(users);
+    } else {
+      return res.status(404).json({ message: "Users not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+
+}
+
+
+const getBasicInfoUsers = async (req, res) => {
+  /*
+       Controlador de la Ruta para obtener info básica de los users (id, firstName, lastName, avatar)
+  */
+
+  const { users } = req.body; // users (array)
+
+  Promise.resolve(users)
+    .then((users) => {
+      let response = Promise.all(
+        users.map(async (el) => {
+          return await UserSchema.findOne(
+            { _id: el },
+            { _id: 1, firstName: 1, lastName: 1, avatar: 1 }
+          );
+        })
+      );
+      return response;
+    })
+    .then((result) => {
+      if (result.length) {
+        return res.status(200).json(result);
+      } else {
+        return res.status(404).json({ message: "Users not found" });
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+      return res.status(404).json({ message: "Users not found" });
+    });
+
+}
+
 
 module.exports = {
   postUser,
@@ -382,4 +447,6 @@ module.exports = {
   getMessages,
   getGroups,
   updateUserInfo,
+  getNameAndAvatar,
+  getBasicInfoUsers
 };

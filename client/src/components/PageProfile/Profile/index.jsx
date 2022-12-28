@@ -10,21 +10,22 @@ function Profile({ userInformation }) {
 	const userProfileFriend = useSelector((state) => state.userProfileFriend);
 	const [isFriend, setIsFriend] = useState(true);
 	const { id } = useParams();
+
+
 	
 	useEffect(() => {
 		setIsFriend(userProfileFriend?._id === userInformationVerify?._id);
 		return () => {
-			setIsFriend(false);
+			setIsFriend(true);
 		};
 	}, [id]);
-
-
+	console.log(isFriend)
 
 	return (
 		<main className="w-full">
-			<HeaderProfile userInformation={userInformation} isFriend={isFriend} />
+			<HeaderProfile userInformation={userInformation} />
 			<div className=" w-full xl:flex sm:h-[calc(100vh-9rem)] lg:h-[calc(100vh-9rem)] h-[calc(100vh-13rem)] overflow-y-scroll">
-				<AboutProfile userInformation={userInformation} isFriend={isFriend} />
+				<AboutProfile userInformation={userInformation} />
 				<PostProfile userInformation={userInformation} isFriend={isFriend} />
 			</div>
 		</main>
