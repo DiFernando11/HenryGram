@@ -73,8 +73,6 @@ function MakePost() {
       setInfoPost
     );
   };
-  console.log(avatarGroup, "avatar");
-  console.log(infoPost);
   const handleSubmit = (e) => {
     e.preventDefault();
     Swal.fire({
