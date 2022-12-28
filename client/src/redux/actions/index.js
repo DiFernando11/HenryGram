@@ -99,6 +99,7 @@ export const getFriendsByUser = (id) => {
       console.log(error);
     }
   };
+
 };
 //USERS INFORMATION
 //FRIENDS
@@ -321,15 +322,16 @@ export const searchChatsAction = (payload) => {
 //SEARCH
 
 //GET ALL POSTS
-export const getPostAllUsers = () => {
-  return async (dispatch) => {
-    try {
-      const result = await axios.get("http://localhost:3000/api/posts");
-      dispatch({ type: GET_ALL_POSTS, payload: result.data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
+export const getPostAllUsers = (id) => {
+	return async (dispatch) => {
+		try {
+			const result = await axios.get(`http://localhost:3000/api/posts/recomended/${id}`);
+			dispatch({ type: GET_ALL_POSTS, payload: result.data });
+		} catch (error) {
+			console.log(error);
+		}
+	};
 };
 
 export const getPostUSer = (id, limit) => {

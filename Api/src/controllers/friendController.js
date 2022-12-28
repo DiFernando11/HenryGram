@@ -6,6 +6,8 @@ const addFriend = async (req, res, next) => {
   /*
         Controlador que manda una solicitud de amistad
     */
+
+  console.log("addFriend", req.body)
   try {
       const { UserA, UserB } = req.body;
       console.log(UserA, UserB , "dada");
@@ -41,6 +43,7 @@ const addFriend = async (req, res, next) => {
     }
   } catch (ex) {
     next(ex);
+
   }
 };
 const acceptRejectFriend = async (req, res, next) => {

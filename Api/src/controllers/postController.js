@@ -95,7 +95,7 @@ const recomendedPostController = async (req, res) => {
     Controlador de la Ruta para obtener publicaciones recomendadas
   */
 
-  const { userId } = req.params;
+  let { userId } = req.params;
 
   const limit = req.query.limit ? parseInt(req.query.limit) : 1;
 
@@ -104,21 +104,29 @@ const recomendedPostController = async (req, res) => {
   const range = [limit * maxAmount - maxAmount, limit * maxAmount];
 
   let user = null;
-
-  try {
-    user = await UserSchema.findOne({ _id: userId });
-  } catch (err) {
-    return res.status(500).json(err);
+  if (String(userId) === "undefined") {
+    userId = null;
   }
+
+  if (userId !== null) {
+    try{
+      user = await UserSchema.findOne({ _id: userId });
+    }catch(error){
+      res.status(500).json(error);
+    }
+  }
+
 
   let userFriendsPosts = [];
   let friendships = [];
   const maxPosts = 100;
 
-  if (user.friends.length > 0) {
-    friendships = user.friends.map(async (friend) => {
-      return await FriendSchema.findOne({ _id: friend });
-    });
+  if ( user){
+    if (user.friends.length > 0) {
+      friendships = user.friends.map(async (friend) => {
+        return await FriendSchema.findOne({ _id: friend });
+      });
+    }
   }
 
   Promise.all(friendships).then((friendships) => {
@@ -168,7 +176,9 @@ const recomendedPostController = async (req, res) => {
                   user: userDestructured,
                 });
                 if (postsWithUser.length === posts.length) {
-                  console.log(postsWithUser.length);
+                  postsWithUser.sort((a, b) => {
+                    return a.post.created - b.post.created;
+                  });
                   return res.status(200).json(postsWithUser);
                 }
               });

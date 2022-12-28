@@ -233,7 +233,6 @@ const getFriendship = async (req, res) => {
     return res.status(404).json({ message: "FriendShip not found" });
 
   const f = await UserSchema.findOne({ _id: id }, { friends: 1 });
-
   if (!f) return res.status(404).json({ message: "FriendShip not found" });
 
   Promise.resolve(f.friends)
@@ -375,13 +374,11 @@ const getNameAndAvatar = async (req, res) => {
   const { userId } = req.params;
   const friends = [];
   try {
-    let friendships = await FriendSchema.find({
-      $or: [{ requester: userId }, { recipient: userId }],
-    });
+    let friendships = await FriendSchema.find({ $or: [{ requester: userId }, { recipient: userId }],  $and: [{ status: 3 }] });
     if (friendships.length > 0) {
       friendships.forEach((friendship) => {
-        if (friendship.requester === userId) {
-          friends.push(friendship.recipient);
+        if (String(friendship.requester) === String(userId)) {
+          friends.push(friendship.recipient)
         } else {
           friends.push(friendship.requester);
         }
