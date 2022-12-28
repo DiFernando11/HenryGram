@@ -35,6 +35,7 @@ export const SEARCH_USER = "SEARCH_USER";
 export const SEARCH_CHATS = "SEARCH_CHATS_ACTION";
 export const CLEAR_POSTS = "CLEAR_POSTS";
 export const EDIT_PROFILE = "EDIT_PROFILE";
+export const GET_FRIENDS_AVATAR_AND_NAME = "GET_FRIENDS_AVATAR_AND_NAME";
 
 //USERS INFORMATION
 //REGISTER
@@ -150,6 +151,18 @@ export const searchUserAction = (payload) => {
   return { type: SEARCH_USER, payload };
 };
 //FRIENDS
+
+export const getFriendsAvatarAndName = (id) => {
+
+  return async (dispatch) => {
+    try {
+      const result = await axios.get( `http://localhost:3000/api/users/nameAndAvatar/${id}`)
+      return result.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
 
 //POST USER
 export const postUser = (post) => {

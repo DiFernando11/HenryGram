@@ -11,7 +11,8 @@ const {
     getUserByToken,
     getMessages,
     getGroups,
-    updateUserInfo
+    updateUserInfo,
+    getNameAndAvatar,
 } = require('../controllers/userController');
 
 
@@ -28,5 +29,6 @@ router.get('/users/token', getUserByToken);
 router.get('/users/messages/:id', getMessages);
 router.get('/users/groups/:id', getGroups);
 router.put('/users/:id', updateUserInfo);
+router.get('/users/nameAndAvatar/:userId', getNameAndAvatar);
 
 module.exports = router;

@@ -21,23 +21,28 @@ const getAllChat = async (req, res, next) => {
 };
 
 const addChat = async (req, res, next) => {
-  try {
-    const { groupId, userId, content } = req.body;
+    try {
+        const { groupId, userId, content } = req.body;
 
-    const chat = await ChatSchema.create({
-      groupId,
-      userId,
-      content,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      avatar: user.avatar,
-    });
+        const user = await UserSchema.find(
+            { _id: userId }
+        )
 
-    res.status(200).json({ msg: "Message added successfully." });
-  } catch (ex) {
-    next(ex);
-  }
-};
+
+        const chat = await ChatSchema.create({
+            groupId,
+            userId,
+            content,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            avatar: user.avatar ? user.avatar : "https://res.cloudinary.com/dgmv4orvc/image/upload/v1671220771/Images/jrk0nxkgvmbb3hfsqwbk.png"
+        })
+
+        res.status(200).json({ msg: "Message added successfully." });
+    } catch (ex) {
+        next(ex);
+    }
+}
 
 const reqInvite = async (req, res, next) => {
   try {

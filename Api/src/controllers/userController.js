@@ -371,6 +371,36 @@ const updateUserInfo = async (req, res) => {
   }
 };
 
+const getNameAndAvatar = async (req, res) => {
+  
+  const { userId } = req.params;
+  const friends = []
+  try {
+    let friendships = await FriendSchema.find({ $or: [{ requester: userId }, { recipient: userId }] });
+    if (friendships.length>0) {
+      friendships.forEach((friendship) => {
+        if (friendship.requester === userId) {
+          friends.push(friendship.recipient)
+        } else {
+          friends.push(friendship.requester)
+        }
+      })
+    } else {
+      return res.status(404).json({ message: "Friendship not found" });
+    }
+    let users = await UserSchema.find({ _id: { $in: friends } }, {_id:1, firstName: 1, lastName: 1, avatar: 1 });
+    if (users) {
+      return res.status(200).json(users);
+    }else{
+      return res.status(404).json({ message: "Users not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error});
+  }
+
+
+}
+
 module.exports = {
   postUser,
   getUser,
@@ -383,4 +413,5 @@ module.exports = {
   getMessages,
   getGroups,
   updateUserInfo,
+  getNameAndAvatar,
 };
