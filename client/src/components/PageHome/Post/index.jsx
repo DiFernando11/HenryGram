@@ -23,7 +23,6 @@ function Post({
   likes,
 }) {
 const userRedux = useSelector(state => state.userInformation)
-	const location = useLocation();
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -127,7 +126,7 @@ const userRedux = useSelector(state => state.userInformation)
               ></i>
               {likes?.length && <span>{youLikePost.numberLikes}</span>}
             </div>
-            <Link to={`/post/${postId}`}>
+            <Link to={`/post/${postId}/${user._id}`}>
               <i className="bi bi-chat-square-dots text-2xl sm:text-3xl text-yellow"></i>
             </Link>
             {isMatch && (
