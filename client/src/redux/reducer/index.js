@@ -36,6 +36,8 @@ import {
   GET_MESSAGE_BY_USER_GROUP,
   SEND_MESSAGE_BY_GROUP,
   EDIT_PROFILE,
+  INVITATION_SEND_GROUP,
+  RESPONSE_GROUP_INVITATION,
 } from "../actions";
 
 const initialState = {
@@ -54,6 +56,7 @@ const initialState = {
   // chatByUser: { informationUserTo: {}, projectedMessages: ["Dada"] },
   isChat: true,
   chatTimeReal: [],
+  invitationGroupSend: "",
   userPostsProfile: [],
   allPosts: [],
   updatePost: [],
@@ -171,6 +174,17 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         chatUsers: action.payload,
+      };
+    }
+    case INVITATION_SEND_GROUP: {
+      return {
+        ...state,
+        invitationGroupSend: action.payload,
+      };
+    }
+    case RESPONSE_GROUP_INVITATION: {
+      return {
+        ...state,
       };
     }
     case MESSAGES_IS_CHAT: {

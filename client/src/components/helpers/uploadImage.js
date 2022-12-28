@@ -5,7 +5,8 @@ export const uploadImage = async (
   stateLoading,
   stateImage,
   setImagePost,
-  setImageArray
+  setImageArray,
+  setObjectImage
 ) => {
   const files = e.target.files;
   const data = new FormData();
@@ -27,11 +28,16 @@ export const uploadImage = async (
           image: [...prev.image, { url: file.secure_url }],
         }))
       : null;
-    // (prev) => ({ ...prev, image: { url: file.secure_url } })
 
     file.secure_url && setImagePost ? setImagePost(file.secure_url) : null;
     file.secure_url && setImageArray
       ? setImageArray((prev) => [...prev, file.secure_url])
+      : null;
+    file.secure_url && setObjectImage
+      ? setObjectImage((prev) => ({
+          ...prev,
+          avatar: file.secure_url,
+        }))
       : null;
     stateLoading(false);
     return file.secure_url;
