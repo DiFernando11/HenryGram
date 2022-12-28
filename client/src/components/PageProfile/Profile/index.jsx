@@ -19,7 +19,7 @@ function Profile({ userInformation }) {
 			setIsFriend(true);
 		};
 	}, [id]);
-	console.log(isFriend)
+
 
 	return (
 		<main className="w-full">
