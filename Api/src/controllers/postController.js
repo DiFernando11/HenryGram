@@ -168,7 +168,9 @@ const recomendedPostController = async (req, res) => {
                   user: userDestructured,
                 });
                 if (postsWithUser.length === posts.length) {
-                  console.log(postsWithUser.length);
+                  postsWithUser.sort((a, b) => {
+                    return b.post.created - a.post.created;
+                  });
                   return res.status(200).json(postsWithUser);
                 }
               });

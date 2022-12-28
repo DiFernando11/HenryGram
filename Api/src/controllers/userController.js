@@ -378,7 +378,7 @@ const getNameAndAvatar = async (req, res) => {
     let friendships = await FriendSchema.find({ $or: [{ requester: userId }, { recipient: userId }],  $and: [{ status: 3 }] });
     if (friendships.length > 0) {
       friendships.forEach((friendship) => {
-        if (friendship.requester === userId) {
+        if (String(friendship.requester) === String(userId)) {
           friends.push(friendship.recipient)
         } else {
           friends.push(friendship.requester)
