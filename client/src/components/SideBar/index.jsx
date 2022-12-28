@@ -1,5 +1,5 @@
 import { Sidebar } from "flowbite-react";
-import React from "react";
+import React, {useState} from "react";
 import { Link, NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import HiChartPi from "../../assets/coheteHenry.png";
 import { useAuth } from "../auth";
@@ -9,12 +9,16 @@ import henryGramLogo from "../../assets/logoHenry.png";
 import { useSelector } from "react-redux";
 import { searchUserAction } from "../../redux/actions";
 import CardUser from "../CardUser";
+import DropDown from "../DropDown/DropDown";
+import { UserPlusIcon } from "@heroicons/react/20/solid";
 
 function SideBar() {
   const searchUser = useSelector((state) => state.searchUser);
   const userInformation = useSelector((state) => state.userInformation);
   const chatTimeReal = useSelector((state) => state.chatTimeReal);
   const friendsByUser = useSelector((state) => state.friendsByUser);
+  const [isActive, setIsActive] = useState(false)
+  
   const { id } = useParams();
   const { pathname } = useLocation();
   let set = new Set(chatTimeReal.map(JSON.stringify));
@@ -25,19 +29,19 @@ function SideBar() {
   const pruebaRequestFriends = [
     {
       id: "639b57d15871ad62a8b88c2d",
-      text: "Diego Apolo",
+      firstName: "Diego Apolo",
       avatar:
         "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
     },
     {
       id: "639b57fa5871ad62a8b88c34",
-      text: "Diego Apolo",
+      firstName: "Diego Apolo",
       avatar:
         "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
     },
     {
       id: "639e3f1acce29471f3b57770",
-      text: "Diego Apolo",
+      firstName: "Diego Apolo",
       avatar:
         "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
     },
@@ -76,15 +80,17 @@ function SideBar() {
           </div>
 
           <ul className="flex flex-col">
-            <li className=" flex items-center px-2 py-5 relative text-base font-medium text-gray-900 rounded-lg cursor-pointer transition duration:200 border border-transparent hover:border-white hover:text-white">
-              <DropDownSelect
+            <li className={`flex items-center py-5 w-full relative ${isActive ? "text-white border-white" : "text-black border-transparent"} font-medium rounded-lg cursor-pointer transition duration:200 border  hover:border-white hover:text-white`}>
+              {/* <DropDownSelect
                 status={"APPLICATION"}
                 icon={"bi-people-fill"}
                 select={pruebaRequestFriends}
                 requests={requestFriends.length}
                 confirmed={true}
                 position={"left"}
-              />
+              /> */}
+              <UserPlusIcon className="w-8 ml-2" />
+              <DropDown isActive={isActive} setIsActive={setIsActive} friendRequests={pruebaRequestFriends} />
             </li>
 
             <li>
@@ -105,8 +111,8 @@ function SideBar() {
                   isActive ? activeStyle : notActiveStyle
                 }
               >
-                <i className={`bi bi-chat-dots-fill text-2xl `}></i>
-                <span className="ml-3 text_sombra text-lg">INBOX</span>
+                <i className={`bi bi-chat-dots-fill text-2xl z-0`}></i>
+                <span className="ml-3 text_sombra text-lg z-0">INBOX</span>
                 {arrSinDuplicaciones.length &&
                 !["/message", `/message/chat/${id}`].includes(pathname) ? (
                   <span className="bg-red-600 w-5 h-5 rounded-full absolute top-4 left-5 flex items-center justify-center text-xs">
@@ -117,7 +123,7 @@ function SideBar() {
             </li>
             <li
               onClick={() => auth.logout()}
-              className=" flex items-center px-2 py-5 border border-transparent cursor-ponter text-base font-medium text-gray-900 rounded-lg cursor-pointer transition duration:200 hover:border-white hover:text-white"
+              className=" flex items-center px-2 py-5 border border-transparent cursor-ponter text-base font-medium text-black rounded-lg cursor-pointer transition duration:200 hover:border-white hover:text-white"
             >
               <i className={`bi bi-box-arrow-left text-2xl `}></i>
               <span className="ml-3 text-black text_sombra text-lg">
@@ -145,6 +151,6 @@ function SideBar() {
 const activeStyle =
   "flex items-center px-2 py-5 border border-white font-medium rounded-lg bg-yellow text-white";
 const notActiveStyle =
-  "flex items-center px-2 py-5 font-medium rounded-lg border border-yellow hover:text-white hover:border-white transition duration:200";
+  "flex items-center px-2 py-5 font-medium rounded-lg border border-transparent text-black hover:text-white hover:border-white transition duration:200";
 
 export default SideBar;

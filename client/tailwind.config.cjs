@@ -21,6 +21,7 @@ module.exports = {
         yellower: "#f59e0b",
         danger: "#CA0B00",
         white: "#f4f4f4",
+        blackBody: '#363636'
       },
       gridAutoColumns: {
         "2fr": "minmax(0, 2fr)",

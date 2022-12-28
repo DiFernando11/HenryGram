@@ -8,7 +8,7 @@ function Logout() {
   const navigate = useNavigate();
   const handleLogout = () => {
     auth.logout();
-    navigate("/login");
+    navigate("/");
   };
   
   return (

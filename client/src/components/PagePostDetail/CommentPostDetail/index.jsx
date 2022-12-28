@@ -1,30 +1,31 @@
 import React, { useEffect, useState } from "react";
 import logoMatch from "../../../assets/coheteHenry.png";
 import SendMessage from "../../PageChats/SendMessage";
+import Comments from "../../PageHome/Comments/Comments";
 import SkeletonUser from "../../Skeletons/skeletonUser";
-function CommentPostDetail() {
+function CommentPostDetail({comments}) {
   // const [page, setPage] = useState(0);
-  const handleScroll = () => {
-    if (
-      document.getElementById("viewHeightComment").clientHeight +
-        document.getElementById("viewHeightComment").scrollTop >=
-      document.getElementById("viewHeightComment").scrollHeight
-    ) {
-      comment = [...comment, ...comment];
-      console.log("llegue");
-    }
-  };
-
+  // const handleScroll = () => {
+  //   if (
+  //     document.getElementById("viewHeightComment").clientHeight +
+  //       document.getElementById("viewHeightComment").scrollTop >=
+  //     document.getElementById("viewHeightComment").scrollHeight
+  //   ) {
+  //     comment = [...comment, ...comment];
+  //     console.log("llegue");
+  //   }
+  // };
+  console.log(comments)
   useEffect(() => {
     document
       .getElementById("viewHeightComment")
-      .addEventListener("scroll", handleScroll);
+      // .addEventListener("scroll", handleScroll);
 
     return () => {
       if (document.getElementById("viewHeightComment")) {
         document
           .getElementById("viewHeightComment")
-          .removeEventListener("scroll", handleScroll);
+          // .removeEventListener("scroll", handleScroll);
       }
     };
   }, []);
@@ -38,13 +39,13 @@ function CommentPostDetail() {
         <img src={logoMatch} alt="match" className="w-8 h-8" />
         {/* )} */}
       </div>
-      <SendMessage />
+      <Comments />
       <div
         id="viewHeightComment"
         className="h-[calc(100vh-24rem)] mt-6 overflow-y-scroll"
       >
-        {comment.length
-          ? comment.map((user) => (
+        {comments.length
+          ? comments.map((user) => (
               <div
                 key={user._id}
                 className="p-4 border border-zinc-700 flex gap-2 items-center "

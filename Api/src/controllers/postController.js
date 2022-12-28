@@ -455,11 +455,18 @@ const getComments = async (req, res) => {
   try {
     const post = await PostSchema.findOne({ _id: id });
     if (post) {
-      res.status(200).json(post.comments);
+
+      let comentsWithUsers = await Promise.all( post.comments.map(async (comment) => {
+        const user = await UserSchema.findOne({ _id: comment.userId }, { firstName: 1, lastName: 1, avatar: 1 });
+        const userDestructured = { comment: comment, firstName: user.firstName, lastName: user.lastName, avatar: user.avatar };
+        return userDestructured;
+      }));
+      res.status(200).json(comentsWithUsers);
     } else {
       res.status(404).json({ message: "Post not found" });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json(error);
   }
 };

@@ -180,7 +180,7 @@ function App() {
           <Route path="chat/group/:id" element={<MessageGroup />} />
         </Route>
         <Route
-          path="/post/:id"
+          path="/post/:id/:userId"
           element={
             <AuthRoute>
               {/* <SideBar /> */}
