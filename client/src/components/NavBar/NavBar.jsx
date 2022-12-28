@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "../../assets/hglogo.png";
 import { useAuth } from "../auth";
 import {
@@ -8,50 +8,75 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
+import axios from "axios";
 import SearchBar from "../SearchBar";
 import profilePicture from "../../assets/profilePicture.jpg";
-import { useSelector } from "react-redux";
-import DropDownSelect from "../DropDownSelect/index";
-import { searchUserAction } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import DropDown from "../DropDown/DropDown";
+import {
+  confirmedRequestFriendAction,
+  searchUserAction,
+} from "../../redux/actions";
 import CardUser from "../CardUser";
+import { UserPlusIcon } from "@heroicons/react/20/solid";
 
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
+  const [friendsRequests, setFriendsRequests] = useState([]);
+  const [answerFriend, setAnswerFriend] = useState(false);
   const searchUser = useSelector((state) => state.searchUser);
   const userInformation = useSelector((state) => state.userInformation);
   const chatTimeReal = useSelector((state) => state.chatTimeReal);
   const friendsByUser = useSelector((state) => state.friendsByUser);
-  const requestFriends = friendsByUser.filter(
-    (friend) => Number(friend.status) === 2
-  );
+  const [numberFriendsRequest, setNumberFriendsRequest] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+
   let set = new Set(chatTimeReal.map(JSON.stringify));
   let arrSinDuplicaciones = Array.from(set).map(JSON.parse);
-  const pruebaRequestFriends = [
-    {
-      id: "639b57d15871ad62a8b88c2d",
-      text: "Diego Apolo",
-      avatar:
-        "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
-    },
-    {
-      id: "639b57fa5871ad62a8b88c34",
-      text: "Diego Apolo",
-      avatar:
-        "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
-    },
-    {
-      id: "639e3f1acce29471f3b57770",
-      text: "Diego Apolo",
-      avatar:
-        "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
-    },
-  ];
+  const requestFriends = friendsByUser
+    .filter((friend) => Number(friend.status) === 2)
+    .map((friend) => friend.recipient);
+
+  const handleGetFriendsRequest = () => {
+    try {
+      console.log(requestFriends, "request");
+      if (requestFriends?.length && !answerFriend) {
+        axios
+          .post(`http://localhost:3000/api/users/info`, {
+            users: requestFriends,
+          })
+          .then((response) => {
+            setFriendsRequests(response.data);
+          });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setAnswerFriend(true);
+  };
   const { id } = useParams();
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
+  const handleResponseRequestFriend = (id, response) => {
+    dispatch(
+      confirmedRequestFriendAction({
+        UserA: userInformation._id,
+        UserB: id,
+        resp: response,
+      })
+    );
 
+    const filterRequestFriend = friendsRequests.filter(
+      (friend) => friend._id !== id
+    );
+    setFriendsRequests(filterRequestFriend);
+    setNumberFriendsRequest(numberFriendsRequest - 1);
+  };
   const auth = useAuth();
   const navigate = useNavigate();
-
+  useEffect(() => {
+    setNumberFriendsRequest(requestFriends.length);
+  }, [friendsByUser]);
   return (
     <nav className="w-full bg-black shadow  h-16 z-10 block sm:hidden ">
       <div className="justify-between mx-auto lg:max-w-7xl md:items-center md:flex md:px-8 relative z-10">
@@ -125,16 +150,24 @@ export default function NavBar() {
             }`}
           >
             <ul className="p-2 bg-black items-center rounded justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
-              <li className=" relative text-white flex gap-2 items-center p-2 border border-black rounded-lg transition duration:200  cursor-pointer">
-                <DropDownSelect
-                  status={"APPLICATION"}
-                  icon={"bi-people-fill"}
-                  select={pruebaRequestFriends}
-                  requests={requestFriends.length}
-                  confirmed={true}
-                  position={"left"}
+              <li
+                onClick={handleGetFriendsRequest}
+                className="relative text-white flex gap-2 items-center p-2 border border-black rounded-lg transition duration:200  cursor-pointer"
+              >
+                {numberFriendsRequest > 0 ? (
+                  <span className=" text-xs absolute top-2 left-6 flex items-center justify-center rounded-full w-5 h-5 bg-red-600 ">
+                    {requestFriends.length}
+                  </span>
+                ) : null}
+
+                <UserPlusIcon className="w-8" />
+                <DropDown
+                  isActive={isActive}
+                  setIsActive={setIsActive}
+                  friendRequests={friendsRequests}
+                  isNavBar={true}
+                  handleResponseRequestFriend={handleResponseRequestFriend}
                 />
-          
               </li>
               {routes.map((route, index) => {
                 return (

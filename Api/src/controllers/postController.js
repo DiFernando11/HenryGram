@@ -7,8 +7,8 @@ const { all } = require("axios");
 
 const postController = async (req, res) => {
   /*
-		Controlador de la Ruta para realizar un posteo
-	*/
+    Controlador de la Ruta para realizar un posteo
+  */
 
   const { userId, description } = req.body;
 
@@ -64,8 +64,8 @@ const postController = async (req, res) => {
 
 const postCommentController = async (req, res) => {
   /*
-		Controlador de la Ruta pora realizar un comentario
-	*/
+    Controlador de la Ruta pora realizar un comentario
+  */
 
   const { postId, userId, description } = req.body;
 
@@ -92,8 +92,8 @@ const postCommentController = async (req, res) => {
 
 const recomendedPostController = async (req, res) => {
   /*
-		Controlador de la Ruta para obtener publicaciones recomendadas
-	*/
+    Controlador de la Ruta para obtener publicaciones recomendadas
+  */
 
   const { userId } = req.params;
 
@@ -185,8 +185,8 @@ const recomendedPostController = async (req, res) => {
 
 const getAllUPost = async (req, res) => {
   /*
-		Controlador de la Ruta para obtener todos las publicaciones
-	*/
+    Controlador de la Ruta para obtener todos las publicaciones
+  */
 
   const posts = [];
 
@@ -227,8 +227,8 @@ const getAllUPost = async (req, res) => {
 
 const getPostsByHashtag = async (req, res) => {
   /*
-		Controlador de la Ruta para obtener publicaciones por hashtag
-	*/
+    Controlador de la Ruta para obtener publicaciones por hashtag
+  */
 
   const { hashtag } = req.params;
 
@@ -243,18 +243,23 @@ const getPostsByHashtag = async (req, res) => {
 
 const getPostsByUser = async (req, res) => {
   /*
-		Controlador de la Ruta para obtener publicaciones de un usuario
-	*/
+    Controlador de la Ruta para obtener publicaciones de un usuario
+  */
 
-  const { id } = req.params;
+  const { id, limit } = req.query;
 
   if (!id || id === "undefined") {
     return res.status(404).json({ message: "Posts not found" });
   }
 
   try {
-    const posts = await PostSchema.find({ userId: id });
-    return res.status(200).json(posts);
+    const offset = 20;
+
+    const posts = await PostSchema.find({ userId: id }).sort({ created: -1 });
+
+    const twentyPosts = posts.slice(offset * (limit - 1), offset * limit)
+
+    return res.status(200).json(twentyPosts);
   } catch (error) {
     return res.status(500).json(error);
   }
@@ -262,8 +267,8 @@ const getPostsByUser = async (req, res) => {
 
 const deletePost = async (req, res) => {
   /*
-		Controlador de la Ruta para eliminar una publicacion
-	*/
+    Controlador de la Ruta para eliminar una publicacion
+  */
 
   const { id } = req.params;
 
@@ -286,8 +291,8 @@ const deletePost = async (req, res) => {
 
 const likePost = async (req, res) => {
   /*
-		Controlador de la Ruta para dar like a una publicacion
-	*/
+    Controlador de la Ruta para dar like a una publicacion
+  */
 
   const { postId, userId } = req.query;
 
@@ -302,7 +307,7 @@ const likePost = async (req, res) => {
         post.likes.push(userId);
       }
       await post.save();
-      res.status(200).json({message: "I like o dislike it sent with success"});
+      res.status(200).json({ message: "I like o dislike it sent with success" });
     } else {
       res.status(404).json({ message: "Post not found" });
     }
@@ -313,8 +318,8 @@ const likePost = async (req, res) => {
 
 const updatePost = async (req, res) => {
   /*
-		Controlador de la Ruta para actualizar una publicacion
-	*/
+    Controlador de la Ruta para actualizar una publicacion
+  */
 
   const { id } = req.params;
 
@@ -339,8 +344,8 @@ const updatePost = async (req, res) => {
 
 const getFriendsMatches = async (req, res) => {
   /*
-		Controlador de la Ruta para obtener los matches recomendados
-	*/
+    Controlador de la Ruta para obtener los matches recomendados
+  */
 
   const { userId } = req.params;
   let matches = [];
@@ -398,8 +403,8 @@ const getFriendsMatches = async (req, res) => {
 
 const getAllMatches = async (req, res) => {
   /*
-		Controlador de la Ruta para obtener todos los matches
-	*/
+    Controlador de la Ruta para obtener todos los matches
+  */
 
   console.log("getAllMatches");
 
@@ -447,8 +452,8 @@ const getAllMatches = async (req, res) => {
 
 const getComments = async (req, res) => {
   /*
-		Controlador de la Ruta para obtener los comentarios de una publicacion
-	*/
+    Controlador de la Ruta para obtener los comentarios de una publicacion
+  */
 
   const { id } = req.params;
 
@@ -456,7 +461,7 @@ const getComments = async (req, res) => {
     const post = await PostSchema.findOne({ _id: id });
     if (post) {
 
-      let comentsWithUsers = await Promise.all( post.comments.map(async (comment) => {
+      let comentsWithUsers = await Promise.all(post.comments.map(async (comment) => {
         const user = await UserSchema.findOne({ _id: comment.userId }, { firstName: 1, lastName: 1, avatar: 1 });
         const userDestructured = { comment: comment, firstName: user.firstName, lastName: user.lastName, avatar: user.avatar };
         return userDestructured;
@@ -473,8 +478,8 @@ const getComments = async (req, res) => {
 
 const getPostsById = async (req, res) => {
   /*
-		Controlador de la Ruta para obtener un post por su id
-	*/
+    Controlador de la Ruta para obtener un post por su id
+  */
 
   const { id } = req.params;
 

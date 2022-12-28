@@ -18,8 +18,9 @@ function PreviewMesagge({ title }) {
   // const [isChat, setIsChat] = useState(true);
   const { pathname } = useLocation();
   const { id } = useParams();
+  const { state } = useLocation();
   const [isChat, setIsChat] = useState(
-    pathname !== `/message/chat/group/${id}`
+    state?.isMatch ? false : pathname !== `/message/chat/group/${id}`
   );
   const chatPrevent = useSelector((state) => state.chatPrevent);
   const messages = useSelector((state) => state.chatUsers);
@@ -77,7 +78,7 @@ function PreviewMesagge({ title }) {
                 : "text-sm font-medium text-white bg-gray-900"
             } rounded-r-md border border-gray-900 dark:border-white`}
           >
-            <img src={logoMatch} className={"w-6 h-6"} />
+            <img src={logoMatch} className={"w-6 h-6 "} />
             Match
           </button>
         </Link>
@@ -114,25 +115,27 @@ function PreviewMesagge({ title }) {
                 />
               ))
               .reverse()
-          : messages?.map((message, index) => (
-              <CardPreviewMessage
-                key={index}
-                image={
-                  message?.gr?.avatar ||
-                  "https://res.cloudinary.com/dgmv4orvc/image/upload/v1671629546/Images/g8ivckqtlen69rgcyzop.png"
-                }
-                message={message?.ch?.content}
-                id={message?.gr?._id}
-                time={message?.ch?.createdAt}
-                name={message?.ch?.firstName}
-                title={`${
-                  message?.gr?.title ? message?.gr?.title : `Grupo ${index}`
-                } `}
-                creator={message?.gr?.creator}
-                pendings={message?.gr?.pendings}
-                sender={message?.ch?.userId}
-              />
-            ))}
+          : messages
+              ?.map((message, index) => (
+                <CardPreviewMessage
+                  key={index}
+                  image={
+                    message?.gr?.avatar ||
+                    "https://res.cloudinary.com/dgmv4orvc/image/upload/v1671629546/Images/g8ivckqtlen69rgcyzop.png"
+                  }
+                  message={message?.ch?.content}
+                  id={message?.gr?._id}
+                  time={message?.ch?.createdAt}
+                  name={message?.ch?.firstName}
+                  title={`${
+                    message?.gr?.title ? message?.gr?.title : `Grupo ${index}`
+                  } `}
+                  creator={message?.gr?.creator}
+                  pendings={message?.gr?.pendings}
+                  sender={message?.ch?.userId}
+                />
+              ))
+              .reverse()}
         {!messages?.length &&
           !messages &&
           [1, 2, 3, 4, 5, 6, 7, 8].map((value) => <SkeletonUser key={value} />)}
