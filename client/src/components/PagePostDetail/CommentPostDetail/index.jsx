@@ -41,7 +41,7 @@ function CommentPostDetail({ comments }) {
 			<Comments />
 			<div
 				id="viewHeightComment"
-				className="h-[calc(100vh-24rem)] mt-6 overflow-y-scroll"
+				className="xl:h-[calc(100vh-28rem)] mt-6 xl:overflow-y-scroll"
 			>
 				{comments.length
 					? comments.map((user) => (

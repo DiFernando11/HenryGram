@@ -183,7 +183,7 @@ function App() {
           path="/post/:id/:userId"
           element={
             <AuthRoute>
-              {/* <SideBar /> */}
+              <SideBar />
               <NavBar />
               <ViewPost />
             </AuthRoute>
