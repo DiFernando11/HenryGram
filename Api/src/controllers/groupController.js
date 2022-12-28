@@ -27,13 +27,17 @@ const addChat = async (req, res, next) => {
     try {
         const { groupId, userId, content } = req.body;
 
+        const user = await UserSchema.find(
+            { _id: userId }
+        )
+
         const chat = await ChatSchema.create({
             groupId,
             userId,
             content,
             firstName: user.firstName,
             lastName: user.lastName,
-            avatar: user.avatar
+            avatar: user.avatar ? user.avatar : "https://res.cloudinary.com/dgmv4orvc/image/upload/v1671220771/Images/jrk0nxkgvmbb3hfsqwbk.png"
         })
 
         res.status(200).json({ msg: "Message added successfully." });
