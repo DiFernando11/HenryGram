@@ -322,10 +322,10 @@ export const searchChatsAction = (payload) => {
 //SEARCH
 
 //GET ALL POSTS
-export const getPostAllUsers = () => {
+export const getPostAllUsers = (id) => {
 	return async (dispatch) => {
 		try {
-			const result = await axios.get('http://localhost:3000/api/posts');
+			const result = await axios.get(`http://localhost:3000/api/posts/recomended/${id}`);
 			dispatch({ type: GET_ALL_POSTS, payload: result.data });
 		} catch (error) {
 			console.log(error);

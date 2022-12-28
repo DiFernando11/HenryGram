@@ -15,13 +15,14 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const user = useSelector((state) => state.userInformation);
+  console.log(user);
   useEffect(() => {
-    dispatch(getPostAllUsers());
-  }, []);
+    dispatch(getPostAllUsers(user?._id));
+  }, [user]);
   useEffect(() => {
     if (page > 1) {
       axios
-        .get(`http://localhost:3000/api/posts?limit=${page}`)
+        .get(`http://localhost:3000/api/posts/recomended/${user?._id}?limit=${page}`)
         .then((response) => {
           setNewsLoadPost([...newsLoadPost, ...response.data]);
           setLoading(false);
@@ -31,6 +32,10 @@ function Home() {
         });
     }
   }, [page]);
+
+
+  useEffect(() => {
+  }, [postUsers]);
 
   const handleScroll = () => {
     if (
