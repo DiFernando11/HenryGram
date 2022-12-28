@@ -16,11 +16,10 @@ function Profile({ userInformation }) {
 	useEffect(() => {
 		setIsFriend(userProfileFriend?._id === userInformationVerify?._id);
 		return () => {
-			setIsFriend(false);
+			setIsFriend(true);
 		};
 	}, [id]);
-
-
+	console.log(isFriend)
 
 	return (
 		<main className="w-full">
