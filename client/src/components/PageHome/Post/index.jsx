@@ -3,8 +3,7 @@ import logoMatch from "../../../assets/coheteHenry.png";
 import SendMessage from "../../PageChats/SendMessage";
 import MyMenu from "./MyMenu";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, Link, useParams } from "react-router-dom";
-import DropDownSelect from "../../DropDownSelect";
+import { useLocation, Link } from "react-router-dom";
 import StatusFriend from "../../StatusFriend";
 import {
   invitationSendGroupAction,

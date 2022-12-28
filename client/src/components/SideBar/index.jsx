@@ -1,13 +1,14 @@
-import { Sidebar } from "flowbite-react";
-import React, {useState} from "react";
-import { Link, NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
-import HiChartPi from "../../assets/coheteHenry.png";
+import React, { useEffect, useState } from "react";
+import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 import { useAuth } from "../auth";
-import DropDownSelect from "../DropDownSelect";
 import SearchBar from "../SearchBar";
 import henryGramLogo from "../../assets/logoHenry.png";
-import { useSelector } from "react-redux";
-import { searchUserAction } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  confirmedRequestFriendAction,
+  searchUserAction,
+} from "../../redux/actions";
 import CardUser from "../CardUser";
 import DropDown from "../DropDown/DropDown";
 import { UserPlusIcon } from "@heroicons/react/20/solid";
@@ -17,37 +18,58 @@ function SideBar() {
   const userInformation = useSelector((state) => state.userInformation);
   const chatTimeReal = useSelector((state) => state.chatTimeReal);
   const friendsByUser = useSelector((state) => state.friendsByUser);
-  const [isActive, setIsActive] = useState(false)
-  
+  const [isActive, setIsActive] = useState(false);
+
   const { id } = useParams();
   const { pathname } = useLocation();
   let set = new Set(chatTimeReal.map(JSON.stringify));
   let arrSinDuplicaciones = Array.from(set).map(JSON.parse);
-  const requestFriends = friendsByUser.filter(
-    (friend) => Number(friend.status) === 2
-  );
-  const pruebaRequestFriends = [
-    {
-      id: "639b57d15871ad62a8b88c2d",
-      firstName: "Diego Apolo",
-      avatar:
-        "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
-    },
-    {
-      id: "639b57fa5871ad62a8b88c34",
-      firstName: "Diego Apolo",
-      avatar:
-        "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
-    },
-    {
-      id: "639e3f1acce29471f3b57770",
-      firstName: "Diego Apolo",
-      avatar:
-        "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
-    },
-  ];
+  const [friendsRequests, setFriendsRequests] = useState([]);
+  const [numberFriendsRequest, setNumberFriendsRequest] = useState(0);
+  const [answerFriend, setAnswerFriend] = useState(false);
+  const dispatch = useDispatch();
+  const requestFriends = friendsByUser
+    .filter((friend) => Number(friend.status) === 2)
+    .map((friend) => friend.recipient);
+
+  const handleGetFriendsRequest = () => {
+    try {
+      console.log(requestFriends, "request");
+      if (requestFriends?.length && !answerFriend) {
+        axios
+          .post(`http://localhost:3000/api/users/info`, {
+            users: requestFriends,
+          })
+          .then((response) => {
+            setFriendsRequests(response.data);
+          });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setAnswerFriend(true);
+  };
+
+  const handleResponseRequestFriend = (id, response) => {
+    dispatch(
+      confirmedRequestFriendAction({
+        UserA: userInformation._id,
+        UserB: id,
+        resp: response,
+      })
+    );
+
+    const filterRequestFriend = friendsRequests.filter(
+      (friend) => friend._id !== id
+    );
+    setFriendsRequests(filterRequestFriend);
+    setNumberFriendsRequest(numberFriendsRequest - 1);
+  };
   const auth = useAuth();
   const navigate = useNavigate();
+  useEffect(() => {
+    setNumberFriendsRequest(requestFriends.length);
+  }, [friendsByUser]);
   return (
     <aside
       className="sm:block hidden w-[22rem] bgSideBar font-sans relative z-10 overflow-x-visible bg-[url('https://besthqwallpapers.com/Uploads/21-8-2020/140202/thumb2-yellow-lines-background-material-design-yellow-lines-creative-yellow-background-lines-background.jpg')] "
@@ -80,17 +102,28 @@ function SideBar() {
           </div>
 
           <ul className="flex flex-col">
-            <li className={`flex items-center py-5 w-full relative ${isActive ? "text-white border-white" : "text-black border-transparent"} font-medium rounded-lg cursor-pointer transition duration:200 border  hover:border-white hover:text-white`}>
-              {/* <DropDownSelect
-                status={"APPLICATION"}
-                icon={"bi-people-fill"}
-                select={pruebaRequestFriends}
-                requests={requestFriends.length}
-                confirmed={true}
-                position={"left"}
-              /> */}
+            <li
+              onClick={handleGetFriendsRequest}
+              className={`flex items-center py-5 w-full relative ${
+                isActive
+                  ? "text-white border-white"
+                  : "text-black border-transparent"
+              } font-medium rounded-lg cursor-pointer transition duration:200 border  hover:border-white hover:text-white`}
+            >
+              {numberFriendsRequest > 0 ? (
+                <>
+                  <span className=" text-xs absolute top-5 left-6 flex items-center justify-center rounded-full w-5 h-5 bg-red-600 ">
+                    {numberFriendsRequest}
+                  </span>
+                </>
+              ) : null}
               <UserPlusIcon className="w-8 ml-2" />
-              <DropDown isActive={isActive} setIsActive={setIsActive} friendRequests={pruebaRequestFriends} />
+              <DropDown
+                isActive={isActive}
+                setIsActive={setIsActive}
+                friendRequests={friendsRequests}
+                handleResponseRequestFriend={handleResponseRequestFriend}
+              />
             </li>
 
             <li>

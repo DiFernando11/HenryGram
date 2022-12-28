@@ -78,7 +78,7 @@ function PreviewMesagge({ title }) {
                 : "text-sm font-medium text-white bg-gray-900"
             } rounded-r-md border border-gray-900 dark:border-white`}
           >
-            <img src={logoMatch} className={"w-6 h-6"} />
+            <img src={logoMatch} className={"w-6 h-6 "} />
             Match
           </button>
         </Link>
