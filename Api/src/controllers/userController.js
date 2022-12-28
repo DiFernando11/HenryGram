@@ -372,12 +372,12 @@ const updateUserInfo = async (req, res) => {
 };
 
 const getNameAndAvatar = async (req, res) => {
-  
+
   const { userId } = req.params;
   const friends = []
   try {
     let friendships = await FriendSchema.find({ $or: [{ requester: userId }, { recipient: userId }] });
-    if (friendships.length>0) {
+    if (friendships.length > 0) {
       friendships.forEach((friendship) => {
         if (friendship.requester === userId) {
           friends.push(friendship.recipient)
@@ -388,18 +388,52 @@ const getNameAndAvatar = async (req, res) => {
     } else {
       return res.status(404).json({ message: "Friendship not found" });
     }
-    let users = await UserSchema.find({ _id: { $in: friends } }, {_id:1, firstName: 1, lastName: 1, avatar: 1 });
+    let users = await UserSchema.find({ _id: { $in: friends } }, { _id: 1, firstName: 1, lastName: 1, avatar: 1 });
     if (users) {
       return res.status(200).json(users);
-    }else{
+    } else {
       return res.status(404).json({ message: "Users not found" });
     }
   } catch (error) {
-    return res.status(500).json({ error});
+    return res.status(500).json({ error });
   }
 
+}
+
+
+const getBasicInfoUsers = async (req, res) => {
+  /*
+       Controlador de la Ruta para obtener info básica de los users (id, firstName, lastName, avatar)
+  */
+
+  const { users } = req.body; // users (array)
+
+  Promise.resolve(users)
+    .then((users) => {
+      let response = Promise.all(
+        users.map(async (el) => {
+          return await UserSchema.findOne(
+            { _id: el },
+            { _id: 1, firstName: 1, lastName: 1, avatar: 1 }
+          );
+        })
+      );
+      return response;
+    })
+    .then((result) => {
+      if (result.length) {
+        return res.status(200).json(result);
+      } else {
+        return res.status(404).json({ message: "Users not found" });
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+      return res.status(404).json({ message: "Users not found" });
+    });
 
 }
+
 
 module.exports = {
   postUser,
@@ -414,4 +448,5 @@ module.exports = {
   getGroups,
   updateUserInfo,
   getNameAndAvatar,
+  getBasicInfoUsers
 };

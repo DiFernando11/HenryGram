@@ -13,6 +13,7 @@ const {
     getGroups,
     updateUserInfo,
     getNameAndAvatar,
+    getBasicInfoUsers
 } = require('../controllers/userController');
 
 
@@ -30,5 +31,6 @@ router.get('/users/messages/:id', getMessages);
 router.get('/users/groups/:id', getGroups);
 router.put('/users/:id', updateUserInfo);
 router.get('/users/nameAndAvatar/:userId', getNameAndAvatar);
+router.post('/users/info', getBasicInfoUsers);
 
 module.exports = router;
