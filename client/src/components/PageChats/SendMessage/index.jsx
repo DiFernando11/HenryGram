@@ -58,6 +58,7 @@ function SendMessage({ scrollLastMessage, messageSend }) {
     setSendMessage("");
     scrollLastMessage && setTimeout(() => scrollLastMessage(), 100);
   };
+
   useEffect(() => {
     const receivedMessage = (sendMessage) => {
       dispatch(chatTimeReal(sendMessage));

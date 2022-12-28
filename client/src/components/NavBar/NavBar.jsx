@@ -132,6 +132,7 @@ export default function NavBar() {
                   select={pruebaRequestFriends}
                   requests={requestFriends.length}
                   confirmed={true}
+                  position={"left"}
                 />
           
               </li>

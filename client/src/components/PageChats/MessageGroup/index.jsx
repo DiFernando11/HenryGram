@@ -22,6 +22,7 @@ function MessageGroup() {
   const [oldMessage, setOldMessage] = useState([]);
   const chatUsers = useSelector((state) => state.chatUsers);
   const chatTimeRealUser = useSelector((state) => state.chatTimeReal);
+  const userInformation = useSelector((state) => state.userInformation);
   function scrollLastMessage() {
     var objDiv = document.getElementById("divu");
     objDiv.scrollTop = objDiv.scrollHeight;
@@ -138,7 +139,7 @@ function MessageGroup() {
                 name={message.firstName}
                 lastName={message.lastName}
                 time={message.createdAt}
-                fromSelf={false}
+                fromSelf={message.userId === userInformation?._id}
               />
               // <div>hOKLA</div>
             ))
@@ -153,7 +154,7 @@ function MessageGroup() {
                   name={message.firstName}
                   lastName={message.lastName}
                   time={message.createdAt}
-                  fromSelf={false}
+                  fromSelf={message.userId === userInformation?._id}
                   //   from={message.from}
                   //   to={message.to}
                 />
@@ -187,7 +188,9 @@ function MessageGroup() {
               );
             })
           : null}
-          {!chatByUser?.length && chatByUser &&  <div className="text-white text-lg uppercase text-center bg-black p-4 rounded m-auto">{`greetings to all 👋`}</div>}
+        {!chatByUser?.length && chatByUser && (
+          <div className="text-white text-lg uppercase text-center bg-black p-4 rounded m-auto">{`greetings to all 👋`}</div>
+        )}
       </div>
       <SendMessage
         messageSend={sendMessageByGroup}

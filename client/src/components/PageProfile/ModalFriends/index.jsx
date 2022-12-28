@@ -2,15 +2,15 @@ import { Button, Modal } from "flowbite-react";
 import React from "react";
 import CardFriends from "../../PageHome/CardFriends";
 
-function ModalFriends({ show, setShow }) {
+function ModalFriends({ show, setShow, friends }) {
   return (
     <React.Fragment>
       <Modal show={show} onClose={() => setShow(!show)} size="md">
         <Modal.Header className="bg-black text-white">Friends</Modal.Header>
         <Modal.Body className="bg-black">
           <div className="calcViewModalFriends">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((value) => (
-              <CardFriends key={value} />
+            {friends.map((friend, index) => (
+              <CardFriends key={index} friend = { friend }/>
             ))}
           </div>
         </Modal.Body>
