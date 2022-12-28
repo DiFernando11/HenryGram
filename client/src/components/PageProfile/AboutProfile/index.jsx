@@ -139,6 +139,7 @@ function AboutProfile({ userInformation }) {
 						<div className="flex text-yellow gap-1 items-center  ">
 							{statusFriend === 'Seguir' && (
 								<>
+
 									<DropDownSelect
 										status={statusFriend}
 										icon="bi-person-fill-add"
@@ -216,12 +217,18 @@ function AboutProfile({ userInformation }) {
 				<div className='flex w-fit justify center items-center flex-col gap-3'>
 					<span className="text-md hover:cursor-pointer hover:scale-125" onClick={setShow}>Friends</span>
 					{
-						friendsAvatars.length !== 0 && <AvatarStack avatars={friendsAvatars} openModalFriends={setShow} show={show}/>
+						(friendsAvatars.length !== 0) ?( <AvatarStack avatars={friendsAvatars} openModalFriends={setShow} show={show}/>)
+						: (<span className="text-md">No friends</span>)
 					}
+
 				</div>
 				<div className='flex w-fit justify center items-center flex-col gap-3'>
 					<span className="text-md" >Matchs</span>
-					<AvatarStack avatars={friendsAvatars} />
+
+					{
+						(friendsAvatars.length !== 0) ?( <AvatarStack avatars={friendsAvatars} openModalFriends={setShow} show={show}/>)
+						: (<span className="text-md">No matchs</span>)
+					}
 				</div>
 
 				<ModalFriends setShow={setShow} show={show} friends = { friendsAvatars } />

@@ -14,7 +14,7 @@ function aboutYou({profileId}) {
     editAbout ? (
       <EditAbout />
     ) : (
-      <div className="flex w-full h-about mb-4 bg-blacker  dark:bg-gray-700 dark:border-gray-600">
+      <div className="flex w-full h-about mb-4 bg-blacker text-white dark:bg-gray-700 dark:border-gray-600">
         {
           about ? (
             <div className="flex flex-col w-full">
