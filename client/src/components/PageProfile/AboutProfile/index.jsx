@@ -214,17 +214,17 @@ function AboutProfile({ userInformation }) {
 			</div>
 			<div className="flex justify-between">
 				<div className='flex w-fit justify center items-center flex-col gap-3'>
-					<span className="text-md">Friends</span>
+					<span className="text-md hover:cursor-pointer hover:scale-125" onClick={setShow}>Friends</span>
 					{
 						friendsAvatars.length !== 0 && <AvatarStack avatars={friendsAvatars} openModalFriends={setShow} show={show}/>
 					}
 				</div>
 				<div className='flex w-fit justify center items-center flex-col gap-3'>
-					<span className="text-md">Matchs</span>
+					<span className="text-md" >Matchs</span>
 					<AvatarStack avatars={friendsAvatars} />
 				</div>
 
-				<ModalFriends setShow={setShow} show={show} />
+				<ModalFriends setShow={setShow} show={show} friends = { friendsAvatars } />
 			</div>
 			<div>
 				<h2 className="text-white text-center text-xl  mt-5 mb-3">About Me</h2>
