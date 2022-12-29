@@ -43,13 +43,13 @@ function CardMessage({
         <div className={styles.textMessage}>
           <span>{message}</span>
           <div className="grid grid-flow-col auto-cols-[minmax(0,_2fr)] items-center bg-transparent gap-2">
-            {messageImage?.length &&
+            {messageImage?.length ?
               messageImage.map((url) => (
                 <img
                   className="rounded pt-2 block w-full object-cover ml-auto  h-20"
                   src={url}
                 />
-              ))}
+              )) : null}
           </div>
         </div>
       </div>

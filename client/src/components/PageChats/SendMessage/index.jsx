@@ -41,7 +41,7 @@ function SendMessage({ scrollLastMessage, messageSend }) {
     setSendMessage(e.target.value);
     setShowEmoji(false);
   };
-  console.log(userInformation?._id, id, sendMessage, sendImages);
+
   const handleSentMessage = (e) => {
     e.preventDefault();
     dispatch(messageSend(userInformation?._id, id, sendMessage, sendImages));
@@ -57,8 +57,8 @@ function SendMessage({ scrollLastMessage, messageSend }) {
     dispatch(chatTimeReal(messageInformation));
     setSendMessage("");
     scrollLastMessage && setTimeout(() => scrollLastMessage(), 100);
+    setSendImage([]);
   };
-  console.log(chatTimeRealArray);
 
   useEffect(() => {
     const receivedMessage = (sendMessage) => {

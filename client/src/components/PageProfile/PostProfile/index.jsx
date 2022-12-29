@@ -16,16 +16,21 @@ function PostProfile({ userInformation }) {
   const [newsLoadPost, setNewsLoadPost] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [loadingPost, setLoadingPost] = useState(true);
   const location = useLocation();
   const dispatch = useDispatch();
   const { id } = useParams();
   useEffect(() => {
-    dispatch(getPostUSer(id));
+    (async () => {
+      dispatch(getPostUSer(id));
+      setLoadingPost(false);
+    })();
+
     return () => {
       dispatch(clearState("posts"));
     };
   }, [id]);
-
+  console.log(loadingPost);
   useEffect(() => {
     if (page > 1) {
       axios
@@ -66,7 +71,7 @@ function PostProfile({ userInformation }) {
   return (
     <section
       id="viewHeightPostByUser"
-      className="xl:w-3/5 xl:h-[calc(100vh-9rem)] xl:overflow-y-scroll pt-2 "
+      className="xl:w-3/5 xl:h-[calc(100vh-10rem)] xl:overflow-y-scroll pt-2 "
     >
       {location.pathname === `/profile/${userlogged?._id}` ? (
         // <div className="w-12 h-12 bg-amber-300 flex justify-center items-center rounded-full fixed ml-3 z-10 ">
@@ -87,6 +92,7 @@ function PostProfile({ userInformation }) {
       ) : null}
 
       <div>
+        {loadingPost && !postUser?.length && <SkeletonPost />}
         {postUser?.length ? (
           postUser
             ?.map((post) => (
@@ -103,15 +109,18 @@ function PostProfile({ userInformation }) {
               />
             ))
             .reverse()
-        ) : (
+        ) : !loadingPost ? (
           <div className="flex flex-col items-center h-[calc(100vh-22rem)]">
-          
-          <span className="uppercase block text-center mb-12">{`${"ali"} has not published`}</span>
-          <img className="block m-auto w-36 h-36" src={logoMatch} alt="logo match" />
+            <span className="uppercase block text-center mb-12">{`${"ali"} has not published`}</span>
+            <img
+              className="block m-auto w-36 h-36"
+              src={logoMatch}
+              alt="logo match"
+            />
           </div>
-        )}
-        {!postUser && [1, 2].map((value) => <SkeletonPost key={value} />)}
-        <div className="my-5">{loading && <Loader />}</div>
+        ) : <div className="my-5">{loading && <Loader />}</div>}
+
+        
         {newsLoadPost.length &&
           newsLoadPost.map((posts, index) => (
             <Post

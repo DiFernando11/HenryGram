@@ -15,7 +15,7 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const user = useSelector((state) => state.userInformation);
-  console.log(user);
+
   useEffect(() => {
     dispatch(getPostAllUsers(user?._id));
   }, [user]);
