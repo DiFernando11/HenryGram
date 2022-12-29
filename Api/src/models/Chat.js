@@ -23,11 +23,7 @@ const ChatSchema = mongoose.Schema({
     avatar: {
         type: String
     },
-    image: [
-        {
-            url: String,
-        }
-    ]
+    image: [String]
 },
     {
         timestamps: true
