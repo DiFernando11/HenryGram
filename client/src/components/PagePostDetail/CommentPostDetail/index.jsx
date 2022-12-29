@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import logoMatch from "../../../assets/coheteHenry.png";
 import SendMessage from "../../PageChats/SendMessage";
 import Comments from "../../PageHome/Comments/Comments";
@@ -16,7 +16,7 @@ function CommentPostDetail({ comments }) {
   //     console.log("llegue");
   //   }
   // };
-
+  const {id} = useParams()
   useEffect(() => {
     document.getElementById("viewHeightComment");
     // .addEventListener("scroll", handleScroll);
@@ -38,7 +38,7 @@ function CommentPostDetail({ comments }) {
         <img src={logoMatch} alt="match" className="w-8 h-8" />
         {/* )} */}
       </div>
-      <Comments />
+      <Comments postId={id}/>
       <div
         id="viewHeightComment"
         className="xl:h-[calc(100vh-21rem)] mt-6 xl:overflow-y-scroll"
