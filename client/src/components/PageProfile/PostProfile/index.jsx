@@ -66,7 +66,7 @@ function PostProfile({ userInformation }) {
   return (
     <section
       id="viewHeightPostByUser"
-      className="xl:w-3/5 xl:h-[calc(100vh-9rem)] xl:overflow-y-scroll pt-2 "
+      className=" xl:h-[calc(100vh-27vh)] xl:overflow-y-scroll pt-2 xl:bg-clip-padding xl:backdrop-filter xl:backdrop-blur-sm xl:bg-opacity-0"
     >
       {location.pathname === `/profile/${userlogged?._id}` ? (
         // <div className="w-12 h-12 bg-amber-300 flex justify-center items-center rounded-full fixed ml-3 z-10 ">

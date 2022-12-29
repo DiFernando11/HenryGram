@@ -112,129 +112,132 @@ function AboutProfile({ userInformation }) {
 	}
 
 	return (
-		<section className="xl:w-2/5 border-r  border-zinc-700 p-4  xl:h-[calc(100vh-9rem)] xl:overflow-y-scroll" onClick={ handleCloseModals }>
-			<div className="flex items-center mb-8 ml-2 justify-between ">
-				<div className="flex gap-2 items-center">
-					<h1 className="text-white text-2xl font-black">
-						{userInformation?.firstName} {userInformation?.lastName}
-					</h1>
-					{userInformation?.gender === 'male' ? (
-						<i className="bi bi-gender-male text-blue-500"></i>
-					) : (
-						<i className="bi bi-gender-female text-pink-500"></i>
-					)}
-				</div>
-				<div className='fit flex justify-between gap-6'>
-					{(userInformation._id !== userID) && (
-						<div className="flex gap-8 items-center">
-							<i
-								onClick={handleRedirectChatUser}
-								className="bi bi-chat-dots-fill text-yellow text-2xl"
-								title="Send message"
-							></i>
-						</div>
-					)}
-					{(userInformation._id !== userID) && (
-						<div className="flex text-yellow gap-1 items-center  ">
-							{statusFriend === 'Seguir' && (
-								<>
+		<section className="flex bg-red-500 w-full xl:h-[calc(100vh-15vh)] xl:overflow-y-scroll" onClick={ handleCloseModals }>
+			<div className='w-2/5 px-2 py-1 flex flex-col gap-1 bg-black'>
+				<div className="flex items-center mb-8 ml-2 mt-16 justify-around ">
+					<div className="flex gap-2 items-center">
+						<h1 className="text-white text-2xl font-black">
+							{userInformation?.firstName} {userInformation?.lastName}
+						</h1>
+						{userInformation?.gender === 'male' ? (
+							<i className="bi bi-gender-male text-blue-500"></i>
+						) : (
+							<i className="bi bi-gender-female text-pink-500"></i>
+						)}
+					</div>
+					<div className='fit flex justify-between gap-6'>
+						{(userInformation._id !== userID) && (
+							<div className="flex gap-8 items-center">
+								<i
+									onClick={handleRedirectChatUser}
+									className="bi bi-chat-dots-fill text-yellow text-2xl"
+									title="Send message"
+								></i>
+							</div>
+						)}
+						{(userInformation._id !== userID) && (
+							<div className="flex text-yellow gap-1 items-center  ">
+								{statusFriend === 'Seguir' && (
+									<>
 
-									<DropDownSelect
-										status={statusFriend}
-										icon="bi-person-fill-add"
-										select={[
-											{
-												text: 'Send friend request',
-												icon: 'bi-plus',
-												handleActionFriend: handleSendRequestFriend,
-											},
-										]}
-									/>
-								</>
-							)}
-							{statusFriend === 'Enviada' && (
-								<>
-									<DropDownSelect
-										status={statusFriend}
-										icon="bi-person-fill-exclamation"
-										select={[
-											{
-												text: 'Cancel request',
-												icon: 'bi-check',
-												handleActionFriend: handleRejectReuqestFriend,
-											},
-										]}
-									/>
-								</>
-							)}
-							{statusFriend === 'Recibido' && (
-								<>
+										<DropDownSelect
+											status={statusFriend}
+											icon="bi-person-fill-add"
+											select={[
+												{
+													text: 'Send friend request',
+													icon: 'bi-plus',
+													handleActionFriend: handleSendRequestFriend,
+												},
+											]}
+										/>
+									</>
+								)}
+								{statusFriend === 'Enviada' && (
+									<>
+										<DropDownSelect
+											status={statusFriend}
+											icon="bi-person-fill-exclamation"
+											select={[
+												{
+													text: 'Cancel request',
+													icon: 'bi-check',
+													handleActionFriend: handleRejectReuqestFriend,
+												},
+											]}
+										/>
+									</>
+								)}
+								{statusFriend === 'Recibido' && (
+									<>
+										<DropDownSelect
+											status={statusFriend}
+											icon="bi-people-fill"
+											select={[
+												{
+													text: 'Accept',
+													icon: 'bi-check',
+													handleActionFriend: handleConfirmedReuqestFriend,
+												},
+												{
+													text: 'Reject',
+													icon: 'bi-x',
+													handleActionFriend: handleRejectReuqestFriend,
+												},
+											]}
+										/>
+									</>
+								)}
+								{statusFriend === 'Amigos' && (
 									<DropDownSelect
 										status={statusFriend}
 										icon="bi-people-fill"
 										select={[
 											{
-												text: 'Accept',
-												icon: 'bi-check',
-												handleActionFriend: handleConfirmedReuqestFriend,
-											},
-											{
-												text: 'Reject',
-												icon: 'bi-x',
+												text: 'Delete friend',
+												icon: 'bi-trash3-fill',
 												handleActionFriend: handleRejectReuqestFriend,
 											},
 										]}
 									/>
-								</>
-							)}
-							{statusFriend === 'Amigos' && (
-								<DropDownSelect
-									status={statusFriend}
-									icon="bi-people-fill"
-									select={[
-										{
-											text: 'Delete friend',
-											icon: 'bi-trash3-fill',
-											handleActionFriend: handleRejectReuqestFriend,
-										},
-									]}
-								/>
-							)}
-						</div>
-					)}
-					{(userInformation._id === userID) && (
-						<>
-							<i
-								className="bi bi-gear-fill text-xl text-yellow"
-								onClick={() => setShowEditProfile(!showEditProfile)}
-							></i>
-						</>
-					)}
+								)}
+							</div>
+						)}
+					</div>
 				</div>
-			</div>
-			<div className="flex justify-between">
-				<div className='flex w-fit justify center items-center flex-col gap-3'>
-					<span className="text-md hover:cursor-pointer hover:scale-125" onClick={setShow}>Friends</span>
-					{
-						(friendsAvatars.length !== 0) ?( <AvatarStack avatars={friendsAvatars} openModalFriends={setShow} show={show}/>)
-						: (<span className="text-md">No friends</span>)
-					}
+				{(userInformation._id === userID) && (
+					<>
+						<i
+							className="bi bi-gear-fill text-xl text-yellow"
+							onClick={() => setShowEditProfile(!showEditProfile)}
+						></i>
+					</>
+				)}
+				<div className="flex justify-between">
+					<div className='flex w-fit justify center items-center flex-col gap-3'>
+						<span className="text-md hover:cursor-pointer hover:scale-125" onClick={setShow}>Friends</span>
+						{
+							(friendsAvatars.length !== 0) ?( <AvatarStack avatars={friendsAvatars} openModalFriends={setShow} show={show}/>)
+							: (<span className="text-md">No friends</span>)
+						}
 
+					</div>
+					<div className='flex w-fit justify center items-center flex-col gap-3'>
+						<span className="text-md" >Matchs</span>
+
+						{
+							(friendsAvatars.length !== 0) ?( <AvatarStack avatars={friendsAvatars} openModalFriends={setShow} show={show}/>)
+							: (<span className="text-md">No matchs</span>)
+						}
+					</div>
+
+					<ModalFriends setShow={setShow} show={show} friends = { friendsAvatars } />
 				</div>
-				<div className='flex w-fit justify center items-center flex-col gap-3'>
-					<span className="text-md" >Matchs</span>
-
-					{
-						(friendsAvatars.length !== 0) ?( <AvatarStack avatars={friendsAvatars} openModalFriends={setShow} show={show}/>)
-						: (<span className="text-md">No matchs</span>)
-					}
-				</div>
-
-				<ModalFriends setShow={setShow} show={show} friends = { friendsAvatars } />
-			</div>
-			<div>
-				<OverYou profileId={ userInformation._id } />
 				<FavoriteActivities />
+			</div>
+			<div className='w-3/5 bg-black'>
+				<OverYou profileId={ userInformation._id } />
+				
 			</div>
 			<Transition
 				appear

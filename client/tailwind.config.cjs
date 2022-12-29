@@ -38,6 +38,9 @@ module.exports = {
         header: "26vh",
         banner: "20vh",
       },
+      spacing: {
+        avatar: "-4rem",
+      }
     },
   },
   plugins: [require("flowbite/plugin")],
