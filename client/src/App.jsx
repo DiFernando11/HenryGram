@@ -27,7 +27,7 @@ import {
 import ViewPost from "./components/PagePostDetail/viewPost";
 import SideBar from "./components/SideBar";
 import MessageGroup from "./components/PageChats/MessageGroup";
-
+import notFound from "../src/assets/404.png"
 function App() {
   //PORFAVOR NO BORRRAR
   //PORFAVOR NO BORRRAR
@@ -208,7 +208,7 @@ function App() {
           }
         />
 
-        <Route path="*" element={<p>Not found</p>} />
+        <Route path="*" element={<img src={notFound} className='w-screen h-screen' />} />
       </Routes>
     </AuthProvider>
   );

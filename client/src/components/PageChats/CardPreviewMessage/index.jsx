@@ -33,7 +33,7 @@ function CardPreviewMessage({
               position: "relative",
               borderRadius: "8px",
               transform: "translateX(15%)",
-              transition: "2s",
+              transition: "0.25s",
             }
           : { backgroundColor: "#242424" }
       }
