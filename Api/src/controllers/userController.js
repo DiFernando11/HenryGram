@@ -304,11 +304,11 @@ const getGroups = async (req, res) => {
   if (id.length !== 24)
     return res.status(404).json({ message: "Groups not found" });
 
-  const g = await UserSchema.findOne({ _id: ObjectId(id) }, { groups: 1 });
-
+  //const g = await UserSchema.findOne({ _id: ObjectId(id) }, { groups: 1 });
+  const g = await GroupSchema.find({ users: id });
   if (!g) return res.status(404).json({ message: "Groups not found" });
 
-  Promise.resolve(g.groups)
+  Promise.resolve(g)
     .then((value) => {
       let response = Promise.all(
         value.map(async (el) => {
@@ -361,7 +361,6 @@ const updateUserInfo = async (req, res) => {
     gender ? user.gender = gender : user.gender;
     banner ? user.banner = banner : user.banner;
     description ? user.description = description : user.description;
-
     try {
       await user.save();
       return res.status(200).json({ message: "User updated" });
@@ -372,9 +371,8 @@ const updateUserInfo = async (req, res) => {
 };
 
 const getNameAndAvatar = async (req, res) => {
-
   const { userId } = req.params;
-  const friends = []
+  const friends = [];
   try {
     let friendships = await FriendSchema.find({ $or: [{ requester: userId }, { recipient: userId }],  $and: [{ status: 3 }] });
     if (friendships.length > 0) {
@@ -382,13 +380,16 @@ const getNameAndAvatar = async (req, res) => {
         if (String(friendship.requester) === String(userId)) {
           friends.push(friendship.recipient)
         } else {
-          friends.push(friendship.requester)
+          friends.push(friendship.requester);
         }
-      })
+      });
     } else {
       return res.status(404).json({ message: "Friendship not found" });
     }
-    let users = await UserSchema.find({ _id: { $in: friends } }, { _id: 1, firstName: 1, lastName: 1, avatar: 1 });
+    let users = await UserSchema.find(
+      { _id: { $in: friends } },
+      { _id: 1, firstName: 1, lastName: 1, avatar: 1 }
+    );
     if (users) {
       return res.status(200).json(users);
     } else {
@@ -397,9 +398,7 @@ const getNameAndAvatar = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ error });
   }
-
-}
-
+};
 
 const getBasicInfoUsers = async (req, res) => {
   /*
@@ -431,9 +430,7 @@ const getBasicInfoUsers = async (req, res) => {
       console.log(e);
       return res.status(404).json({ message: "Users not found" });
     });
-
-}
-
+};
 
 module.exports = {
   postUser,
@@ -448,5 +445,5 @@ module.exports = {
   getGroups,
   updateUserInfo,
   getNameAndAvatar,
-  getBasicInfoUsers
+  getBasicInfoUsers,
 };
