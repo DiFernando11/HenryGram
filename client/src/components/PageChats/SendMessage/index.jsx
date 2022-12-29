@@ -41,16 +41,16 @@ function SendMessage({ scrollLastMessage, messageSend }) {
     setSendMessage(e.target.value);
     setShowEmoji(false);
   };
-
+  console.log(userInformation?._id, id, sendMessage, sendImages);
   const handleSentMessage = (e) => {
     e.preventDefault();
-console.log(userInformation?._id, id, sendMessage , "message")
-    dispatch(messageSend(userInformation?._id, id, sendMessage));
+    dispatch(messageSend(userInformation?._id, id, sendMessage, sendImages));
     socket.emit("message", userInformation?._id, id, sendMessage, hourSystem);
     const messageInformation = {
       from: userInformation._id,
       to: id,
       message: sendMessage,
+      image: sendImages,
       hour: hourSystem,
       fromSelf: true,
     };
@@ -58,6 +58,7 @@ console.log(userInformation?._id, id, sendMessage , "message")
     setSendMessage("");
     scrollLastMessage && setTimeout(() => scrollLastMessage(), 100);
   };
+  console.log(chatTimeRealArray);
 
   useEffect(() => {
     const receivedMessage = (sendMessage) => {

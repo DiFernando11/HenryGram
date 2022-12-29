@@ -158,9 +158,11 @@ function Messages() {
         id="divu"
         className={`${styles.messagesSent} relative h-[calc(100vh-12rem)] sm:h-[calc(100vh-8rem)] overflow-y-scroll`}
       >
-        {!chatByUser?.projectedMessages?.length && chatByUser && !chatTimeRealUser?.length (
-          <div className="text-white text-lg uppercase text-center bg-black p-4 rounded m-auto">{`greets ${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName} 👋`}</div>
-        )}
+        {!chatByUser?.projectedMessages?.length &&
+          chatByUser &&
+          !chatTimeRealUser?.length && (
+            <div className="text-white text-lg uppercase text-center bg-black p-4 rounded m-auto">{`greets ${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName} 👋`}</div>
+          )}
 
         {loadingOldMessage && <Loader />}
         {!isMoreMessages && (
@@ -180,6 +182,7 @@ function Messages() {
                 fromSelf={message.fromSelf}
                 from={message.from}
                 to={message.to}
+                messageImage={message.image}
               />
               // <div>hOKLA</div>
             ))
@@ -193,6 +196,7 @@ function Messages() {
                   image={chatByUser?.informationUserTo?.avatar}
                   name={chatByUser?.informationUserTo?.firstName}
                   lastName={chatByUser?.informationUserTo?.lastName}
+                  messageImage={message.image}
                   time={message.hour}
                   fromSelf={message.fromSelf}
                 />
@@ -209,6 +213,7 @@ function Messages() {
               image={chatByUser?.informationUserTo?.avatar}
               name={chatByUser?.informationUserTo?.firstName}
               lastName={chatByUser?.informationUserTo?.lastName}
+              messageImage={message.image}
               time={message.hour}
               fromSelf={message.fromSelf}
               from={message.from}

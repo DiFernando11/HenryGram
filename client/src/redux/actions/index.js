@@ -99,7 +99,6 @@ export const getFriendsByUser = (id) => {
       console.log(error);
     }
   };
-
 };
 //USERS INFORMATION
 //FRIENDS
@@ -217,13 +216,14 @@ export const getMessageByUserBackAction = (data) => {
   };
 };
 
-export const sendMessageBackAction = (from, to, message) => {
+export const sendMessageBackAction = (from, to, message, image) => {
   return async (dispatch) => {
     try {
       const result = await axios.post(`http://localhost:3000/api/messages`, {
         from,
         to,
         message,
+        image,
       });
       return dispatch({ type: SEND_MESSAGE_BACK, payload: result.data });
     } catch (error) {
@@ -324,14 +324,16 @@ export const searchChatsAction = (payload) => {
 //GET ALL POSTS
 
 export const getPostAllUsers = (id) => {
-	return async (dispatch) => {
-		try {
-			const result = await axios.get(`http://localhost:3000/api/posts/recomended/${id}`);
-			dispatch({ type: GET_ALL_POSTS, payload: result.data });
-		} catch (error) {
-			console.log(error);
-		}
-	};
+  return async (dispatch) => {
+    try {
+      const result = await axios.get(
+        `http://localhost:3000/api/posts/recomended/${id}`
+      );
+      dispatch({ type: GET_ALL_POSTS, payload: result.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 };
 
 export const getPostUSer = (id, limit) => {
