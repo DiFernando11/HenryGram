@@ -43,15 +43,15 @@ function HeaderProfile({ userInformation }) {
 	}, [userInformation]);
 
 	return (
-		<header className="relative h-36">
+		<header className="relative h-header">
 			<img
-				className="w-full h-36 object-cover absolute  "
+				className="w-full h-banner object-cover absolute"
 				src={loadingBanner ? giftUpload : bannerUser || userInformation?.banner}
 				alt="Portada User"
 			/>
-			<div className="absolute">
+			<div className="absolute bottom-0">
 				<img
-					className="w-32 h-32 object-cover rounded-full relative ml-5 top-1.5 border bg-neutral-600 border-amber-300"
+					className="w-32 h-32 object-cover rounded-full  ml-10 border-spacing-2 bg-neutral-600 "
 					src={
 						loadingAvatar ? giftUpload : avatarUser || userInformation?.avatar
 					}
@@ -102,7 +102,7 @@ function HeaderProfile({ userInformation }) {
 			)}
 
 			{(userInformation._id ===userId) && (
-				<div className="absolute right-3 bottom-3">
+				<div className="absolute right-3 top-3">
 					<button className="bg-stone-500 w-fit h-fit py-1 px-2 rounded-md gap-2 flex items-center justify-center" onClick={() => setEditHeader(!editHeader)}>
 						<p className='text-sm'>
 							{editHeader ? 'Cancelar' : 'Editar'}

@@ -35,6 +35,8 @@ module.exports = {
       height: {
         validate: "40%",
         about: "25vh",
+        header: "26vh",
+        banner: "20vh",
       },
     },
   },
