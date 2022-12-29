@@ -117,11 +117,11 @@ function AboutProfile({ userInformation }) {
   };
 
 	return (
-		<section className="flex bg-red-500 w-full xl:h-[calc(100vh-15vh)] xl:overflow-y-scroll" onClick={ handleCloseModals }>
-			<div className='w-2/5 px-2 py-1 flex flex-col gap-1 bg-black'>
-				<div className="flex items-center mb-8 ml-2 mt-16 justify-around ">
+		<section className="rounded-lg flex gap-2 justify-center w-full h-aboutSection xl:overflow-visible" onClick={ handleCloseModals }>
+			<div className='relative rounded-lg w-2/5 h-full py-1 flex flex-col gap-3 bg-gray900'>
+				<div className="flex items-center  ml-2 mt-custom2 justify-center z-0">
 					<div className="flex gap-2 items-center">
-						<h1 className="text-white text-2xl font-black">
+						<h1 className=" text-2xl font-black">
 							{userInformation?.firstName} {userInformation?.lastName}
 						</h1>
 						{userInformation?.gender === 'male' ? (
@@ -130,17 +130,9 @@ function AboutProfile({ userInformation }) {
 							<i className="bi bi-gender-female text-pink-500"></i>
 						)}
 					</div>
-					<div className='fit flex justify-between gap-6'>
-						{(userInformation._id !== userID) && (
-							<div className="flex gap-8 items-center">
-								<i
-									onClick={handleRedirectChatUser}
-									className="bi bi-chat-dots-fill text-yellow text-2xl"
-									title="Send message"
-								></i>
-							</div>
-						)}
-						{(userInformation._id !== userID) && (
+				</div>
+				<div className='w-full px-5 flex justify-between absolute top-2'>
+					{(userInformation._id !== userID) && (
 							<div className="flex text-yellow gap-1 items-center  ">
 								{statusFriend === 'Seguir' && (
 									<>
@@ -207,40 +199,56 @@ function AboutProfile({ userInformation }) {
 									/>
 								)}
 							</div>
-						)}
-					</div>
+					)}
+					{(userInformation._id !== userID) && (
+						<div className="flex gap-8 items-center">
+							<i
+								onClick={handleRedirectChatUser}
+								className="bi bi-chat-dots-fill text-yellow text-2xl"
+								title="Send message"
+							></i>
+						</div>
+					)}
 				</div>
 				{(userInformation._id === userID) && (
-					<>
+					<div className="absolute top-4 right-4">
 						<i
 							className="bi bi-gear-fill text-xl text-yellow"
 							onClick={() => setShowEditProfile(!showEditProfile)}
 						></i>
-					</>
-				)}
-				<div className="flex justify-between">
-					<div className='flex w-fit justify center items-center flex-col gap-3'>
-						<span className="text-md hover:cursor-pointer hover:scale-125" onClick={setShow}>Friends</span>
-						{
-							(friendsAvatars.length !== 0) ?( <AvatarStack avatars={friendsAvatars} openModalFriends={setShow} show={show}/>)
-							: (<span className="text-md">No friends</span>)
-						}
-
 					</div>
-					<div className='flex w-fit justify center items-center flex-col gap-3'>
-						<span className="text-md" >Matchs</span>
-
-						{
-							(friendsAvatars.length !== 0) ?( <AvatarStack avatars={friendsAvatars} openModalFriends={setShow} show={show}/>)
-							: (<span className="text-md">No matchs</span>)
-						}
+				)}
+				<FavoriteActivities id = { id }/>
+				<div className="flex absolute bottom-0 w-full justify-around px-2 divide-x border-t">
+					<div className='flex w-full justify-around items-center gap-3 py-2'>		
+						<div onClick={setShow} className="flex flex-col justify-center items-center w-full gap-2 text-lg hover:cursor-pointer hover:scale-110">
+							<span className=" font-black">{friendsAvatars.length}</span>
+							<span className="" >Friends</span>
+						</div>
+						<div className="w-full flex justify-center">
+							{
+								(friendsAvatars.length !== 0) ?( <AvatarStack avatars={friendsAvatars} openModalFriends={setShow} show={show}/>)
+								: (<span className="text-md">No friends</span>)
+							}
+						</div>
+					</div>
+					<div className='flex w-full justify-around items-center gap-3 py-2'>
+						<div onClick={setShow} className="flex flex-col justify-center items-center w-full gap-2 text-lg hover:cursor-pointer hover:scale-110">
+							<span className=" font-black">{friendsAvatars.length}</span>
+							<span className="" >Matchs</span>
+						</div>
+						<div className="w-full flex justify-center">
+							{
+								(friendsAvatars.length !== 0) ?( <AvatarStack avatars={friendsAvatars} openModalFriends={setShow} show={show}/>)
+								: (<span className="text-md">No Matchs</span>)
+							}
+						</div>
 					</div>
 
 					<ModalFriends setShow={setShow} show={show} friends = { friendsAvatars } />
 				</div>
-				<FavoriteActivities />
 			</div>
-			<div className='w-3/5 bg-black'>
+			<div className=' rounded-lg w-3/5 bg-gray900 text-white' >
 				<OverYou profileId={ userInformation._id } />
 				
 			</div>

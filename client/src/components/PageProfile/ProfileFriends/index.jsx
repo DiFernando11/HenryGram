@@ -13,7 +13,9 @@ function ProfileFriends() {
       dispatch(getProfileFriendAction(id));
     })();
   }, [id]);
-  return <Profile userInformation={userProfileFriend} />;
+  return (
+    <Profile userInformation={userProfileFriend} />
+  )
 }
 
 export default ProfileFriends;

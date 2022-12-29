@@ -13,22 +13,27 @@ function YourProfile({profileId}) {
   }, [about, editAbout]);
 
   return (
-    <div className=" h-full bg-sky-500 w-full">
+    <div className=" h-full w-full p-4 gap-3 flex flex-col rounded-lg" >
+      <h1 className="text-2xl font-black">
+        Acerca de
+      </h1>
       {
         editAbout ? (
-          <EditAbout  editAbout = { editAbout } setEditAbout = { setEditAbout } userId = { profileId } currentAbout = { about } />
+          <div className="h-full ">
+            <EditAbout  editAbout = { editAbout } setEditAbout = { setEditAbout } userId = { profileId } currentAbout = { about } />
+          </div>
         ) : (
-          <div className="flex w-full h-about relative">
-            <BsPencilSquare className="absolute bottom-2 right-2 text-amber-300 cursor-pointer" onClick={() => setEditAbout(true)} />
+          <div className="flex w-full h-full  relative">
+            <BsPencilSquare className="absolute bottom-2 right-2 w-10 h-10 text-amber-300 cursor-pointer" onClick={() => setEditAbout(true)} />
             {
               about ? (
-                <div className="flex flex-col w-full py-4 px-3">
+                <div className="flex flex-col w-full">
                   <p>
                     {about}
                   </p>
                 </div>
               ) : (
-                <div className="flex flex-col w-full py-4 px-3">
+                <div className="flex flex-col w-full">
                   <p>
                     Completa tu perfil, describe quien eres y que te gusta...
                   </p> 

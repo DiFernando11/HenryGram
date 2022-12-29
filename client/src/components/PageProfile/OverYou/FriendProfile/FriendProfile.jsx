@@ -6,9 +6,10 @@ function FriendProfile({profileId}) {
   const about = useSelector((state) => state.userProfileFriend?.description);
   const name = useSelector((state) => state.userProfileFriend?.firstName);
   return (
-      <div className="flex w-full h-about my-4  text-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 dark:bg-gray-700 dark:border-gray-600 relative">
-
-
+      <div className=" h-full w-full  rounded-lg flex flex-col">
+        <h1 className="text-2xl font-black">
+          Acerca de
+        </h1>
         {
           about ? (
             <div className="flex flex-col w-full py-4 px-3">

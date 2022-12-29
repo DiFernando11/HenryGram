@@ -340,7 +340,7 @@ const getGroups = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   const { id } = req.params;
-  const { firstName, lastName, gender, avatar, banner, description } = req.body;
+  const { firstName, lastName, gender, avatar, banner, description, technologies, preferences } = req.body;
 
   console.log(req.body);
 
@@ -361,6 +361,8 @@ const updateUserInfo = async (req, res) => {
     gender ? user.gender = gender : user.gender;
     banner ? user.banner = banner : user.banner;
     description ? user.description = description : user.description;
+    technologies ? user.technologies = technologies : user.technologies;
+    preferences ? user.preferences = preferences : user.preferences;
     try {
       await user.save();
       return res.status(200).json({ message: "User updated" });
