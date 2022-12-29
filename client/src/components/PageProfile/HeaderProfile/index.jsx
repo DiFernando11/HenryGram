@@ -51,7 +51,7 @@ function HeaderProfile({ userInformation }) {
 			/>
 			<div className="absolute bottom-0">
 				<img
-					className="w-32 h-32 object-cover rounded-full  ml-10 border-spacing-2 bg-neutral-600 "
+					className="w-32 h-32 object-cover rounded-full ml-16 border-spacing-2 bg-neutral-600 "
 					src={
 						loadingAvatar ? giftUpload : avatarUser || userInformation?.avatar
 					}
