@@ -245,6 +245,7 @@ function MessageGroup() {
                 name={message.firstName}
                 lastName={message.lastName}
                 time={message.createdAt}
+                messageImage={message.image}
                 fromSelf={message.userId === userInformation?._id}
               />
               // <div>hOKLA</div>
@@ -261,6 +262,7 @@ function MessageGroup() {
                   lastName={message.lastName}
                   time={message.createdAt}
                   fromSelf={message.userId === userInformation?._id}
+                  messageImage={message.image}
                   //   from={message.from}
                   //   to={message.to}
                 />
@@ -280,6 +282,7 @@ function MessageGroup() {
               fromSelf={message.fromSelf}
               from={message.from}
               to={message.to}
+              messageImage={message.image}
             />
           ))}
         {!chatByUser

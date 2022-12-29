@@ -261,13 +261,14 @@ export const getChatByUserGroupAction = (id, limit) => {
     }
   };
 };
-export const sendMessageByGroup = (userId, groupId, content) => {
+export const sendMessageByGroup = (userId, groupId, content, image) => {
   return async (dispatch) => {
     try {
       const result = await axios.post(`http://localhost:3000/api/groups`, {
         userId,
         groupId,
         content,
+        image
       });
       return dispatch({ type: SEND_MESSAGE_BY_GROUP, payload: result.data });
     } catch (error) {

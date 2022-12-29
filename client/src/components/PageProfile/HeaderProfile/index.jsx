@@ -43,9 +43,9 @@ function HeaderProfile({ userInformation }) {
 	}, [userInformation]);
 
 	return (
-		<header className="relative h-header">
+		<header className="relative h-36">
 			<img
-				className="w-full h-banner object-cover absolute"
+				className="w-full h-36 object-cover absolute"
 				src={loadingBanner ? giftUpload : bannerUser || userInformation?.banner}
 				alt="Portada User"
 			/>
