@@ -1,115 +1,120 @@
-import { Transition } from '@headlessui/react'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, Navigate, useParams, useNavigate, useLocation } from 'react-router-dom'
+import { Transition } from "@headlessui/react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-	addChatBackAction,
-	confirmedRequestFriendAction,
-	getChatsBackAction,
-	sendRequestFriendAction,
-	getFriendsAvatarAndName
-} from '../../../redux/actions'
-import DropDownSelect from '../../DropDownSelect'
-import AvatarStack from '../../PageChats/AvatarStack'
-import FavoriteActivities from '../FavoriteActivities'
-import ModalEditProfile from '../ModalEditProfile'
-import ModalFriends from '../ModalFriends'
-import OverYou from '../OverYou'
-import axios from 'axios'
+  Link,
+  Navigate,
+  useParams,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+import {
+  addChatBackAction,
+  confirmedRequestFriendAction,
+  getChatsBackAction,
+  sendRequestFriendAction,
+  getFriendsAvatarAndName,
+} from "../../../redux/actions";
+import DropDownSelect from "../../DropDownSelect";
+import AvatarStack from "../../PageChats/AvatarStack";
+import FavoriteActivities from "../FavoriteActivities";
+import ModalEditProfile from "../ModalEditProfile";
+import ModalFriends from "../ModalFriends";
+import OverYou from "../OverYou";
+import axios from "axios";
 
 function AboutProfile({ userInformation }) {
+  //useInformation: Profile information
+  const dispatch = useDispatch();
+  const [statusFriend, setStatusFriend] = useState("seguir");
+  const [show, setShow] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
+  const chatUsers = useSelector((state) => state.chatUsers);
+  const chatPrevent = useSelector((state) => state.chatPrevent);
+  const friendsByUser = useSelector((state) => state.friendsByUser);
+  const userID = useSelector((state) => state.userInformation?._id);
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const applicationStatus = friendsByUser.find(
+    (friend) => friend.recipient == id || friend.requester == id
+  );
 
-	//useInformation: Profile information
-	const dispatch = useDispatch()
-	const [statusFriend, setStatusFriend] = useState('seguir')
-	const [show, setShow] = useState(false)
-	const [showEditProfile, setShowEditProfile] = useState(false)
-	const chatUsers = useSelector((state) => state.chatUsers)
-	const chatPrevent = useSelector((state) => state.chatPrevent)
-	const friendsByUser = useSelector((state) => state.friendsByUser)
-	const userID = useSelector((state) => state.userInformation?._id)
-	const navigate = useNavigate()
-	const { id } = useParams()
-	const location = useLocation()
-	const applicationStatus = friendsByUser.find(
-		(friend) => friend.recipient == id || friend.requester == id
-	)
+  const [friendsAvatars, setFriendsAvatars] = useState([]);
 
-	const [friendsAvatars, setFriendsAvatars] = useState([])
-	
-	useEffect(() => {
-		const findFriends = async(id) =>{
-			await axios.get( `http://localhost:3000/api/users/nameAndAvatar/${id}` )
-			.then( res => {
-				setFriendsAvatars(res.data)
-			})
-		}
-		findFriends(userInformation._id)
-	}, [userInformation])
+  useEffect(() => {
+    try {
+      axios
+        .get(`http://localhost:3000/api/users/nameAndAvatar/${id}`)
+        .then((response) => {
+          setFriendsAvatars(response.data);
+        });
+    } catch (error) {
+      console.error("error en la funcion get avatar");
+    }
+  }, [id]);
 
-	const handleStatusFriend = () => {
-		if (applicationStatus) {
-			if (Number(applicationStatus.status) === 1) setStatusFriend('Enviada')
-			else if (Number(applicationStatus.status) === 2)
-				setStatusFriend('Recibido')
-			else if (Number(applicationStatus.status) === 3)
-				setStatusFriend('Amigos')
-		} else setStatusFriend('Seguir')
-	}
+  const handleStatusFriend = () => {
+    if (applicationStatus) {
+      if (Number(applicationStatus.status) === 1) setStatusFriend("Enviada");
+      else if (Number(applicationStatus.status) === 2)
+        setStatusFriend("Recibido");
+      else if (Number(applicationStatus.status) === 3)
+        setStatusFriend("Amigos");
+    } else setStatusFriend("Seguir");
+  };
 
+  useEffect(() => {
+    handleStatusFriend();
+  }, [friendsByUser, id]);
 
-	useEffect(() => {
-		handleStatusFriend()
-	}, [friendsByUser, id])
+  useEffect(() => {
+    if (userID && !chatUsers?.length) {
+      dispatch(getChatsBackAction(userID));
+    }
+  }, [userID]);
 
-	useEffect(() => {
-		if (userID && !chatUsers?.length) {
-			dispatch(getChatsBackAction(userID))
-		}
-	}, [userID])
+  const handleRedirectChatUser = () => {
+    if (
+      !chatUsers.some((user) => user?._id === id) &&
+      !chatPrevent.some((user) => user?._id === id)
+    ) {
+      dispatch(
+        addChatBackAction({
+          avatar: userInformation?.avatar,
+          firstName: userInformation?.firstName,
+          lastName: userInformation?.lastName,
+          _id: userInformation?._id,
+        })
+      );
+    }
+    navigate(`/message/chat/${userInformation?._id}`);
+  };
 
-	const handleRedirectChatUser = () => {
-		if (
-			!chatUsers.some((user) => user?._id === id) &&
-			!chatPrevent.some((user) => user?._id === id)
-		) {
-			dispatch(
-				addChatBackAction({
-					avatar: userInformation?.avatar,
-					firstName: userInformation?.firstName,
-					lastName: userInformation?.lastName,
-					_id: userInformation?._id,
-				})
-			)
-		}
-		navigate(`/message/chat/${userInformation?._id}`)
-	}
+  const handleSendRequestFriend = () => {
+    dispatch(sendRequestFriendAction({ UserA: userID, UserB: id }));
+    setStatusFriend("Enviada");
+  };
+  const handleConfirmedReuqestFriend = () => {
+    dispatch(
+      confirmedRequestFriendAction({ UserA: userID, UserB: id, resp: true })
+    );
+    setStatusFriend("Amigos");
+  };
+  const handleRejectReuqestFriend = () => {
+    dispatch(
+      confirmedRequestFriendAction({
+        UserA: userID,
+        UserB: id,
+        resp: false,
+      })
+    );
+    setStatusFriend("Seguir");
+  };
 
-	const handleSendRequestFriend = () => {
-		dispatch(sendRequestFriendAction({ UserA: userID, UserB: id }))
-		setStatusFriend('Enviada')
-	}
-	const handleConfirmedReuqestFriend = () => {
-		dispatch(
-			confirmedRequestFriendAction({ UserA: userID, UserB: id, resp: true })
-		)
-		setStatusFriend('Amigos')
-	}
-	const handleRejectReuqestFriend = () => {
-		dispatch(
-			confirmedRequestFriendAction({
-				UserA: userID,
-				UserB: id,
-				resp: false,
-			})
-		)
-		setStatusFriend('Seguir')
-	}
-
-	const handleCloseModals = () => {
-		if (show) setShow(false)
-		if (showEditProfile) setShowEditProfile(false)
-	}
+  const handleCloseModals = () => {
+    if (show) setShow(false);
+    if (showEditProfile) setShowEditProfile(false);
+  };
 
 	return (
 		<section className="flex bg-red-500 w-full xl:h-[calc(100vh-15vh)] xl:overflow-y-scroll" onClick={ handleCloseModals }>
@@ -255,4 +260,4 @@ function AboutProfile({ userInformation }) {
 	)
 }
 
-export default AboutProfile
+export default AboutProfile;

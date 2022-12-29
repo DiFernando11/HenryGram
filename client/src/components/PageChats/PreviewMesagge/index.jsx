@@ -6,10 +6,8 @@ import styles from "./index.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import {
-  changeUltimateMessageTimeRealAction,
   getChatsBackAction,
   getChatsGroupAction,
-  messagesIsChat,
   searchChatsAction,
 } from "../../../redux/actions";
 import SkeletonUser from "../../Skeletons/skeletonUser";
@@ -22,25 +20,50 @@ function PreviewMesagge({ title }) {
   const [isChat, setIsChat] = useState(
     state?.isMatch ? false : pathname !== `/message/chat/group/${id}`
   );
+  const [verifyAction, setVerifyAction] = useState(false);
+  const [loading, setLoading] = useState(true);
   const chatPrevent = useSelector((state) => state.chatPrevent);
   const messages = useSelector((state) => state.chatUsers);
 
   const userInformation = useSelector((state) => state.userInformation);
   const dispatch = useDispatch();
-  const handleSwitchChats = () => {
-    setIsChat(!isChat);
+  const handleSwitchChats = (boolean) => {
+    if (isChat) {
+      (async () => {
+        dispatch(getChatsGroupAction(userInformation._id));
+        console.log("group");
+        setLoading(false);
+        setVerifyAction(false);
+      })();
+    } else if (!isChat) {
+      (async () => {
+        dispatch(getChatsBackAction(userInformation._id));
+        setLoading(false);
+        setVerifyAction(true);
+      })();
+    }
+    dispatch(getChatsGroupAction("clear"));
+    setIsChat(boolean);
   };
-
+  console.log(messages);
   useEffect(() => {
     if (userInformation) {
       if (!isChat) {
-        dispatch(getChatsGroupAction(userInformation._id));
+        (async () => {
+          dispatch(getChatsGroupAction(userInformation?._id));
+          setLoading(false);
+        })();
       } else {
-        dispatch(getChatsBackAction(userInformation._id));
+        (async () => {
+          dispatch(getChatsBackAction(userInformation?._id));
+          setLoading(false);
+        })();
       }
-      dispatch(getChatsGroupAction("clear"));
     }
-  }, [isChat, userInformation]);
+  }, [userInformation]);
+  useEffect(() => {
+    dispatch(getChatsGroupAction("clear"));
+  }, [isChat]);
 
   return (
     <section className={`${styles.container_preview_message} sm:mb-2 sm:ml-2`}>
@@ -49,34 +72,35 @@ function PreviewMesagge({ title }) {
         className="flex rounded-md shadow-sm items-center justify-center my-5"
         role="group"
       >
-        <Link to={"/message"}>
+        <Link to={"/message"} className='flex'>
           <button
-            onClick={handleSwitchChats}
+            onClick={() => handleSwitchChats(true)}
             type="button"
             className={`inline-flex items-center gap-3 py-2 px-4 ${
-              !messages?.length &&
+              (!messages?.length || !messages || loading || !userInformation) &&
               "pointer-events-none cursor-not-allowed text-white"
             }  ${
               isChat
-                ? "text-black bg-amber-300 text-base font-semibold"
-                : "text-sm font-medium text-white bg-gray-900"
-            }   rounded-l-lg border border-gray-900   dark:border-white`}
+                ? "text-black bg-yellow text-base font-semibold"
+                : "text-base font-semibold text-white bg-black"
+            } transition-all ease-in duration:100 rounded-l-lg border border-white dark:border-white`}
           >
             <i className="bi bi-chat-right-text-fill"></i>
             Chats
           </button>
 
           <button
-            onClick={handleSwitchChats}
+            onClick={() => handleSwitchChats(false)}
             type="button"
             className={`inline-flex items-center gap-3 py-2 px-4  ${
               !messages?.length &&
+              !loading &&
               "pointer-events-none cursor-not-allowed text-white"
             } ${
               !isChat
-                ? "text-black bg-amber-300 text-base font-semibold"
-                : "text-sm font-medium text-white bg-gray-900"
-            } rounded-r-md border border-gray-900 dark:border-white`}
+              ? "text-black bg-yellow text-base font-semibold "
+              : "text-base font-semibold text-white bg-black"
+            } transition-all ease-in duration:100 rounded-r-md border border-white dark:border-white`}
           >
             <img src={logoMatch} className={"w-6 h-6 "} />
             Match
