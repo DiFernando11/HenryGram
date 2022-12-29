@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import {
   chatTimeReal,
@@ -161,6 +161,7 @@ function MessageGroup() {
     const responsePendings = pendingsUser.filter((user) => user._id !== idUser);
     setPendingsUser(responsePendings);
   };
+  console.log(chatByUser);
 
   return (
     <section className="lg:w-[70%] sm:w-[50%] w-full">
