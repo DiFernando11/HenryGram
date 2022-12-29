@@ -17,12 +17,16 @@ function Home() {
   const user = useSelector((state) => state.userInformation);
 
   useEffect(() => {
-    dispatch(getPostAllUsers(user?._id));
+    if (user) {
+      dispatch(getPostAllUsers(user?._id));
+    }
   }, [user]);
   useEffect(() => {
     if (page > 1) {
       axios
-        .get(`http://localhost:3000/api/posts/recomended/${user?._id}?limit=${page}`)
+        .get(
+          `http://localhost:3000/api/posts/recomended/${user?._id}?limit=${page}`
+        )
         .then((response) => {
           setNewsLoadPost([...newsLoadPost, ...response.data]);
           setLoading(false);
@@ -34,8 +38,6 @@ function Home() {
   }, [page]);
 
 
-  useEffect(() => {
-  }, [postUsers]);
 
   const handleScroll = () => {
     if (

@@ -41,6 +41,7 @@ import {
   INVITATION_SEND_GROUP,
   RESPONSE_GROUP_INVITATION,
   LIKE_DISLIKE_POST,
+  UPDATE_POST_REFRESH,
 } from "../actions";
 
 const initialState = {
@@ -63,9 +64,10 @@ const initialState = {
   userPostsProfile: null,
   allPosts: [],
   updatePost: [],
-  deletePost: [],
+  // deletePost: [],
+  updatePostRefresh: false,
   comments: null,
-  postById:{},
+  postById: {},
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -299,24 +301,29 @@ const rootReducer = (state = initialState, action) => {
         userPostsProfile: [],
       };
     }
-
-    case GET_COMMENTS :{
-      return{
+    case UPDATE_POST_REFRESH: {
+      return {
         ...state,
-        comments: action.payload
-      }
+        updatePostRefresh: !state.updatePostRefresh,
+      };
+    }
+
+    case GET_COMMENTS: {
+      return {
+        ...state,
+        comments: action.payload,
+      };
     }
     case GET_POST_BY_ID: {
-      return{
+      return {
         ...state,
-        postById: action.payload
-      }
+        postById: action.payload,
+      };
     }
     case LIKE_DISLIKE_POST: {
       return {
         ...state,
       };
-
     }
     default:
       return state;

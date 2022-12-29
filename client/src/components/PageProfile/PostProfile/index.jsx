@@ -13,6 +13,7 @@ import Loader from "../../Loader";
 function PostProfile({ userInformation }) {
   const postUser = useSelector((state) => state.userPostsProfile);
   const userlogged = useSelector((state) => state.userInformation);
+  const updatePostRefresh = useSelector((state) => state.updatePostRefresh);
   const [newsLoadPost, setNewsLoadPost] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -29,8 +30,8 @@ function PostProfile({ userInformation }) {
     return () => {
       dispatch(clearState("posts"));
     };
-  }, [id]);
-  console.log(loadingPost);
+  }, [id, updatePostRefresh]);
+
   useEffect(() => {
     if (page > 1) {
       axios
@@ -118,9 +119,10 @@ function PostProfile({ userInformation }) {
               alt="logo match"
             />
           </div>
-        ) : <div className="my-5">{loading && <Loader />}</div>}
+        ) : (
+          <div className="my-5">{loading && <Loader />}</div>
+        )}
 
-        
         {newsLoadPost.length &&
           newsLoadPost.map((posts, index) => (
             <Post

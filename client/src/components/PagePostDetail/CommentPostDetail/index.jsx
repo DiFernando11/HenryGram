@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import logoMatch from "../../../assets/coheteHenry.png";
-import SendMessage from "../../PageChats/SendMessage";
 import Comments from "../../PageHome/Comments/Comments";
 import SkeletonUser from "../../Skeletons/skeletonUser";
+import CardComment from "../CardComment";
 function CommentPostDetail({ comments }) {
   // const [page, setPage] = useState(0);
   // const handleScroll = () => {
@@ -16,7 +17,17 @@ function CommentPostDetail({ comments }) {
   //     console.log("llegue");
   //   }
   // };
-  const {id} = useParams()
+  const userInformation = useSelector((state) => state.userInformation);
+  const [commentFront, setCommentFront] = useState([]);
+  function scrollLastMessage() {
+    var objDiv = document.getElementById("viewHeightComment");
+    objDiv.scrollTop = 0;
+  }
+  const handleSendCommentFront = (message) => {
+    setCommentFront([...commentFront, message]);
+    scrollLastMessage();
+  };
+  const { id } = useParams();
   useEffect(() => {
     document.getElementById("viewHeightComment");
     // .addEventListener("scroll", handleScroll);
@@ -38,35 +49,34 @@ function CommentPostDetail({ comments }) {
         <img src={logoMatch} alt="match" className="w-8 h-8" />
         {/* )} */}
       </div>
-      <Comments postId={id}/>
+      <Comments postId={id} handleSendCommentFront={handleSendCommentFront} />
       <div
         id="viewHeightComment"
         className="xl:h-[calc(100vh-21rem)] mt-6 xl:overflow-y-scroll"
       >
-        {comments?.length  ? (
+        {commentFront.length &&
+          commentFront.map((comment, index) => (
+            <CardComment
+              key={index}
+              userId={userInformation?._id}
+              firstName={userInformation?.firstName}
+              lastName={userInformation?.lastName}
+              avatar={userInformation?.avatar}
+              comment={comment}
+            />
+          ))}
+        {comments?.length ? (
           comments.map((user) => (
-            <div
+            <CardComment
               key={user._id}
-              className="p-4 border border-zinc-700 flex gap-2 items-center justify-start"
-            >
-              <Link to={`/profile/${user.comment.userId}`}>
-                <img
-                  className="fit-cover max-w-[30px] min-w-[30px] rounded-full"
-                  src={user.avatar}
-                  alt="user avatar"
-                />
-              </Link>
-              <div>
-                <Link to={`/profile/${user.comment.userId}`}>
-                  <span className="block text-sm leading-[8px] mb-2 ">{`${user.firstName} ${user.lastName}`}</span>
-                </Link>
-                <p className="text-sm  max-w-40 text-white">
-                  {user.comment.description}
-                </p>
-              </div>
-            </div>
+              userId={user.comment.userId}
+              firstName={user.firstName}
+              lastName={user.lastName}
+              avatar={user.avatar}
+              comment={user.comment.description}
+            />
           ))
-        ) : (
+        ).reverse() : (
           <span className="text-sm text-center block uppercase">
             Be the first to comment 🙂
           </span>

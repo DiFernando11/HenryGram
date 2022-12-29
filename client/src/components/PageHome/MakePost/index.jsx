@@ -37,9 +37,14 @@ function MakePost() {
     setInfoPost({ ...infoPost, avatar: "" });
     setAvatarGroup("");
   };
+  console.log(infoPost , "make")
   const handleDeleteImageSend = (indexImage) => {
     const imageSend = imagePost.filter((image, index) => index !== indexImage);
+    const mapPostImages = imageSend.map((image) => {
+      return { url: image };
+    });
     setImagePost(imageSend);
+    setInfoPost({ ...infoPost, image: mapPostImages });
   };
   const handleSelectTypePost = (type, boolean) => {
     setSelectTypePost(type);

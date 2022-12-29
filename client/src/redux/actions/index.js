@@ -37,6 +37,7 @@ export const CLEAR_POSTS = "CLEAR_POSTS";
 export const EDIT_PROFILE = "EDIT_PROFILE";
 export const LIKE_DISLIKE_POST = "LIKE_DISLIKE_POST";
 export const GET_FRIENDS_AVATAR_AND_NAME = "GET_FRIENDS_AVATAR_AND_NAME";
+export const UPDATE_POST_REFRESH = "UPDATE_POST_REFRESH";
 export const POST_COMMENTS = "POST_COMMENTS";
 export const GET_COMMENTS = "GET_COMMENTS";
 export const GET_POST_BY_ID = "GET_POST_BY_ID";
@@ -179,7 +180,9 @@ export const postUser = (post) => {
     }
   };
 };
-
+export const updatePostRefresh = () => {
+  return { type: UPDATE_POST_REFRESH };
+};
 //CLEAN POST
 export const cleanPostState = () => {
   return { type: CLEAN_POST };
@@ -268,7 +271,7 @@ export const sendMessageByGroup = (userId, groupId, content, image) => {
         userId,
         groupId,
         content,
-        image
+        image,
       });
       return dispatch({ type: SEND_MESSAGE_BY_GROUP, payload: result.data });
     } catch (error) {
