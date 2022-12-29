@@ -340,7 +340,7 @@ const getGroups = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   const { id } = req.params;
-  const { firstName, lastName, gender, avatar, banner } = req.body;
+  const { firstName, lastName, gender, avatar, banner, description } = req.body;
 
   console.log(req.body);
 
@@ -355,12 +355,12 @@ const updateUserInfo = async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   } else {
-    firstName ? (user.firstName = firstName) : user.firstName;
-    lastName ? (user.lastName = lastName) : user.lastName;
-    avatar ? (user.avatar = avatar) : user.avatar;
-    gender ? (user.gender = gender) : user.gender;
-    banner ? (user.banner = banner) : user.banner;
-
+    firstName ? user.firstName = firstName : user.firstName;
+    lastName ? user.lastName = lastName : user.lastName;
+    avatar ? user.avatar = avatar : user.avatar;
+    gender ? user.gender = gender : user.gender;
+    banner ? user.banner = banner : user.banner;
+    description ? user.description = description : user.description;
     try {
       await user.save();
       return res.status(200).json({ message: "User updated" });
