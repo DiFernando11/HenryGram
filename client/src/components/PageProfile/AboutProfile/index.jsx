@@ -233,9 +233,7 @@ function AboutProfile({ userInformation }) {
 				<ModalFriends setShow={setShow} show={show} friends = { friendsAvatars } />
 			</div>
 			<div>
-				<h2 className="text-white text-center text-xl  mt-5 mb-3">About Me</h2>
 				<OverYou profileId={ userInformation._id } />
-				<h4 className="text-white text-center text-xl  mt-5 mb-4">Preferences</h4>
 				<FavoriteActivities />
 			</div>
 			<Transition
