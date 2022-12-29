@@ -49,7 +49,7 @@ function PreviewMesagge({ title }) {
         className="flex rounded-md shadow-sm items-center justify-center my-5"
         role="group"
       >
-        <Link to={"/message"}>
+        <Link to={"/message"} className='flex'>
           <button
             onClick={handleSwitchChats}
             type="button"
@@ -58,9 +58,9 @@ function PreviewMesagge({ title }) {
               "pointer-events-none cursor-not-allowed text-white"
             }  ${
               isChat
-                ? "text-black bg-amber-300 text-base font-semibold"
-                : "text-sm font-medium text-white bg-gray-900"
-            }   rounded-l-lg border border-gray-900   dark:border-white`}
+                ? "text-black bg-yellow text-base font-semibold"
+                : "text-base font-semibold text-white bg-black"
+            } transition-all ease-in duration:100 rounded-l-lg border border-white dark:border-white`}
           >
             <i className="bi bi-chat-right-text-fill"></i>
             Chats
@@ -74,9 +74,9 @@ function PreviewMesagge({ title }) {
               "pointer-events-none cursor-not-allowed text-white"
             } ${
               !isChat
-                ? "text-black bg-amber-300 text-base font-semibold"
-                : "text-sm font-medium text-white bg-gray-900"
-            } rounded-r-md border border-gray-900 dark:border-white`}
+              ? "text-black bg-yellow text-base font-semibold "
+              : "text-base font-semibold text-white bg-black"
+            } transition-all ease-in duration:100 rounded-r-md border border-white dark:border-white`}
           >
             <img src={logoMatch} className={"w-6 h-6 "} />
             Match
