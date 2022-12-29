@@ -15,7 +15,6 @@ function ViewPost() {
   const user = useSelector((state) => state.userProfileFriend);
   const dispatch = useDispatch();
   const { id, userId } = useParams();
-  console.log("post:", post, "comments:", comments, "user:", user);
   useEffect(() => {
     dispatch(getComments(id));
     dispatch(getPostById(id));

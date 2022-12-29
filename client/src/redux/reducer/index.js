@@ -60,11 +60,11 @@ const initialState = {
   isChat: true,
   chatTimeReal: [],
   invitationGroupSend: "",
-  userPostsProfile: [],
+  userPostsProfile: null,
   allPosts: [],
   updatePost: [],
   deletePost: [],
-  comments: [],
+  comments: null,
   postById:{},
 };
 const rootReducer = (state = initialState, action) => {

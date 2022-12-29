@@ -7,6 +7,7 @@ import MakePost from "../../PageHome/MakePost";
 import Post from "../../PageHome/Post";
 import SkeletonPost from "../../Skeletons/SkeletonPost";
 import { useParams } from "react-router-dom";
+import logoMatch from "../../../assets/coheteHenry.png";
 import axios from "axios";
 import Loader from "../../Loader";
 function PostProfile({ userInformation }) {
@@ -61,7 +62,7 @@ function PostProfile({ userInformation }) {
       }
     };
   }, []);
-  console.log(newsLoadPost, "load");
+
   return (
     <section
       id="viewHeightPostByUser"
@@ -86,23 +87,30 @@ function PostProfile({ userInformation }) {
       ) : null}
 
       <div>
-        {postUser.length
-          ? postUser
-              ?.map((post) => (
-                <Post
-                  key={post._id}
-                  postId={post._id}
-                  isMatch={post.isMatch}
-                  seguir={post.seguir}
-                  description={post.description}
-                  user={userInformation}
-                  imagePost={post.image}
-                  group={post.group}
-                  likes={post.likes}
-                />
-              ))
-              .reverse()
-          : [1, 2].map((value) => <SkeletonPost key={value} />)}
+        {postUser?.length ? (
+          postUser
+            ?.map((post) => (
+              <Post
+                key={post._id}
+                postId={post._id}
+                isMatch={post.isMatch}
+                seguir={post.seguir}
+                description={post.description}
+                user={userInformation}
+                imagePost={post.image}
+                group={post.group}
+                likes={post.likes}
+              />
+            ))
+            .reverse()
+        ) : (
+          <div className="flex flex-col items-center h-[calc(100vh-22rem)]">
+          
+          <span className="uppercase block text-center mb-12">{`${"ali"} has not published`}</span>
+          <img className="block m-auto w-36 h-36" src={logoMatch} alt="logo match" />
+          </div>
+        )}
+        {!postUser && [1, 2].map((value) => <SkeletonPost key={value} />)}
         <div className="my-5">{loading && <Loader />}</div>
         {newsLoadPost.length &&
           newsLoadPost.map((posts, index) => (
