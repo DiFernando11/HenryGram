@@ -43,15 +43,15 @@ function HeaderProfile({ userInformation }) {
 	}, [userInformation]);
 
 	return (
-		<header className="relative h-36">
+		<header className="relative h-header z-10 rounded-t-lg">
 			<img
-				className="w-full h-36 object-cover absolute"
+				className="w-full h-header object-cover absolute rounded-lg"
 				src={loadingBanner ? giftUpload : bannerUser || userInformation?.banner}
 				alt="Portada User"
 			/>
-			<div className="absolute bottom-0">
+			<div className=" absolute bottom-avatar lg:w-2/5 w-full flex justify-center overflow-visible">
 				<img
-					className="w-32 h-32 object-cover rounded-full ml-16 border-spacing-2 bg-neutral-600 "
+					className="w-32 h-32 object-cover rounded-full lg:ml- border-spacing-2 bg-neutral-600 sm:ml-0"
 					src={
 						loadingAvatar ? giftUpload : avatarUser || userInformation?.avatar
 					}
@@ -60,7 +60,7 @@ function HeaderProfile({ userInformation }) {
 				{(userInformation._id ===userId) && (
 					
 					editHeader && (
-							<div className="bg-amber-300 w-12 h-12 absolute -bottom-2 -right-2  rounded-full flex items-center justify-center ">
+							<div className="bg-amber-300 w-12 h-12 absolute -bottom-2 right-custom1  rounded-full flex items-center justify-center ">
 								<label htmlFor="file" className="cursor-pointer">
 									<img
 										className="w-10 h-10"
@@ -82,7 +82,7 @@ function HeaderProfile({ userInformation }) {
 			{(userInformation._id ===userId) && (
 				
 				editHeader && (
-						<div className="bg-amber-300 w-16 h-16 absolute right-8 top-4 rounded-full flex items-center justify-center">
+						<div className="bg-amber-300 w-16 h-16 absolute right-8 bottom-4 rounded-full flex items-center justify-center">
 						<label htmlFor="file-banner" className="cursor-pointer">
 							<img
 								className="w-14 h-14 "
