@@ -41,6 +41,8 @@ import {
   INVITATION_SEND_GROUP,
   RESPONSE_GROUP_INVITATION,
   LIKE_DISLIKE_POST,
+  UPDATE_POST_REFRESH,
+  SET_LOADING,
 } from "../actions";
 
 const initialState = {
@@ -56,20 +58,26 @@ const initialState = {
   chatUsersCopy: [],
   chatPrevent: [],
   chatByUser: null,
-  // chatByUser: { informationUserTo: {}, projectedMessages: ["Dada"] },
+  loading: false,
   isChat: true,
   chatTimeReal: [],
-  invitationGroupSend: "",
   userPostsProfile: null,
   allPosts: [],
   updatePost: [],
-  deletePost: [],
+  updatePostRefresh: false,
   comments: null,
-  postById:{},
+  postById: {},
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     //User Information
+    case SET_LOADING: {
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    }
+
     case CREATE_USER: {
       return {
         ...state,
@@ -184,7 +192,6 @@ const rootReducer = (state = initialState, action) => {
     case INVITATION_SEND_GROUP: {
       return {
         ...state,
-        invitationGroupSend: action.payload,
       };
     }
     case RESPONSE_GROUP_INVITATION: {
@@ -270,53 +277,50 @@ const rootReducer = (state = initialState, action) => {
     case CLEAR_DELETE_POST: {
       return {
         ...state,
-        deletePost: [],
+        deletePost: null,
       };
     }
     //Update Post
     case UPDATE_POST: {
-      const indice = state.userPostsProfile.findIndex((elemento, indice) => {
-        if (elemento._id === action.payload[1]) {
-          return true;
-        }
-      });
-      state.userPostsProfile[indice] = action.payload[0];
-      console.log(state.userPostsProfile);
       return {
         ...state,
-        updatePost: action.payload[0],
       };
     }
     case CLEAR_UPDATE: {
       return {
         ...state,
-        updatePost: [],
+        updatePost: null,
       };
     }
     case CLEAR_POSTS: {
       return {
         ...state,
-        userPostsProfile: [],
+        userPostsProfile: null,
+      };
+    }
+    case UPDATE_POST_REFRESH: {
+      return {
+        ...state,
+        updatePostRefresh: !state.updatePostRefresh,
       };
     }
 
-    case GET_COMMENTS :{
-      return{
+    case GET_COMMENTS: {
+      return {
         ...state,
-        comments: action.payload
-      }
+        comments: action.payload,
+      };
     }
     case GET_POST_BY_ID: {
-      return{
+      return {
         ...state,
-        postById: action.payload
-      }
+        postById: action.payload,
+      };
     }
     case LIKE_DISLIKE_POST: {
       return {
         ...state,
       };
-
     }
     default:
       return state;

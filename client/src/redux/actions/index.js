@@ -37,15 +37,19 @@ export const CLEAR_POSTS = "CLEAR_POSTS";
 export const EDIT_PROFILE = "EDIT_PROFILE";
 export const LIKE_DISLIKE_POST = "LIKE_DISLIKE_POST";
 export const GET_FRIENDS_AVATAR_AND_NAME = "GET_FRIENDS_AVATAR_AND_NAME";
+export const UPDATE_POST_REFRESH = "UPDATE_POST_REFRESH";
 export const POST_COMMENTS = "POST_COMMENTS";
 export const GET_COMMENTS = "GET_COMMENTS";
 export const GET_POST_BY_ID = "GET_POST_BY_ID";
+export const SET_LOADING = "SET_LOADING";
 //USERS INFORMATION
 //REGISTER
 export const createUser = (user) => {
   return async function (dispatch) {
     try {
+      dispatch({ type: SET_LOADING, payload: true });
       const result = await axios.post("http://localhost:3000/api/users", user);
+      dispatch({ type: SET_LOADING, payload: false });
       dispatch({ type: CREATE_USER, payload: result.data });
     } catch (error) {
       console.log(error);
@@ -179,7 +183,9 @@ export const postUser = (post) => {
     }
   };
 };
-
+export const updatePostRefresh = () => {
+  return { type: UPDATE_POST_REFRESH };
+};
 //CLEAN POST
 export const cleanPostState = () => {
   return { type: CLEAN_POST };
@@ -268,7 +274,7 @@ export const sendMessageByGroup = (userId, groupId, content, image) => {
         userId,
         groupId,
         content,
-        image
+        image,
       });
       return dispatch({ type: SEND_MESSAGE_BY_GROUP, payload: result.data });
     } catch (error) {
@@ -293,13 +299,9 @@ export const invitationSendGroupAction = (payload) => {
 export const responseInvitationGroupAction = (payload) => {
   return async (dispatch) => {
     try {
-      const result = await axios.post(
-        `http://localhost:3000/api/groups/res`,
-        payload
-      );
+      await axios.post(`http://localhost:3000/api/groups/res`, payload);
       return dispatch({
         type: RESPONSE_GROUP_INVITATION,
-        payload: result.data,
       });
     } catch (error) {
       console.log(error);

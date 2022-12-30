@@ -20,6 +20,7 @@ function ViewPost() {
     dispatch(getPostById(id));
     dispatch(getProfileFriendAction(userId));
   }, [id]);
+
   return (
     <main className="flex w-full sm:h-[calc(100vh)] h-[calc(100vh-4rem)]">
       <div className=" overflow-y-scroll xl:flex bg-[#363636] xl:w-4/5 xl:h-4/5 h-[calc(100vh-4rem)] sm:h-[calc(100vh)] m-auto border border-amber-300">
@@ -40,7 +41,14 @@ function ViewPost() {
           )}
         </section>
         <section className="xl:w-[35%] border border-l-yellow px-3">
-          <CommentPostDetail comments={comments} />
+          <CommentPostDetail
+            comments={comments}
+            user={user}
+            group={post.group}
+            postId={post._id}
+            likes={post.likes}
+            isMatch={post.isMatch}
+          />
         </section>
       </div>
     </main>
