@@ -14,7 +14,7 @@ function ProfileFriends() {
 		})();
 	}, [id]);
 	return (
-		<div className='h-screen overflow-scroll'>
+		<div className='w-full h-screen overflow-scroll'>
 			<Profile userInformation={userProfileFriend} />
 		</div>
 	);

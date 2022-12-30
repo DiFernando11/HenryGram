@@ -72,7 +72,7 @@ function SideBar() {
 	}, [friendsByUser]);
 	return (
 		<aside
-			className="sm:block hidden w-[22rem] bgSideBar font-sans relative z-10 overflow-x-visible h-screen bg-[url('https://besthqwallpapers.com/Uploads/21-8-2020/140202/thumb2-yellow-lines-background-material-design-yellow-lines-creative-yellow-background-lines-background.jpg')] "
+			className="sm:block hidden w-[22rem] font-sans relative z-10 overflow-x-visible h-screen bg-[url('https://besthqwallpapers.com/Uploads/21-8-2020/140202/thumb2-yellow-lines-background-material-design-yellow-lines-creative-yellow-background-lines-background.jpg')] "
 			aria-label="Sidebar"
 		>
 			<i
