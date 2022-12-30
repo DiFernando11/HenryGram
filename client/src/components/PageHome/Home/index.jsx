@@ -17,7 +17,7 @@ function Home() {
   const user = useSelector((state) => state.userInformation);
 
   useEffect(() => {
-    if (user) {
+    if (user && !postUsers.length) {
       dispatch(getPostAllUsers(user?._id));
     }
   }, [user]);
@@ -36,8 +36,6 @@ function Home() {
         });
     }
   }, [page]);
-
-
 
   const handleScroll = () => {
     if (
@@ -84,6 +82,7 @@ function Home() {
                 user={posts.user}
                 imagePost={posts.post.image}
                 group={posts.post.group}
+                likes={posts.post.likes}
               />
             ))
           : [1, 2].map((value) => <SkeletonPost key={value} />)}

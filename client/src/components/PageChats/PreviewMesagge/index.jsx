@@ -45,7 +45,7 @@ function PreviewMesagge({ title }) {
     dispatch(getChatsGroupAction("clear"));
     setIsChat(boolean);
   };
-  console.log(messages);
+
   useEffect(() => {
     if (userInformation) {
       if (!isChat) {

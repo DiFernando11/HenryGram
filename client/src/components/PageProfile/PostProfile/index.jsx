@@ -21,6 +21,7 @@ function PostProfile({ userInformation }) {
   const location = useLocation();
   const dispatch = useDispatch();
   const { id } = useParams();
+
   useEffect(() => {
     (async () => {
       dispatch(getPostUSer(id));
@@ -45,6 +46,7 @@ function PostProfile({ userInformation }) {
         });
     }
   }, [page]);
+
   const handleScroll = () => {
     if (
       document.getElementById("viewHeightPostByUser").clientHeight +
@@ -93,7 +95,7 @@ function PostProfile({ userInformation }) {
       ) : null}
 
       <div>
-        {loadingPost && !postUser?.length && <SkeletonPost />}
+        {!postUser && [1, 2].map((value) => <SkeletonPost key={value} />)}
         {postUser?.length ? (
           postUser
             ?.map((post) => (

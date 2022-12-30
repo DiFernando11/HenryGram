@@ -41,12 +41,15 @@ export const UPDATE_POST_REFRESH = "UPDATE_POST_REFRESH";
 export const POST_COMMENTS = "POST_COMMENTS";
 export const GET_COMMENTS = "GET_COMMENTS";
 export const GET_POST_BY_ID = "GET_POST_BY_ID";
+export const SET_LOADING = "SET_LOADING";
 //USERS INFORMATION
 //REGISTER
 export const createUser = (user) => {
   return async function (dispatch) {
     try {
+      dispatch({ type: SET_LOADING, payload: true });
       const result = await axios.post("http://localhost:3000/api/users", user);
+      dispatch({ type: SET_LOADING, payload: false });
       dispatch({ type: CREATE_USER, payload: result.data });
     } catch (error) {
       console.log(error);
@@ -296,13 +299,9 @@ export const invitationSendGroupAction = (payload) => {
 export const responseInvitationGroupAction = (payload) => {
   return async (dispatch) => {
     try {
-      const result = await axios.post(
-        `http://localhost:3000/api/groups/res`,
-        payload
-      );
+      await axios.post(`http://localhost:3000/api/groups/res`, payload);
       return dispatch({
         type: RESPONSE_GROUP_INVITATION,
-        payload: result.data,
       });
     } catch (error) {
       console.log(error);

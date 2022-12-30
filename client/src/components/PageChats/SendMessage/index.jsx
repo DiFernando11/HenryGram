@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 const socket = io("http://localhost:3000");
-import { chatTimeReal, sendMessageBackAction } from "../../../redux/actions";
+import { chatTimeReal } from "../../../redux/actions";
 import styles from "./index.module.css";
 import { uploadImage } from "../../helpers/uploadImage";
 import { Spinner } from "flowbite-react";

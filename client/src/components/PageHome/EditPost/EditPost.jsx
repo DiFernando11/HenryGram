@@ -14,14 +14,13 @@ const giftUpload =
   "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921";
 function EditPost({ id, description, imagePosts, show, setShow, isMatch }) {
   const dispatch = useDispatch();
-  const update = useSelector((state) => state.updatePost);
   const [infoPost, setInfoPost] = useState({
     id: id,
     description: description,
     image: imagePosts,
     // hashtags: hashtags
   });
-  console.log(infoPost);
+
   const [showModal, setShowModal] = useState(show);
   const [loadingPostImage, setLoadingPostImage] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -51,41 +50,25 @@ function EditPost({ id, description, imagePosts, show, setShow, isMatch }) {
       iconColor: "#fcd34d",
     }).then((res) => {
       if (res.isConfirmed) {
-        dispatch(updatePostFront(infoPost));
-        console.log("Despues del dispatch:", infoPost);
-        Swal.fire({
-          didOpen: () => {
-            Swal.showLoading();
-          },
-          background: "#1e1c1d",
-        });
+        dispatch(updatePostFront(infoPost)).then((res) =>
+          console.log(res, "update")
+        );
+        handleAlert2();
       }
     });
   };
-  const handleAlert2 = (info) => {
-    if (info.description) {
-      Swal.fire({
-        icon: "success",
-        iconColor: "#fcd34d",
-        title: "Updated succesfully.",
-        background: "#1e1c1d",
-        color: "#fafbfd",
-      }).then((res) => {
-        if (res.isConfirmed) {
-          dispatch(clearState("update"));
-          setShow(false);
-		  dispatch(updatePostRefresh());
-          // setInfoPost({
-          // 	userId: '',
-          // 	isMatch: false,
-          // 	description: '',
-          // 	image: {},
-          // });
-          // setImagePost('');
-          // setDisabled(true);
-        }
-      });
-    }
+  const handleAlert2 = () => {
+    Swal.fire({
+      icon: "success",
+      iconColor: "#fcd34d",
+      title: "Updated succesfully.",
+      background: "#1e1c1d",
+      color: "#fafbfd",
+    }).then((res) => {
+      dispatch(clearState("update"));
+      setShow(false);
+      dispatch(updatePostRefresh());
+    });
   };
   const handleDeleteImage = (url) => {
     const filterImage = imagePost.filter((imageUrl) => imageUrl !== url);
@@ -108,7 +91,6 @@ function EditPost({ id, description, imagePosts, show, setShow, isMatch }) {
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      {handleAlert2(update)}
       <Modal
         show={showModal}
         size="2xl"

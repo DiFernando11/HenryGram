@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+
 function CardComment({ userId, comment , firstName , lastName , avatar }) {
   return (
     <div className="p-4 border border-zinc-700 flex gap-2 items-center justify-start">
       <Link to={`/profile/${userId}`}>
         <img
-          className="fit-cover max-w-[30px] min-w-[30px] rounded-full"
+          className="object-cover w-10 h-10 rounded-full border border-amber-300"
           src={avatar}
           alt="user avatar"
         />

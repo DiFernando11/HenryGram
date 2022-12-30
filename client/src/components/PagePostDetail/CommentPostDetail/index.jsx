@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import logoMatch from "../../../assets/coheteHenry.png";
+import ActionsPosts from "../../PageHome/ActionsPost";
 import Comments from "../../PageHome/Comments/Comments";
 import SkeletonUser from "../../Skeletons/skeletonUser";
 import CardComment from "../CardComment";
-function CommentPostDetail({ comments }) {
+function CommentPostDetail({ comments, user, group, postId, likes, isMatch }) {
   // const [page, setPage] = useState(0);
   // const handleScroll = () => {
   //   if (
@@ -42,17 +43,19 @@ function CommentPostDetail({ comments }) {
 
   return (
     <>
-      <div className="w-full flex gap-14 mt-5 mb-5 justify-center items-center border-y border-neutral-700 py-4">
-        <i className="bi bi-hand-thumbs-up text-3xl text-yellow"></i>
-        <i className="bi bi-chat-square-dots text-3xl text-yellow"></i>
-        {/* {type === "Match" && ( */}
-        <img src={logoMatch} alt="match" className="w-8 h-8" />
-        {/* )} */}
+      <div className=" flex justify-center ">
+        <ActionsPosts
+          user={user}
+          group={group}
+          postId={postId}
+          likes={likes}
+          isMatch={isMatch}
+        />
       </div>
       <Comments postId={id} handleSendCommentFront={handleSendCommentFront} />
       <div
         id="viewHeightComment"
-        className="xl:h-[calc(100vh-21rem)] mt-6 xl:overflow-y-scroll"
+        className="xl:h-[calc(100vh-22rem)] mt-6 xl:overflow-y-scroll"
       >
         {commentFront.length &&
           commentFront.map((comment, index) => (
@@ -66,21 +69,23 @@ function CommentPostDetail({ comments }) {
             />
           ))}
         {comments?.length ? (
-          comments.map((user) => (
-            <CardComment
-              key={user._id}
-              userId={user.comment.userId}
-              firstName={user.firstName}
-              lastName={user.lastName}
-              avatar={user.avatar}
-              comment={user.comment.description}
-            />
-          ))
-        ).reverse() : (
+          comments
+            .map((user) => (
+              <CardComment
+                key={user._id}
+                userId={user.comment.userId}
+                firstName={user.firstName}
+                lastName={user.lastName}
+                avatar={user.avatar}
+                comment={user.comment.description}
+              />
+            ))
+            .reverse()
+        ) : !commentFront.length ? (
           <span className="text-sm text-center block uppercase">
             Be the first to comment 🙂
           </span>
-        )}
+        ) : null}
         {!comments &&
           [1, 2, 3, 4, 5].map((value) => <SkeletonUser key={value} />)}
       </div>
