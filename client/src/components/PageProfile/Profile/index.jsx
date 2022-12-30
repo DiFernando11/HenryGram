@@ -18,9 +18,9 @@ function Profile({ userInformation }) {
 	}, [id]);
 
 	return (
-		<main className="w-full xl:p-4 flex flex-col gap-2">
+		<main className="xl:p-4 flex flex-col gap-2">
 			<HeaderProfile userInformation={userInformation} isFriend={isFriend} />
-			<div className=" w-full flex flex-col gap-3 xl:h-fit  sm:h-[calc(100vh-9rem)] lg:h-[calc(100vh-9rem)] h-[calc(100vh-13rem)]">
+			<div className="flex flex-col gap-3 xl:h-fit  sm:h-[calc(100vh-9rem)] lg:h-[calc(100vh-9rem)] h-[calc(100vh-13rem)]">
 				<AboutProfile userInformation={userInformation} isFriend={isFriend} />
 				<PostProfile userInformation={userInformation} isFriend={isFriend} />
 			</div>

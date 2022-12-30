@@ -86,6 +86,8 @@ function App() {
         text: "Por favor vuelva a iniciar sesión",
         type: "error",
         confirmButtonText: "Ok",
+        background: "#1e1c1d",
+        iconColor: "#fcd34d"
 
       }).then((result) => {
         if (result.isConfirmed) {
