@@ -72,15 +72,8 @@ function PostProfile({ userInformation }) {
   }, []);
 
   return (
-    <section
-      id="viewHeightPostByUser"
-      className="xl:w-3/5 xl:h-[calc(100vh-10rem)] xl:overflow-y-scroll pt-2 "
-    >
+    <section id="viewHeightPostByUser" className=" xl:h-fit  pt-2 bg-gray900 rounded-lg">
       {location.pathname === `/profile/${userlogged?._id}` ? (
-        // <div className="w-12 h-12 bg-amber-300 flex justify-center items-center rounded-full fixed ml-3 z-10 ">
-        //   <div className=" ml-[50px] justify-center items-center ">
-        //   </div>
-        // </div>
         <Transition
           show={true}
           enter="ease-out duration-300"
@@ -97,8 +90,7 @@ function PostProfile({ userInformation }) {
       <div>
         {!postUser && [1, 2].map((value) => <SkeletonPost key={value} />)}
         {postUser?.length ? (
-          postUser
-            ?.map((post) => (
+          postUser?.map((post) => (
               <Post
                 key={post._id}
                 postId={post._id}
@@ -110,20 +102,25 @@ function PostProfile({ userInformation }) {
                 group={post.group}
                 likes={post.likes}
               />
-            ))
-            .reverse()
+            )).reverse()
+          
+          
+            
         ) : !loadingPost ? (
-          <div className="flex flex-col items-center h-[calc(100vh-22rem)]">
-            <span className="uppercase block text-center mb-12">{`${"ali"} has not published`}</span>
+          <div className="flex flex-col items-center h-[calc(100vh-22rem)] p-5">
             <img
               className="block m-auto w-36 h-36"
               src={logoMatch}
               alt="logo match"
             />
+            <h1 className="text-2xl font-bold text-gray-500">
+              No hay publicaciones aun
+            </h1>
           </div>
         ) : (
           <div className="my-5">{loading && <Loader />}</div>
         )}
+
 
         {newsLoadPost.length &&
           newsLoadPost.map((posts, index) => (
@@ -139,6 +136,7 @@ function PostProfile({ userInformation }) {
               likes={posts.likes}
             />
           ))}
+
       </div>
     </section>
   );
