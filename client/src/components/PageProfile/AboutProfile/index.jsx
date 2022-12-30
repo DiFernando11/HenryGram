@@ -83,7 +83,7 @@ function AboutProfile({ userInformation }) {
           avatar: userInformation?.avatar,
           firstName: userInformation?.firstName,
           lastName: userInformation?.lastName,
-          _id: userInformation?._id,
+          _id: userInformation?._id, 
         })
       );
     }
@@ -211,15 +211,17 @@ function AboutProfile({ userInformation }) {
 					)}
 				</div>
 				{(userInformation._id === userID) && (
-					<div className="absolute top-4 right-4">
+					<div className="absolute z-50 top-4 right-4">
 						<i
 							className="bi bi-gear-fill text-xl text-yellow"
 							onClick={() => setShowEditProfile(!showEditProfile)}
 						></i>
 					</div>
 				)}
-				<FavoriteActivities id = { id }/>
-				<div className="flex absolute bottom-0 w-full justify-around px-2 divide-x border-t">
+        <div className="w-full h-custom3">
+				  <FavoriteActivities id = { id }/>
+        </div>
+				<div className="flex absolute bottom-0 w-full justify-around px-2 divide-x border-t mt-1">
 					<div className='flex w-full justify-around items-center gap-3 py-2'>		
 						<div onClick={setShow} className="flex flex-col justify-center items-center w-full gap-2 text-lg hover:cursor-pointer hover:scale-110">
 							<span className=" font-black">{friendsAvatars.length}</span>

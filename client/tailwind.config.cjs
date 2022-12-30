@@ -47,12 +47,13 @@ module.exports = {
         about: "25vh",
         header: "26vh",
         banner: "20vh",
-        aboutSection: "40vh",
+        aboutSection: "50vh",
       },
       spacing: {
         avatar: "-4rem",
         custom1: "35%",
         custom2: "4.2rem",
+        custom3 : "49%",
       }
     },
   },
