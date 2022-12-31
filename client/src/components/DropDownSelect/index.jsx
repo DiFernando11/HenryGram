@@ -31,7 +31,7 @@ function DropDownSelect({ status, icon, select, confirmed, requests , position =
       className="relative flex items-center justify-center items-center bg-transparent group "
     >
       <div
-        className="relative flex items-center gap-2 z-20"
+        className="relative flex items-center gap-2 z-10"
         onClick={() => setShow(!show)}
       >
         {confirmed && (

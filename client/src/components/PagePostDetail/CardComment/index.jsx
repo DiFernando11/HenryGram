@@ -14,7 +14,7 @@ function CardComment({ userId, comment , firstName , lastName , avatar }) {
       </Link>
       <div>
         <Link to={`/profile/${userId}`}>
-          <span className="uppercase block text-[9px] leading-[8px] mb-2 ">{`${firstName} ${lastName}`}</span>
+          <span className="uppercase block text-[9px] leading-[8px] mb-2 truncate sm:w-full w-4/5 ">{`${firstName} ${lastName}`}</span>
         </Link>
         <p className="text-[13px]  max-w-40 text-white">{comment}</p>
       </div>

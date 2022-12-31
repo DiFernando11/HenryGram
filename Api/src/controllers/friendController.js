@@ -43,7 +43,6 @@ const addFriend = async (req, res, next) => {
     }
   } catch (ex) {
     next(ex);
-
   }
 };
 const acceptRejectFriend = async (req, res, next) => {

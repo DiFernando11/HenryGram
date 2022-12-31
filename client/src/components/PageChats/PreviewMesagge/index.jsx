@@ -20,7 +20,7 @@ function PreviewMesagge({ title }) {
   const [isChat, setIsChat] = useState(
     state?.isMatch ? false : pathname !== `/message/chat/group/${id}`
   );
-  const [verifyAction, setVerifyAction] = useState(false);
+
   const [loading, setLoading] = useState(true);
   const chatPrevent = useSelector((state) => state.chatPrevent);
   const messages = useSelector((state) => state.chatUsers);
@@ -31,15 +31,12 @@ function PreviewMesagge({ title }) {
     if (isChat) {
       (async () => {
         dispatch(getChatsGroupAction(userInformation._id));
-        console.log("group");
         setLoading(false);
-        setVerifyAction(false);
       })();
     } else if (!isChat) {
       (async () => {
         dispatch(getChatsBackAction(userInformation._id));
         setLoading(false);
-        setVerifyAction(true);
       })();
     }
     dispatch(getChatsGroupAction("clear"));
@@ -51,12 +48,12 @@ function PreviewMesagge({ title }) {
       if (!isChat) {
         (async () => {
           dispatch(getChatsGroupAction(userInformation?._id));
-          setLoading(false);
+          // setLoading(false);
         })();
       } else {
         (async () => {
           dispatch(getChatsBackAction(userInformation?._id));
-          setLoading(false);
+          // setLoading(false);
         })();
       }
     }
@@ -72,12 +69,12 @@ function PreviewMesagge({ title }) {
         className="flex rounded-md shadow-sm items-center justify-center my-5"
         role="group"
       >
-        <Link to={"/message"} className='flex'>
+        <Link to={"/message"} className="flex">
           <button
             onClick={() => handleSwitchChats(true)}
             type="button"
             className={`inline-flex items-center gap-3 py-2 px-4 ${
-              (!messages?.length || !messages || loading || !userInformation) &&
+              (!messages || !messages || !userInformation) &&
               "pointer-events-none cursor-not-allowed text-white"
             }  ${
               isChat
@@ -93,13 +90,11 @@ function PreviewMesagge({ title }) {
             onClick={() => handleSwitchChats(false)}
             type="button"
             className={`inline-flex items-center gap-3 py-2 px-4  ${
-              !messages?.length &&
-              !loading &&
-              "pointer-events-none cursor-not-allowed text-white"
+              !messages && "pointer-events-none cursor-not-allowed text-white"
             } ${
               !isChat
-              ? "text-black bg-yellow text-base font-semibold "
-              : "text-base font-semibold text-white bg-black"
+                ? "text-black bg-yellow text-base font-semibold "
+                : "text-base font-semibold text-white bg-black"
             } transition-all ease-in duration:100 rounded-r-lg border border-white dark:border-white`}
           >
             <img src={logoMatch} className={"w-6 h-6 "} />
@@ -160,10 +155,9 @@ function PreviewMesagge({ title }) {
                 />
               ))
               .reverse()}
-        {!messages?.length &&
-          !messages &&
+        {!messages &&
           [1, 2, 3, 4, 5, 6, 7, 8].map((value) => <SkeletonUser key={value} />)}
-        {!messages?.length && messages && !chatPrevent.length && (
+        {!messages?.length && !chatPrevent.length && (
           <div className=" flex  gap-2 text-white border p-4 uppercase text-[10px] border-zinc-700">
             Still not connecting with your friends
             <i className="bi bi-people text-sm"></i>

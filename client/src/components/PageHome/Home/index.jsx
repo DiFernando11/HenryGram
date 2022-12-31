@@ -40,8 +40,10 @@ function Home() {
   const handleScroll = () => {
     if (
       document.getElementById("viewHeigthPost").clientHeight +
+        1 +
         document.getElementById("viewHeigthPost").scrollTop >=
-      document.getElementById("viewHeigthPost").scrollHeight
+        document.getElementById("viewHeigthPost").scrollHeight &&
+      !loading
     ) {
       setPage(page + 1);
       setLoading(true);
@@ -70,22 +72,24 @@ function Home() {
       >
         <MakePost />
 
-        {postUsers.length
-          ? postUsers?.map((posts) => (
-              <Post
-                key={posts.post._id}
-                postId={posts.post._id}
-                userIdLogged={user}
-                isMatch={posts.post.isMatch}
-                seguir={posts.seguir}
-                description={posts.post.description}
-                user={posts.user}
-                imagePost={posts.post.image}
-                group={posts.post.group}
-                likes={posts.post.likes}
-              />
-            ))
-          : [1, 2].map((value) => <SkeletonPost key={value} />)}
+        {postUsers.length ? (
+          postUsers?.map((posts) => (
+            <Post
+              key={posts.post._id}
+              postId={posts.post._id}
+              userIdLogged={user}
+              isMatch={posts.post.isMatch}
+              seguir={posts.seguir}
+              description={posts.post.description}
+              user={posts.user}
+              imagePost={posts.post.image}
+              group={posts.post.group}
+              likes={posts.post.likes}
+            />
+          ))
+        ) : (
+          <SkeletonPost />
+        )}
         <div className="my-5">{loading && <Loader />}</div>
 
         {newsLoadPost.length &&
