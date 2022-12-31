@@ -158,8 +158,15 @@ const recomendedPostController = async (req, res) => {
                 return false;
               }
             });
+            //ordenar por fecha
+            posts = posts.sort((a, b) => {
+              return a.created - b.created;
+            });
 
             posts = posts.slice(range[0], range[1]);
+            if (posts.length === 0) {
+              return res.status(200).json([]);
+            }
             const postsWithUser = [];
             posts.forEach((p) => {
               const user = UserSchema.findOne({ _id: p.userId });
