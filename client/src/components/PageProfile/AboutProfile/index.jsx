@@ -118,9 +118,9 @@ function AboutProfile({ userInformation }) {
 	console.log(showEditProfile);
 	return (
 		<section
-			className="rounded-lg text-white flex gap-2 justify-center w-full h-aboutSection xl:overflow-visible"
+			className="rounded-lg text-white flex xl:flex-row flex-col gap-2 justify-center w-full xl:h-aboutSection h-fit xl:overflow-visible"
 		>
-			<div className="relative rounded-lg w-2/5 h-full py-1 flex flex-col gap-3 bg-gray900">
+			<div className="relative bg-white rounded-lg xl:w-2/5 w-full h-full py-1 flex flex-col gap-3 bg-gray900">
 				<div className="flex items-center  ml-2 mt-custom2 justify-center z-0">
 					<div className="flex gap-2 items-center">
 						<h1 className="text-2xl font-black">
@@ -219,10 +219,10 @@ function AboutProfile({ userInformation }) {
 						></i>
 					</div>
 				)}
-				<div className="w-full h-custom3">
+				<div className="w-full lg:h-custom3">
 					<FavoriteActivities id={id} />
 				</div>
-				<div className="flex absolute bottom-0 w-full justify-around px-2 divide-x border-t mt-1">
+				<div className="flex xl:absolute xl:bottom-0 w-full justify-around  divide-x border-t mt-1">
 					<div className="flex w-full justify-around items-center gap-3 py-2">
 						<div
 							onClick={setShow}
@@ -231,7 +231,7 @@ function AboutProfile({ userInformation }) {
 							<span className=" font-black">{friendsAvatars.length}</span>
 							<span className="">Friends</span>
 						</div>
-						<div className="w-full flex justify-center">
+						<div className="w-full flex justify-center px-2">
 							{friendsAvatars.length !== 0 ? (
 								<AvatarStack
 									avatars={friendsAvatars}
@@ -251,7 +251,7 @@ function AboutProfile({ userInformation }) {
 							<span className=" font-black">{friendsAvatars.length}</span>
 							<span className="">Matchs</span>
 						</div>
-						<div className="w-full flex justify-center">
+						<div className="w-full flex justify-center px-2">
 							{friendsAvatars.length !== 0 ? (
 								<AvatarStack
 									avatars={friendsAvatars}
@@ -271,7 +271,7 @@ function AboutProfile({ userInformation }) {
 					/>
 				</div>
 			</div>
-			<div className=" rounded-lg w-3/5 bg-gray900 text-white">
+			<div className=" rounded-lg xl:w-3/5 w-full bg-gray900 text-white">
 				<OverYou profileId={userInformation._id} />
 			</div>
 			<Transition

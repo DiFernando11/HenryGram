@@ -13,7 +13,7 @@ function YourProfile({profileId}) {
   }, [about, editAbout]);
 
   return (
-    <div className=" h-full w-full p-4 gap-3 flex flex-col rounded-lg" >
+    <div className=" h-full w-full p-4 gap-3 flex flex-col rounded-lg">
       <h1 className="text-2xl font-black">
         Acerca de
       </h1>
@@ -23,12 +23,12 @@ function YourProfile({profileId}) {
             <EditAbout  editAbout = { editAbout } setEditAbout = { setEditAbout } userId = { profileId } currentAbout = { about } />
           </div>
         ) : (
-          <div className="flex w-full h-full  relative">
+          <div className="flex w-full h-full  relative ">
             <BsPencilSquare className="absolute bottom-2 right-2 w-10 h-10 text-amber-300 cursor-pointer" onClick={() => setEditAbout(true)} />
             {
               about ? (
                 <div className="flex flex-col w-full">
-                  <p>
+                  <p className="text-justify overflow-auto">
                     {about}
                   </p>
                 </div>
