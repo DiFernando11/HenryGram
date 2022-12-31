@@ -541,9 +541,15 @@ const getRecomendedMatches = async (req, res) => {
     userFriendsIds.length && (userFriendsPosts = await PostSchema.find({ userId: { $in: userFriendsIds } , isMatch: true }))
   
     // Trae mas posts que no sean del usuario ni  de sus amigos
-    let posts = await PostSchema.find({ userId: { $nin: [...userFriendsIds, userId] }, isMatch: true }).limit(range[1] - userFriendsPosts.length);
+    let posts = await PostSchema.find({ userId: { $nin: [...userFriendsIds, userId] }, isMatch: true })
     // concatena los posts de los amigos con los posts que no son de los amigos
     posts = [...userFriendsPosts, ...posts];
+    //ordenar los posts por fecha
+    posts.sort((a, b) => {
+      return new Date(b.created) - new Date(a.created);
+    });
+    //solo toma los posts que estan en el rango
+    posts = posts.slice(range[0], range[1]);
     const postsWithUsers = await Promise.all(posts.map(async (post) => {
       const user = await UserSchema.findOne({ _id: post.userId });
       const userDestructured = {
