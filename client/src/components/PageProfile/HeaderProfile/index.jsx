@@ -49,9 +49,9 @@ function HeaderProfile({ userInformation }) {
 				src={loadingBanner ? giftUpload : bannerUser || userInformation?.banner}
 				alt="Portada User"
 			/>
-			<div className=" absolute bottom-avatar lg:w-2/5 w-full flex justify-center overflow-visible">
+			<div className=" absolute bottom-avatar xl:w-2/5 w-full flex justify-center overflow-visible">
 				<img
-					className="w-32 h-32 object-cover rounded-full lg:ml- border-spacing-2 bg-neutral-600 sm:ml-0"
+					className="w-32 h-32 object-cover rounded-full xl:ml- border-spacing-2 bg-neutral-600 sm:ml-0"
 					src={
 						loadingAvatar ? giftUpload : avatarUser || userInformation?.avatar
 					}

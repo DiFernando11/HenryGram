@@ -45,7 +45,7 @@ function PreviewMesagge({ title }) {
     dispatch(getChatsGroupAction("clear"));
     setIsChat(boolean);
   };
-  console.log(messages);
+
   useEffect(() => {
     if (userInformation) {
       if (!isChat) {
@@ -100,7 +100,7 @@ function PreviewMesagge({ title }) {
               !isChat
               ? "text-black bg-yellow text-base font-semibold "
               : "text-base font-semibold text-white bg-black"
-            } transition-all ease-in duration:100 rounded-r-md border border-white dark:border-white`}
+            } transition-all ease-in duration:100 rounded-r-lg border border-white dark:border-white`}
           >
             <img src={logoMatch} className={"w-6 h-6 "} />
             Match

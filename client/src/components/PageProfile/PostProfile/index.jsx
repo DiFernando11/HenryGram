@@ -13,6 +13,7 @@ import Loader from "../../Loader";
 function PostProfile({ userInformation }) {
   const postUser = useSelector((state) => state.userPostsProfile);
   const userlogged = useSelector((state) => state.userInformation);
+  const updatePostRefresh = useSelector((state) => state.updatePostRefresh);
   const [newsLoadPost, setNewsLoadPost] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -20,6 +21,7 @@ function PostProfile({ userInformation }) {
   const location = useLocation();
   const dispatch = useDispatch();
   const { id } = useParams();
+
   useEffect(() => {
     (async () => {
       dispatch(getPostUSer(id));
@@ -29,8 +31,8 @@ function PostProfile({ userInformation }) {
     return () => {
       dispatch(clearState("posts"));
     };
-  }, [id]);
-  console.log(loadingPost);
+  }, [id, updatePostRefresh]);
+
   useEffect(() => {
     if (page > 1) {
       axios
@@ -44,6 +46,7 @@ function PostProfile({ userInformation }) {
         });
     }
   }, [page]);
+
   const handleScroll = () => {
     if (
       document.getElementById("viewHeightPostByUser").clientHeight +
@@ -69,7 +72,7 @@ function PostProfile({ userInformation }) {
   }, []);
 
   return (
-    <section id="viewHeightPostByUser" className=" xl:h-fit  pt-2 bg-gray900 rounded-lg">
+    <section id="viewHeightPostByUser" className=" h-fit  pt-2 bg-gray900 rounded-lg">
       {location.pathname === `/profile/${userlogged?._id}` ? (
         <Transition
           show={true}
@@ -85,7 +88,7 @@ function PostProfile({ userInformation }) {
       ) : null}
 
       <div>
-        {loadingPost && !postUser?.length && <SkeletonPost />}
+        {!postUser && [1, 2].map((value) => <SkeletonPost key={value} />)}
         {postUser?.length ? (
           postUser?.map((post) => (
               <Post
@@ -114,27 +117,26 @@ function PostProfile({ userInformation }) {
               No hay publicaciones aun
             </h1>
           </div>
-        ) : <div className="my-5">{loading && <Loader />}</div>}
+        ) : (
+          <div className="my-5">{loading && <Loader />}</div>
+        )}
 
-        {
-          postUser?.length ? (
-            newsLoadPost.length &&
-              newsLoadPost.map((posts, index) => (
-                <Post
-                  key={index}
-                  postId={posts._id}
-                  isMatch={posts.isMatch}
-                  seguir={posts.seguir}
-                  description={posts.description}
-                  user={userInformation}
-                  imagePost={posts.image}
-                  group={posts.group}
-                  likes={posts.likes}
-                />
-              ))
-          ) : null
-        }
-        
+
+        {newsLoadPost.length &&
+          newsLoadPost.map((posts, index) => (
+            <Post
+              key={index}
+              postId={posts._id}
+              isMatch={posts.isMatch}
+              seguir={posts.seguir}
+              description={posts.description}
+              user={userInformation}
+              imagePost={posts.image}
+              group={posts.group}
+              likes={posts.likes}
+            />
+          ))}
+
       </div>
     </section>
   );

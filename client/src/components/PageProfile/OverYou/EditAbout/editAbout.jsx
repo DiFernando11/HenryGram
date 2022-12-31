@@ -33,7 +33,7 @@ function EditAbout({ editAbout, setEditAbout, userId, currentAbout}) {
           <textarea
             id="comment"
             rows="4"
-            className="w-full h-full px-0 text-sm  bg-transparent border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+            className="w-full h-full px-0 text-sm bg-transparent border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
             placeholder="Describe quien eres y que te gusta..."
             required
             onChange={handleChange}
