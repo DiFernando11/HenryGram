@@ -72,7 +72,7 @@ function PostProfile({ userInformation }) {
   }, []);
 
   return (
-    <section id="viewHeightPostByUser" className=" xl:h-fit  pt-2 bg-gray900 rounded-lg">
+    <section id="viewHeightPostByUser" className=" h-fit  pt-2 bg-gray900 rounded-lg">
       {location.pathname === `/profile/${userlogged?._id}` ? (
         <Transition
           show={true}

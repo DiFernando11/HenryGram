@@ -118,7 +118,7 @@ function AboutProfile({ userInformation }) {
 	console.log(showEditProfile);
 	return (
 		<section
-			className="rounded-lg text-white flex xl:flex-row flex-col gap-2 justify-center w-full h-aboutSection xl:overflow-visible"
+			className="rounded-lg text-white flex xl:flex-row flex-col gap-2 justify-center w-full xl:h-aboutSection h-fit xl:overflow-visible"
 		>
 			<div className="relative bg-white rounded-lg xl:w-2/5 w-full h-full py-1 flex flex-col gap-3 bg-gray900">
 				<div className="flex items-center  ml-2 mt-custom2 justify-center z-0">
