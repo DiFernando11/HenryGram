@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { confirmedRequestFriendAction, sendRequestFriendAction } from "../../redux/actions";
+import {
+  confirmedRequestFriendAction,
+  sendRequestFriendAction,
+} from "../../redux/actions";
 import DropDownSelect from "../DropDownSelect";
 
 function StatusFriend({ user }) {
@@ -10,10 +13,11 @@ function StatusFriend({ user }) {
   const userInformation = useSelector((state) => state.userInformation);
   const friendsByUser = useSelector((state) => state.friendsByUser);
   const dispatch = useDispatch();
-  const applicationStatus = friendsByUser.find(
-    (friend) => friend.recipient == user || friend.requester == user
-  );
+
   const handleStatusFriend = () => {
+    const applicationStatus = friendsByUser.find(
+      (friend) => friend.recipient == user || friend.requester == user
+    );
     if (applicationStatus) {
       if (Number(applicationStatus.status) === 1) setStatusFriend("Enviada");
       else if (Number(applicationStatus.status) === 2)

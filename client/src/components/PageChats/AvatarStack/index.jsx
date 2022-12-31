@@ -1,25 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function AvatarStack({ avatars, openModalFriends , show }) {
+function AvatarStack({ avatars, openModalFriends, show }) {
   // console.log(avatars);
   return (
     <div className="flex -space-x-1 overflow-hidden">
-      {avatars.length &&
-        avatars
-          .map((avatar, index) => (
-            <Link key={index} to={`/profile/${avatar._id}`}>
-
-              <img
-                
-                className="inline-block h-8 w-8 rounded-full border cursor-pointer"
-                src={avatar.avatar}
-                alt="user Avatar"
-                title={`${avatar.firstName} ${avatar.lastName} `}
-              />
-            </Link>
-          ))
-          .slice(0, 5)}
+      {avatars.length
+        ? avatars
+            .map((avatar, index) => (
+              <Link key={index} to={`/profile/${avatar._id}`}>
+                <img
+                  className="inline-block h-8 w-8 rounded-full border cursor-pointer"
+                  src={avatar.avatar}
+                  alt="user Avatar"
+                  title={`${avatar.firstName} ${avatar.lastName} `}
+                />
+              </Link>
+            ))
+            .slice(0, 5)
+        : null}
       {avatars.length > 5 && (
         <div
           onClick={() => openModalFriends(!show)}

@@ -23,8 +23,8 @@ function ViewPost() {
 
   return (
     <main className="flex w-full sm:h-[calc(100vh)] h-[calc(100vh-4rem)]">
-      <div className=" overflow-y-scroll xl:flex bg-[#363636] xl:w-4/5 xl:h-4/5 h-[calc(100vh-4rem)] sm:h-[calc(100vh)] m-auto border border-amber-300">
-        <section className="bg-[#363636] xl:w-[65%]">
+      <div className=" overflow-y-scroll xl:flex bg-[#363636] xl:w-4/5 xl:h-4/5 w-[95%] h-[calc(100vh-4rem)] sm:h-[calc(100vh)] m-auto border border-amber-300">
+        <section className="bg-[#363636] xl:w-[65%] ">
           {post?._id ? (
             <Post
               key={post._id}

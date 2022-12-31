@@ -28,7 +28,7 @@ function Post({
 
   return (
     <section
-      className={`w-11/12  h-auto mt-6 m-auto relative pt-8 p-6 
+      className={`w-11/12  h-auto mt-6 m-auto relative pt-8 p-6 m-auto
 			${
         !postDetail && "border border-amber-300"
       } containerBackrougndImagePost rounded shadow-md shadow-black bg-[#363636]`}
@@ -58,7 +58,9 @@ function Post({
               src={user.avatar}
               alt={user.firstName}
             />
-            <span className="leading-10">{user.firstName}</span>
+            <span className="leading-10 uppercase truncate sm:w-[70%] w-3/5">
+              {`${user.firstName} ${user.lastName}`}{" "}
+            </span>
           </div>
         </Link>
         <StatusFriend user={user._id} />

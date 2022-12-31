@@ -161,7 +161,7 @@ function MessageGroup() {
     const responsePendings = pendingsUser.filter((user) => user._id !== idUser);
     setPendingsUser(responsePendings);
   };
-  console.log(chatByUser);
+
 
   return (
     <section className="lg:w-[70%] sm:w-[50%] w-full">

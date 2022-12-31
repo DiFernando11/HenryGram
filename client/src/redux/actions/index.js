@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useState } from "react";
 export const CREATE_USER = "CREATE_USER";
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";

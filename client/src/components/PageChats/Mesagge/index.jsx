@@ -133,7 +133,7 @@ function Messages() {
   };
 
   return (
-    <section className="lg:w-[70%] sm:w-[50%] w-full">
+    <section className="lg:w-[70%] w-full">
       <div className={styles.header_message}>
         {!chatByUser?.informationUserTo ? (
           <SkeletonUser isMessage={false} />

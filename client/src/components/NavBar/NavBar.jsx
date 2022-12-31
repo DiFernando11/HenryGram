@@ -78,8 +78,8 @@ export default function NavBar() {
     setNumberFriendsRequest(requestFriends.length);
   }, [friendsByUser]);
   return (
-    <nav className="w-full bg-black shadow  h-16 z-10 block sm:hidden ">
-      <div className="justify-between mx-auto lg:max-w-7xl md:items-center md:flex md:px-8 relative z-10">
+    <nav className="w-full bg-black shadow  h-16 z-20 block sm:hidden ">
+      <div className="justify-between mx-auto lg:max-w-7xl md:items-center md:flex md:px-8 relative z-20">
         <div>
           <div className="flex items-center justify-between py-3 md:block">
             <div className="flex items-center  ">
@@ -143,13 +143,13 @@ export default function NavBar() {
             </div>
           </div>
         </div>
-        <div>
+        <div className="z-20">
           <div
-            className={`flex-1 justify-self-center pb-3 md:block md:pb-0 md:mt-0 ${
+            className={`flex-1 justify-self-center pb-3 md:block md:pb-0 md:mt-0 z-20 ${
               navbar ? "block" : "hidden"
             }`}
           >
-            <ul className="p-2 bg-black items-center rounded justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
+            <ul className="p-2 bg-black items-center rounded justify-center space-y-8 md:flex z-20 md:space-x-6 md:space-y-0">
               <li
                 onClick={handleGetFriendsRequest}
                 className="relative text-white flex gap-2 items-center p-2 border border-black rounded-lg transition duration:200  cursor-pointer"
