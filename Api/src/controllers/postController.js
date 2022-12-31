@@ -505,6 +505,64 @@ const getPostsById = async (req, res) => {
   }
 };
 
+const getRecomendedMatches = async (req, res) => {
+
+  const { userId } = req.params;
+
+  const limit = req.query.limit ? parseInt(req.query.limit) : 1;
+
+  const maxAmount = 10;
+
+  const range = [limit * maxAmount - maxAmount, limit * maxAmount];
+
+
+  try {
+    const user = await UserSchema.findOne({ _id: userId });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const userFriends = await FriendSchema.find({ $or: [{ requester: userId }, { recipient: userId }], status: 3 });
+    let userFriendsIds = []
+    userFriendsIds = userFriends.map((friend) => {
+      if (friend.requester === userId) {
+        return friend.recipient;
+      } else {
+        return friend.requester;
+      }
+    });
+    let userFriendsPosts = []
+    userFriendsIds.length && (userFriendsPosts = await PostSchema.find({ userId: { $in: userFriendsIds } , isMatch: true }))
+  
+    // Trae mas posts que no sean del usuario ni  de sus amigos
+    let posts = await PostSchema.find({ userId: { $nin: [...userFriendsIds, userId] }, isMatch: true }).limit(range[1] - userFriendsPosts.length);
+    // concatena los posts de los amigos con los posts que no son de los amigos
+    posts = [...userFriendsPosts, ...posts];
+    const postsWithUsers = await Promise.all(posts.map(async (post) => {
+      const user = await UserSchema.findOne({ _id: post.userId });
+      const userDestructured = {
+        _id: user._id,
+        firtsName: user.firstName,
+        lastName: user.lastName,
+        avatar: user.avatar,
+      }
+      return {
+        match: post,
+        user: userDestructured
+      }
+    }));
+
+    // ORDENA LOS POSTS POR FECHA
+    postsWithUsers.sort((a, b) => {
+      return new Date(b.match.created) - new Date(a.match.created);
+    });
+    return res.status(200).json(postsWithUsers);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }   
+
+};
+
 module.exports = {
   postController,
   postCommentController,
@@ -519,4 +577,5 @@ module.exports = {
   getAllMatches,
   getComments,
   getPostsById,
+  getRecomendedMatches,
 };

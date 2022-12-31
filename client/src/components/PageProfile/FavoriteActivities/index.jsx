@@ -26,9 +26,9 @@ function FavoriteActivities({ id }) {
 	};
 
 	return (
-		<section className="p-2 relative h-full flex justify-between">
-			<div className="flex flex-col justify-start w-full  gap-5">
-				<h2>Tecnologías</h2>
+		<section className="p-2 relative h-full flex md:flex-row flex-col justify-between md:gap-10">
+			<div className="flex flex-col justify-start w-full  gap-5 ">
+				<h2 className=''>Tecnologías</h2>
 				<div className="flex flex-wrap items-center justify-start gap-1">
 					{profileTechnologies && profileTechnologies.length > 0 ? (
 						profileTechnologies.map((technology) => {
@@ -45,8 +45,8 @@ function FavoriteActivities({ id }) {
 					)}
 				</div>
 			</div>
-			<div className="flex flex-col justify-start items-start w-full gap-5">
-				<h2>Actividades Favoritas</h2>
+			<div className="flex flex-col justify-start w-full gap-5">
+				<h2 className='md:mt-0 mt-2'>Actividades Favoritas</h2>
 				<div className="flex flex-wrap items-center justify-start gap-1">
 					{profilePreferences && profilePreferences.length > 0 ? (
 						profilePreferences.map((preference) => {

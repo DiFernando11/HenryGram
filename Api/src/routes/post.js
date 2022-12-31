@@ -11,7 +11,8 @@ const { postController,
         getFriendsMatches,
         getAllMatches,
         getComments,
-        getPostsById } = require('../controllers/postController');
+        getPostsById, 
+        getRecomendedMatches, } = require('../controllers/postController');
 
 const router = express.Router();
 
@@ -28,5 +29,6 @@ router.post('/posts/comment', postCommentController);
 router.get('/posts/comment/:id', getComments) //id del post
 router.get('/posts/recomended/:userId', recomendedPostController)
 router.get('/posts/hashtag/:hashtag', getPostsByHashtag)
+router.get('/posts/recomendedMatches/:userId', getRecomendedMatches)
 
 module.exports = router;
