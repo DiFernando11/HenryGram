@@ -50,8 +50,10 @@ function PostProfile({ userInformation }) {
   const handleScroll = () => {
     if (
       document.getElementById("viewHeightPostByUser").clientHeight +
+        1 +
         document.getElementById("viewHeightPostByUser").scrollTop >=
-      document.getElementById("viewHeightPostByUser").scrollHeight
+        document.getElementById("viewHeightPostByUser").scrollHeight &&
+      !loading
     ) {
       setPage(page + 1);
       setLoading(true);
@@ -72,7 +74,7 @@ function PostProfile({ userInformation }) {
   }, []);
 
   return (
-    <section id="viewHeightPostByUser" className=" h-fit  pt-2 bg-gray900 rounded-lg">
+    <section className=" h-fit pt-2 rounded-lg">
       {location.pathname === `/profile/${userlogged?._id}` ? (
         <Transition
           show={true}
@@ -90,7 +92,8 @@ function PostProfile({ userInformation }) {
       <div>
         {!postUser && [1, 2].map((value) => <SkeletonPost key={value} />)}
         {postUser?.length ? (
-          postUser?.map((post) => (
+          postUser
+            ?.map((post) => (
               <Post
                 key={post._id}
                 postId={post._id}
@@ -102,11 +105,9 @@ function PostProfile({ userInformation }) {
                 group={post.group}
                 likes={post.likes}
               />
-            )).reverse()
-          
-          
-            
-        ) : !loadingPost ? (
+            ))
+            .reverse()
+        ) : (
           <div className="flex flex-col items-center h-[calc(100vh-22rem)] p-5">
             <img
               className="block m-auto w-36 h-36"
@@ -117,11 +118,8 @@ function PostProfile({ userInformation }) {
               No hay publicaciones aun
             </h1>
           </div>
-        ) : (
-          <div className="my-5">{loading && <Loader />}</div>
         )}
-
-
+        {loading && <Loader />}
         {newsLoadPost.length &&
           newsLoadPost.map((posts, index) => (
             <Post
@@ -136,7 +134,6 @@ function PostProfile({ userInformation }) {
               likes={posts.likes}
             />
           ))}
-
       </div>
     </section>
   );

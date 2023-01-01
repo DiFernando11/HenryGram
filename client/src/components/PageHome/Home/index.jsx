@@ -23,17 +23,20 @@ function Home() {
   }, [user]);
   useEffect(() => {
     if (page > 1) {
+      console.log("entre");
       axios
         .get(
           `http://localhost:3000/api/posts/recomended/${user?._id}?limit=${page}`
         )
         .then((response) => {
+          console.log("response");
           setNewsLoadPost([...newsLoadPost, ...response.data]);
           setLoading(false);
         })
         .catch((error) => {
           console.log(error);
         });
+      console.log("entre final");
     }
   }, [page]);
 
@@ -72,24 +75,22 @@ function Home() {
       >
         <MakePost />
 
-        {postUsers.length ? (
-          postUsers?.map((posts) => (
-            <Post
-              key={posts.post._id}
-              postId={posts.post._id}
-              userIdLogged={user}
-              isMatch={posts.post.isMatch}
-              seguir={posts.seguir}
-              description={posts.post.description}
-              user={posts.user}
-              imagePost={posts.post.image}
-              group={posts.post.group}
-              likes={posts.post.likes}
-            />
-          ))
-        ) : (
-          <SkeletonPost />
-        )}
+        {postUsers.length
+          ? postUsers?.map((posts) => (
+              <Post
+                key={posts.post._id}
+                postId={posts.post._id}
+                userIdLogged={user}
+                isMatch={posts.post.isMatch}
+                seguir={posts.seguir}
+                description={posts.post.description}
+                user={posts.user}
+                imagePost={posts.post.image}
+                group={posts.post.group}
+                likes={posts.post.likes}
+              />
+            ))
+          : [1, 2, 3, 4, 5].map((value) => <SkeletonPost key={value} />)}
         <div className="my-5">{loading && <Loader />}</div>
 
         {newsLoadPost.length &&

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import logoMatch from "../../../assets/coheteHenry.png";
+import { useParams } from "react-router-dom";
 import ActionsPosts from "../../PageHome/ActionsPost";
 import Comments from "../../PageHome/Comments/Comments";
 import SkeletonUser from "../../Skeletons/skeletonUser";
@@ -25,7 +24,7 @@ function CommentPostDetail({ comments, user, group, postId, likes, isMatch }) {
     objDiv.scrollTop = 0;
   }
   const handleSendCommentFront = (message) => {
-    setCommentFront([...commentFront, message]);
+    setCommentFront([message, ...commentFront]);
     scrollLastMessage();
   };
   const { id } = useParams();
@@ -68,20 +67,21 @@ function CommentPostDetail({ comments, user, group, postId, likes, isMatch }) {
               comment={comment}
             />
           ))}
-        {comments?.length ? (
-          comments
-            .map((user) => (
-              <CardComment
-                key={user._id}
-                userId={user.comment.userId}
-                firstName={user.firstName}
-                lastName={user.lastName}
-                avatar={user.avatar}
-                comment={user.comment.description}
-              />
-            ))
-            .reverse()
-        ) : !commentFront.length ? (
+        {comments?.length
+          ? comments
+              .map((user) => (
+                <CardComment
+                  key={user._id}
+                  userId={user.comment.userId}
+                  firstName={user.firstName}
+                  lastName={user.lastName}
+                  avatar={user.avatar}
+                  comment={user.comment.description}
+                />
+              ))
+              .reverse()
+          : null}
+        {!commentFront.length && !comments?.length && comments ? (
           <span className="text-sm text-center block uppercase">
             Be the first to comment 🙂
           </span>

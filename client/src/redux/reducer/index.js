@@ -43,6 +43,8 @@ import {
   LIKE_DISLIKE_POST,
   UPDATE_POST_REFRESH,
   SET_LOADING,
+  GET_RECCOMENDS_MATCH,
+  REFRESH_UPDATE_PROFILE,
 } from "../actions";
 
 const initialState = {
@@ -64,7 +66,9 @@ const initialState = {
   userPostsProfile: null,
   allPosts: [],
   updatePost: [],
+  matchsRecommended: null,
   updatePostRefresh: false,
+  refresh_update_profile: false,
   comments: null,
   postById: {},
 };
@@ -317,9 +321,21 @@ const rootReducer = (state = initialState, action) => {
         postById: action.payload,
       };
     }
+    case GET_RECCOMENDS_MATCH: {
+      return {
+        ...state,
+        matchsRecommended: action.payload,
+      };
+    }
     case LIKE_DISLIKE_POST: {
       return {
         ...state,
+      };
+    }
+    case REFRESH_UPDATE_PROFILE: {
+      return {
+        ...state,
+        refresh_update_profile: !state.refresh_update_profile,
       };
     }
     default:

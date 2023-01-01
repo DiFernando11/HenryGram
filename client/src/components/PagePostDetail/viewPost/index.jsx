@@ -15,10 +15,16 @@ function ViewPost() {
   const user = useSelector((state) => state.userProfileFriend);
   const dispatch = useDispatch();
   const { id, userId } = useParams();
+
   useEffect(() => {
     dispatch(getComments(id));
     dispatch(getPostById(id));
     dispatch(getProfileFriendAction(userId));
+    return () => {
+      dispatch(getComments("clear"));
+      dispatch(getProfileFriendAction("clear"));
+      dispatch(getPostById("clear"));
+    };
   }, [id]);
 
   return (

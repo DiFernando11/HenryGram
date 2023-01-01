@@ -139,7 +139,7 @@ function App() {
             </AuthRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/profile"
           element={
             <AuthRoute>
@@ -148,7 +148,7 @@ function App() {
               <ProfileUser />
             </AuthRoute>
           }
-        />
+        /> */}
         <Route
           path="/profile/:id"
           element={

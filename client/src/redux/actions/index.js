@@ -39,7 +39,9 @@ export const GET_FRIENDS_AVATAR_AND_NAME = "GET_FRIENDS_AVATAR_AND_NAME";
 export const UPDATE_POST_REFRESH = "UPDATE_POST_REFRESH";
 export const POST_COMMENTS = "POST_COMMENTS";
 export const GET_COMMENTS = "GET_COMMENTS";
+export const GET_RECCOMENDS_MATCH = "GET_RECCOMENDS_POST";
 export const GET_POST_BY_ID = "GET_POST_BY_ID";
+export const REFRESH_UPDATE_PROFILE = "REFRESH_UPDATE_PROFILE";
 export const SET_LOADING = "SET_LOADING";
 //USERS INFORMATION
 //REGISTER
@@ -106,6 +108,7 @@ export const getFriendsByUser = (id) => {
 //USERS INFORMATION
 //FRIENDS
 export const getProfileFriendAction = (idUser) => {
+  if (idUser === "clear") return { type: GET_PROFILE_FRIEND, payload: {} };
   return async (dispatch) => {
     try {
       const result = await axios.get(
@@ -425,6 +428,7 @@ export const postComment = (body) => {
 
 //GET COMMENTS OF A POST
 export const getComments = (id) => {
+  if (id === "clear") return { type: GET_COMMENTS, payload: null };
   return async (dispatch) => {
     try {
       const result = await axios.get(
@@ -437,12 +441,25 @@ export const getComments = (id) => {
   };
 };
 export const getPostById = (id) => {
+  if (id === "clear") return { type: GET_POST_BY_ID, payload: {} };
   return async (dispatch) => {
     try {
       const result = await axios.get(
         `http://localhost:3000/api/posts/id/${id}`
       );
       dispatch({ type: GET_POST_BY_ID, payload: result.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+export const getRecomendedMatches = (id) => {
+  return async (dispatch) => {
+    try {
+      const result = await axios.get(
+        `http://localhost:3000/api/posts/recomendedMatches/${id}`
+      );
+      dispatch({ type: GET_RECCOMENDS_MATCH, payload: result.data });
     } catch (error) {
       console.log(error);
     }
@@ -462,4 +479,8 @@ export const likeDislikePostAction = (data) => {
       console.log(error);
     }
   };
+};
+
+export const refreshUpdateProfile = () => {
+  return { type: REFRESH_UPDATE_PROFILE };
 };

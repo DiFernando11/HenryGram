@@ -23,7 +23,7 @@ function Post({
   const [commentFront, setCommentFront] = useState([]);
 
   const handleSendCommentFront = (message) => {
-    setCommentFront([...commentFront, message]);
+    setCommentFront([message , ...commentFront]);
   };
 
   return (
@@ -40,7 +40,7 @@ function Post({
         </div>
       )}
 
-      <div className="text-yellow-300 absolute top-1 right-0 mr-8  text-yellow">
+      <div className="text-yellow-300 absolute top-1 right-0 mr-8 ">
         {userIdLogged?._id === user._id ||
         location.pathname === `/profile/${userInformation?._id}` ? (
           <MyMenu
@@ -50,7 +50,8 @@ function Post({
           />
         ) : null}
       </div>
-      <div className="border-t border-neutral-600 pt-4 flex gap-2.5 relative items-center justify-between">
+      <div className="border-t border-neutral-600"></div>
+      <div className=" pt-4 flex gap-2.5 relative items-center justify-between truncate w-3/5 ">
         <Link to={`/profile/${user._id}`}>
           <div className="flex gap-3">
             <img
@@ -58,15 +59,17 @@ function Post({
               src={user.avatar}
               alt={user.firstName}
             />
-            <span className="leading-10 uppercase truncate sm:w-[70%] w-3/5">
+            <span className="leading-10 uppercase truncate">
               {`${user.firstName} ${user.lastName}`}{" "}
             </span>
           </div>
         </Link>
+      </div>
+      <div className="absolute top-12 md:right-12 right-5 ">
         <StatusFriend user={user._id} />
       </div>
 
-      <p className="my-5 text-white text-sm">{description}</p>
+      <p className="my-5 text-white text-sm ">{description}</p>
       <div className="grid grid-flow-col auto-cols-[minmax(0,_2fr)] gap-2 items-center bg-transparent">
         {imagePost &&
           imagePost.map((image) => {

@@ -83,7 +83,7 @@ function PreviewMesagge({ title }) {
             } transition-all ease-in duration:100 rounded-l-lg border border-white dark:border-white`}
           >
             <i className="bi bi-chat-right-text-fill"></i>
-            Chats
+            <span className=" sm:block md:hidden lg:block ">Chats</span>
           </button>
 
           <button
@@ -98,7 +98,7 @@ function PreviewMesagge({ title }) {
             } transition-all ease-in duration:100 rounded-r-lg border border-white dark:border-white`}
           >
             <img src={logoMatch} className={"w-6 h-6 "} />
-            Match
+            <span className=" sm:block md:hidden lg:block ">Match</span>
           </button>
         </Link>
       </div>

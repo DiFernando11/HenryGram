@@ -9,7 +9,7 @@ function Chats() {
   return (
     <main className="flex w-full sm:h-screen bg-[url('https://unageek.com/wp-content/uploads/2020/03/Fondo_pantalla_chat_WA_StarWars_UnaGeek_Oscuro.jpg')]">
       <div
-        className={`md:w-[35%]  w-screen md:flex ${
+        className={`md:w-[35%]  w-full md:flex ${
           !responsiveIsCell && "hidden"
         }`}
       >
