@@ -144,7 +144,7 @@ const getRecommendedGroups = async (req, res, next) => {
       if (!userGroups.includes(el._id.toString())) recommendedGroups.push(el)
     })
 
-    res.status(200).json(recommendedGroups);
+    res.status(200).json(recommendedGroups.length > 15 ? recommendedGroups.slice(0, 15) : recommendedGroups);
   } catch (ex) {
     next(ex);
   }
