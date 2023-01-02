@@ -177,9 +177,21 @@ const recomendedPostController = async (req, res) => {
                   lastName: u.lastName,
                   avatar: u.avatar,
                 };
+                const postDestructured = {
+                  _id: p._id,
+                  userId: p.userId,
+                  description: p.description,
+                  image: p.image,
+                  hidden: p.hidden,
+                  isMatch: p.isMatch,
+                  hashtags: p.hashtags,
+                  created: p.created,
+                  comments: p.comments.length,
+                  likes: p.likes,
+                };
 
                 postsWithUser.push({
-                  post: p,
+                  post: postDestructured,
                   user: userDestructured,
                 });
                 if (postsWithUser.length === posts.length) {
@@ -274,7 +286,22 @@ const getPostsByUser = async (req, res) => {
 
     const posts = await PostSchema.find({ userId: id }).sort({ created: -1 });
 
-    const twentyPosts = posts.slice(offset * (limit - 1), offset * limit)
+    const modifiedPosts = posts.map((post) => {
+      return {
+        _id: post._id,
+        userId: post.userId,
+        description: post.description,
+        image: post.image,
+        hidden: post.hidden,
+        isMatch: post.isMatch,
+        hashtags: post.hashtags,
+        created: post.created,
+        comments: post.comments.length,
+        likes: post.likes,
+      };
+    });
+
+    const twentyPosts = modifiedPosts.slice(offset * (limit - 1), offset * limit)
 
     return res.status(200).json(twentyPosts);
   } catch (error) {
@@ -339,21 +366,14 @@ const updatePost = async (req, res) => {
   */
 
   const { id } = req.params;
-
-  const { description, hashtags, images } = req.body;
+console.log(req.body)
+  const { description, hashtags, image } = req.body;
 
   try {
-    const post = await PostSchema.findOne({ _id: id });
-
-    if (post) {
-      description && (post.description = description);
-      hashtags && (post.hashtags = hashtags);
-      images && (post.images = images);
-      await post.save();
-      res.status(200).json(post);
-    } else {
-      res.status(404).json({ message: "Post not found" });
-    }
+    // actualizar la publicacion
+    const post = await PostSchema.updateOne( { _id: id }, { $set: { description, hashtags, image } } );
+    console.log(post);
+    res.status(200).json({ message: "Post updated" });
   } catch (error) {
     res.status(500).json(error);
   }
