@@ -75,10 +75,14 @@ const validateUser = async (req, res) => {
 
   const { token } = req.params;
 
-  const { email, password } = getTokenData(token).data;
+  try {
+    const { email, password } = getTokenData(token).data;
+  } catch (error) {
+    return res.status(400).json({ msg: "Invalid token" });
+  }
 
   if (!email || !password) {
-    res.status(400).json({ msg: "Invalid token" });
+    return res.status(400).json({ msg: "Invalid token" });
   }
 
   const user = await UserSchema.findOne({ email: email });
