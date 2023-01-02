@@ -10,7 +10,7 @@ function CardUser({ friend }) {
           src={friend.avatar}
           alt={`Friend ${friend.firstName}`}
         />
-        <span>
+        <span className="truncate">
           {friend.firstName} {friend.lastName}
         </span>
       </Link>

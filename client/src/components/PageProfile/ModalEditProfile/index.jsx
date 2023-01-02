@@ -2,7 +2,7 @@ import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Transition } from '@headlessui/react';
-import { editProfileAction } from '../../../redux/actions/index';
+import { editProfileAction, refreshUpdateProfile } from '../../../redux/actions/index';
 
 function ModalEditProfile({ show, setShow }) {
 
@@ -25,6 +25,7 @@ function ModalEditProfile({ show, setShow }) {
 	const handleUpdateInformation = () => {
 		dispatch(editProfileAction(edit));
 		setShow(!show);
+		setTimeout(() => dispatch(refreshUpdateProfile()), 500);
 	};
 
 	return (

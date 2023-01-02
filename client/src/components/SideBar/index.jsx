@@ -72,16 +72,16 @@ function SideBar() {
   }, [friendsByUser]);
   return (
     <aside
-      className="sm:block hidden w-[22rem] font-sans relative z-10 overflow-x-visible h-screen bg-[url('https://besthqwallpapers.com/Uploads/21-8-2020/140202/thumb2-yellow-lines-background-material-design-yellow-lines-creative-yellow-background-lines-background.jpg')] "
+      className=" z-20 sm:block hidden w-[22rem] font-sans relative z-10 overflow-x-visible h-screen bg-[url('https://besthqwallpapers.com/Uploads/21-8-2020/140202/thumb2-yellow-lines-background-material-design-yellow-lines-creative-yellow-background-lines-background.jpg')] "
       aria-label="Sidebar"
     >
       <i
         className="bi bi-arrow-left-short text-4xl ml-2 absolute text-black top-10 left-8 font-black"
         onClick={() => navigate(-1)}
       ></i>
-      <div className="overflow-y-auto  py-4 px-3 bg-gray-50 rounded dark:bg-gray-800 overflow-x-hidden">
+      <div className="overflow-y-auto  py-4 px-3 bg-gray-50 rounded dark:bg-gray-800 overflow-x-hidden ">
         <ul>
-          <div className="flex items-center justify-center pl-2.5 mt-5 mb-5">
+          <div className="flex items-center justify-center pl-2.5 mt-5 mb-5 ">
             <img
               src={henryGramLogo}
               className="w-24 h-12 text-black object-cover"
@@ -90,7 +90,7 @@ function SideBar() {
           </div>
           <div className="mb-12">
             <SearchBar handleChangeSearch={searchUserAction} />
-            <div className="absolute -right-56 top-24 w-56 z-10">
+            <div className="absolute -right-56 top-24 w-56 truncate">
               {searchUser.length
                 ? searchUser
                     .map((friend, index) => (

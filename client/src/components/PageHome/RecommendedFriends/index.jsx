@@ -1,29 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CardPreviewMessage from "../../PageChats/CardPreviewMessage";
 import logoMatch from "../../../assets/coheteHenry.png";
 import SkeletonUser from "../../Skeletons/skeletonUser";
+import { useDispatch, useSelector } from "react-redux";
+import { getRecomendedMatches } from "../../../redux/actions";
 
 function RecommendedFriends() {
+  const dispatch = useDispatch();
+  const userInformation = useSelector((state) => state.userInformation);
+  const matchsRecommended = useSelector((state) => state.matchsRecommended);
+  useEffect(() => {
+    if (userInformation) {
+      dispatch(getRecomendedMatches(userInformation?._id));
+    }
+  }, [userInformation]);
+
   return (
     <section className="w-2/6 bg-neutral-800 hidden lg:block">
       <div className="flex items-center h-16 justify-center gap-2 ">
         <h3 className="text-white">People you can match</h3>
         <img src={logoMatch} className="w-6 h-6" alt="logo match" />
       </div>
-      <div className="calcViewHeightRecommendedeFriends">
-        {messages.length
-          ? messages.map((message, index) => (
-              <CardPreviewMessage
-                key={index}
-                id={message.id}
-                image={message.image}
-                name={message.name}
-                message={message.message}
-              />
-            ))
-          : [1, 2, 3, 4, 5, 6, 7, 8].map((value) => (
-              <SkeletonUser key={value} />
-            ))}
+      <div className="h-[calc(100vh-4rem)] overflow-y-scroll">
+        {matchsRecommended?.length &&
+          matchsRecommended.map((message, index) => (
+            <CardPreviewMessage
+              key={index}
+              id={message?.match?.id}
+              image={message?.user?.avatar}
+              name={message?.user?.firstName}
+              message={"aqui va el title del grupo"}
+            />
+          ))}
+          {matchsRecommended && !matchsRecommended.length && <div>There are no Incidents</div>}
+        {!matchsRecommended &&
+          [1, 2, 3, 4, 5, 6, 7, 8].map((value) => <SkeletonUser key={value} />)}
       </div>
     </section>
   );
