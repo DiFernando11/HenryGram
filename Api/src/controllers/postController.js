@@ -286,7 +286,22 @@ const getPostsByUser = async (req, res) => {
 
     const posts = await PostSchema.find({ userId: id }).sort({ created: -1 });
 
-    const twentyPosts = posts.slice(offset * (limit - 1), offset * limit)
+    const modifiedPosts = posts.map((post) => {
+      return {
+        _id: post._id,
+        userId: post.userId,
+        description: post.description,
+        image: post.image,
+        hidden: post.hidden,
+        isMatch: post.isMatch,
+        hashtags: post.hashtags,
+        created: post.created,
+        comments: post.comments.length,
+        likes: post.likes,
+      };
+    });
+
+    const twentyPosts = modifiedPosts.slice(offset * (limit - 1), offset * limit)
 
     return res.status(200).json(twentyPosts);
   } catch (error) {
