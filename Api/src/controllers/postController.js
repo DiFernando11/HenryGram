@@ -177,9 +177,21 @@ const recomendedPostController = async (req, res) => {
                   lastName: u.lastName,
                   avatar: u.avatar,
                 };
+                const postDestructured = {
+                  _id: p._id,
+                  userId: p.userId,
+                  description: p.description,
+                  image: p.image,
+                  hidden: p.hidden,
+                  isMatch: p.isMatch,
+                  hashtags: p.hashtags,
+                  created: p.created,
+                  comments: p.comments.length,
+                  likes: p.likes,
+                };
 
                 postsWithUser.push({
-                  post: p,
+                  post: postDestructured,
                   user: userDestructured,
                 });
                 if (postsWithUser.length === posts.length) {
