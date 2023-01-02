@@ -339,21 +339,14 @@ const updatePost = async (req, res) => {
   */
 
   const { id } = req.params;
-
-  const { description, hashtags, images } = req.body;
+console.log(req.body)
+  const { description, hashtags, image } = req.body;
 
   try {
-    const post = await PostSchema.findOne({ _id: id });
-
-    if (post) {
-      description && (post.description = description);
-      hashtags && (post.hashtags = hashtags);
-      images && (post.images = images);
-      await post.save();
-      res.status(200).json(post);
-    } else {
-      res.status(404).json({ message: "Post not found" });
-    }
+    // actualizar la publicacion
+    const post = await PostSchema.updateOne( { _id: id }, { $set: { description, hashtags, image } } );
+    console.log(post);
+    res.status(200).json({ message: "Post updated" });
   } catch (error) {
     res.status(500).json(error);
   }
