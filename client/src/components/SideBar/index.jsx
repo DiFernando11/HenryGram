@@ -27,14 +27,15 @@ function SideBar() {
   const [friendsRequests, setFriendsRequests] = useState([]);
   const [numberFriendsRequest, setNumberFriendsRequest] = useState(0);
   const [answerFriend, setAnswerFriend] = useState(false);
+  const [loadingFriends, setLoadignFriends] = useState(true);
   const dispatch = useDispatch();
   const requestFriends = friendsByUser
     .filter((friend) => Number(friend.status) === 2)
     .map((friend) => friend.recipient);
 
   const handleGetFriendsRequest = () => {
+    if (!requestFriends?.length) setLoadignFriends(false);
     try {
-      console.log(requestFriends, "request");
       if (requestFriends?.length && !answerFriend) {
         axios
           .post(`http://localhost:3000/api/users/info`, {
@@ -42,6 +43,7 @@ function SideBar() {
           })
           .then((response) => {
             setFriendsRequests(response.data);
+            setLoadignFriends(false);
           });
       }
     } catch (error) {
@@ -123,6 +125,7 @@ function SideBar() {
                 setIsActive={setIsActive}
                 friendRequests={friendsRequests}
                 handleResponseRequestFriend={handleResponseRequestFriend}
+                loadingFriends={loadingFriends}
               />
             </li>
 
