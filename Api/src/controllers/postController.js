@@ -109,9 +109,9 @@ const recomendedPostController = async (req, res) => {
   }
 
   if (userId !== null) {
-    try{
+    try {
       user = await UserSchema.findOne({ _id: userId });
-    }catch(error){
+    } catch (error) {
       res.status(500).json(error);
     }
   }
@@ -121,7 +121,7 @@ const recomendedPostController = async (req, res) => {
   let friendships = [];
   const maxPosts = 100;
 
-  if ( user){
+  if (user) {
     if (user.friends.length > 0) {
       friendships = user.friends.map(async (friend) => {
         return await FriendSchema.findOne({ _id: friend });
@@ -494,18 +494,22 @@ const getComments = async (req, res) => {
     Controlador de la Ruta para obtener los comentarios de una publicacion
   */
 
-  const { id } = req.params;
+  const { id, limit } = req.query;
+
+  const offset = 10;
 
   try {
     const post = await PostSchema.findOne({ _id: id });
     if (post) {
-
-      let comentsWithUsers = await Promise.all(post.comments.map(async (comment) => {
+      let commentsWithUsers = await Promise.all(post.comments.map(async (comment) => {
         const user = await UserSchema.findOne({ _id: comment.userId }, { firstName: 1, lastName: 1, avatar: 1 });
         const userDestructured = { comment: comment, firstName: user.firstName, lastName: user.lastName, avatar: user.avatar };
         return userDestructured;
       }));
-      res.status(200).json(comentsWithUsers);
+
+      let tenComments = commentsWithUsers.sort((a, b) => b.comment.date - a.comment.date).slice(offset * (limit - 1), offset * limit);
+
+      res.status(200).json(tenComments);
     } else {
       res.status(404).json({ message: "Post not found" });
     }
@@ -560,8 +564,8 @@ const getRecomendedMatches = async (req, res) => {
       }
     });
     let userFriendsPosts = []
-    userFriendsIds.length && (userFriendsPosts = await PostSchema.find({ userId: { $in: userFriendsIds } , isMatch: true }))
-  
+    userFriendsIds.length && (userFriendsPosts = await PostSchema.find({ userId: { $in: userFriendsIds }, isMatch: true }))
+
     // Trae mas posts que no sean del usuario ni  de sus amigos
     let posts = await PostSchema.find({ userId: { $nin: [...userFriendsIds, userId] }, isMatch: true })
     // concatena los posts de los amigos con los posts que no son de los amigos
@@ -594,7 +598,7 @@ const getRecomendedMatches = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
-  }   
+  }
 
 };
 

@@ -26,7 +26,7 @@ router.post('/posts/like', likePost); //Por body se envia el id del post y el id
 router.get('/posts/matchess', getAllMatches)
 router.get('/posts/matches/:userId', getFriendsMatches) //id del usuario
 router.post('/posts/comment', postCommentController);
-router.get('/posts/comment/:id', getComments) //id del post
+router.get('/posts/comment', getComments) //id del post
 router.get('/posts/recomended/:userId', recomendedPostController)
 router.get('/posts/hashtag/:hashtag', getPostsByHashtag)
 router.get('/posts/recomendedMatches/:userId', getRecomendedMatches)
