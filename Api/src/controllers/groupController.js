@@ -20,7 +20,7 @@ const getAllChat = async (req, res, next) => {
       chats.map(async (chat) => {
         const userChat = await UserSchema.findOne({ _id: chat.userId })
         const user = {
-          firtsName: userChat.firstName,
+          firstName: userChat.firstName,
           lastName: userChat.lastName,
           avatar: userChat.avatar,
         }

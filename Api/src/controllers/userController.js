@@ -333,7 +333,7 @@ const getGroups = async (req, res) => {
       if (result.length) {
         return res.status(200).json(result);
       } else {
-        return res.status(404).json({ message: "Groups not found" });
+        return res.status(200).json([]);
       }
     })
     .catch((e) => {
@@ -380,7 +380,7 @@ const getNameAndAvatar = async (req, res) => {
   const { userId } = req.params;
   const friends = [];
   try {
-    let friendships = await FriendSchema.find({ $or: [{ requester: userId }, { recipient: userId }],  $and: [{ status: 3 }] });
+    let friendships = await FriendSchema.find({ $or: [{ requester: userId }, { recipient: userId }], $and: [{ status: 3 }] });
     if (friendships.length > 0) {
       friendships.forEach((friendship) => {
         if (String(friendship.requester) === String(userId)) {
