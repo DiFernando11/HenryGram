@@ -17,7 +17,7 @@ function Post({
 	userIdLogged,
 	group,
 	likes,
-	comments,
+	lastComment,
 }) {
 	const location = useLocation();
 	const userInformation = useSelector((state) => state.userInformation);
@@ -93,29 +93,26 @@ function Post({
 						isMatch={isMatch}
 					/>
 
-					{commentFront.length
-						? commentFront.map((comment, index) => (
-								<CardComment
-									key={index}
-									userId={userInformation?._id}
-									firstName={userInformation?.firstName}
-									lastName={userInformation?.lastName}
-									avatar={userInformation?.avatar}
-									comment={comment}
-								/>
-						  ))
-						// : comments.length
-						// ? comments.map((comment, index) => (
-						// 		<CardComment
-						// 			key={index}
-						// 			userId={user?._id}
-						// 			firstName={user?.firstName}
-						// 			lastName={user?.lastName}
-						// 			avatar={user?.avatar}
-						// 			comment={comment}
-						// 		/>
-						//   ))
-						: null}
+					{commentFront.length ? (
+						commentFront.map((comment, index) => (
+							<CardComment
+								key={index}
+								userId={userInformation?._id}
+								firstName={userInformation?.firstName}
+								lastName={userInformation?.lastName}
+								avatar={userInformation?.avatar}
+								comment={comment}
+							/>
+						))
+					) : lastComment ? (
+						<CardComment
+							userId={user?._id}
+							firstName={user?.firstName}
+							lastName={user?.lastName}
+							avatar={user?.avatar}
+							comment={lastComment.description}
+						/>
+					) : null}
 
 					<Comments
 						postId={postId}

@@ -88,6 +88,7 @@ function Home() {
                 imagePost={posts.post.image}
                 group={posts.post.group}
                 likes={posts.post.likes}
+                lastComment={posts.post.lastComment}
               />
             ))
           : [1, 2, 3, 4, 5].map((value) => <SkeletonPost key={value} />)}
