@@ -390,7 +390,7 @@ const getNameAndAvatar = async (req, res) => {
         }
       });
     } else {
-      return res.status(404).json({ message: "Friendship not found" });
+      return res.status(200).json([]);
     }
     let users = await UserSchema.find(
       { _id: { $in: friends } },
