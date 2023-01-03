@@ -104,6 +104,7 @@ function PostProfile({ userInformation }) {
                 imagePost={post.image}
                 group={post.group}
                 likes={post.likes}
+                comments={post.comments}
               />
             ))
             .reverse()
