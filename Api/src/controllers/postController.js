@@ -188,6 +188,7 @@ const recomendedPostController = async (req, res) => {
                   created: p.created,
                   comments: p.comments.length,
                   likes: p.likes,
+                  group: p.group,
                 };
 
                 postsWithUser.push({
@@ -298,6 +299,7 @@ const getPostsByUser = async (req, res) => {
         created: post.created,
         comments: post.comments.length,
         likes: post.likes,
+        group: post.group,
       };
     });
 
