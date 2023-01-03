@@ -432,7 +432,7 @@ export const getComments = (id) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/posts/comment/${id}`
+        `http://localhost:3000/api/posts/comment?id=${id}&limit=1`
       );
       dispatch({ type: GET_COMMENTS, payload: result.data });
     } catch (error) {

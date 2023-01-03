@@ -15,7 +15,7 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const user = useSelector((state) => state.userInformation);
-
+  console.log(postUsers)
   useEffect(() => {
     if (user && !postUsers.length) {
       dispatch(getPostAllUsers(user?._id));
@@ -88,6 +88,7 @@ function Home() {
                 imagePost={posts.post.image}
                 group={posts.post.group}
                 likes={posts.post.likes}
+                lastComment={posts.post.lastComment}
               />
             ))
           : [1, 2, 3, 4, 5].map((value) => <SkeletonPost key={value} />)}

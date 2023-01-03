@@ -21,7 +21,6 @@ function PostProfile({ userInformation }) {
   const location = useLocation();
   const dispatch = useDispatch();
   const { id } = useParams();
-  console.log(postUser);
   useEffect(() => {
     (async () => {
       dispatch(getPostUSer(id));
@@ -104,6 +103,7 @@ function PostProfile({ userInformation }) {
                 imagePost={post.image}
                 group={post.group}
                 likes={post.likes}
+                lastComment={post.lastComment}
               />
             ))
             .reverse()
