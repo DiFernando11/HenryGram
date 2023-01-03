@@ -56,6 +56,7 @@ function AboutProfile({ userInformation }) {
   }, [userID]);
 
   const handleRedirectChatUser = () => {
+    console.log("hola")
     if (
       !chatUsers.some((user) => user?._id === id) &&
       !chatPrevent.some((user) => user?._id === id)
@@ -98,17 +99,17 @@ function AboutProfile({ userInformation }) {
         </div>
         <div className="w-full px-5 flex justify-between absolute top-2 ">
           {userInformation._id !== userID && (
-            <div className="flex text-yellow gap-1 items-center  ">
-              <StatusFriend user={id} />
-            </div>
-          )}
-          {userInformation._id !== userID && (
             <div className="flex gap-8 items-center ">
               <i
                 onClick={handleRedirectChatUser}
-                className="bi bi-chat-dots-fill text-yellow text-2xl"
+                className="bi bi-chat-dots-fill text-yellow text-2xl z-30"
                 title="Send message"
               ></i>
+            </div>
+          )}
+          {userInformation._id !== userID && (
+            <div className="flex text-yellow gap-1 items-center  ">
+              <StatusFriend user={id} />
             </div>
           )}
         </div>

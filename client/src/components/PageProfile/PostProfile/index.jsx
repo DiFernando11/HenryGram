@@ -21,7 +21,7 @@ function PostProfile({ userInformation }) {
   const location = useLocation();
   const dispatch = useDispatch();
   const { id } = useParams();
-
+  console.log(postUser);
   useEffect(() => {
     (async () => {
       dispatch(getPostUSer(id));
