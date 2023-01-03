@@ -45,11 +45,15 @@ export const REFRESH_UPDATE_PROFILE = "REFRESH_UPDATE_PROFILE";
 export const SET_LOADING = "SET_LOADING";
 //USERS INFORMATION
 //REGISTER
+
+const URL = import.meta.env.VITE_URL_RAILWAY
+
+
 export const createUser = (user) => {
   return async function (dispatch) {
     try {
       dispatch({ type: SET_LOADING, payload: true });
-      const result = await axios.post("http://localhost:3000/api/users", user);
+      const result = await axios.post(`${URL || "http://localhost:3000"}/api/users`, user);
       dispatch({ type: SET_LOADING, payload: false });
       dispatch({ type: CREATE_USER, payload: result.data });
     } catch (error) {
@@ -62,7 +66,7 @@ export const loginAction = (data) => {
   return async (dispatch) => {
     try {
       const result = await axios.post(
-        "http://localhost:3000/api/users/login",
+        `${URL || "http://localhost:3000"}/api/users/login`,
         data
       );
       return dispatch({ type: LOGIN, payload: result.data });
@@ -84,7 +88,7 @@ export const verifyUserAction = (token) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/users/token?token=${token}`
+        `${URL || "http://localhost:3000"}/api/users/token?token=${token}`
       );
       return dispatch({ type: VERIFY_USER_TOKEN, payload: result.data });
     } catch (error) {
@@ -97,7 +101,7 @@ export const getFriendsByUser = (id) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/users/friends/${id}`
+        `${URL || "http://localhost:3000"}/api/users/friends/${id}`
       );
       return dispatch({ type: FRIENDS_BY_USER, payload: result.data });
     } catch (error) {
@@ -112,7 +116,7 @@ export const getProfileFriendAction = (idUser) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/users/id/${idUser}`
+        `${URL || "http://localhost:3000"}/api/users/id/${idUser}`
       );
       return dispatch({ type: GET_PROFILE_FRIEND, payload: result.data });
     } catch (error) {
@@ -123,7 +127,7 @@ export const getProfileFriendAction = (idUser) => {
 export const getInformationUsersAction = () => {
   return async (dispatch) => {
     try {
-      const result = await axios.get(`http://localhost:3000/api/users`);
+      const result = await axios.get(`${URL || "http://localhost:3000"}/api/users`);
       return dispatch({ type: GET_USERS_INFORMATION, payload: result.data });
     } catch (error) {
       console.log(error);
@@ -134,7 +138,7 @@ export const sendRequestFriendAction = (data) => {
   return async (dispatch) => {
     try {
       const result = await axios.post(
-        "http://localhost:3000/api/friends/add",
+        `${URL || "http://localhost:3000"}/api/friends/add`,
         data
       );
       dispatch({ type: SEND_FRIEND_REQUEST, payload: result.data });
@@ -147,7 +151,7 @@ export const confirmedRequestFriendAction = (data) => {
   return async (dispatch) => {
     try {
       const result = await axios.post(
-        "http://localhost:3000/api/friends/res",
+        `${URL || "http://localhost:3000"}/api/friends/res`,
         data
       );
       dispatch({ type: CONFIRMED_FRIEND_REQUEST, payload: result.data });
@@ -165,7 +169,7 @@ export const getFriendsAvatarAndName = (id) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/users/nameAndAvatar/${id}`
+        `${URL || "http://localhost:3000"}/api/users/nameAndAvatar/${id}`
       );
       return result.data;
     } catch (error) {
@@ -178,7 +182,7 @@ export const getFriendsAvatarAndName = (id) => {
 export const postUser = (post) => {
   return async (dispatch) => {
     try {
-      const result = await axios.post("http://localhost:3000/api/posts", post);
+      const result = await axios.post(`${URL || "http://localhost:3000"}/api/posts`, post);
       dispatch({ type: POST_USER, payload: result.data });
     } catch (error) {
       console.log(error);
@@ -198,7 +202,7 @@ export const getChatsBackAction = (id) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/users/messages/${id}`
+        `${URL || "http://localhost:3000"}/api/users/messages/${id}`
       );
       return dispatch({ type: GET_CHATS_ACTION, payload: result.data });
     } catch (error) {
@@ -214,7 +218,7 @@ export const getMessageByUserBackAction = (data) => {
   return async (dispatch) => {
     try {
       const result = await axios.post(
-        `http://localhost:3000/api/messages/all`,
+        `${URL || "http://localhost:3000"}/api/messages/all`,
         data
       );
       return dispatch({ type: GET_CHAT_BY_USER, payload: result.data });
@@ -227,7 +231,7 @@ export const getMessageByUserBackAction = (data) => {
 export const sendMessageBackAction = (from, to, message, image) => {
   return async (dispatch) => {
     try {
-      const result = await axios.post(`http://localhost:3000/api/messages`, {
+      const result = await axios.post(`${URL || "http://localhost:3000"}/api/messages`, {
         from,
         to,
         message,
@@ -245,7 +249,7 @@ export const getChatsGroupAction = (id) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/users/groups/${id}`
+        `${URL || "http://localhost:3000"}/api/users/groups/${id}`
       );
       return dispatch({ type: GET_CHATS_GROUP, payload: result.data });
     } catch (error) {
@@ -254,11 +258,11 @@ export const getChatsGroupAction = (id) => {
   };
 };
 export const getChatByUserGroupAction = (id, limit) => {
-  // http://localhost:3000/api/groups?id=63a23d1113cae7910c834510&limit=1
+  // ${URL || "http://localhost:3000"}/api/groups?id=63a23d1113cae7910c834510&limit=1
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/groups?id=${id}&limit=${limit}`
+        `${URL || "http://localhost:3000"}/api/groups?id=${id}&limit=${limit}`
       );
       return dispatch({
         type: GET_MESSAGE_BY_USER_GROUP,
@@ -272,7 +276,7 @@ export const getChatByUserGroupAction = (id, limit) => {
 export const sendMessageByGroup = (userId, groupId, content, image) => {
   return async (dispatch) => {
     try {
-      const result = await axios.post(`http://localhost:3000/api/groups`, {
+      const result = await axios.post(`${URL || "http://localhost:3000"}/api/groups`, {
         userId,
         groupId,
         content,
@@ -288,7 +292,7 @@ export const invitationSendGroupAction = (payload) => {
   return async (dispatch) => {
     try {
       const result = await axios.post(
-        `http://localhost:3000/api/groups/req`,
+        `${URL || "http://localhost:3000"}/api/groups/req`,
         payload
       );
       console.log(result.data, "data");
@@ -301,7 +305,7 @@ export const invitationSendGroupAction = (payload) => {
 export const responseInvitationGroupAction = (payload) => {
   return async (dispatch) => {
     try {
-      await axios.post(`http://localhost:3000/api/groups/res`, payload);
+      await axios.post(`${URL || "http://localhost:3000"}/api/groups/res`, payload);
       return dispatch({
         type: RESPONSE_GROUP_INVITATION,
       });
@@ -332,7 +336,7 @@ export const getPostAllUsers = (id) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/posts/recomended/${id}`
+        `${URL || "http://localhost:3000"}/api/posts/recomended/${id}`
       );
       dispatch({ type: GET_ALL_POSTS, payload: result.data });
     } catch (error) {
@@ -345,7 +349,7 @@ export const getPostUSer = (id, limit) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/posts/user?id=${id}&limit=1`
+        `${URL || "http://localhost:3000"}/api/posts/user?id=${id}&limit=1`
       );
       dispatch({ type: GET_POSTS, payload: result.data });
     } catch (error) {
@@ -370,7 +374,7 @@ export const deletePostFront = (id) => {
   return async (dispatch) => {
     try {
       const result = await axios.delete(
-        `http://localhost:3000/api/posts/${id}`
+        `${URL || "http://localhost:3000"}/api/posts/${id}`
       );
       dispatch({ type: DELETE_POST, payload: [result.data, id] });
     } catch (error) {
@@ -384,7 +388,7 @@ export const updatePostFront = (body) => {
   return async (dispatch) => {
     try {
       const result = await axios.put(
-        `http://localhost:3000/api/posts/${body.id}`,
+        `${URL || "http://localhost:3000"}/api/posts/${body.id}`,
         body
       );
       console.log("Esta es la respuesta del back:", result.data);
@@ -401,7 +405,7 @@ export const editProfileAction = (data) => {
   return async (dispatch) => {
     try {
       const result = await axios.put(
-        `http://localhost:3000/api/users/${data.id}`,
+        `${URL || "http://localhost:3000"}/api/users/${data.id}`,
         data
       );
       dispatch({ type: EDIT_PROFILE, payload: result.data });
@@ -416,7 +420,7 @@ export const postComment = (body) => {
   return async (dispatch) => {
     try {
       const result = await axios.post(
-        "http://localhost:3000/api/posts/comment",
+        `${URL || "http://localhost:3000"}/api/posts/comment`,
         body
       );
       dispatch({ type: POST_COMMENTS, payload: result.data });
@@ -432,7 +436,7 @@ export const getComments = (id) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/posts/comment?id=${id}&limit=1`
+        `${URL || "http://localhost:3000"}/api/posts/comment?id=${id}&limit=1`
       );
       dispatch({ type: GET_COMMENTS, payload: result.data });
     } catch (error) {
@@ -445,7 +449,7 @@ export const getPostById = (id) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/posts/id/${id}`
+        `${URL || "http://localhost:3000"}/api/posts/id/${id}`
       );
       dispatch({ type: GET_POST_BY_ID, payload: result.data });
     } catch (error) {
@@ -457,7 +461,7 @@ export const getRecomendedMatches = (id) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/posts/recomendedMatches/${id}`
+        `${URL || "http://localhost:3000"}/api/posts/recomendedMatches/${id}`
       );
       dispatch({ type: GET_RECCOMENDS_MATCH, payload: result.data });
     } catch (error) {
@@ -471,7 +475,7 @@ export const likeDislikePostAction = (data) => {
   return async (dispatch) => {
     try {
       await axios.post(
-        `http://localhost:3000/api/posts/like?postId=${data.postId}&userId=${data.userId}`,
+        `${URL || "http://localhost:3000"}/api/posts/like?postId=${data.postId}&userId=${data.userId}`,
         data
       );
       dispatch({ type: LIKE_DISLIKE_POST });
