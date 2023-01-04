@@ -47,6 +47,7 @@ import {
   GET_RECCOMENDS_MATCH,
   REFRESH_UPDATE_PROFILE,
   SEARCH_CHATS_GROUPS,
+  BELONG_MATCH_GROUP,
 } from "../actions";
 
 const initialState = {
@@ -71,6 +72,7 @@ const initialState = {
   matchsRecommended: null,
   updatePostRefresh: false,
   refresh_update_profile: false,
+  belongsMatchGroup: [],
   comments: null,
   postById: {},
 };
@@ -345,6 +347,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         refresh_update_profile: !state.refresh_update_profile,
+      };
+    }
+    case BELONG_MATCH_GROUP: {
+      return {
+        ...state,
+        belongsMatchGroup: action.payload,
       };
     }
     default:

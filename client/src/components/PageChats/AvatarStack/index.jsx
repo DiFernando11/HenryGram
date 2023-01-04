@@ -7,16 +7,18 @@ function AvatarStack({ avatars, openModalFriends, show }) {
     <div className="flex -space-x-1 overflow-hidden">
       {avatars.length
         ? avatars
-            .map((avatar, index) => (
-              <Link key={index} to={`/profile/${avatar._id}`}>
-                <img
-                  className="inline-block h-8 w-8 rounded-full border cursor-pointer"
-                  src={avatar.avatar}
-                  alt="user Avatar"
-                  title={`${avatar.firstName} ${avatar.lastName} `}
-                />
-              </Link>
-            ))
+            .map((avatar, index) => {
+              return (
+                <Link key={index} to={`${`/profile/${avatar._id}`}`}>
+                  <img
+                    className="inline-block h-8 w-8 rounded-full border cursor-pointer"
+                    src={avatar.avatar}
+                    alt="user Avatar"
+                    title={`${avatar.firstName} ${avatar.lastName} `}
+                  />
+                </Link>
+              );
+            })
             .slice(0, 5)
         : null}
       {avatars.length > 5 && (
