@@ -15,6 +15,7 @@ import CardMessage from "../CardMessage";
 import SendMessage from "../SendMessage";
 import styles from "./index.module.css";
 import Loader from "../../Loader";
+const URL = import.meta.env.VITE_URL_RAILWAY;
 
 function MessageGroup() {
   const chatByUser = useSelector((state) => state.chatByUser);
@@ -28,7 +29,6 @@ function MessageGroup() {
   const chatUsers = useSelector((state) => state.chatUsers);
   const chatTimeRealUser = useSelector((state) => state.chatTimeReal);
   const userInformation = useSelector((state) => state.userInformation);
-
   const isCreatorGroup = findChatUser?.gr?.creator === userInformation?._id;
 
   function scrollLastMessage() {
@@ -50,7 +50,7 @@ function MessageGroup() {
     try {
       if (findChatUser && findChatUser?.gr?.users.length > 1) {
         axios
-          .post(`http://localhost:3000/api/users/info`, {
+          .post(`${URL || "http://localhost:3000/api/users/info"}`, {
             users: findChatUser.gr?.users.slice(0, 4),
           })
           .then((response) => {
@@ -64,7 +64,7 @@ function MessageGroup() {
     try {
       if (findChatUser && findChatUser?.gr?.pendings.length) {
         axios
-          .post(`http://localhost:3000/api/users/info`, {
+          .post(`${URL || "http://localhost:3000/api/users/info"}`, {
             users: findChatUser?.gr?.pendings,
           })
           .then((response) => {
@@ -84,7 +84,11 @@ function MessageGroup() {
     try {
       if (page > 1) {
         axios
-          .get(`http://localhost:3000/api/groups?id=${id}&limit=${page}`)
+          .get(
+            `${
+              URL || `http://localhost:3000/api/groups?id=${id}&limit=${page}`
+            }`
+          )
           .then((response) => {
             console.log(response);
             if (!response.data.length) {
@@ -162,9 +166,8 @@ function MessageGroup() {
     setPendingsUser(responsePendings);
   };
 
-
   return (
-    <section className="lg:w-[70%] sm:w-[50%] w-full">
+    <section className="lg:w-[70%] w-full">
       <div className={styles.header_message}>
         {!findChatUser ? (
           <SkeletonUser isMessage={false} />
@@ -193,7 +196,7 @@ function MessageGroup() {
           ? pendingsUser.map((user) => (
               <div
                 key={user._id}
-                className="w-[98%] bg-amber-300 py-4 px-2 flex items-center justify-between justify-self-center absolute z-10"
+                className="w-[96%] bg-amber-300 py-4 px-2 flex items-center justify-between justify-self-center absolute z-10"
               >
                 <span
                   onClick={() => handleHideInvitation(user._id)}
@@ -201,13 +204,16 @@ function MessageGroup() {
                 >
                   X
                 </span>
-                <div className="flex items-center gap-3 ml-3">
+                <div className="flex items-center gap-3 ml-3 truncate">
                   <img
                     src={user.avatar}
                     alt="user avatar"
                     className="w-10 h-10 rounded-full"
                   />
-                  <span className="text-black font-black uppercase truncate w-4/5">
+                  <span
+                    className="text-black font-black uppercase truncate  "
+                    title={`${user.firstName} ${user.lastName}`}
+                  >
                     {`${user.firstName} ${user.lastName}`}
                   </span>
                 </div>

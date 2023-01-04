@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
+const URL = import.meta.env.VITE_URL_RAILWAY;
 // import { io } from "socket.io-client";
 // const socket = io("http://localhost:3000");
 import {
   chatTimeReal,
-  getChatByUserGroupAction,
   getMessageByUserBackAction,
   sendMessageBackAction,
 } from "../../../redux/actions";
 import Loader from "../../Loader";
 import SkeletonUser from "../../Skeletons/skeletonUser";
-import AvatarStack from "../avatarStack";
 import CardMessage from "../CardMessage";
 import SendMessage from "../SendMessage";
 import styles from "./index.module.css";
@@ -39,6 +38,7 @@ function Messages() {
     if (!chatUsersID && !chatUsersPreventID)
       return <Navigate to={"/message"} />;
   }
+  console.log(chatUsers);
   function scrollLastMessage() {
     var objDiv = document.getElementById("divu");
     objDiv.scrollTop = objDiv.scrollHeight;
@@ -57,13 +57,12 @@ function Messages() {
     try {
       if (page > 1 && isMoreMessages) {
         axios
-          .post(`http://localhost:3000/api/messages/all`, {
+          .post(`${URL || "http://localhost:3000/api/messages/all"}`, {
             from: userInformation._id,
             to: id,
             limit: page,
           })
           .then((response) => {
-            console.log(response.data.projectedMessages, "proyected");
             if (!response.data.projectedMessages.length) {
               setIsMoreMessages(false);
             } else {
