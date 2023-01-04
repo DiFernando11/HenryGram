@@ -9,12 +9,14 @@ import RecommendedFriends from "../RecommendedFriends";
 import Loader from "../../Loader";
 
 function Home() {
+  const URL = import.meta.env.VITE_URL_RAILWAY
   const dispatch = useDispatch();
   const postUsers = useSelector((state) => state.allPosts);
   const [newsLoadPost, setNewsLoadPost] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const user = useSelector((state) => state.userInformation);
+  
   console.log(postUsers)
   useEffect(() => {
     if (user && !postUsers.length) {
@@ -26,7 +28,7 @@ function Home() {
       console.log("entre");
       axios
         .get(
-          `http://localhost:3000/api/posts/recomended/${user?._id}?limit=${page}`
+          `${URL || "http://localhost:3000"}/api/posts/recomended/${user?._id}?limit=${page}`
         )
         .then((response) => {
           console.log("response");
