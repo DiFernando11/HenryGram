@@ -26,10 +26,13 @@ function CommentPostDetail({ comments, user, group, postId, likes, isMatch }) {
     if (page > 1) {
       axios
         .get(
-          `${`http://localhost:3000/api/posts/comment?id=${id}&limit=${page}`}`
+          `${
+            URL ||
+            `http://localhost:3000/api/posts/comment?id=${id}&limit=${page}`
+          }`
         )
         .then((response) => {
-          console.log("ayuda")
+          console.log("ayuda");
           setOldComment([...oldComment, ...response.data]);
           setLoading(false);
         })
