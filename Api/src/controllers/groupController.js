@@ -9,11 +9,37 @@ const getAllChat = async (req, res, next) => {
 
     const offset = 10;
 
-    const chats = await ChatSchema.find({ groupId: id }).sort({
+    const chats = await ChatSchema.find(
+      { groupId: id },
+      { firstName: 0, lastName: 0, avatar: 0 }
+    ).sort({
       updatedAt: -1,
     });
 
-    const twentyMessages = chats.slice(offset * (limit - 1), offset * limit);
+    let chatsUsers = await Promise.all(
+      chats.map(async (chat) => {
+        const userChat = await UserSchema.findOne({ _id: chat.userId })
+        const user = {
+          firstName: userChat.firstName,
+          lastName: userChat.lastName,
+          avatar: userChat.avatar,
+        }
+        return {
+          // chat,
+          // user
+          ...user,
+          image: chat.image,
+          _id: chat._id,
+          groupId: chat.groupId,
+          userId: chat.userId,
+          content: chat.content,
+          createdAt: chat.createdAt,
+          updatedAt: chat.updatedAt
+        }
+      })
+    )
+
+    const twentyMessages = chatsUsers.slice(offset * (limit - 1), offset * limit);
 
     res.status(200).json(twentyMessages);
   } catch (ex) {

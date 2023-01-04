@@ -48,12 +48,8 @@ function App() {
   // });
   const [saveTokenData, setSaveTokenData] = useState(null);
   const userInformation = useSelector((state) => state.userInformation);
-  const navigate = useNavigate();
-  const chatTimeRealArray = useSelector((state) => state.chatTimeReal);
 
   const dispatch = useDispatch();
-  const auth = useAuth()
-
 
   const getData = () => {
     return localStorage.getItem("sessionStarted");
