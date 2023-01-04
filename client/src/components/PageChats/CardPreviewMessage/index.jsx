@@ -61,7 +61,7 @@ function CardPreviewMessage({
             <b>
               {message ? (senderMessage ? "Tu: " : `${name} :`) : "No messages"}
             </b>
-            {message}
+            {message ? message : null}
           </span>
           {findChatTimeReal ? (
             <span className="absolute flex items-center justify-center text-xs text-black bottom-1 right-0 mr-4 m-2 bg-red-600 w-4 h-4 rounded-full"></span>

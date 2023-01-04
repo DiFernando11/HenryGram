@@ -457,7 +457,7 @@ export const getRecomendedMatches = (id) => {
   return async (dispatch) => {
     try {
       const result = await axios.get(
-        `http://localhost:3000/api/posts/recomendedMatches/${id}`
+        `http://localhost:3000/api/groups/recommended/${id}`
       );
       dispatch({ type: GET_RECCOMENDS_MATCH, payload: result.data });
     } catch (error) {
