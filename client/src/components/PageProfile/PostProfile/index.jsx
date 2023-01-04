@@ -18,6 +18,7 @@ function PostProfile({ userInformation }) {
   const [newsLoadPost, setNewsLoadPost] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [isMorePosts, setIsMorePosts] = useState(false);
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ function PostProfile({ userInformation }) {
   }, [id, updatePostRefresh]);
 
   useEffect(() => {
-    if (page > 1 ) {
+    if (page > 1) {
       axios
         .get(
           `${
@@ -42,22 +43,29 @@ function PostProfile({ userInformation }) {
           }`
         )
         .then((response) => {
-          if (!response.data.length) setLoading(false);
-          setNewsLoadPost([...newsLoadPost, ...response.data]);
-          setLoading(false);
+          console.log(response.data, "data");
+          if (!response.data.length) {
+            setLoading(false);
+            setIsMorePosts(true);
+          } else {
+            setNewsLoadPost([...newsLoadPost, ...response.data]);
+            setLoading(false);
+          }
         })
         .catch((error) => {
           console.log(error);
         });
     }
   }, [page]);
+  console.log(loading, "lod");
   const handleScroll = () => {
     if (
       document.getElementById("viewHeightPostByUser").clientHeight +
         1 +
         document.getElementById("viewHeightPostByUser").scrollTop >=
         document.getElementById("viewHeightPostByUser").scrollHeight &&
-      !loading
+      !loading &&
+      !isMorePosts
     ) {
       setPage(page + 1);
       setLoading(true);
@@ -75,7 +83,7 @@ function PostProfile({ userInformation }) {
           .removeEventListener("scroll", handleScroll);
       }
     };
-  }, []);
+  }, [id, page, isMorePosts]);
 
   return (
     <section className=" h-fit pt-2 rounded-lg">
