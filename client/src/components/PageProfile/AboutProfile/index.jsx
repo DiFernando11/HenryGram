@@ -36,11 +36,11 @@ function AboutProfile({ userInformation }) {
   const { id } = useParams();
 
   const [friendsAvatars, setFriendsAvatars] = useState([]);
-
+  const URL = import.meta.env.VITE_URL_RAILWAY
   useEffect(() => {
     try {
       axios
-        .get(`http://localhost:3000/api/users/nameAndAvatar/${id}`)
+        .get(`${URL || "http://localhost:3000"}/api/users/nameAndAvatar/${id}`)
         .then((response) => {
           setFriendsAvatars(response.data);
         });

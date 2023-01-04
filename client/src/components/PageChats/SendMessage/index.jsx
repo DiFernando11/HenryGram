@@ -3,7 +3,8 @@ import EmojiPicker from "emoji-picker-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
-const socket = io("http://localhost:3000");
+const URL = import.meta.env.VITE_URL_RAILWAY
+const socket = io(`${URL || "http://localhost:3000"}`);
 import { chatTimeReal } from "../../../redux/actions";
 import styles from "./index.module.css";
 import { uploadImage } from "../../helpers/uploadImage";
