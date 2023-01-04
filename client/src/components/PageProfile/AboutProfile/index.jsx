@@ -36,11 +36,11 @@ function AboutProfile({ userInformation }) {
   const { id } = useParams();
 
   const [friendsAvatars, setFriendsAvatars] = useState([]);
-
+  const URL = import.meta.env.VITE_URL_RAILWAY;
   useEffect(() => {
     try {
       axios
-        .get(`http://localhost:3000/api/users/nameAndAvatar/${id}`)
+        .get(`${URL || "http://localhost:3000"}/api/users/nameAndAvatar/${id}`)
         .then((response) => {
           setFriendsAvatars(response.data);
         });
@@ -54,11 +54,10 @@ function AboutProfile({ userInformation }) {
       dispatch(getChatsBackAction(userID));
     }
   }, [userID]);
-
+  console.log(chatUsers);
   const handleRedirectChatUser = () => {
-    console.log("hola")
     if (
-      !chatUsers.some((user) => user?._id === id) &&
+      !chatUsers.some((user) => user?.usr?._id === id) &&
       !chatPrevent.some((user) => user?._id === id)
     ) {
       dispatch(

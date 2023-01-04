@@ -15,7 +15,6 @@ function CardMessage({
   from,
   to,
 }) {
-  console.log(messageImage , "image");
   const { id } = useParams();
   const userInformation = useSelector((state) => state.userInformation);
   if (userInformation?._id !== from && id && to && from && id !== from) return;

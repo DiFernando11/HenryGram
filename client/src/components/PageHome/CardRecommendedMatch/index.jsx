@@ -42,22 +42,25 @@ function CardRecommendedMatch({ id, image, name }) {
 			showConfirmButton: false,
 			timer: 2000,
 			timerProgressBar: true,
+            background: "#1e1c1d",
+            color: "#f4f4f4",
+            iconColor: "#fcd34d"
 		});
 		Toast.fire({
-			icon: 'success',
+			icon: `${title == "The invitation has already been sent." ? 'warning' : title === "Invitation sent." ? 'succes' : 'warning'}`,
 			title,
 		});
 	};
 	return (
-		<div className="flex items-center gap-10 text-white w-full">
-			<img src={image} alt="avatar" className="w-10 h-10 rounded-full object-cover" />
-			<h1>{name}</h1>
+		<div className="flex items-center gap-5 text-white w-full ml-5 my-4">
 			<img
 				onClick={handleSendInvitationGroup}
 				src={logoMatch}
 				alt="match"
-				className={`w-8 h-8 cursor-pointer justify-self-stretch`} 
+				className={`w-8 h-8 cursor-pointer self-end transition-all duration:100 hover:grayscale`} 
 			/>
+			<img src={image} alt="avatar" className="w-10 h-10 rounded-full object-cover" />
+			<h1>{name}</h1>
 		</div>
 	);
 }

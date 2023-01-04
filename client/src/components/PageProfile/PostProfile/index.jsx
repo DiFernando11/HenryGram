@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import logoMatch from "../../../assets/coheteHenry.png";
 import axios from "axios";
 import Loader from "../../Loader";
+const URL = import.meta.env.VITE_URL_RAILWAY;
 function PostProfile({ userInformation }) {
   const postUser = useSelector((state) => state.userPostsProfile);
   const userlogged = useSelector((state) => state.userInformation);
@@ -17,14 +18,14 @@ function PostProfile({ userInformation }) {
   const [newsLoadPost, setNewsLoadPost] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [loadingPost, setLoadingPost] = useState(true);
+
   const location = useLocation();
   const dispatch = useDispatch();
   const { id } = useParams();
+
   useEffect(() => {
     (async () => {
       dispatch(getPostUSer(id));
-      setLoadingPost(false);
     })();
 
     return () => {
@@ -33,10 +34,15 @@ function PostProfile({ userInformation }) {
   }, [id, updatePostRefresh]);
 
   useEffect(() => {
-    if (page > 1) {
+    if (page > 1 ) {
       axios
-        .get(`http://localhost:3000/api/posts/user?id=${id}&limit=${page}`)
+        .get(
+          `${
+            URL || `http://localhost:3000/api/posts/user?id=${id}&limit=${page}`
+          }`
+        )
         .then((response) => {
+          if (!response.data.length) setLoading(false);
           setNewsLoadPost([...newsLoadPost, ...response.data]);
           setLoading(false);
         })
@@ -45,7 +51,6 @@ function PostProfile({ userInformation }) {
         });
     }
   }, [page]);
-
   const handleScroll = () => {
     if (
       document.getElementById("viewHeightPostByUser").clientHeight +

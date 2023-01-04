@@ -37,9 +37,20 @@ export default function NavBar() {
     .filter((friend) => Number(friend.status) === 2)
     .map((friend) => friend.recipient);
 
+  const routes = [];
+  routes.push(
+    { to: "/home", page: "HOME", icon: "bi-house-fill", private: true },
+    { to: "/message", page: "INBOX", icon: "bi-chat-dots-fill", private: true },
+    { to: "/", page: "LOGOUT", icon: "bi bi-box-arrow-left", private: true },
+    {
+      to: `/profile/${userInformation?._id}`,
+      page: "PROFILE",
+      icon: profilePicture,
+      private: true,
+    }
+  );
   const handleGetFriendsRequest = () => {
     try {
-      console.log(requestFriends, "request");
       if (requestFriends?.length && !answerFriend) {
         axios
           .post(`http://localhost:3000/api/users/info`, {
@@ -214,10 +225,3 @@ export default function NavBar() {
     </nav>
   );
 }
-const routes = [];
-routes.push(
-  { to: "/home", page: "HOME", icon: "bi-house-fill", private: true },
-  { to: "/message", page: "INBOX", icon: "bi-chat-dots-fill", private: true },
-  { to: "/", page: "LOGOUT", icon: "bi bi-box-arrow-left", private: true },
-  { to: "/profile", page: "PROFILE", icon: profilePicture, private: true }
-);

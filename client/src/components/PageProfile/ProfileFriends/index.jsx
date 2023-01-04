@@ -14,7 +14,6 @@ function ProfileFriends() {
   useEffect(() => {
     (async () => {
       dispatch(getProfileFriendAction(id));
-	  console.log("otra vez")
     })();
   }, [id, refreshUpdateProfile]);
   return (

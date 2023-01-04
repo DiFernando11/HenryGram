@@ -12,6 +12,7 @@ import {
 import CardUser from "../CardUser";
 import DropDown from "../DropDown/DropDown";
 import { UserPlusIcon } from "@heroicons/react/20/solid";
+const URL = import.meta.env.VITE_URL_RAILWAY;
 
 function SideBar() {
   const searchUser = useSelector((state) => state.searchUser);
@@ -38,7 +39,7 @@ function SideBar() {
     try {
       if (requestFriends?.length && !answerFriend) {
         axios
-          .post(`http://localhost:3000/api/users/info`, {
+          .post(`${URL || "http://localhost:3000/api/users/info"}`, {
             users: requestFriends,
           })
           .then((response) => {

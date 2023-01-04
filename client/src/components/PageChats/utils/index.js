@@ -27,6 +27,18 @@ export const searchChatsHelp = (name, arr) => {
       );
   }
 };
+export const searchChatsGroupsHelp = (name, arr) => {
+  console.log(name , "name")
+  console.log(arr , "array")
+  switch (name) {
+    case "":
+      return arr;
+    default:
+      return arr.filter((group) =>
+        group.gr.title?.toLowerCase().includes(name.toString().toLowerCase())
+      );
+  }
+};
 
 export const changeMessageUltimateHelp = (chat, message) => {
   if (!message.length) return chat;

@@ -6,7 +6,7 @@ import {
   responseInvitationGroupAction,
 } from "../../../redux/actions";
 import logoMatch from "../../../assets/coheteHenry.png";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 function ActionsPosts({ user, group, postId, likes, isMatch }) {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ function ActionsPosts({ user, group, postId, likes, isMatch }) {
     youLike: false,
     numberLikes: 0,
   });
-
+  const { id } = useParams();
   const handleSendInvitationGroup = () => {
     if (!responseFront.length && !isCreatorPost) {
       dispatch(
@@ -35,7 +35,6 @@ function ActionsPosts({ user, group, postId, likes, isMatch }) {
     }
     isCreatorPost &&
       handleAlertInvitationGroup("You are the creator of the group");
-
   };
   const handleLikeDislikePost = () => {
     if (youLikePost.youLike) {
@@ -64,8 +63,7 @@ function ActionsPosts({ user, group, postId, likes, isMatch }) {
       //   popup: "animate__animated animate__fadeOutUp",
       // },
       // customClass: {
-      //   popup: styles.coloredSuccede,
-      //   title: styles.titles,
+      //   popup: "backgroundColor: red",
       // },
       showConfirmButton: false,
       timer: 2000,
@@ -84,9 +82,12 @@ function ActionsPosts({ user, group, postId, likes, isMatch }) {
       setYouLikePost({ youLike, numberLikes });
       setIsCreatorPost(user?._id === userInformation?._id);
     }
-  }, [userInformation]);
+  }, [userInformation, id]);
   return (
-    <div className="flex gap-8 mt-5 mb-5 items-center border-y border-neutral-700 py-4">
+    <div
+      style={{ backgroundColor: "" }}
+      className="flex gap-8 mt-5 mb-5 items-center border-y border-neutral-700 py-4"
+    >
       {/* {invitationGroupSend && handleAlertInvitationGroup()} */}
       <div className="flex items-center gap-2">
         <i
