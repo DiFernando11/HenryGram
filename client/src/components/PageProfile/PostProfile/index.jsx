@@ -51,7 +51,6 @@ function PostProfile({ userInformation }) {
         });
     }
   }, [page]);
-
   const handleScroll = () => {
     if (
       document.getElementById("viewHeightPostByUser").clientHeight +
