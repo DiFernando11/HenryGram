@@ -4,17 +4,18 @@ import logoMatch from "../../../assets/coheteHenry.png";
 import SkeletonUser from "../../Skeletons/skeletonUser";
 import { useDispatch, useSelector } from "react-redux";
 import { getRecomendedMatches } from "../../../redux/actions";
+import CardRecommendedMatch from "../CardRecommendedMatch";
 
 function RecommendedFriends() {
   const dispatch = useDispatch();
   const userInformation = useSelector((state) => state.userInformation);
-  const matchsRecommended = useSelector((state) => state.matchsRecommended);
+  const matchsRecommended = useSelector((state) => state.matchsRecommended)?.filter(e => typeof e.avatar === 'string');
   useEffect(() => {
     if (userInformation) {
       dispatch(getRecomendedMatches(userInformation?._id));
     }
   }, [userInformation]);
-
+  console.log(matchsRecommended)
   return (
     <section className="w-2/6 bg-neutral-800 hidden lg:block">
       <div className="flex items-center h-16 justify-center gap-2 ">
@@ -22,14 +23,23 @@ function RecommendedFriends() {
         <img src={logoMatch} className="w-6 h-6" alt="logo match" />
       </div>
       <div className="h-[calc(100vh-4rem)] overflow-y-scroll">
-        {matchsRecommended?.length &&
-          matchsRecommended.map((message, index) => (
+        {/* {matchsRecommended?.length &&
+          matchsRecommended.map((message) => (
             <CardPreviewMessage
-              key={index}
-              id={message?.match?.id}
-              image={message?.user?.avatar}
-              name={message?.user?.firstName}
-              message={"aqui va el title del grupo"}
+              key={message?._id}
+              id={message?._id}
+              image={message?.avatar}
+              name={message?.title}
+              message={message?.title}
+            />
+          ))} */}
+          {matchsRecommended?.length &&
+          matchsRecommended.map((message) => (
+            <CardRecommendedMatch
+              key={message?._id}
+              id={message?._id}
+              image={message?.avatar}
+              name={message?.title}
             />
           ))}
           {matchsRecommended && !matchsRecommended.length && <div>There are no Incidents</div>}
