@@ -9,6 +9,7 @@ import {
   getChatsBackAction,
   getChatsGroupAction,
   searchChatsAction,
+  searchChatsGroupAction,
 } from "../../../redux/actions";
 import SkeletonUser from "../../Skeletons/skeletonUser";
 
@@ -24,7 +25,6 @@ function PreviewMesagge({ title }) {
   const [loading, setLoading] = useState(true);
   const chatPrevent = useSelector((state) => state.chatPrevent);
   const messages = useSelector((state) => state.chatUsers);
-
   const userInformation = useSelector((state) => state.userInformation);
   const dispatch = useDispatch();
   const handleSwitchChats = (boolean) => {
@@ -61,10 +61,14 @@ function PreviewMesagge({ title }) {
   useEffect(() => {
     dispatch(getChatsGroupAction("clear"));
   }, [isChat]);
-
+  //searchChatsAction
   return (
     <section className={`${styles.container_preview_message} sm:mb-2 sm:ml-2`}>
-      <SearchBar handleChangeSearch={searchChatsAction} />
+      <SearchBar
+        handleChangeSearch={
+          !isChat ? searchChatsGroupAction : searchChatsAction
+        }
+      />
       <div
         className="flex rounded-md shadow-sm items-center justify-center my-5"
         role="group"
@@ -157,7 +161,7 @@ function PreviewMesagge({ title }) {
               .reverse()}
         {!messages &&
           [1, 2, 3, 4, 5, 6, 7, 8].map((value) => <SkeletonUser key={value} />)}
-        {!messages?.length && !chatPrevent.length && (
+        {!messages?.length && !chatPrevent.length && messages && (
           <div className=" flex  gap-2 text-white border p-4 uppercase text-[10px] border-zinc-700">
             Still not connecting with your friends
             <i className="bi bi-people text-sm"></i>

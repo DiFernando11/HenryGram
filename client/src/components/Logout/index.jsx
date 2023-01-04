@@ -4,7 +4,7 @@ import { useAuth } from "../auth";
 
 function Logout() {
   const auth = useAuth();
-  console.log("logout", auth);
+
   const navigate = useNavigate();
   const handleLogout = () => {
     auth.logout();

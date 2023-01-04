@@ -32,6 +32,7 @@ export const UPDATE_POST = "UPDATE_POST";
 export const CLEAR_UPDATE = "CLEAR_UPDATE";
 export const SEARCH_USER = "SEARCH_USER";
 export const SEARCH_CHATS = "SEARCH_CHATS_ACTION";
+export const SEARCH_CHATS_GROUPS = "SEARCH_CHATS_GROUPS";
 export const CLEAR_POSTS = "CLEAR_POSTS";
 export const EDIT_PROFILE = "EDIT_PROFILE";
 export const LIKE_DISLIKE_POST = "LIKE_DISLIKE_POST";
@@ -46,14 +47,16 @@ export const SET_LOADING = "SET_LOADING";
 //USERS INFORMATION
 //REGISTER
 
-const URL = import.meta.env.VITE_URL_RAILWAY
-
+const URL = import.meta.env.VITE_URL_RAILWAY;
 
 export const createUser = (user) => {
   return async function (dispatch) {
     try {
       dispatch({ type: SET_LOADING, payload: true });
-      const result = await axios.post(`${URL || "http://localhost:3000"}/api/users`, user);
+      const result = await axios.post(
+        `${URL || "http://localhost:3000"}/api/users`,
+        user
+      );
       dispatch({ type: SET_LOADING, payload: false });
       dispatch({ type: CREATE_USER, payload: result.data });
     } catch (error) {
@@ -127,7 +130,9 @@ export const getProfileFriendAction = (idUser) => {
 export const getInformationUsersAction = () => {
   return async (dispatch) => {
     try {
-      const result = await axios.get(`${URL || "http://localhost:3000"}/api/users`);
+      const result = await axios.get(
+        `${URL || "http://localhost:3000"}/api/users`
+      );
       return dispatch({ type: GET_USERS_INFORMATION, payload: result.data });
     } catch (error) {
       console.log(error);
@@ -182,7 +187,10 @@ export const getFriendsAvatarAndName = (id) => {
 export const postUser = (post) => {
   return async (dispatch) => {
     try {
-      const result = await axios.post(`${URL || "http://localhost:3000"}/api/posts`, post);
+      const result = await axios.post(
+        `${URL || "http://localhost:3000"}/api/posts`,
+        post
+      );
       dispatch({ type: POST_USER, payload: result.data });
     } catch (error) {
       console.log(error);
@@ -231,12 +239,15 @@ export const getMessageByUserBackAction = (data) => {
 export const sendMessageBackAction = (from, to, message, image) => {
   return async (dispatch) => {
     try {
-      const result = await axios.post(`${URL || "http://localhost:3000"}/api/messages`, {
-        from,
-        to,
-        message,
-        image,
-      });
+      const result = await axios.post(
+        `${URL || "http://localhost:3000"}/api/messages`,
+        {
+          from,
+          to,
+          message,
+          image,
+        }
+      );
       return dispatch({ type: SEND_MESSAGE_BACK, payload: result.data });
     } catch (error) {
       console.log(error);
@@ -276,12 +287,15 @@ export const getChatByUserGroupAction = (id, limit) => {
 export const sendMessageByGroup = (userId, groupId, content, image) => {
   return async (dispatch) => {
     try {
-      const result = await axios.post(`${URL || "http://localhost:3000"}/api/groups`, {
-        userId,
-        groupId,
-        content,
-        image,
-      });
+      const result = await axios.post(
+        `${URL || "http://localhost:3000"}/api/groups`,
+        {
+          userId,
+          groupId,
+          content,
+          image,
+        }
+      );
       return dispatch({ type: SEND_MESSAGE_BY_GROUP, payload: result.data });
     } catch (error) {
       console.log(error);
@@ -305,7 +319,10 @@ export const invitationSendGroupAction = (payload) => {
 export const responseInvitationGroupAction = (payload) => {
   return async (dispatch) => {
     try {
-      await axios.post(`${URL || "http://localhost:3000"}/api/groups/res`, payload);
+      await axios.post(
+        `${URL || "http://localhost:3000"}/api/groups/res`,
+        payload
+      );
       return dispatch({
         type: RESPONSE_GROUP_INVITATION,
       });
@@ -327,6 +344,9 @@ export const changeUltimateMessageTimeRealAction = () => {
 
 export const searchChatsAction = (payload) => {
   return { type: SEARCH_CHATS, payload };
+};
+export const searchChatsGroupAction = (payload) => {
+  return { type: SEARCH_CHATS_GROUPS, payload };
 };
 //SEARCH
 
@@ -475,7 +495,9 @@ export const likeDislikePostAction = (data) => {
   return async (dispatch) => {
     try {
       await axios.post(
-        `${URL || "http://localhost:3000"}/api/posts/like?postId=${data.postId}&userId=${data.userId}`,
+        `${URL || "http://localhost:3000"}/api/posts/like?postId=${
+          data.postId
+        }&userId=${data.userId}`,
         data
       );
       dispatch({ type: LIKE_DISLIKE_POST });

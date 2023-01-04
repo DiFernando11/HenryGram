@@ -41,7 +41,7 @@ function HeaderProfile({ userInformation }) {
     });
   };
 
-  useEffect(() => {}, [userInformation]);
+  // useEffect(() => {}, [userInformation]);
 
   return (
     <header className="relative sm:h-header h-32 z-10 rounded-t-lg">
