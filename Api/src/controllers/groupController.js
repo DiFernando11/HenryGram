@@ -162,12 +162,12 @@ const getRecommendedGroups = async (req, res, next) => {
 
     const groups = await GroupSchema.find()
 
-    let userGroups = user[0].groups.map(el => el.toString())
-
+    // console.log(user[0]._id)
+    // console.log(user[0]._id.toString())
     let recommendedGroups = []
 
     groups.forEach(el => {
-      if (!userGroups.includes(el._id.toString())) recommendedGroups.push(el)
+      if (!el.users.includes(user[0]._id.toString())) recommendedGroups.push(el)
     })
 
     res.status(200).json(recommendedGroups.length > 15 ? recommendedGroups.slice(0, 15) : recommendedGroups);
