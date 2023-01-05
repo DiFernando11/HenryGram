@@ -39,7 +39,7 @@ function AboutProfile({ userInformation }) {
   const belongsMatchGroup = useSelector((state) => state.belongsMatchGroup);
   const [friendsAvatars, setFriendsAvatars] = useState([]);
   const URL = import.meta.env.VITE_URL_RAILWAY;
-  console.log(belongsMatchGroup);
+
   useEffect(() => {
     try {
       axios
@@ -58,7 +58,6 @@ function AboutProfile({ userInformation }) {
       dispatch(getChatsBackAction(userID));
     }
   }, [userID]);
-
 
   const handleRedirectChatUser = () => {
     if (
@@ -150,13 +149,10 @@ function AboutProfile({ userInformation }) {
             </div>
           </div>
           <div className="flex w-full justify-center items-center gap-3 py-2">
-            <div
-              className="flex flex-col justify-center items-center w-full gap-2 text-lg hover:cursor-pointer hover:scale-110"
-            >
+            <div className="flex flex-col justify-center items-center w-full gap-2 text-lg hover:cursor-pointer hover:scale-110">
               <span className=" font-black">{belongsMatchGroup?.length}</span>
               <span className="">Matchs</span>
             </div>
-  
           </div>
 
           <ModalFriends

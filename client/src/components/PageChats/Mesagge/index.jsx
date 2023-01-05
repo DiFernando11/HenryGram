@@ -38,7 +38,7 @@ function Messages() {
     if (!chatUsersID && !chatUsersPreventID)
       return <Navigate to={"/message"} />;
   }
-  console.log(chatUsers);
+ 
   function scrollLastMessage() {
     var objDiv = document.getElementById("divu");
     objDiv.scrollTop = objDiv.scrollHeight;
