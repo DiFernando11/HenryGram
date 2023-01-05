@@ -43,6 +43,7 @@ export const GET_COMMENTS = "GET_COMMENTS";
 export const GET_RECCOMENDS_MATCH = "GET_RECCOMENDS_POST";
 export const GET_POST_BY_ID = "GET_POST_BY_ID";
 export const REFRESH_UPDATE_PROFILE = "REFRESH_UPDATE_PROFILE";
+export const BELONG_MATCH_GROUP = "BELONG_MATCH_GROUP";
 export const SET_LOADING = "SET_LOADING";
 //USERS INFORMATION
 //REGISTER
@@ -501,6 +502,19 @@ export const likeDislikePostAction = (data) => {
         data
       );
       dispatch({ type: LIKE_DISLIKE_POST });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const belongsMatchGroupAction = (id) => {
+  return async (dispatch) => {
+    try {
+      const result = await axios.get(
+        `${URL || "http://localhost:3000"}/api/users/groups/${id}`
+      );
+      dispatch({ type: BELONG_MATCH_GROUP, payload: result.data });
     } catch (error) {
       console.log(error);
     }

@@ -14,6 +14,8 @@ import {
   getChatsBackAction,
   sendRequestFriendAction,
   getFriendsAvatarAndName,
+  getChatsGroupAction,
+  belongsMatchGroupAction,
 } from "../../../redux/actions";
 import DropDownSelect from "../../DropDownSelect";
 import AvatarStack from "../../PageChats/AvatarStack";
@@ -34,9 +36,10 @@ function AboutProfile({ userInformation }) {
   const userID = useSelector((state) => state.userInformation?._id);
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const belongsMatchGroup = useSelector((state) => state.belongsMatchGroup);
   const [friendsAvatars, setFriendsAvatars] = useState([]);
   const URL = import.meta.env.VITE_URL_RAILWAY;
+  console.log(belongsMatchGroup);
   useEffect(() => {
     try {
       axios
@@ -47,6 +50,7 @@ function AboutProfile({ userInformation }) {
     } catch (error) {
       console.error("error en la funcion get avatar");
     }
+    dispatch(belongsMatchGroupAction(id));
   }, [id]);
 
   useEffect(() => {
@@ -54,7 +58,8 @@ function AboutProfile({ userInformation }) {
       dispatch(getChatsBackAction(userID));
     }
   }, [userID]);
-  console.log(chatUsers);
+
+
   const handleRedirectChatUser = () => {
     if (
       !chatUsers.some((user) => user?.usr?._id === id) &&
@@ -144,25 +149,14 @@ function AboutProfile({ userInformation }) {
               )}
             </div>
           </div>
-          <div className="flex w-full justify-around items-center gap-3 py-2">
+          <div className="flex w-full justify-center items-center gap-3 py-2">
             <div
-              onClick={setShow}
               className="flex flex-col justify-center items-center w-full gap-2 text-lg hover:cursor-pointer hover:scale-110"
             >
-              <span className=" font-black">{friendsAvatars.length}</span>
+              <span className=" font-black">{belongsMatchGroup?.length}</span>
               <span className="">Matchs</span>
             </div>
-            <div className="w-full flex justify-center px-2">
-              {friendsAvatars.length !== 0 ? (
-                <AvatarStack
-                  avatars={friendsAvatars}
-                  openModalFriends={setShow}
-                  show={show}
-                />
-              ) : (
-                <span className="text-md">No Matchs</span>
-              )}
-            </div>
+  
           </div>
 
           <ModalFriends
