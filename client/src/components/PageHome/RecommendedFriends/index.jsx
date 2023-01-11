@@ -23,16 +23,6 @@ function RecommendedFriends() {
         <img src={logoMatch} className="w-6 h-6" alt="logo match" />
       </div>
       <div className="h-[calc(100vh-4rem)] overflow-y-scroll">
-        {/* {matchsRecommended?.length &&
-          matchsRecommended.map((message) => (
-            <CardPreviewMessage
-              key={message?._id}
-              id={message?._id}
-              image={message?.avatar}
-              name={message?.title}
-              message={message?.title}
-            />
-          ))} */}
           {matchsRecommended?.length &&
           matchsRecommended.map((message) => (
             <CardRecommendedMatch

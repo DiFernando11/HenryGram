@@ -86,8 +86,8 @@ function MessageGroup() {
         axios
           .get(
             `${
-              URL || `http://localhost:3000/api/groups?id=${id}&limit=${page}`
-            }`
+              URL || `http://localhost:3000`
+            }/api/groups?id=${id}&limit=${page}`
           )
           .then((response) => {
             console.log(response);

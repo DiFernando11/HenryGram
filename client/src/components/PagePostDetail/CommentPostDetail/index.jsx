@@ -6,6 +6,7 @@ import SkeletonUser from "../../Skeletons/skeletonUser";
 import CardComment from "../CardComment";
 import axios from "axios";
 import Loader from "../../Loader";
+import { useSelector } from "react-redux";
 const URL = import.meta.env.VITE_URL_RAILWAY;
 
 function CommentPostDetail({ comments, user, group, postId, likes, isMatch }) {
@@ -13,6 +14,7 @@ function CommentPostDetail({ comments, user, group, postId, likes, isMatch }) {
   const [oldComment, setOldComment] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const userInformation = useSelector((state) => state.userInformation);
   function scrollLastMessage() {
     var objDiv = document.getElementById("viewHeightComment");
     objDiv.scrollTop = 0;
@@ -25,12 +27,7 @@ function CommentPostDetail({ comments, user, group, postId, likes, isMatch }) {
   useEffect(() => {
     if (page > 1) {
       axios
-        .get(
-          `${
-            URL ||
-            `http://localhost:3000/api/posts/comment?id=${id}&limit=${page}`
-          }`
-        )
+        .get(`${URL || `http://localhost:3000`}/api/posts/comment?id=${id}&limit=${page}`)
         .then((response) => {
           console.log("ayuda");
           setOldComment([...oldComment, ...response.data]);
@@ -54,7 +51,7 @@ function CommentPostDetail({ comments, user, group, postId, likes, isMatch }) {
       setLoading(true);
     }
   };
-  console.log(oldComment);
+
   useEffect(() => {
     document
       .getElementById("viewHeightCommentDetail")
