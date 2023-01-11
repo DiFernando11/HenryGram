@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 const URL = import.meta.env.VITE_URL_RAILWAY;
-// import { io } from "socket.io-client";
-// const socket = io("http://localhost:3000");
 import {
   chatTimeReal,
   getMessageByUserBackAction,
@@ -38,7 +36,7 @@ function Messages() {
     if (!chatUsersID && !chatUsersPreventID)
       return <Navigate to={"/message"} />;
   }
- 
+
   function scrollLastMessage() {
     var objDiv = document.getElementById("divu");
     objDiv.scrollTop = objDiv.scrollHeight;
@@ -57,7 +55,7 @@ function Messages() {
     try {
       if (page > 1 && isMoreMessages) {
         axios
-          .post(`${URL || "http://localhost:3000/api/messages/all"}`, {
+          .post(`${URL || "http://localhost:3000"}/api/messages/all`, {
             from: userInformation._id,
             to: id,
             limit: page,

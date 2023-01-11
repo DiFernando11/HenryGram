@@ -28,23 +28,13 @@ function CardRecommendedMatch({ id, image, name }) {
 		const Toast = Swal.mixin({
 			toast: true,
 			position: 'top',
-			iconColor: 'white',
-			// showClass: {
-			//   popup: "animate__animated animate__fadeInDown",
-			// },
-			// hideClass: {
-			//   popup: "animate__animated animate__fadeOutUp",
-			// },
-			// customClass: {
-			//   popup: styles.coloredSuccede,
-			//   title: styles.titles,
-			// },
+			iconColor: "#fcd34d",
 			showConfirmButton: false,
 			timer: 2000,
 			timerProgressBar: true,
             background: "#1e1c1d",
             color: "#f4f4f4",
-            iconColor: "#fcd34d"
+       
 		});
 		Toast.fire({
 			icon: `${title == "The invitation has already been sent." ? 'warning' : title === "Invitation sent." ? 'succes' : 'warning'}`,
@@ -52,15 +42,15 @@ function CardRecommendedMatch({ id, image, name }) {
 		});
 	};
 	return (
-		<div className="flex items-center gap-5 text-white w-full ml-5 my-4">
+		<div className="relative flex items-center gap-5 text-white w-full p-2 my-1 border-b-2 border-zinc-700">
+			<img src={image} alt="avatar" className="w-10 h-10 rounded-full object-cover" />
+			<h1>{name}</h1>
 			<img
 				onClick={handleSendInvitationGroup}
 				src={logoMatch}
 				alt="match"
-				className={`w-8 h-8 cursor-pointer self-end transition-all duration:100 hover:grayscale`} 
+				className={`absolute right-1  w-8 h-8 cursor-pointer self-end transition-all duration:100 hover:grayscale`} 
 			/>
-			<img src={image} alt="avatar" className="w-10 h-10 rounded-full object-cover" />
-			<h1>{name}</h1>
 		</div>
 	);
 }

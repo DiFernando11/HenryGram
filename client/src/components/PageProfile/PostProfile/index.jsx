@@ -31,6 +31,8 @@ function PostProfile({ userInformation }) {
 
     return () => {
       dispatch(clearState("posts"));
+      setPage(1);
+      setIsMorePosts(false);
     };
   }, [id, updatePostRefresh]);
 
@@ -38,12 +40,12 @@ function PostProfile({ userInformation }) {
     if (page > 1) {
       axios
         .get(
-          `${
-            URL || `http://localhost:3000/api/posts/user?id=${id}&limit=${page}`
-          }`
+          `${`${
+            "https://henrygram-production.up.railway.app" ||
+            "http://localhost:3000"
+          }/api/posts/user?id=${id}&limit=${page}`}`
         )
         .then((response) => {
-          console.log(response.data, "data");
           if (!response.data.length) {
             setLoading(false);
             setIsMorePosts(true);
@@ -57,7 +59,7 @@ function PostProfile({ userInformation }) {
         });
     }
   }, [page]);
-  console.log(loading, "lod");
+
   const handleScroll = () => {
     if (
       document.getElementById("viewHeightPostByUser").clientHeight +

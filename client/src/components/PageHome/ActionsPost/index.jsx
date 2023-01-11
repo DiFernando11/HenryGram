@@ -3,12 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   invitationSendGroupAction,
   likeDislikePostAction,
-  responseInvitationGroupAction,
 } from "../../../redux/actions";
 import logoMatch from "../../../assets/coheteHenry.png";
 import { Link, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-function ActionsPosts({ user, group, postId, likes, isMatch }) {
+function ActionsPosts({ user, group, postId, likes, isMatch, numberComments }) {
   const dispatch = useDispatch();
   const userInformation = useSelector((state) => state.userInformation);
   const [isCreatorPost, setIsCreatorPost] = useState(false);
@@ -98,9 +97,12 @@ function ActionsPosts({ user, group, postId, likes, isMatch }) {
         ></i>
         {likes?.length && <span>{youLikePost.numberLikes}</span>}
       </div>
-      <Link to={`/post/${postId}/${user._id}`}>
+
+      <Link to={`/post/${postId}/${user._id}`} className="flex items-center">
         <i className="bi bi-chat-square-dots text-2xl sm:text-3xl text-yellow"></i>
+        <span className="text-xs ml-2">{numberComments}</span>
       </Link>
+
       {isMatch && (
         <img
           onClick={handleSendInvitationGroup}
