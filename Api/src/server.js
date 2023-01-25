@@ -36,7 +36,6 @@ app.use('/api', messageRoutes);
 app.use('/api', friendRoutes);
 app.use('/api', groupRoutes)
 
-
 // Routes
 app.get("/", (req, res) => {
   try {
