@@ -1,15 +1,17 @@
 import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Transition } from '@headlessui/react';
+import { editProfileAction, refreshUpdateProfile } from '../../../redux/actions/index';
 
 function ModalEditProfile({ show, setShow }) {
 
+	const dispatch = useDispatch();
 	const user = useSelector((state) => state.userInformation);
 	
-	console.log(user)
 	const [edit, setEdit] = useState({
-		name: user.firstName,
+		id: user._id,
+		firstName: user.firstName,
 		lastName: user.lastName,
 		gender: user.gender,
 	});
@@ -18,6 +20,12 @@ function ModalEditProfile({ show, setShow }) {
 	};
 	const handleChangeGenderUpdate = (update) => {
 		setEdit({ ...edit, gender: update });
+	};
+
+	const handleUpdateInformation = () => {
+		dispatch(editProfileAction(edit));
+		setShow(!show);
+		setTimeout(() => dispatch(refreshUpdateProfile()), 500);
 	};
 
 	return (
@@ -71,9 +79,9 @@ function ModalEditProfile({ show, setShow }) {
 											<div className="flex items-center gap-2 text-yellow">
 												<input
 													type="text"
-													name="name"
+													name="firstName"
 													className="w-full rounded-md bg-zinc-800 text-white"
-													value={edit.name}
+													value={edit.firstName}
 													onChange={handleChangeUpdateInformation}
 												/>
 												<i className="bi bi-pencil-fill"></i>
@@ -170,7 +178,10 @@ function ModalEditProfile({ show, setShow }) {
             </div> */}
 
 									<div className="w-full">
-										<Button>Update Information</Button>
+										<Button
+											type="submit"
+											onClick={handleUpdateInformation}
+										>Update Information</Button>
 									</div>
 								</div>
 							</Modal.Body>

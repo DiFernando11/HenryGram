@@ -1,29 +1,66 @@
 import React, { useEffect, useState } from "react";
-import logoMatch from "../../../assets/coheteHenry.png";
-import SendMessage from "../../PageChats/SendMessage";
+import { useParams } from "react-router-dom";
+import ActionsPosts from "../../PageHome/ActionsPost";
+import Comments from "../../PageHome/Comments/Comments";
 import SkeletonUser from "../../Skeletons/skeletonUser";
-function CommentPostDetail() {
-  // const [page, setPage] = useState(0);
+import CardComment from "../CardComment";
+import axios from "axios";
+import Loader from "../../Loader";
+import { useSelector } from "react-redux";
+const URL = import.meta.env.VITE_URL_RAILWAY;
+
+function CommentPostDetail({ comments, user, group, postId, likes, isMatch }) {
+  const [commentFront, setCommentFront] = useState([]);
+  const [oldComment, setOldComment] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const userInformation = useSelector((state) => state.userInformation);
+  function scrollLastMessage() {
+    var objDiv = document.getElementById("viewHeightComment");
+    objDiv.scrollTop = 0;
+  }
+  const handleSendCommentFront = (message) => {
+    setCommentFront([message, ...commentFront]);
+    scrollLastMessage();
+  };
+  const { id } = useParams();
+  useEffect(() => {
+    if (page > 1) {
+      axios
+        .get(`${URL || `http://localhost:3000`}/api/posts/comment?id=${id}&limit=${page}`)
+        .then((response) => {
+          console.log("ayuda");
+          setOldComment([...oldComment, ...response.data]);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [page]);
+
   const handleScroll = () => {
     if (
-      document.getElementById("viewHeightComment").clientHeight +
-        document.getElementById("viewHeightComment").scrollTop >=
-      document.getElementById("viewHeightComment").scrollHeight
+      document.getElementById("viewHeightCommentDetail").clientHeight +
+        1 +
+        document.getElementById("viewHeightCommentDetail").scrollTop >=
+      document.getElementById("viewHeightCommentDetail").scrollHeight
     ) {
-      comment = [...comment, ...comment];
-      console.log("llegue");
+      console.log("hola");
+      setPage(page + 1);
+      setLoading(true);
     }
   };
 
   useEffect(() => {
     document
-      .getElementById("viewHeightComment")
+      .getElementById("viewHeightCommentDetail")
       .addEventListener("scroll", handleScroll);
 
     return () => {
-      if (document.getElementById("viewHeightComment")) {
+      if (document.getElementById("viewHeightCommentDetail")) {
         document
-          .getElementById("viewHeightComment")
+          .getElementById("viewHeightCommentDetail")
           .removeEventListener("scroll", handleScroll);
       }
     };
@@ -31,50 +68,66 @@ function CommentPostDetail() {
 
   return (
     <>
-      <div className="w-full flex gap-14 mt-5 mb-5 justify-center items-center border-y border-neutral-700 py-4">
-        <i className="bi bi-hand-thumbs-up text-3xl text-yellow"></i>
-        <i className="bi bi-chat-square-dots text-3xl text-yellow"></i>
-        {/* {type === "Match" && ( */}
-        <img src={logoMatch} alt="match" className="w-8 h-8" />
-        {/* )} */}
+      <div className=" flex justify-center ">
+        <ActionsPosts
+          user={user}
+          group={group}
+          postId={postId}
+          likes={likes}
+          isMatch={isMatch}
+        />
       </div>
-      <SendMessage />
+      <Comments postId={id} handleSendCommentFront={handleSendCommentFront} />
       <div
-        id="viewHeightComment"
-        className="h-[calc(100vh-24rem)] mt-6 overflow-y-scroll"
+        id="viewHeightCommentDetail"
+        className="xl:h-[calc(100vh-20%-16rem)] mt-6 xl:overflow-y-scroll"
       >
-        {comment.length
-          ? comment.map((user) => (
-              <div
-                key={user._id}
-                className="p-4 border border-zinc-700 flex gap-2 items-center "
-              >
-                <img
-                  className="fit-cover w-10 h-10 rounded-full"
-                  src={user.avatar}
-                  alt="user avatar"
-                />
-                <div>
-                  <span className="block text-[10px] leading-[8px]">{`${user.firstName} ${user.lastName}`}</span>
-                  <span className="text-sm">{user.comment}</span>
-                </div>
-              </div>
+        {commentFront.length &&
+          commentFront.map((comment, index) => (
+            <CardComment
+              key={index}
+              userId={userInformation?._id}
+              firstName={userInformation?.firstName}
+              lastName={userInformation?.lastName}
+              avatar={userInformation?.avatar}
+              comment={comment}
+            />
+          ))}
+        {comments?.length
+          ? comments.map((user, index) => (
+              <CardComment
+                key={index}
+                userId={user.comment.userId}
+                firstName={user.firstName}
+                lastName={user.lastName}
+                avatar={user.avatar}
+                comment={user.comment.description}
+              />
             ))
-          : [1, 2, 3, 4, 5].map((value) => <SkeletonUser key={value} />)}
+          : null}
+        {!commentFront.length && !comments?.length && comments ? (
+          <span className="text-sm text-center block uppercase">
+            Be the first to comment 🙂
+          </span>
+        ) : null}
+        {!comments &&
+          [1, 2, 3, 4, 5].map((value) => <SkeletonUser key={value} />)}
+        {loading && <Loader />}
+        {oldComment.length
+          ? oldComment.map((user, index) => (
+              <CardComment
+                key={index}
+                userId={user.comment.userId}
+                firstName={user.firstName}
+                lastName={user.lastName}
+                avatar={user.avatar}
+                comment={user.comment.description}
+              />
+            ))
+          : null}
       </div>
     </>
   );
 }
-let comment = [
-  // {
-  //   _id: 1,
-  //   firstName: "Diego",
-  //   lastName: "Apolo",
-  //   avatar:
-  //     "https://lh3.googleusercontent.com/ogw/AOh-ky3yFATVLoTM_AdMXMinG316CxoKmhR3G3gPWUJ3CA=s32-c-mo",
-  //   comment: "Buenas tardes yo tengo una Lorem pregunta sera que se pude ajaa",
-  // },
-  
-];
 
 export default CommentPostDetail;

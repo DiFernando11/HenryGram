@@ -2,17 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
-// import { io } from "socket.io-client";
-// const socket = io("http://localhost:3000");
+const URL = import.meta.env.VITE_URL_RAILWAY;
 import {
   chatTimeReal,
-  getChatByUserGroupAction,
   getMessageByUserBackAction,
   sendMessageBackAction,
 } from "../../../redux/actions";
 import Loader from "../../Loader";
 import SkeletonUser from "../../Skeletons/skeletonUser";
-import AvatarStack from "../avatarStack";
 import CardMessage from "../CardMessage";
 import SendMessage from "../SendMessage";
 import styles from "./index.module.css";
@@ -39,6 +36,7 @@ function Messages() {
     if (!chatUsersID && !chatUsersPreventID)
       return <Navigate to={"/message"} />;
   }
+
   function scrollLastMessage() {
     var objDiv = document.getElementById("divu");
     objDiv.scrollTop = objDiv.scrollHeight;
@@ -57,13 +55,12 @@ function Messages() {
     try {
       if (page > 1 && isMoreMessages) {
         axios
-          .post(`http://localhost:3000/api/messages/all`, {
+          .post(`${URL || "http://localhost:3000"}/api/messages/all`, {
             from: userInformation._id,
             to: id,
             limit: page,
           })
           .then((response) => {
-            console.log(response.data.projectedMessages, "proyected");
             if (!response.data.projectedMessages.length) {
               setIsMoreMessages(false);
             } else {
@@ -133,7 +130,7 @@ function Messages() {
   };
 
   return (
-    <section className="lg:w-[70%] sm:w-[50%] w-full">
+    <section className="lg:w-[70%] w-full">
       <div className={styles.header_message}>
         {!chatByUser?.informationUserTo ? (
           <SkeletonUser isMessage={false} />
@@ -158,9 +155,11 @@ function Messages() {
         id="divu"
         className={`${styles.messagesSent} relative h-[calc(100vh-12rem)] sm:h-[calc(100vh-8rem)] overflow-y-scroll`}
       >
-        {!chatByUser?.projectedMessages?.length && chatByUser && (
-          <div className="text-white text-lg uppercase text-center bg-black p-4 rounded m-auto">{`greets ${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName} 👋`}</div>
-        )}
+        {!chatByUser?.projectedMessages?.length &&
+          chatByUser &&
+          !chatTimeRealUser?.length && (
+            <div className="text-white text-lg uppercase text-center bg-black p-4 rounded m-auto">{`greets ${chatByUser?.informationUserTo?.firstName} ${chatByUser?.informationUserTo?.lastName} 👋`}</div>
+          )}
 
         {loadingOldMessage && <Loader />}
         {!isMoreMessages && (
@@ -180,6 +179,7 @@ function Messages() {
                 fromSelf={message.fromSelf}
                 from={message.from}
                 to={message.to}
+                messageImage={message.image}
               />
               // <div>hOKLA</div>
             ))
@@ -193,6 +193,7 @@ function Messages() {
                   image={chatByUser?.informationUserTo?.avatar}
                   name={chatByUser?.informationUserTo?.firstName}
                   lastName={chatByUser?.informationUserTo?.lastName}
+                  messageImage={message.image}
                   time={message.hour}
                   fromSelf={message.fromSelf}
                 />
@@ -209,6 +210,7 @@ function Messages() {
               image={chatByUser?.informationUserTo?.avatar}
               name={chatByUser?.informationUserTo?.firstName}
               lastName={chatByUser?.informationUserTo?.lastName}
+              messageImage={message.image}
               time={message.hour}
               fromSelf={message.fromSelf}
               from={message.from}

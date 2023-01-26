@@ -30,12 +30,14 @@ const getAllMessage = async (req, res, next) => {
           fromSelf: msg.sender.toString() === from,
           message: msg.message.text,
           hour: msg.createdAt,
+          image: msg.image,
         };
       } else {
         return {
           fromSelf: msg.sender.toString() === from,
           message: msg.message.text,
           hour: msg.createdAt,
+          image: msg.image,
         };
       }
     });
@@ -51,7 +53,7 @@ const addMessage = async (req, res, next) => {
     */
 
   try {
-    const { from, to, message } = req.body;
+    const { from, to, message, image } = req.body;
 
     const userA = await UserSchema.findOneAndUpdate(
       { _id: from },
@@ -67,6 +69,7 @@ const addMessage = async (req, res, next) => {
       message: { text: message },
       users: [from, to],
       sender: from,
+      image,
     });
 
     if (data)
@@ -95,6 +98,7 @@ const getMessageByUser = async (req, res, next) => {
         fromSelf: msg.sender.toString() === userId,
         message: msg.message.text,
         hour: msg.createdAt,
+        image: msg.image,
       };
     });
     res.status(200).json(projectedMessages);

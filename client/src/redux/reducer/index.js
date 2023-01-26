@@ -1,5 +1,6 @@
 import {
   changeMessageUltimateHelp,
+  searchChatsGroupsHelp,
   searchChatsHelp,
   searchFriendHelp,
 } from "../../components/PageChats/utils";
@@ -35,6 +36,18 @@ import {
   CLEAR_POSTS,
   GET_MESSAGE_BY_USER_GROUP,
   SEND_MESSAGE_BY_GROUP,
+  EDIT_PROFILE,
+  GET_COMMENTS,
+  GET_POST_BY_ID,
+  INVITATION_SEND_GROUP,
+  RESPONSE_GROUP_INVITATION,
+  LIKE_DISLIKE_POST,
+  UPDATE_POST_REFRESH,
+  SET_LOADING,
+  GET_RECCOMENDS_MATCH,
+  REFRESH_UPDATE_PROFILE,
+  SEARCH_CHATS_GROUPS,
+  BELONG_MATCH_GROUP,
 } from "../actions";
 
 const initialState = {
@@ -50,17 +63,29 @@ const initialState = {
   chatUsersCopy: [],
   chatPrevent: [],
   chatByUser: null,
-  // chatByUser: { informationUserTo: {}, projectedMessages: ["Dada"] },
+  loading: false,
   isChat: true,
   chatTimeReal: [],
-  userPostsProfile: [],
+  userPostsProfile: null,
   allPosts: [],
   updatePost: [],
-  deletePost: [],
+  matchsRecommended: null,
+  updatePostRefresh: false,
+  refresh_update_profile: false,
+  belongsMatchGroup: [],
+  comments: null,
+  postById: {},
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     //User Information
+    case SET_LOADING: {
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    }
+
     case CREATE_USER: {
       return {
         ...state,
@@ -170,6 +195,17 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         chatUsers: action.payload,
+        chatUsersCopy: action.payload,
+      };
+    }
+    case INVITATION_SEND_GROUP: {
+      return {
+        ...state,
+      };
+    }
+    case RESPONSE_GROUP_INVITATION: {
+      return {
+        ...state,
       };
     }
     case MESSAGES_IS_CHAT: {
@@ -228,6 +264,12 @@ const rootReducer = (state = initialState, action) => {
         chatUsers: searchChatsHelp(action.payload, state.chatUsersCopy),
       };
     }
+    case SEARCH_CHATS_GROUPS: {
+      return {
+        ...state,
+        chatUsers: searchChatsGroupsHelp(action.payload, state.chatUsersCopy),
+      };
+    }
     //SEARCH
     case CLEAR: {
       return {
@@ -250,33 +292,67 @@ const rootReducer = (state = initialState, action) => {
     case CLEAR_DELETE_POST: {
       return {
         ...state,
-        deletePost: [],
+        deletePost: null,
       };
     }
     //Update Post
     case UPDATE_POST: {
-      const indice = state.userPostsProfile.findIndex((elemento, indice) => {
-        if (elemento._id === action.payload[1]) {
-          return true;
-        }
-      });
-      state.userPostsProfile[indice] = action.payload[0];
-      console.log(state.userPostsProfile);
       return {
         ...state,
-        updatePost: action.payload[0],
       };
     }
     case CLEAR_UPDATE: {
       return {
         ...state,
-        updatePost: [],
+        updatePost: null,
       };
     }
     case CLEAR_POSTS: {
       return {
         ...state,
-        userPostsProfile: [],
+        userPostsProfile: null,
+      };
+    }
+    case UPDATE_POST_REFRESH: {
+      return {
+        ...state,
+        updatePostRefresh: !state.updatePostRefresh,
+      };
+    }
+
+    case GET_COMMENTS: {
+      return {
+        ...state,
+        comments: action.payload,
+      };
+    }
+    case GET_POST_BY_ID: {
+      return {
+        ...state,
+        postById: action.payload,
+      };
+    }
+    case GET_RECCOMENDS_MATCH: {
+      return {
+        ...state,
+        matchsRecommended: action.payload,
+      };
+    }
+    case LIKE_DISLIKE_POST: {
+      return {
+        ...state,
+      };
+    }
+    case REFRESH_UPDATE_PROFILE: {
+      return {
+        ...state,
+        refresh_update_profile: !state.refresh_update_profile,
+      };
+    }
+    case BELONG_MATCH_GROUP: {
+      return {
+        ...state,
+        belongsMatchGroup: action.payload,
       };
     }
     default:

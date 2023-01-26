@@ -1,95 +1,100 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { editProfileAction } from "../../../redux/actions/index";
+import AddModal from "./AddModal/AddModal";
+import { Transition } from "@headlessui/react";
+function FavoriteActivities({ id }) {
+  const dispatch = useDispatch();
 
-function FavoriteActivities() {
-  const [listPreferences, setListPreferences] = useState(["value"]);
-  const [valueActivity, setValueActivity] = useState("");
-  const handleChangeActivity = (e) => {
-    setValueActivity(e.target.value);
-  };
-  const handleAddActivityUser = (e) => {
-    e.preventDefault();
-    if (
-      !listPreferences.some(
-        (activity) =>
-          activity.toLocaleLowerCase() == valueActivity.toLocaleLowerCase()
-      )
-    ) {
-      setListPreferences([...listPreferences, valueActivity]);
-      setValueActivity("");
-    }
-  };
-  const handleDeleteActivityUser = (name) => {
-    const deleteActivity = listPreferences.filter(
-      (activity) => activity !== name
-    );
-    setListPreferences(deleteActivity);
+  const profileTechnologies = useSelector(
+    (state) => state.userProfileFriend?.technologies
+  );
+  const profilePreferences = useSelector(
+    (state) => state.userProfileFriend?.preferences
+  );
+  const userInformation = useSelector((state) => state.userInformation);
+
+  const [show, setShow] = useState(false);
+
+  const handleAdd =  (technologies, preferences) => {
+    const data = {
+      technologies: technologies,
+      preferences: preferences,
+      id: id,
+    };
+   dispatch(editProfileAction(data));
   };
 
   return (
-    <section>
-      <div className="flex">
-        <div className="w-1/3">
-          <label htmlFor="underline_select" className="sr-only">
-            Underline select
-          </label>
-          <select
-            id="underline_select"
-            className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-amber-300 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-amber-300 peer"
-            defaultValue={valueActivity}
-            onChange={handleChangeActivity}
+    <section className="p-2  h-auto ">
+      <div className="flex md:flex-row flex-col justify-between md:gap-10 mt-3">
+        <div className="flex flex-col justify-start w-full  gap-5 ">
+          <h2 className="font-extrabold">Tecnologías</h2>
+          <div className="flex flex-wrap items-center md:justify-start gap-1 justify-center">
+            {profileTechnologies && profileTechnologies.length > 0 ? (
+              profileTechnologies.map((technology , index) => {
+                return (
+                  <div key={index} className=" bg-blueTw h-fit w-fit px-2 py-1 rounded-full flex flex-row items-center">
+                    <p className="text-sm">{technology}</p>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="">
+                <p className="text-xs">No hay tecnologías</p>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col justify-start w-full gap-5 truncate">
+          <h2 className="md:mt-0 mt-5 md:text-end font-extrabold truncate ">
+            Actividades Favoritas
+          </h2>
+          <div className="flex flex-wrap items-center  gap-1 md:justify-end md:mb-0 mb-5 justify-center">
+            {profilePreferences && profilePreferences.length > 0 ? (
+              profilePreferences.map((preference , index) => {
+                return (
+                  <div key={index} className=" bg-blueTw h-fit w-fit px-2 py-1 rounded-full flex flex-row items-center">
+                    <p className=" text-sm">{preference}</p>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="w-full">
+                <p className="md:text-end text-xs">No hay Actividades</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {show ? (
+          <Transition
+            appear
+            show={show}
+            enter="ease-out duration-200"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
           >
-            <option defaultValue={"default"}>Selected</option>
-            <option value="Programacion"> Programacion</option>
-            <option value="Marketing">Marketing</option>
-            <option value="Recruting">Recruting</option>
-            <option value="Deportes">Deportes</option>
-            <option value="Viajar">Viajar</option>
-            <option value="Reunirse con amigo">Reunirse con amigos</option>
-            <option value="Estudiar">Estudiar</option>
-            <option value="Bailar">Bailar</option>
-          </select>
-        </div>
-        <div className="w-2/3 mb-6">
-          <form className="flex items-center " onSubmit={handleAddActivityUser}>
-            <label htmlFor="simple-search" className="sr-only">
-              Write
-            </label>
-            <div className="relative w-full">
-              <input
-                type="text"
-                autoComplete="off"
-                id="simple-search"
-                className="block py-2.5 px-0 w-full text-sm text-gray-500 pl-5 bg-transparent border-0 border-b-2 border-l-2 border-amber-300 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-amber-300 peer placeholder:text-zinc-500"
-                placeholder="Write..."
-                value={valueActivity}
-                onChange={handleChangeActivity}
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="p-2 ml-2 text-sm font-medium text-white bg-amber-300 rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600  dark:focus:ring-blue-800"
-            >
-              <i className="bi bi-plus-lg text-black"></i>
-            </button>
-          </form>
-        </div>
+            <AddModal
+              technologies={profileTechnologies}
+              favourites={profilePreferences}
+              show={setShow}
+              add={handleAdd}
+            />
+          </Transition>
+        ) : null}
       </div>
-      <div className="grid grid-cols-3 gap-4 ">
-        {listPreferences.length &&
-          listPreferences.map((select) => (
-            <button
-              key={select}
-              className="relative bg-amber-300 p-4  overflow-hidden text-sm font-medium text-gray-900 rounded-lg cursor-default "
-            >
-              <span className=" px-5 py-2.5 text-black  ">{select}</span>
-              <i
-                onClick={() => handleDeleteActivityUser(select)}
-                className="bi bi-x-lg absolute top-0 right-0 m-1 mr-2"
-              ></i>
-            </button>
-          ))}
-      </div>
+      {userInformation?._id === id ? (
+        <button
+          onClick={() => setShow(true)}
+          className="bg-zinc-800  transition-all duration:100 hover:scale-125 text-white rounded-full h-8 w-8 flex items-center justify-center  m-auto inset-x-0"
+        >
+          <p className="text-md z-10">+</p>
+        </button>
+      ) : null}
     </section>
   );
 }

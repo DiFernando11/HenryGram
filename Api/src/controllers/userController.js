@@ -75,10 +75,14 @@ const validateUser = async (req, res) => {
 
   const { token } = req.params;
 
-  const { email, password } = getTokenData(token).data;
+  try {
+    const { email, password } = getTokenData(token).data;
+  } catch (error) {
+    return res.status(400).json({ msg: "Invalid token" });
+  }
 
   if (!email || !password) {
-    res.status(400).json({ msg: "Invalid token" });
+    return res.status(400).json({ msg: "Invalid token" });
   }
 
   const user = await UserSchema.findOne({ email: email });
@@ -233,7 +237,6 @@ const getFriendship = async (req, res) => {
     return res.status(404).json({ message: "FriendShip not found" });
 
   const f = await UserSchema.findOne({ _id: id }, { friends: 1 });
-
   if (!f) return res.status(404).json({ message: "FriendShip not found" });
 
   Promise.resolve(f.friends)
@@ -305,11 +308,11 @@ const getGroups = async (req, res) => {
   if (id.length !== 24)
     return res.status(404).json({ message: "Groups not found" });
 
-  const g = await UserSchema.findOne({ _id: ObjectId(id) }, { groups: 1 });
-
+  //const g = await UserSchema.findOne({ _id: ObjectId(id) }, { groups: 1 });
+  const g = await GroupSchema.find({ users: id });
   if (!g) return res.status(404).json({ message: "Groups not found" });
 
-  Promise.resolve(g.groups)
+  Promise.resolve(g)
     .then((value) => {
       let response = Promise.all(
         value.map(async (el) => {
@@ -330,7 +333,7 @@ const getGroups = async (req, res) => {
       if (result.length) {
         return res.status(200).json(result);
       } else {
-        return res.status(404).json({ message: "Groups not found" });
+        return res.status(200).json([]);
       }
     })
     .catch((e) => {
@@ -341,7 +344,7 @@ const getGroups = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   const { id } = req.params;
-  const { firstName, lastName, gender, avatar } = req.body;
+  const { firstName, lastName, gender, avatar, banner, description, technologies, preferences } = req.body;
 
   console.log(req.body);
 
@@ -360,7 +363,10 @@ const updateUserInfo = async (req, res) => {
     lastName ? user.lastName = lastName : user.lastName;
     avatar ? user.avatar = avatar : user.avatar;
     gender ? user.gender = gender : user.gender;
-
+    banner ? user.banner = banner : user.banner;
+    description ? user.description = description : user.description;
+    technologies ? user.technologies = technologies : user.technologies;
+    preferences ? user.preferences = preferences : user.preferences;
     try {
       await user.save();
       return res.status(200).json({ message: "User updated" });
@@ -368,6 +374,68 @@ const updateUserInfo = async (req, res) => {
       return res.status(500).json({ message: "Internal server error" });
     }
   }
+};
+
+const getNameAndAvatar = async (req, res) => {
+  const { userId } = req.params;
+  const friends = [];
+  try {
+    let friendships = await FriendSchema.find({ $or: [{ requester: userId }, { recipient: userId }], $and: [{ status: 3 }] });
+    if (friendships.length > 0) {
+      friendships.forEach((friendship) => {
+        if (String(friendship.requester) === String(userId)) {
+          friends.push(friendship.recipient)
+        } else {
+          friends.push(friendship.requester);
+        }
+      });
+    } else {
+      return res.status(200).json([]);
+    }
+    let users = await UserSchema.find(
+      { _id: { $in: friends } },
+      { _id: 1, firstName: 1, lastName: 1, avatar: 1 }
+    );
+    if (users) {
+      return res.status(200).json(users);
+    } else {
+      return res.status(404).json({ message: "Users not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+};
+
+const getBasicInfoUsers = async (req, res) => {
+  /*
+       Controlador de la Ruta para obtener info básica de los users (id, firstName, lastName, avatar)
+  */
+
+  const { users } = req.body; // users (array)
+
+  Promise.resolve(users)
+    .then((users) => {
+      let response = Promise.all(
+        users.map(async (el) => {
+          return await UserSchema.findOne(
+            { _id: el },
+            { _id: 1, firstName: 1, lastName: 1, avatar: 1 }
+          );
+        })
+      );
+      return response;
+    })
+    .then((result) => {
+      if (result.length) {
+        return res.status(200).json(result);
+      } else {
+        return res.status(404).json({ message: "Users not found" });
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+      return res.status(404).json({ message: "Users not found" });
+    });
 };
 
 module.exports = {
@@ -382,4 +450,6 @@ module.exports = {
   getMessages,
   getGroups,
   updateUserInfo,
+  getNameAndAvatar,
+  getBasicInfoUsers,
 };
